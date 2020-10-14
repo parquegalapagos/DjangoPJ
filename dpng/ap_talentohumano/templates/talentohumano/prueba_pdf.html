@@ -1,0 +1,536 @@
+ {% load static %}
+
+{% block content %}
+ <!-- Main content -->
+    <button class="btn-success" value="pdf" onClick="generarPdf2();">PDF</button>
+    <div id="section_rep">
+    <section class="content" style="width:790px;" >
+    
+        <div class="row" >
+            <div class="col-xs-12" style="border: 2px solid black;">
+            	<div class="col-xs-8" align="center" style="border-right:2px solid black;">
+                	<img src="static/image/ico_min_trabajo.png" width="30%" />
+                </div>
+                <div class="col-xs-4" style="border-top: 2px solid black;" align="center">
+                	<table style="font-size: 11px;font-family: arial;font-weight:bold; margin-top: 10px;>
+                    	<tr height="36px;"><td colspan="4" align="center">ACCION PERSONAL</td></tr>
+                        <tr>
+                        	<td align="right">No.</td>
+                            <td width="10px;"></td>
+                            <td colspan="2" style="font-weight:bold;"><label id="for_numaccper"></label></td>
+                        </tr>
+                        <tr>
+                        	<td align="right">Fecha:</td>
+                            <td width="10px;"></td>
+                            <td colspan="2" style="font-weight:bold;"><label id="for_fechaaccper"></label></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+     
+        <div class="row" style="">
+            <div class="col-xs-12" style="border:2px solid black; height:80px;">
+            	
+                <div class="col-xs-4" align="left" style="margin-top: 10px;font-size: 11px;font-family: arial;font-weight:bold;">
+                	<label>DECRETO &nbsp;&nbsp;<input type="checkbox" id="for_tipodoc1"></label>
+                </div>
+                <div class="col-xs-4" align="left" style="margin-top: 10px;font-size: 11px;font-family: arial;font-weight:bold;">
+            		<label>ACUERDO &nbsp;&nbsp;<input type="checkbox" id="for_tipodoc2"></label>
+                </div>
+                <div class="col-xs-4" align="left" style="margin-top: 10px;font-size: 11px;font-family: arial;font-weight:bold;">
+            		<label>RESOLUCION &nbsp;&nbsp;<input type="checkbox" id="for_tipodoc3"></label>
+                </div>
+            	<br>
+                <div class="col-xs-5" align="left" style="margin-top: 10px;font-size: 11px;font-family: arial;font-weight:bold;">
+                    <label>No:___________________________</label><label id="for_numtipodoc"></label>
+                </div>
+                <div class="col-xs-7"  align="left" style="margin-top: 10px;font-size: 11px;font-family: arial;font-weight:bold;">
+                    <label>FECHA:___________________________</label><label id="for_fechatipodoc"></label>
+                </div>
+                
+            </div>
+        </div>
+        <div class="row" style="">
+            <div class="col-xs-12" style="border:2px solid black; height:100px;">
+            	
+                <div class="col-xs-6" align="center" style="margin-top: 40px;">
+                	<label>______________________________<br>APELLIDOS</label>
+                </div>
+                <div class="col-xs-6" align="center" style="margin-top: 40px;">
+            		<label>______________________________<br>NOMBRES</label>
+                </div>
+            </div>
+            <div class="col-xs-12" style="border:2px solid black; height:80px; ">
+                <br>
+                <div class="col-xs-4" align="center" style="height: 100%;border-right: 2px solid black;margin-top: -20px; text-align:center;">
+                	<table  width="100%" style="margin-top:20px;font-size: 11px;font-family: arial;font-weight:bold;">
+                    <tr><td style="top: -10px; position:relative;">No. de Cédula de Ciudadania</td></tr>
+                    <tr><td style="border: 2px solid black;height: 2px; position: absolute;left: 0%;width: 788px;margin-left: -15px;"></td></tr>
+                    <tr><td style="top: 10px; position:relative;">2000055117</td></tr>
+                    </table>
+                </div>
+                <div class="col-xs-4" style="height: 100%;border-right: 2px solid black;margin-top: -20px; text-align:center;">
+                	<table align="center" width="100%" style="margin-top:20px;font-size: 11px;font-family: arial;font-weight:bold;">
+                    <tr><td style="top: -10px; position:relative;">No. De Afiliación IESS</td></tr>
+                    <tr><td></td></tr>
+                    <tr><td style="top: 10px; position:relative;">2000055117</td></tr>
+                    </table>
+                </div>
+                <div class="col-xs-4" style="text-align:center;margin-top: -20px;">
+                <table align="center" width="100%" style="margin-top:20px;font-size: 11px;font-family: arial;font-weight:bold;">
+                    <tr><td style="top: -10px; position:relative;">Rige a partir de:</td></tr>
+                    <tr><td style="top: 10px; position:relative;">Enero 2 de 2018</td></tr>
+                </table>
+                </div>
+                
+            </div>
+        </div>
+      
+        <div class="row" style="">
+            <div class="col-xs-12" style="border:2px solid black;">
+            	
+                <p>EXPLICACIÓN: (Opcional: adjuntar Anexo)</p>
+                
+                <p style="text-align:justify; font-size: 11px; font: 'calibri'">Se expide la presente acción de personal para legalizar el encargo de las responsabilidades del Subproceso de Ingeniería de Software de la Dirección Administrativa Financiera del Parque Nacional Galápagos, a partir del 02 al 16 de enero de 2018, de acuerdo a los Memorandos No. MAE-DPNG/DAF/TIC/IS-2017-0020-M y MAE-DPNG/DAF/TIC-2018-0001-M</p><br><br>
+            </div><br>
+        </div>
+        
+        <div class="row" style="">
+            <div class="col-xs-12" style="border:2px solid black; ">
+				<div class="col-xs-3" style="height: 100%;border-right: 2px solid black;">
+                	<table  width="100%" style="font-size:10px; margin-top:10px; font-family: arial;">
+                        <tr>
+                            <td align="left">INGRESO</td>
+                            <td width="10px"></td>
+                            <td align="left"><input type="checkbox"></td>
+                        </tr>
+                        <tr>
+                            <td align="left">NOMBRAMIENTO</td>
+                            <td width="10px"></td>
+                            <td align="left"><input type="checkbox"></td>
+                        </tr>
+                        <tr>
+                            <td align="left">ASCENSO</td>
+                            <td width="10px"></td>
+                            <td align="left"><input type="checkbox"></td>
+                        </tr>
+                        <tr>
+                            <td align="left">SUBROGACION</td>
+                            <td width="10px"></td>
+                            <td align="left"><input type="checkbox"></td>
+                        </tr>
+                        <tr>
+                            <td align="left">ENCARGO</td>
+                            <td width="10px"></td>
+                            <td align="left"><input type="checkbox"></td>
+                        </tr>
+                        <tr>
+                            <td align="left">VACACIONES</td>
+                            <td width="10px"></td>
+                            <td align="left"><input type="checkbox"></td>
+                        </tr>
+                    </table><br>
+                </div>
+                <div class="col-xs-3" style="height: 100%;border-right: 2px solid black;">
+                	<table  width="100%" style="font-size:10px; margin-top:10px; font-family: arial;">
+                        <tr>
+                            <td align="left">TRASLADO</td>
+                            <td width="10px"></td>
+                            <td align="left"><input type="checkbox"></td>
+                        </tr>
+                        <tr>
+                            <td align="left">TRASPASO</td>
+                            <td width="10px"></td>
+                            <td align="left"><input type="checkbox"></td>
+                        </tr>
+                        <tr>
+                            <td align="left">CAMBIO ADMINISTRATIVO</td>
+                            <td width="10px"></td>
+                            <td align="left"><input type="checkbox"></td>
+                        </tr>
+                        <tr>
+                            <td align="left">INTERCAMBIO</td>
+                            <td width="10px"></td>
+                            <td align="left"><input type="checkbox"></td>
+                        </tr>
+                        <tr>
+                            <td align="left">COMISION DE SERVICIOS</td>
+                            <td width="10px"></td>
+                            <td align="left"><input type="checkbox"></td>
+                        </tr>
+                        <tr>
+                            <td align="left">LICENCIA</td>
+                            <td width="10px"></td>
+                            <td align="left"><input type="checkbox"></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="col-xs-3" style="height: 100%;border-right: 2px solid black;">
+                	<table  width="100%" style="font-size:10px; margin-top:10px; font-family: arial;">
+                        <tr>
+                            <td align="left">REVALORIZACIÓN</td>
+                            <td width="10px"></td>
+                            <td align="left"><input type="checkbox"></td>
+                        </tr>
+                        <tr>
+                            <td align="left">RECLASIFICACIÓN</td>
+                            <td width="10px"></td>
+                            <td align="left"><input type="checkbox"></td>
+                        </tr>
+                        <tr>
+                            <td align="left">UBICACIÓN</td>
+                            <td width="10px"></td>
+                            <td align="left"><input type="checkbox"></td>
+                        </tr>
+                        <tr>
+                            <td align="left">REINTEGRO</td>
+                            <td width="10px"></td>
+                            <td align="left"><input type="checkbox"></td>
+                        </tr>
+                        <tr>
+                            <td align="left">RESTITUCIÓN</td>
+                            <td width="10px"></td>
+                            <td align="left"><input type="checkbox"></td>
+                        </tr>
+                        <tr>
+                            <td align="left">RENUNCIA</td>
+                            <td width="10px"></td>
+                            <td align="left"><input type="checkbox"></td>
+                        </tr>
+                    </table><br>
+                </div>
+                <div class="col-xs-3" style="height: 100%;">
+                	<table  width="100%" style="font-size:10px; margin-top:10px; font-family: arial;">
+                        <tr>
+                            <td align="left">SUPRESIÓN</td>
+                            <td width="10px"></td>
+                            <td align="left"><input type="checkbox"></td>
+                        </tr>
+                        <tr>
+                            <td align="left">DESTITUCIÓN</td>
+                            <td width="10px"></td>
+                            <td align="left"><input type="checkbox"></td>
+                        </tr>
+                        <tr>
+                            <td align="left">REMOCIÓN</td>
+                            <td width="10px"></td>
+                            <td align="left"><input type="checkbox"></td>
+                        </tr>
+                        <tr>
+                            <td align="left">JUBILACIÓN</td>
+                            <td width="10px"></td>
+                            <td align="left"><input type="checkbox"></td>
+                        </tr>
+                        <tr>
+                            <td align="left">OTRO</td>
+                            <td width="10px"></td>
+                            <td style="top: -10px; position:relative;"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" height="10px"></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        
+         <div class="row" style="">
+            <div class="col-xs-12" style="border:2px solid black;">
+				 <div class="col-xs-6" style="height: 100%;border-right: 2px solid black;">
+                 <table style="width: 100%; font-size:10px; font-family: arial;">
+                 	<tr>
+                    	<td colspan="2" align="center" style="font-weight:bold; height:30px;">SITUACION ACTUAL</td>
+                    </tr>
+                    <tr><td>PROCESO:</td><td style="border-bottom:1px solid black; text-align:left;width:60%"></td></tr>
+                    <tr><td>SUBPROCESO:</td><td style="border-bottom:1px solid black; text-align:left;"></td></tr>
+                    <tr><td>PUESTO:</td><td style="border-bottom:1px solid black; text-align:left;"></td></tr>
+                    <tr><td>LUGAR DE TRABAJO:</td><td style="border-bottom:1px solid black; text-align:left;"></td></tr>
+                    <tr><td>REMUNERACIÓN MENSUAL:</td><td style="border-bottom:1px solid black; text-align:left;"></td></tr>
+                    <tr><td>PARTIDA PRESUPUESTARIA:</td><td></td></tr>
+                    <tr><td colspan="2" style="border-bottom:1px solid black; text-align:left; height:10px;"></td></tr>
+                    <tr height="10px;"></tr>
+                 </table>
+                 </div>
+                 <div class="col-xs-6" style="height: 100%;">
+                 <table style="width: 100%; font-size:10px; font-family: arial;">
+                 	<tr>
+                    	<td colspan="2" align="center" style="font-weight:bold; height:30px;">SITUACION PROPUESTA</td>
+                    </tr>
+                    <tr>
+                    	<td>PROCESO:</td>
+                        <td style="border-bottom:1px solid black; text-align:left; width:60%"></td>
+                    </tr>
+                    <tr><td style="width:auto;">SUBPROCESO:</td><td style="border-bottom:1px solid black; text-align:left;"></td></tr>
+                    <tr><td style="width:auto;">PUESTO:</td><td style="border-bottom:1px solid black; text-align:left;"></td></tr>
+                    <tr><td style="width:auto;">LUGAR DE TRABAJO:</td><td style="border-bottom:1px solid black; text-align:left;"></td></tr>
+                    <tr><td style="width:auto;">REMUNERACIÓN MENSUAL:</td><td style="border-bottom:1px solid black; text-align:left;"></td></tr>
+                    <tr><td style="width:auto;">PARTIDA PRESUPUESTARIA:</td><td></td></tr>
+                    <tr><td colspan="2" style="border-bottom:1px solid black; text-align:left; height:10px;"></td></tr>
+                    <tr height="10px;"></tr>
+                 </table>
+                 </div>
+            </div>
+        </div>
+        
+        <div class="row" style="">
+            <div class="col-xs-12" style="border:2px solid black;">
+				 <div class="col-xs-6" style="height: 100%;border-right: 2px solid black;">
+                 <table style="width: 100%; font-size: 10px;font-family: arial;font-weight:bold;">
+                 	<tr>
+                    	<td colspan="4" align="center" style="font-weight:bold; height:30px;">ACTA FINAL DEL CONCURSO</td>
+                    </tr>
+                    <tr height="20px;"></tr>
+                    <tr>
+                    	<td>No.</td>
+                        <td style="border-bottom:1px solid black; text-align:left;width:40%"></td>
+                        <td>&nbsp;&nbsp;&nbsp;&nbsp;Fecha:</td>
+                        <td style="border-bottom:1px solid black; text-align:left;width:40%"></td>
+                    </tr>
+                   <tr height="20px;"></tr>
+                 </table>
+                 </div>
+                 <div class="col-xs-6" style="height: 100%;">
+                 <table style="width: 100%; font-size: 10px;font-family: arial;font-weight:bold;">
+                 	<tr>
+                    	<td colspan="2" align="center" style="font-weight:bold; height:30px;">PROCESO DE RECURSOS HUMANOS</td>
+                    </tr>
+                    <tr height="20px;"></tr>
+                    <tr>
+                    	<td width="1%">f.</td>
+                        <td style="border-bottom:1px solid black; text-align:left;width:99%"></td>
+                    </tr>
+                    <tr><td colspan="2" align="center">Nombre: Psc. Ind. Alejandra Montenegro Cando </td></tr>
+                    <tr><td colspan="2" align="center">Responsable (e) de Recursos Humanos </td></tr>
+                    <tr height="10px;"></tr>
+                 </table>
+                 </div>
+            </div>
+        </div>
+        
+        <div class="row" style="">
+            <div class="col-xs-12" style="border:2px solid black;" align="center">
+				 
+                 <table style="width: 80%; font-size:11px;">
+                 	<tr>
+                    	<td align="center" style="font-weight:bold; height:30px;ont-size:10px;">DIOS, PATRIA Y LIBERTAD</td>
+                    </tr>
+                    <tr height="30px;"></tr>
+                    <tr><td style="border-bottom:1px solid black; text-align:center;"></td></tr>
+                    <tr><td style="text-align:center; font-size:12px; font-weight:bold;">Nombre: Lcdo. Eddie Navarrete Guerra</td></tr>
+                    <tr><td style="text-align:center; font-size:12px; font-weight:bold;">DELEGADO DE LA AUTORIDAD NOMINADORA</td></tr>
+					<tr><td style="text-align:center; font-size:8px;">DELEGACION DE LA DIRECCION GENERAL MEDIANTE RESOLUCIÓN NRO. 0000038 DEL 22 DE JUNIO DEL 2016</td></tr> <tr height="10px;"></tr>
+                 </table>
+                
+                
+            </div>
+        </div>
+        
+        <div class="row" style="">
+            <div class="col-xs-12" style="border:2px solid black;">
+				 <div class="col-xs-6" style="height: 100%;border-right: 2px solid black;">
+                 <table style="width: 100%; font-size: 10px;font-family: arial;font-weight:bold;">
+                 	<tr>
+                    	<td colspan="4" align="center" style="font-weight:bold; height:30px;">RECURSOS HUMANOS</td>
+                    </tr>
+                    <tr height="20px;"></tr>
+                    <tr>
+                    	<td>No.</td>
+                        <td style="border-bottom:1px solid black; text-align:left;width:40%"></td>
+                        <td>&nbsp;&nbsp;&nbsp;&nbsp;Fecha:</td>
+                        <td style="border-bottom:1px solid black; text-align:left;width:40%"></td>
+                    </tr>
+                   <tr height="20px;"></tr>
+                 </table>
+                 </div>
+                 <div class="col-xs-6" style="height: 100%;">
+                 <table style="width: 100%; font-size: 10px;font-family: arial;font-weight:bold;">
+                 	<tr>
+                    	<td colspan="2" align="center" style="font-weight:bold; height:30px;">REGISTRO Y CONTROL</td>
+                    </tr>
+                    <tr height="20px;"></tr>
+                    <tr>
+                    	<td width="1%">f.</td>
+                        <td style="border-bottom:1px solid black; text-align:left;width:99%"></td>
+                    </tr>
+                    <tr><td colspan="2" align="center">Responsable del Registro</td></tr>
+                    <tr height="10px;"></tr>
+                 </table>
+                 </div>
+            </div>
+            <div class="col-xs-12" style="border:2px solid black;">
+            <table style="width: 100%; font-size:12px;">
+            <tr><td style="text-align:center; font-size:8px;">Fecha de creación de formato: 2014-05-27    /    Versión: 01    /    Página 1 de 2.</td></tr>
+            </table>
+            </div>
+        </div>
+
+        <div style="page-break-before: always;"></div><!--page 2-->
+        <br>
+        <div class="row" style="">
+            <div class="col-xs-12" style="border:2px solid black;">
+                 <table style="width: 100%; font-size: 11px;font-family: arial; margin-top: 20px;">
+                    <tr>
+                        <td>CAUCION REGISTRADA CON No.</td>
+                        <td style="border-bottom:1px solid black; text-align:left;width:45%"></td>
+                        <td>&nbsp;&nbsp;&nbsp;&nbsp;Fecha:</td>
+                        <td style="border-bottom:1px solid black; text-align:left;width:20%"></td>
+                    </tr>
+                   <tr height="40px;"></tr>
+                 </table>  
+            </div>
+            <div class="col-xs-12" style="border-bottom: 2px solid black; border-left: 2px solid black; border-right: 2px solid black;  height: 50px; width: 100%;">
+            
+            </div>
+            <div class="col-xs-12" style="border-bottom: 2px solid black; border-left: 2px solid black; border-right: 2px solid black; height: 50px; width: 100%;">
+            
+            </div>
+           <div class="col-xs-12" style="border-bottom: 2px solid black; border-left: 2px solid black; border-right: 2px solid black; height: 50px; width: 100%;">
+            
+            </div>
+        </div>
+
+        <div class="row" style="">
+          <div class="col-xs-12" style="border:2px solid black;">
+            <div class="col-xs-12">
+                 <table style="width: 100%; font-size: 11px;font-family: arial; margin-top: 20px;">
+                    <tr>
+                        <td >LA PERSONA REEMPLAZA A: </td>
+                        <td style="border-bottom:1px solid black; text-align:left;width:40%"></td>
+                        <td >EN EL PUESTO DE:</td>
+                        <td style="border-bottom:1px solid black; text-align:left;width:20%"></td>
+                    </tr>
+                <table>
+            </div>
+            <div class="col-xs-12">
+                <table style="width: 100%; font-size: 11px;font-family: arial; margin-top: 20px;">
+                    <tr>
+                        <td >QUIEN CESO EN FUNCIONES POR: </td>
+                        <td style="border-bottom:1px solid black; text-align:left;width:70%"></td>
+                    </tr>
+                </table>
+            </div>
+             <div class="col-xs-12">
+                <table style="width: 100%; font-size: 11px;font-family: arial; margin-top: 20px;">
+                    <tr>
+                        <td style="width: 40%;">ACCION DE PERSONAL REGISTRADA CON No. </td>
+                        <td style="border-bottom:1px solid black; text-align:left;width:30%"></td>
+                        <td>FECHA:</td>
+                        <td style="border-bottom:1px solid black; text-align:left;width:25%"></td>
+                    </tr>
+                   <tr height="20px;"></tr>
+                 </table>  <br><br>
+            </div>
+            
+            <div class="col-xs-12">
+                <table style="width: 100%; font-size: 11px;font-family: arial; margin-top: 20px;">
+                    <tr>
+                        <td >AFILIACION AL COLEGIO DE PROFESIONALES DE </td>
+                        <td style="border-bottom:1px solid black; text-align:left;width:60%"></td>
+                    </tr>
+                </table><br><br>
+            </div>
+            
+             <div class="col-xs-12">
+                <table style="width: 100%; font-size: 11px;font-family: arial; margin-top: 20px;">
+                    <tr>
+                        <td >NO. </td>
+                        <td style="border-bottom:1px solid black; text-align:left;width:60%"></td>
+                        <td style="width: 30px;"></td>
+                        <td>FECHA:</td>
+                        <td style="border-bottom:1px solid black; text-align:left;width:30%"></td>
+                    </tr>
+                   <tr height="40px;"></tr>
+                 </table>  
+            </div>
+
+          </div>  
+        </div>
+
+
+         <div class="row" style="">
+          <div class="col-xs-12" style="border:2px solid black;">
+            <div class="col-xs-12">
+                <br><br>
+                 <table style="width: 100%; font-size: 11px;font-family: arial; margin-top: 20px;">
+                    <tr>
+                        <td >POSESION DEL CARGO</td>
+                    </tr>
+                <table>
+            </div>
+
+             <div class="col-xs-12">
+                <table style="width: 100%; font-size: 11px;font-family: arial; margin-top: 20px;">
+                    <tr>
+                        <td >YO</td>
+                        <td style="border-bottom:1px solid black; text-align:left;width:50%"></td>
+                        <td>CON CEDULA DE CIUDADANIA No.</td>
+                        <td style="border-bottom:1px solid black; text-align:left;width:20%"></td>
+                    </tr>
+                   <tr height="20px;"></tr>
+                 </table>
+                 <p style="font-size: 11px;font-family: arial;">JURO LEALTAD AL ESTADO ECUATORIANO.</p>  
+            </div>
+           
+            <br><br>
+            
+             <div class="col-xs-12">
+                <table style="width: 50%; font-size: 11px;font-family: arial; margin-top: 20px;">
+                    <tr>
+                        <td >LUGAR: </td>
+                        <td style="border-bottom:1px solid black; text-align:left;width:90%"></td>
+                    </tr>
+                    <tr height="10px;"></tr>
+                    <tr>
+                        <td>FECHA:</td>
+                        <td style="border-bottom:1px solid black; text-align:left;width:90%"></td>
+                    </tr>
+                   <tr height="40px;"></tr>
+                 </table> <br><br> <br>
+            </div>
+
+          </div>  
+        </div>
+
+
+        <div class="row" style="">
+            <div class="col-xs-12" style="border:2px solid black;"><br><br><br>
+                <div class="col-xs-6" style="height: 100%;"><br><br>
+                <table style="width: 100%; font-size: 11px;font-family: arial;">
+                    <tr height="20px;"></tr>
+                    <tr>
+                        <td width="1%">f.</td>
+                         <td style="border-bottom:1px solid black; text-align:left;width:99%"></td>
+                    </tr>
+                    <tr><td colspan="2" align="center">Funcionario</td></tr>
+                    <tr height="10px;"></tr>
+                 </table><br><br>
+                 </div>
+                <div class="col-xs-6" style="height: 100%;"><br><br>
+                <table style="width: 100%; font-size: 11px;font-family: arial;">
+                    <tr height="20px;"></tr>
+                    <tr>
+                        <td width="1%">f.</td>
+                        <td style="border-bottom:1px solid black; text-align:left;width:99%"></td>
+                    </tr>
+                    <tr><td colspan="2" align="center">Responsable de Recursos Humanos</td></tr>
+                    <tr height="10px;"></tr>
+                 </table><br><br>
+                 </div>
+            </div>
+            <div class="col-xs-12" style="border:2px solid black;">
+            <table style="width: 100%; font-size: 11px;font-family: arial;">
+            <tr><td style="text-align:center; font-size:8px;">Fecha de creación de formato: 2014-05-27    /    Versión: 01    /    Página 2 de 2.</td></tr>
+            </table>
+            </div>
+        </div>
+        
+
+    </section>
+    </div>
+    {% load static %}
+
+<script src="{% static 'js/lib_internas/script.js' %}"></script>
+    <!-- /.content -->
+    {% endblock %}

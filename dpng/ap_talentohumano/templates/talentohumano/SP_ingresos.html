@@ -1,0 +1,666 @@
+{% load static %} 
+{% block content %}
+
+<!-- PERMISOS PARA LOS ICONOS DE LA LISTA -->
+{% if perms.ap_talentohumano.view_peringresosacciones or perms.ap_talentohumano.change_peringresosacciones %}
+<input type="hidden" id="perm_change_peringresosacciones" value="1" /> 
+{% else %}
+<input type="hidden" id="perm_change_peringresosacciones" value="0" /> 
+{% endif %}
+
+<div id="content_ingresos">
+    <div id="addEnIngresoI" style="display: none;">
+        <div class="stackbox-header cab_popup" align="center">
+            <img src="{% static 'image/favicon.ico' %}" width="40px" style="float:left;margin-top: -5px;" />
+            <h id="tituloIngI">Editar</h> Ingresos y Salidas</div>
+        <div class="stackbox-body" id="bodyaddEnIngresoI">
+            <input type="hidden" id="idaccPerI" name="idaccPerI" value="" />
+            <input type="hidden" id="idFuncionarioI" name="idFuncionarioI" value="" />
+            <input type="hidden" id="idIngAccI" name="idIngAccI" value="" />
+            <input type="hidden" id="bandIngSP" name="bandIngSP" value="" />
+            <input type="hidden" id="tipot_IngI" value="0" />
+            <section class="content">
+
+                <div class="row" style="box-shadow: 5px 5px 5px 5px #888888;margin-top: 20px;">
+                    <form id="frm_ingresoSp" action="#" method="post">
+                        <div class="col-xs-12">
+                            <div class="nav-tabs-custom">
+                                <ul class="nav nav-tabs" id="tabsIng">
+                                    <!--li class="active"><a href="#tab_funcionarioI" data-toggle="tab" aria-expanded="true" style="font-weight: bold;">Funcionario</a></li-->
+                                    <li class=""><a href="#tab_funcionarioI" data-toggle="tab" aria-expanded="false" style="font-weight: bold;">Datos Generales</a></li>
+                                    <li class=""><a href="#tab_laboralI" data-toggle="tab" aria-expanded="false" style="font-weight: bold;">Laboral</a></li>
+                                    <li class=""><a href="#tab_ingresoI" data-toggle="tab" aria-expanded="false" style="font-weight: bold;">Ingreso/Salida</a></li>
+                                    <!--li class=""><a href="#tab_observacionI" data-toggle="tab" aria-expanded="false" style="font-weight: bold;">Observacion</a></li-->
+                                    <li class=""><a href="#tab_historialI" data-toggle="tab" aria-expanded="false" style="font-weight: bold;" onclick="verHistorialFunc();">Historial</a></li>
+                                </ul>
+                                <div class="tab-content" style="border-top: 2px solid #3c8dbc;">
+                                    <div class="notification">
+                                        <span class="icon">
+                                            <i class=""></i>
+                                        </span>
+                                        <span class="text"></span>
+                                        <span class="close"><i class="fa fa-close"></i></span>
+                                    </div>
+                                    
+                                    <!-- /#fa-icons -->
+
+                                    <!-- glyphicons-->
+                                    <div class="tab-pane" id="tab_funcionarioI">
+                                        <div class="row">
+
+                                            <div class="col-xs-12">
+                                                <div style="border-bottom:2px solid #3c8dbc;font-size: 14px;box-shadow: 1px 5px 5px;"><i class="fa fa-fw fa-user"></i> Datos Generales</div>
+                                                <br>
+                                                <div class="col-xs-6 callout" style="border-color: #1b90ad;">
+                                                    <table>
+                                                        <tr>
+                                                            <td style="text-align: left;">*Funcionario</td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td>
+                                                                <input type="text" name="nombre_funcI" id="nombre_funcI" class="form-control requerido" text="Funcionario" readonly=""> {% if perms.ap_talentohumano.add_peringresosacciones %}
+                                                                <a style="cursor: pointer; font-size: 14px;margin-left: 10px;position: absolute; right: 5%; top: 40px;" title="Buscar Funionario" href='#popupFuncionarios' onclick="limpiaPopupFuncionario('SP_ingresos');" data-stackbox='true' data-stackbox-position="absolute"><i class="fa fa-search text-blue"></i></a> {% endif %}
+
+                                                            </td>
+                                                        </tr>
+                                                        <tr height="5px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: left;">*Identificación</td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td>
+                                                                <input type="text" name="ced_funcI" id="ced_funcI" class="form-control requerido" text="Identificación" readonly="">
+                                                            </td>
+                                                        </tr>
+                                                        <tr height="5px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: left;">Rmu</td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td>
+                                                                <input type="text" name="rmuI" id="rmuI" class="form-control requerido" style="width: 300px;">
+                                                            </td>
+                                                        </tr>
+                                                        <tr height='5px;'></tr>
+                                                        <tr>
+                                                            <td align="left">Isla trabajo</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="">
+                                                                <select id="SislaI" class="select2" style="width: 300px;" onchange="cambiarComboinfoParr('SparrI',this.value,'parroquias','SislaI');">
+                                                                    <option value=""> Seleccione una Opcion</option>
+
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                        <tr height='5px;'></tr>
+                                                        <tr>
+                                                            <td align="left">Parroquia Trabaja</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <select id="SparrI" class="select2" style="width: 300px;">
+                                                                    <option value=""> Seleccione una Opcion</option>
+
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                        <tr height='5px;'></tr>
+                                                        <tr>
+                                                            <td style="text-align: left;">Modalidad Laboral</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <!--input type="text" name="SmodalidadI" id="SmodalidadI" class="form-control" readonly style="width: 300px;"-->
+                                                                <select id="SmodalidadI" class="select2 form-control" style="width: 300px;">
+                                                                    <option value="0">Seleccione una Opcion</option>
+
+                                                                    </select-->
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                                <div class="col-xs-6 callout" style="border-color: #1b90ad;">
+                                                    <table>
+                                                        <tr>
+                                                            <td style="text-align: left;">Base Legal nombramiento</td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td>
+                                                                <!--input type="text" name="baseLegalI" id="baseLegalI" class="form-control" style="width: 300px;"-->
+                                                                <select id="SbaseLegalI" class="select2" style="width: 300px;">
+                                                                    <option value=""> Seleccione una Opcion</option>
+                                                                    {% for base in bases %}
+                                                                    <option value="{{ base.id }}"> {{ base.nombre }} </option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                        <tr height='5px;'></tr>
+                                                        <tr>
+                                                            <td style="text-align: left;">#Partida General</td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td>
+                                                                <input type="text" name="numPartI" id="numPartI" class="form-control requerido" style="width: 310px;">
+                                                            </td>
+                                                        </tr>
+                                                        <tr height='5px;'></tr>
+                                                        <tr>
+                                                            <td style="text-align: left;">#Partida Individual</td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td>
+                                                                <input type="text" name="numPartIndI" id="numPartIndI" class="form-control" style="width: 300px;">
+                                                            </td>
+                                                        </tr>
+                                                        <tr height='5px;'></tr>
+                                                        <tr>
+                                                            <td style="text-align: left;">Grado</td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td>
+                                                                <input type="text" name="gradoI" id="gradoI" class="form-control" style="width: 300px;">
+                                                            </td>
+                                                        </tr>
+                                                        <tr height='5px;'></tr>
+                                                        <tr>
+                                                            <td style="text-align: left;">Escala</td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td>
+                                                                <input type="text" name="escalaI" id="escalaI" class="form-control" style="width: 300px;">
+                                                            </td>
+                                                        </tr>
+                                                        <tr height='5px;'></tr>
+                                                        <tr>
+                                                            <td style="text-align: left;">Tipo Gasto</td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td>
+                                                                <select id="STipoGasto" class="select2" style="width: 300px;" onchange="ocultarNombreProyecto(this.value)">
+                                                                    <option value=""> Seleccione una Opcion</option>
+
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr height='5px;'></tr>
+                                                        <tr id="tr_nombreProyecto" hidden>
+                                                            <td style="text-align: left;">Nombre Proyecto</td>
+                                                        </tr>
+
+                                                        <tr id="tr_labelnombreProyecto" hidden>
+                                                            <td>
+                                                                <input type="text" name="nomProyectoI" id="nomProyectoI" class="form-control" style="width: 300px;">
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--fin tab_datosI-->
+                                    <!-- /#ion-icons -->
+
+                                    <!-- glyphicons-->
+                                    <div class="tab-pane" id="tab_laboralI">
+                                        <div class="row">
+
+                                            <div style="border-bottom:2px solid #3c8dbc;font-size: 14px;box-shadow: 1px 5px 5px;"><i class="fa fa-fw fa-file-text"></i> Laboral</div>
+                                            <br>
+                                            <div class="col-xs-6 callout" style="border-color: #1b90ad;">
+                                                <table>
+                                                    <tr>
+                                                        <td style="text-align: left;">Clasificación Proceso</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <select id="ScprocesoI" class="select2" style="width: 300px;">
+                                                                <option value=""> Seleccione una Opcion</option>
+
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+                                                    <tr height='10px;'></tr>
+                                                    <tr>
+                                                        <td style="text-align: left;">Dirección</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <select id="SdireccionI" class="select2" style="width: 300px;" onchange="cambiarComboinfo('SprocesoI',this.value,'direcciones','parent_id','name');">
+                                                                <option value=""> Seleccione una Opcion</option>
+
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+                                                    <tr height='10px;'></tr>
+                                                    <tr>
+                                                        <td style="text-align:left;">Proceso</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <select id="SprocesoI" class="select2" style="width: 300px;" onchange="cambiarComboinfo('SsubprocesoI',this.value,'direcciones','parent_id','name');">
+                                                                <option value=""> Seleccione una Opcion</option>
+
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+                                                    <tr height='10px;'></tr>
+                                                    <tr>
+                                                        <td style="text-align: left;">SubProceso</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <select id="SsubprocesoI" class="select2" style="width: 300px;">
+                                                                <option value="0">Seleccione una Opcion</option>
+
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                            <div class="col-xs-6 callout" style="border-color: #1b90ad;">
+                                                <table>
+                                                    <tr>
+                                                        <td style="text-align: left;">Puesto Institucional</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <select id="SpuestoI" class="select2" style="width: 300px;">
+                                                                <option value=""> Seleccione una Opcion</option>
+                                                                {% for ginstitucional in ginstitucionals %}
+                                                                <option value="{{ ginstitucional.id }}">{{ ginstitucional.nombre }}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+                                                    <tr height='10px;'></tr>
+                                                    <tr>
+                                                        <td style="text-align: left;">Grupo Ocupacional</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <select id="SgrupoI" class="select2" style="width: 300px;">
+                                                                <option value=""> Seleccione una Opcion</option>
+                                                                {% for gocupacional in gocupacionals %}
+                                                                <option value="{{ gocupacional.id }}">{{ gocupacional.nombre }}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+                                                    <tr height='10px;'></tr>
+                                                    <tr>
+                                                        <td style="text-align: left;">Puesto Distributivo</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <select id="SpuestoDistI" class="select2" style="width: 300px;">
+                                                                <option value=""> Seleccione una Opcion</option>
+                                                                {% for gdistributivo in gdistributivos %}
+                                                                <option value="{{ gdistributivo.id }}">{{ gdistributivo.nombre }}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr height='10px;'></tr>
+                                                    <tr>
+                                                        <td style="text-align: left;">Cargo Funcional</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <select id="ScargoI" class="select2" style="width: 300px;">
+                                                                <option value=""> Seleccione una Opcion</option>
+
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+                                                    <tr height='10px;'></tr>
+                                                    <tr>
+                                                        <td style="text-align: left;">Tipo Actividad</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <select id="StipoAct" class="select2" style="width: 300px;">
+                                                                <option value=""> Seleccione una Opcion</option>
+
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <!--fin tab_datosI-->
+                                    <!-- /#ion-icons -->
+
+                                    <!-- glyphicons-->
+                                    <div class="tab-pane" id="tab_ingresoI">
+                                        <div class="row">
+
+                                            <div class="col-xs-12">
+
+                                                <div class="col-xs-6 callout" style="border-color: #1b90ad;">
+                                                    <div style="border-bottom:2px solid #3c8dbc;font-size: 14px;box-shadow: 1px 5px 5px;"><i class="fa fa-fw  fa-arrow-circle-down"></i> Ingreso</div>
+                                                    <br>
+                                                    <table>
+                                                        <tr>
+                                                            <td style="text-align: left;">Fecha Ingreso PNG</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <input type="date" id="fechainiI" class="form-control" style="width: 300px;" />
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                                <div class="col-xs-6 callout" style="border-color: #1b90ad;">
+                                                    <div style="border-bottom:2px solid #3c8dbc;font-size: 14px;box-shadow: 1px 5px 5px;"><i class="fa fa-fw  fa-arrow-circle-up"></i> Salida</div>
+                                                    <br>
+                                                    <table>
+                                                        <tr>
+                                                            <td style="text-align: left;">Fecha Salida</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <input type="date" id="fechafinI" class="form-control" style="width: 300px;" />
+                                                            </td>
+                                                        </tr>
+                                                        <tr height='10px;'></tr>
+                                                        <tr>
+                                                            <td style="text-align: left;">Razón Salida</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <textarea id="observacion_razon" class="form-control" rows="3" style=""></textarea>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+
+                                            </div>
+                                            <div class="col-xs-12">
+
+                                                <div style="border-bottom:2px solid #3c8dbc;font-size: 14px;box-shadow: 1px 5px 5px;"><i class="fa fa-fw  fa-align-justify"></i> Observación</div>
+                                                <br>
+                                                <div>
+                                                    <textarea id="observacion_Ing" class="form-control" rows="3" style="width: 100%"></textarea>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--fin tab_datosI-->
+                                    <!-- /#ion-icons -->
+
+                                    <!-- glyphicons-->
+                                    <div class="tab-pane" id="tab_historialI">
+                                        <div class="row">
+
+                                            <div class="col-xs-12">
+                                                <input type="hidden" id="cont_hist" value="0">
+                                                <div style="border-bottom:2px solid #3c8dbc;font-size: 14px;box-shadow: 1px 5px 5px;"><i class="fa fa-fw  fa-file-text"></i> Historial Ingresos y Salidas</div>
+                                                <br>
+                                                <table class="table" style="box-shadow: 5px 5px 5px 5px;font-size: 10px;">
+                                                    <thead>
+                                                        <tr style="font-size: 10px; font-weight: bold; background-color: #3c8dbc; color: white; text-align: center; text-transform: uppercase;">
+                                                            <td style="border: 1px solid black;">Modalidad Laboral</td>
+                                                            <td style="border: 1px solid black;">Tipo</td>
+                                                            <td style="border: 1px solid black;">RMU</td>
+                                                            <td style="border: 1px solid black;">Fecha
+                                                                <br>Ingreso PNG</td>
+                                                            <td style="border: 1px solid black;">Fecha
+                                                                <br>Salida PNG</td>
+                                                            <td style="border: 1px solid black;">Isla Trabajo</td>
+                                                            <td style="border: 1px solid black; width: 200px;">Observaciones</td>
+                                                        </tr>
+                                                        <thead>
+                                                            <tbody id="bodyHist" style="font-size: 10px;">
+                                                            </tbody>
+                                                </table>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--fin tab_datosI-->
+                                    <!-- /#ion-icons -->
+
+                                    <!-- /.tab-content -->
+                                </div>
+                                <!-- /.nav-tabs-custom -->
+                            </div>
+                            <!-- /.col -->
+                        </div>
+                        <!-- /.row -->
+                    </form>
+                </div>
+            </section>
+        </div>
+        <!-- /.body -->
+        <div class="stackbox-footer">
+            {% if perms.ap_talentohumano.add_peringresosacciones or perms.ap_talentohumano.change_peringresosacciones %}
+            <button class="btn btn-primary" id="btn_accIngreso" onclick="setInsertUpdateIngreso();">Grabar</button>
+            {% endif %}
+            <button class="btn btn-default" data-close-stackbox="true">Close</button>
+        </div>
+    </div>
+
+    <div class="box">
+        <div class="box-header">
+            <i class="fa fa-list"></i>
+            <h3 class="box-title">Lista de Ingresos y Salidas</h3>
+            <div class="botonera" style="float: right; right: 1px;">
+                <a style="cursor: pointer; font-size: 20px;" title="pfd" onclick="generarPdf('tabla_ingreso_SP',8,1)"><i class="fa fa-file-pdf-o text-green"></i></a>
+                <a style="cursor: pointer; font-size: 20px;" title="excel" onclick="generarExcel('tabla_ingreso_SP',8)"><i class="fa fa-file-excel-o text-green"></i></a>
+                <a style="cursor: pointer; font-size: 20px;" title="Agregar Nuevo" onclick="limpiarFormIngreso_SP();" href='#addEnIngresoI' data-stackbox='true' data-stackbox-width="800" data-stackbox-position="absolute"><i class="fa fa-plus-circle text-green"></i></a>
+            </div>
+        </div>
+        <!-- /.box-header -->
+
+        <div class="box box-solid bg-light-blue-gradient">
+            <div class="box-header ui-sortable-handle" style="cursor: move;">
+                <!-- tools box -->
+                <div class="pull-right box-tools">
+                    <button type="button" class="btn btn-primary btn-sm pull-right" data-toggle="collapse" href="#collapseIng" role="button" aria-expanded="false" aria-controls="collapseIng" style="margin-right: 5px;" data-original-title="Collapse">
+                        <i class="fa fa-minus"></i></button>
+                </div>
+                <!-- /. tools -->
+                <i class="fa fa-map-marker"></i>
+                <h3 class="box-title">
+            Filtros de Busqueda
+          </h3>
+            </div>
+            <div class="box-body collapse" style="background-color: white;" id="collapseIng">
+                <div class="col-xs-12">
+
+                    <div class="col-xs-4">
+                        <h style="font-size: 14px;color: black;font-weight: bold;height: 20px;">Nombre</h>
+                        <input type="text" class="form-control" name="" id="nombreParamIng" style="width: 100%;" />
+                    </div>
+                    <div class="col-xs-4">
+                        <h style="font-size: 14px;color: black;font-weight: bold;">Identificación</h>
+                        <input type="text" class="form-control" name="" id="cedParamIng" style="width: 100%;" />
+                    </div>
+                    <div class="col-xs-4">
+                        <h style="font-size: 14px;color: black;font-weight: bold;">Fecha Vigencia</h>
+                        <div class="input-daterange input-group" id="datepicker" style="">
+                            <input type="text" class="input-sm form-control" name="start" id="FdesdeParamIng" autocomplete="off" />
+                            <span class="input-group-addon" style="border:none;font-weight: bold;">a</span>
+                            <input type="text" class="input-sm form-control" name="end" id="FhastaParamIng" autocomplete="off" />
+                        </div>
+                        <br>
+                        <button type="button" class="btn btn-block btn-success" style="width: 20%; float: right;" onclick="buscarIngresosParametros();">Buscar</button>
+                    </div>
+
+                </div>
+            </div>
+            <!-- /.box-body-->
+        </div>
+
+        <div class="box-body">
+
+            <table id="tabla_ingreso_SP" style="font-size: 10px; text-transform: uppercase;" class="table table-striped table-bordered nowrap" width="100%" cellspacing="0">
+                <thead>
+                    <tr class="bg-light-blue-gradient" style="color: white;">
+                        <th>FECHA CREACIÓN</th>
+                        <th>TIPO</th>
+                        <th>MODALIDAD LABORAL</th>
+                        <th>#ACCION PERSONAL</th>
+                        <th>IDENTIFICACION</th>
+                        <th>NOMBRE</th>
+                        <th>ISLA TRABAJA</th>
+                        <th>FECHA INGRESO</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody class="botonera1" id="bodytabla_ingreso_SP">
+
+                </tbody>
+            </table>
+        </div>
+        <!-- /.box-body -->
+
+    </div>
+
+</div>
+<!-- /.box -->
+<!-- AdminLTE datatable -->
+<!-- jQuery 3 -->
+<!-- esta pendiente realizar el historial de encargos y los eccargos activos por empleado -->
+{% load static %}
+<input type="hidden" id="verifica_init" value=0>
+<script src="{% static 'js/lib_internas/script.js' %}"></script>
+<script>
+    $(document).ready(function() {
+
+        var d = new Date();
+        var f1 = d.getFullYear() + "-01-01";
+        //var f2 = d.getFullYear()+"-"+(d.getMonth()+1)+"-"+ d.getDate();
+        var f2 = d.getFullYear() + "-12-31";
+        var dataini = f1 + "," + f2;
+
+        f1_aux = '01/01/' + d.getFullYear();
+        //f2_aux = (d.getMonth()+1)+'/'+d.getDate()+'/'+ d.getFullYear();
+        f2_aux = '12/31/' + d.getFullYear();
+        $("#FdesdeParamIng").val(f1_aux);
+        $("#FhastaParamIng").val(f2_aux);
+
+        var dataini = f1 + "," + f2;
+
+        buscarIngresosParametros(dataini);
+        $('.input-daterange').datepicker();
+
+        $("#SbaseLegalI").select2();
+
+        iniciarCombo('SislaI', 't', 'islas');
+
+        iniciarCombo('SparrI', 't', 'parroquias');
+        $("#SparrI").select2({
+            sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
+        });
+        iniciarComboDirecciones('SdireccionI', 'DIR', 'direcciones');
+        $("#SdireccionI").select2({
+            sorter: data => data.sort((a, b) => a.text.localeCompare(b.text))
+        });
+        iniciarComboDirecciones('SprocesoI', 'PRC', 'direcciones');
+        $("#SprocesoI").select2({
+            sorter: data => data.sort((a, b) => a.text.localeCompare(b.text))
+        });
+        iniciarComboDirecciones('SsubprocesoI', 'SPC', 'direcciones');
+        $("#SsubprocesoI").select2({
+            sorter: data => data.sort((a, b) => a.text.localeCompare(b.text))
+        });
+
+        iniciarCombo('STipoGasto', 'UATH_TIPO_GASTO', 'catalogos');
+        $("#STipoGasto").select2({
+            sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
+        });
+
+        iniciarCombo('StipoAct', 'ACTIVIDAD_FUNCIONARIO', 'catalogos');
+        $("#StipoAct").select2({
+            sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
+        });
+
+        iniciarCombo('SmodalidadI', 'f', 'modalidades');
+        $("#SmodalidadI").select2({
+            sorter: data => data.sort((a, b) => a.text.localeCompare(b.text))
+        });
+
+        //iniciarCombo('SgrupoI','f','ocupacional');
+        $("#SgrupoI").select2({
+            sorter: data => data.sort((a, b) => a.text.localeCompare(b.text))
+        });
+        //iniciarCombo('SpuestoI','f','institucional');
+        $("#SpuestoI").select2({
+            sorter: data => data.sort((a, b) => a.text.localeCompare(b.text))
+        });
+        //iniciarCombo('SpuestoDistI','f','institucional');
+        $("#SpuestoDistI").select2({
+            sorter: data => data.sort((a, b) => a.text.localeCompare(b.text))
+        });
+        /*iniciarCombo('SrolI','f','roles');
+        $("#SrolI").select2({
+          sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
+        });*/
+        iniciarCombo('ScargoI', 'f', 'cargos');
+        $("#ScargoI").select2({
+            sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
+        });
+        iniciarCombo('ScprocesoI', 'f', 'cprocesos');
+        $("#ScargoI").select2({
+            sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
+        });
+
+        var table = $('#tabla_ingreso_SP').DataTable({
+            orderCellsTop: true,
+            "order": [
+                [0, "desc"]
+            ],
+        });
+
+        $(document).on('focus', '.select2-selection.select2-selection--single', function(e) {
+            $(this).closest(".select2-container").siblings('select:enabled').select2('open');
+        })
+        $('select.select2').on('select2:closing', function(e) {
+            $(e.target).data("select2").$selection.one('focus focusin', function(e) {
+                e.stopPropagation();
+            });
+        });
+
+        /*$('#tabla_ingreso_SP thead .filters th').each(function() {
+            //var title = $(this).text();
+            var title = $('#tabla_ingreso_SP thead tr:eq(0) th').eq($(this).index()).text();
+
+          if ((title == "")) {
+            $(this).html('');
+          }else{
+              $(this).html('<input type="text" placeholder="Buscar ' + title + '" style="color:black;"/>');
+          }
+        } );
+
+        // Apply the search
+        table.columns().eq(0).each(function(colIdx) {
+            $('input', $('#fting th')[colIdx]).on('keyup change', function() {
+                table
+                    .column(colIdx)
+                    .search(this.value)
+                    .draw();
+            });
+        });*/
+
+    });
+</script>
+
+{% endblock %}

@@ -1,0 +1,81 @@
+{% extends "home.html" %}
+{% load static %}
+
+{% block principalhome %}
+  <div id="principal_home" style="margin-top: 10%;">
+    <p style="text-align: center;">
+      <span style="font-size: x-large;">Bienvenido al módulo de DAF - Certificaciones Presupuestarias</span>
+    </p>
+    <p style="text-align: center;">
+      <span style="font-size: large;"></span>
+    </p>
+    <p style="text-align: center;">
+      <span style="font-size: xx-large;">
+        <img src="{% static '/image/login/logo-PNG.png' %}"  width="15%">
+      </span>
+    </p>
+     
+  </div>
+{%endblock%}
+
+{% block menu %}
+  <li class="header">DAF</li>
+  <li class="treeview menu-open">
+    
+    <!-- CERTIFICACIONES -->
+    {% if es_solicitante or es_revisor or es_aprobador %}
+      <a href="#">
+        <i style="font-size: 18px;" class="fa fa-user"></i> <span style="font-size: 16px;">Certificaciones</span>
+        <span class="pull-right-container">
+          <i class="fa fa-angle-left pull-right"></i>
+        </span>
+      </a>
+      
+
+      <ul class="treeview-menu" style="display: block;">
+        <!--
+        <li onclick="addPag('Bandeja Entrada','SL_daf_certificacionesBandeja','idmenu1');" style="cursor: pointer;">
+          <a><i id="idmenu1" class="fa fa-circle-o text-aqua"></i>Bandeja Entrada</a> 
+          <a href="{% url 'SL_daf_certificacionesBandeja' %}"><i id="idmenu1" class="fa fa-circle-o text-aqua"></i>Bandeja Entrada</a>
+        </li>
+        -->
+        <li style="cursor: pointer;">
+          <a href="{% url 'SL_daf_certificacionesBandeja' %}"><i id="idmenu1" class="fa fa-circle-o text-aqua"></i>Bandeja Entrada</a>
+        </li>
+
+        {% if es_solicitante %}
+        <li style="cursor: pointer;">
+          <!-- <a><i id="idmenu2" class="fa fa-circle-o text-aqua"></i>Iniciar Tramite</a> -->
+          <a href="{% url 'SL_daf_certificacionesIniciarTramites' %}"><i id="idmenu2" class="fa fa-circle-o text-aqua"></i>Iniciar Tramite</a>
+        </li>
+        {% endif %}
+        
+        <li style="cursor: pointer;">
+          <!-- <a><i id="idmenu3" class="fa fa-circle-o text-aqua"></i>Estado de Trámite</a> -->
+          <a href="{% url 'SL_daf_certificacionesEstadoTramite' %}"><i id="idmenu3" class="fa fa-circle-o text-aqua"></i>Estado de Trámite</a>
+        </li>
+        
+      </ul>
+
+    {% endif %}
+    
+  </li>
+
+  <!-- SCRIPTS -->
+  <!--
+  <script src="https://code.highcharts.com/highcharts.js"></script>
+  <script src="https://code.highcharts.com/modules/exporting.js"></script>
+  <script src="https://code.highcharts.com/modules/export-data.js"></script>
+  <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+  -->
+  
+  <!--script src="https://code.highcharts.com/modules/pyramid3d.js"></script-->
+  <script src="{% static 'js/lib_externas/jquery-1.12.4.js' %}"></script>
+  <script src="{% static 'js/lib_externas/jquery-ui.js' %}"></script>
+  <script>document.write('<script src="{% static "js/lib_internas/script_daf.js" %}?dev=' + Math.floor(Math.random() * 100) + '"\><\/script>');</script>
+
+  <script>
+    sessionStorage.setItem("islas", JSON.stringify({{ islas | safe }}));
+
+  </script>
+{%endblock%}

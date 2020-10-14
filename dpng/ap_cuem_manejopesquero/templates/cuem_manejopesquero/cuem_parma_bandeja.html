@@ -1,0 +1,795 @@
+{% load static %} 
+{% block content %}
+<link rel="stylesheet" href="https://tinymce.cachefly.net/4.2/skins/lightgray/content.min.css">
+<link rel="stylesheet" href="https://tinymce.cachefly.net/4.2/skins/lightgray/skin.min.css">
+<style type="text/css">
+    .select2-results .select2-disabled,
+    .select2-results__option[aria-disabled=true] {
+        display: none;
+    }
+    .timeline>li>.timeline-item>.time {
+        color: #000;
+    }
+    .timeline:before {
+      background: #000;
+    }
+</style>
+
+<!-- hidden fields -->
+<input type="hidden" id="idDafCertificacionesBE" name="idDafCertificaciones" value="" />
+<input type="hidden" id="cargaFuncBE" value="0">
+<input type="hidden" id="tipot_certifBE" value="0" />
+<textarea id="optionFuncSBE" style="display: none;"></textarea>
+
+<input type="hidden" id="func_solicitante_id_BE" value="{{funcionario_id}}">
+<input type="hidden" id="funcionario_session_idBE" value="{{funcionario_id}}">
+<input type="hidden" id="persona_nombresBE" value="{{persona_nombres}}">
+<input type="hidden" id="puesto_institucional_nm_BE" value="{{puesto_institucional_nm}}">
+<input type="hidden" id="email_institucional_BE" value="{{email_institucional}}">
+<input type="hidden" id="telefono_celular_BE" value="{{telefono_celular}}">
+
+<!-- <input type="hidden" id="permiso_sessionBE" value="{{permiso_session}}"> -->
+
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="addDafCertificacionesBE">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header cab_popup">
+        <table style="width: 100%;">
+          <tr>
+            <td style="width: 15%">
+              <img src="{% static 'image/favicon.ico' %}" width="40px" style="float:left;margin-top: -5px;" />
+            </td>
+            <td align="center" style="font-weight: bold; font-size: 18px;">
+              Certificaciones Presupuestarias
+            </td>
+            <td style="width: 15%">
+              <button style="float: right;background-color: #0073b7;" type="button"  data-dismiss="modal" aria-label="Close"><span style="font-size: 16px; color: white; opacity: 1 !important;" aria-hidden="true">&times;</span></button>
+            </td>
+          </tr>
+        </table>
+        
+      </div>
+      <div class="modal-body" id="bodyaddDafCertificacionesBE">
+        <section class="content">
+                <div class="row" style="box-shadow: 5px 5px 15px 5px #888888;margin-top: 20px;">
+                    <form id="frm_certifBE" action="#" method="post">
+                        <div class="row">
+                            <div class="col-xs-12 callout">
+                                <div class="nav-tabs-custom">
+
+                                    <ul class="nav nav-tabs">
+                                        <li class="active"><a href="#tab_infoBE" data-toggle="tab" aria-expanded="true" style="font-weight: bold;" data-stackbox-width="1200px">Info</a></li>
+
+                                        <li id="t_documentBE" class=""><a href="#tab_documentacionBE" data-toggle="tab" aria-expanded="false" style="font-weight: bold;">Documentacion</a></li>
+
+                                        <li id="t_certificacionBE" class=""><a href="#tab_certificacionBE" data-toggle="tab" aria-expanded="false" style="font-weight: bold;">Certificacion</a></li>
+
+                                        <li id="t_informesBE" class=""><a href="#tab_informesBE" data-toggle="tab" aria-expanded="false" style="font-weight: bold;">Informes</a></li>
+                                        
+                                        <li id="t_reasignarBE" class=""><a href="#tab_reasignarBE" data-toggle="tab" aria-expanded="false" style="font-weight: bold;">Reasignar</a></li>
+
+                                        <li id="t_observacionesBE" class=""><a href="#tab_observacionesBE" data-toggle="tab" aria-expanded="false" style="font-weight: bold;">Observaciones</a></li>
+                                        
+                                    </ul>
+
+                                    <div class="tab-content" style="border-top: 2px solid #3c8dbc;">
+                                      <div class="notification" style="height: 100px;z-index: 99999;">
+                                          <span class="icon">
+                                              <i class=""></i>
+                                          </span>
+                                          <span class="text"></span>
+                                          <span class="close"><i class="fa fa-close"></i></span>
+                                      </div>
+
+                                      <!-- TAB INFO -->
+                                      <div class="tab-pane active" id="tab_infoBE" style="top:10px;">
+                                        <div class="row">
+                                          <div class="col-xs-12 callout" style="margin-bottom: 0px; padding-bottom: 0px;">
+                                            <div class="divisor">Solicitud Enviada Por</div>
+
+                                            <div class="col-xs-6 callout">
+                                              <table>
+                                                <tr style="height: 0px;"></tr>
+                                                <tr>
+                                                  <td align="left">*Servidor Publico</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                      <input type="hidden" id="fld_func_solicitante_idBE" name="fld_func_solicitante_idBE" text="Solicitante" class="form-control" value="{{funcionario_id}}" />
+                                                           
+                                                      <input type="text" id="fld_func_solicitante_nmBE" name="fld_func_solicitante_nmBE" text="Solicitante" class="form-control " value="" disabled="disabled" />
+                                                    </td>
+                                                </tr>
+
+                                                
+
+                                                <tr style="height: 2px;"></tr>
+                                                <tr>
+                                                    <td align="left">*Cargo</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <textarea id="fld_cargoBE" name="fld_cargoBE" rows="3" cols="100" class="form-control " disabled="disabled" />
+                                                    </td>
+                                                </tr>
+
+                                                <tr style="height: 2px;"></tr>
+
+                                                <tr>
+                                                  <td align="left">*email</td>
+                                                </tr>
+
+                                                <tr>
+                                                  <td>
+                                                    <input type="text" id="fld_emailBE" name="fld_email" text="Cargo" class="form-control " value="{{item.Cargo}}" disabled="disabled" />
+                                                  </td>
+                                                </tr>
+
+                                                <tr style="height: 2px;"></tr>
+                                                <tr>
+                                                  <td align="left">*Celular</td>
+                                                </tr>
+                                                <tr>
+                                                  <td>
+                                                    <input type="text" id="fld_telefonoBE" name="fld_telefono" text="Celular" class="form-control " value="{{item.telefono_celular}}" disabled="disabled" />
+                                                  </td>
+
+                                                </tr>
+
+                                              </table>
+
+                                            </div>
+
+                                            <div class="col-xs-6 callout">
+                                                
+                                                <table>
+
+                                                    <tr style="height: 2px;"></tr>
+                                                    <tr>
+                                                      <td align="left">Numero Solicitud</td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td>
+                                                        <input type="text" id="fld_secuenciaBE" name="fld_secuencia" text="Numero Solicitud" class="form-control " value="{{secuencia}}" disabled="disabled" />
+                                                      </td>
+                                                    </tr>
+
+                                                    <tr style="height: 5px;"></tr>
+                                                    <tr>
+                                                      <td align="left">Isla Tramite</td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td>
+                                                        <select id="fld_islatramiteBE" name="fld_islatramite" class="select2" text="Isla Tramite" disabled="disabled">
+                                                          <option value=""> Ninguna</option>
+                                                          <option value="c718d004-a637-11e4-b1ae-6c3be5ba6ec8">SANTA CRUZ</option>
+                                                          <option value="c718b0a6-a637-11e4-8ba2-6c3be5ba6ec8">SAN CRISTOBAL</option>
+                                                          <option value="c716b8be-a637-11e4-935a-6c3be5ba6ec8">ISABELA</option>
+                                                        </select>
+                                                      </td>
+                                                    </tr>
+
+                                                    <tr style="height: 5px;"></tr>
+                                                    <tr>
+                                                        <td align="left">*Fecha Solicitud</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                          <input type="date" class="form-control " text="Fecha Solicitud" name="fld_fecha_solicitud" id="fld_fecha_solicitudBE" style="width: 150px; font-size: 11px;" disabled="disabled" />
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr style="height: 0px;"></tr>
+                                                    <tr>
+                                                        <td align="left">Estado Tramite</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                          <select id="fld_estado_tramiteBE" name="fld_estado_tramite" class="select2" text="Estad Tramite" disabled="disabled">
+                                                              <option value=""> Seleccione una Opcion</option>
+                                                              <option value="B">BORRADOR</option>
+                                                              <option value="T">EN TRAMITE</option>
+                                                              <option value="A">APROBADO</option>
+                                                              <option value="D">DEVUELTO</option>
+                                                              <option value="R">REASIGNADO</option>
+                                                              <option value="C">CANCELADO</option>
+                                                              <option value="F">FINALIZADO</option>
+                                                          </select>
+                                                          
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr style="height: 5px;"></tr>
+                                                    <tr>
+                                                      <td align="left">*Dirigido a (Director Area):</td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td>
+                                                        <input type="hidden" id="fld_func_dirarea_idBE" name="fld_func_dirarea_idBE" class="form-control " disabled="disabled"/>
+
+                                                        <textarea id="fld_func_dirarea_nmBE" name="fld_func_dirarea_nmBE" rows="1" cols="100" class="form-control " disabled="disabled" />
+
+                                                      </td>
+                                                    </tr> 
+
+
+
+                                                </table>
+                                                
+                                            </div>
+
+                                          </div>
+                                          
+                                        </div>
+
+                                        <div class="row">
+                                          <div class="col-xs-12 callout" style="margin-bottom: 0px; padding-bottom: 0px;">
+                                            <div class="divisor">Informacion del Contrato/Proyecto</div>
+
+                                            <div class="col-xs-6 callout">
+                                              <table>
+                                                <tr style="height: 0px;"></tr>
+                                                <tr>
+                                                  <td>*Requerimiento POA-PAC</td>
+                                                </tr>
+                                                <tr>
+                                                  <td>
+                                                    <textarea id="fld_tituloBE" name="fld_titulo" rows="3" cols="100" class="form-control ">{{item.titulo}}</textarea>
+
+                                                  </td>
+                                                </tr>
+
+                                                <tr style="height: 5px;"></tr>
+                                                <tr>
+                                                  <td align="left">*Num. Certificacion de Actividad, recurso y presupuesto</td>
+                                                </tr>
+
+                                                <tr>
+                                                  <td>
+                                                    <textarea id="fld_descripcionBE" name="fld_descripcion" rows="6" cols="100" class="form-control "></textarea>
+                                                  </td>
+                                                </tr>
+
+                                              </table>
+
+                                            </div>
+
+                                            <div class="col-xs-6 callout">
+                                                
+                                                <table>
+                                                    <tr style="height: 0px;"></tr>
+                                                    <tr>
+                                                        <td align="left">*Tipo</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                          <select id="fld_tipoBE" name="fld_tipo" class="select2" text="Tipo" onchange="ocultarOtrosTemas(this.value,'frm_certifBE'); ">
+                                                              <option value=""> Seleccione una Opcion</option>
+                                                              <option value="B">BIEN</option>
+                                                              <option value="C">CONSULTORIA</option>
+                                                              <option value="O">OBRA CIVIL</option>
+                                                              <option value="S">SERVICIO</option>
+                                                          </select>
+                                                          
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr style="height: 10px;"></tr>
+
+                                                    <tr>
+                                                      <td align="left">*Monto</td>
+                                                    </tr>
+
+                                                    <tr>
+                                                      <td>
+                                                        <input type="text" id="fld_monto_lblBE" name="fld_monto_lblBE" text="MONTO" class="form-control requerido" value="{{item.monto}}" pattern="[0-9]*" onchange="mask_money(this.value,'fld_montoBE','fld_monto_lblBE');"/>
+
+                                                        <input type="number" id="fld_montoBE" hidden="hidden" >
+
+                                                        
+                                                      </td>
+                                                    </tr>
+
+                                                    <tr style="height: 10px;"></tr>
+
+                                                    <tr id="tr_label_temasBE">
+                                                      <td align="left" style="color: #0073b7;">Temas <br></td>
+                                                    </tr>
+
+
+                                                    <tr id="tr_select_temasBE">
+                                                        <td>
+                                                          <select id="fld_tipo_revisionBE" name="fld_tipo_revision" class="select2" text="Tipo" disabled="disabled">
+                                                              <option value=""> Seleccione una Opcion</option>
+                                                              <option value="T">Incluye temas tecnologicos</option>
+                                                              <option value="M">Incluye temas Mantenimiento</option>
+                                                              <option value="O">Incluye temas Obra Civil</option>
+                                                          </select>
+                                                          
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr style="height: 10px;"></tr>
+
+
+                                                </table>
+                                            </div>
+
+                                          </div>
+                                        </div>
+
+                                      </div>
+
+                                      <!-- TAB DOCUMENTACION EDIT  -->
+                                      <div class="tab-pane" id="tab_documentacionBE">
+                                        <div class="row" id="tab_BodyDocumentacionBE">
+
+                                          
+                                          <!--/div-->
+                                        </div>
+                                      </div>
+
+                                      <!-- TAB CERTIFICACIONES -->
+                                      <div class="tab-pane" id="tab_certificacionBE">
+                                        <div class="row">
+                                          <!-- CERTIFICACIONES -->
+                                          <div class="col-xs-12" style="position: relative; top: 10px;">
+                                            <table  style="width: 100%;position: relative;">
+                                                <tr>
+                                                    <td align="left">*Archivo Certificación</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                      <input type="file" name="myfile8" id="doc_certBE" class="form-control ">
+                                                    </td>
+                                                    <td>
+                                                      <a style="font-size: 20px; position: relative; left: 10px;" onclick="cargar_archivo('frm_certifBE','C','8');"><i class="fa fa-upload text-green"></i></a>
+                                                    </td>
+                                                </tr>
+                                            </table>
+
+                                            <br>
+                                            <table style="width: 80%;position: relative;" id="table_files_certificaciones2BE">
+                                                  <thead>
+                                                  <tr style="border: 2px solid black;font-size: 14px;font-weight: bold;background-color: #3c8dbc; color: white;">
+                                                      <td colspan="2" align="center">Archivo Certificación</td>
+                                                  </tr>
+                                                  </thead>
+                                                  <tbody id="files_select2BE">
+                                                  </tbody>
+                                            </table>
+                                          </div>
+
+                                        </div>
+                                      </div>
+
+                                      <!-- TAB INFORMES -->
+                                      <div class="tab-pane" id="tab_informesBE">
+                                        <div class="row">
+                                          <div class="col-xs-12" style="position: relative; top: 10px;">
+                                            
+                                            <table id="tbl_input_informesBE" style="width: 100%;position: relative;">
+                                              <br>
+                                              <tr>
+
+                                                  <td class="doc_tic_BE" style="margin-left: 5px;" >
+                                                    Informe TIC:
+                                                    <input type="file" name="myfile5" id="doc_anexos5BE" class="form-control ">
+                                                  </td>
+                                                  <td class="doc_tic_BE">
+                                                    
+                                                    <a style="font-size: 20px; position: relative; left: 10px;" onclick="cargar_archivo('frm_certifBE','D','5');"><i class="fa fa-upload text-green"></i></a>
+                                                    
+                                                  </td>
+                                                  <td class="doc_tic_BE" width="60%" style="position: relative;left:5%;">
+                                                    <a id="archivoCert5BE" style="cursor:pointer; text-decoration:none;color:#262DCE;" target="_blank"></a>
+                                                  </td>
+                                                  <td class="doc_tic_BE" style="position: relative;left:-15%;">
+                                                    
+                                                    <a id="borrarCert1BE" onclick="eliminarCert('5','BE');" style="font-size: 20px;cursor:pointer;"></a>
+                                                    
+                                                    
+                                                  </td>
+
+                                                  <td class="doc_mantenimiento_BE" style="margin-left: 5px;">
+                                                    Informe Mantenimiento:
+                                                    <input type="file" name="myfile6" id="doc_anexos6BE" class="form-control ">
+                                                  </td>
+                                                  <td class="doc_mantenimiento_BE">
+                                                    
+                                                    <a style="font-size: 20px; position: relative; left: 10px;" onclick="cargar_archivo('frm_certifBE','D','6');"><i class="fa fa-upload text-green"></i></a>
+                                                    
+                                                  </td>
+                                                  <td class="doc_mantenimiento_BE" width="60%" style="position: relative;left:5%;">
+                                                    <a id="archivoCert6BE" style="cursor:pointer; text-decoration:none;color:#262DCE;" target="_blank"></a>
+                                                  </td>
+                                                  <td class="doc_mantenimiento_BE" style="position: relative;left:-15%;">
+                                                    
+                                                    <a id="borrarCert6BE" onclick="eliminarCert('6','BE');" style="font-size: 20px;cursor:pointer;"></a>
+                                                    
+                                                    
+                                                  </td>
+
+                                                  <td class="doc_obracivil_BE" style="margin-left: 5px;">
+                                                    Informe Obra Civil:
+                                                    <input type="file" name="myfile7" id="doc_anexos7BE" class="form-control ">
+                                                  </td>
+                                                  <td class="doc_obracivil_BE">
+                                                    <a style="font-size: 20px; position: relative; left: 10px;" onclick="cargar_archivo('frm_certifBE','D','7');"><i class="fa fa-upload text-green"></i></a>
+                                                    
+                                                  </td>
+                                                  <td class="doc_obracivil_BE" width="60%" style="position: relative;left:5%;">
+                                                    <a id="archivoCert7BE" style="cursor:pointer; text-decoration:none;color:#262DCE;" target="_blank"></a>
+                                                  </td>
+                                                  <td class="doc_obracivil_BE" style="position: relative;left:-15%;">
+                                                    <a id="borrarCert7BE" onclick="eliminarCert('7','BE');" style="font-size: 20px;cursor:pointer;"></a>
+                                                  </td>
+
+                                              </tr>
+                                            </table>
+
+                                            <br>
+
+                                            <table id="tbl_informesBE" style="width: 100%;position: relative;">
+                                              <br>
+                                              <tr>
+                                                <td style="margin-left: 5px;">
+                                                  Informe TIC:
+                                                </td>
+                                                <td width="60%" style="position: relative;left:5%;">
+                                                  <a id="v_archivoCert5BE" style="cursor:pointer; text-decoration:none;color:#262DCE;" target="_blank"></a>
+                                                </td>
+
+                                              </tr>
+                                              
+                                              <tr>  
+                                                <td style="margin-left: 5px;">
+                                                  Informe Mantenimiento:
+                                                </td>
+                                                
+                                                <td width="60%" style="position: relative;left:5%;">
+                                                  <a id="v_archivoCert6BE" style="cursor:pointer; text-decoration:none;color:#262DCE;" target="_blank"></a>
+                                                </td>
+                                              </tr>
+                                              
+                                              <tr>
+                                                <td style="margin-left: 5px;">
+                                                  Informe Obra Civil:
+                                                </td>
+                                                <td width="60%" style="position: relative;left:5%;">
+                                                  <a id="v_archivoCert7BE" style="cursor:pointer; text-decoration:none;color:#262DCE;" target="_blank"></a>
+                                                </td>
+                                              </tr>
+                                            
+                                            </table>
+
+                                            <br>
+
+                                          </div>
+
+                                        </div>
+                                      </div>
+
+                                      <!-- TAB REASIGNACION -->
+                                      <div class="tab-pane" id="tab_reasignarBE">
+
+                                        <div class="btn-group" >
+                                            <div class="row" >
+                                              <div class='col-xs-12'>
+                                                <table style="width: 100%;position: relative; ">
+                                                  <tr style="height: 20px;"></tr>
+                                                  <tr>
+                                                    <td>
+                                                      Funcionario:
+                                                      <select id="fld_func_reasignado_idBE" class="" text="Funcionario" style="width: 300px;" >
+
+                                                      </select>
+
+                                                      <!-- REASIGNAR -->
+                                                      <button id="btn_reasingarBE" class="btn btn-primary" type="button"  onclick="enviar_revisor('frm_certifBE');" style="background-color: green;">Enviar</button>
+                                                      <!-- END REASIGNAR -->
+                                                    </td>
+                                                      
+                                                  </tr>
+
+                                                </table>
+                                              </div>
+
+
+                                              <div class='col-xs-12'>
+                                                <table style="width: 100%;position: relative;">
+                                                  <tr style='height: 2px;'></tr>
+                                                  <tr> <td align='left' style='color: black;'>Observacion: </td> </tr>
+                                                  <tr> 
+                                                    <td>
+                                                      <textarea id='fld_observacionBE2' rows='20' cols='113' style="font-style: normal;font-variant: normal; text-transform: none;"></textarea>
+                                                      
+                                                    </td> 
+                                                  </tr>
+                                                </table>
+                                              </div>
+
+                                            </div>
+
+                                        </div>
+
+                                      </div>
+
+                                      <!-- TAB OBSERVACIONES -->
+                                      <div class="tab-pane" id="tab_observacionesBE">
+
+                                        <div class="btn-group" style="position: absolute; z-index: 99999; left: 5%;">
+                                          <span></span>
+                                          
+                                          <!-- REGRESAR TRAMITES -->
+                                          <button id="btn_regresar_ticBE" class="btn btn-primary" type="button"  onclick="devolver_a_areas_revisoras('T','frm_certifBE');" style="margin-right: 5px;">Regresar a TIC </button>
+                                          <button id="btn_regresar_mantBE" class="btn btn-primary" type="button"  onclick="devolver_a_areas_revisoras('M','frm_certifBE');" style="margin-right: 5px;">Regresar Mantenimiento</button>
+                                          <button id="btn_regresar_obraBE" class="btn btn-primary" type="button"  onclick="devolver_a_areas_revisoras('O','frm_certifBE');" style="margin-right: 5px;">Regresar Obra Civil</button>
+                                          
+
+                                        </div>
+
+                                        <div class="btn-group" style="position: absolute; z-index: 1; right: 5%;">
+                                            <!-- ES SOLICITANTE -->
+                                            <button id="btn_resp_a_soliBE" class="btn btn-primary" type="button" onclick="aprobar_devolver_Certificaciones('A','frm_certifBE');" style="margin-right: 5px;background-color: green;">Responder</button>
+
+                                            <button id="btn_cancelar_tramiteBE" class="btn btn-primary" type="button" 
+                                             onclick="aprobar_devolver_Certificaciones('C','frm_certifBE');" style="background-color: #D84747;margin-right: 5px;" >Cancelar</button>
+
+                                            <!-- ES APROBADOR -->
+
+                                              <button id="btn_devolver_solicBE" class="btn btn-primary" type="button"  onclick="aprobar_devolver_Certificaciones('D','frm_certifBE');" style="margin-right: 5px;background-color: #D84747;">Devolver a Solicitante</button>
+
+                                              <button id="btn_aprobarBE" class="btn btn-primary" type="button"  onclick="aprobar_devolver_Certificaciones('A','frm_certifBE');" style="background-color: green; ">Aprobar</button>
+
+                                            <!-- REVISOR -->
+                                              <button id="btn_respon_revisorBE" class="btn btn-primary" type="button"  onclick="aprobar_devolver_Certificaciones('R','frm_certifBE');" style="margin-right: 5px;background-color: green;">Responder</button>
+                                            <!-- END REVISOR -->
+                                            
+                                        </div>
+
+                                        <div class="row" id="sec_obs_newBE">
+                                          <div class='col-xs-12 callout' style='margin-bottom: 0px; padding-bottom: 0px;'>
+                                            <div style='height: 35px;'></div>
+                                            <div class='divisor'>Usuario: {{persona_nombres}}</div>
+                                            <div class='col-xs-12'>
+                                              <table style="width: 100%;">
+                                                <tr style='height: 2px;'></tr>
+                                                <tr> <td align='left' style='color: black;'>Observacion: </td> </tr>
+                                                <tr> 
+                                                  <td>
+                                                    <textarea id='fld_observacionBE' rows='20' cols='113' style="font-style: normal;font-variant: normal; text-transform: none;"></textarea>
+                                                    
+                                                  </td> 
+                                                </tr>
+                                              </table>
+                                            </div>
+                                          </div>
+                                        </div>
+
+                                        <div class="col-xs-12" id="sec_obsBE" style="margin-top: 20px;">
+                                          
+                                        </div>
+
+                                        <div class="row" id="sec_obs_createdBE">
+                                          
+                                        </div>
+
+                                      </div>
+
+
+                                    </div>
+
+                                </div>
+                              
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </section>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="content_DafCertificacionesBE">
+    
+
+    <div class="box">
+        <div class="box-header">
+            <i class="fa fa-list"></i>
+            <h3 class="box-title">Lista de Certificaciones</h3>
+        </div>
+        
+        <div class="box box-solid bg-light-blue-gradient">
+            <div class="box-header ui-sortable-handle" style="cursor: move;">
+                <div class="pull-right box-tools">
+                    <button type="button" class="btn btn-primary btn-sm pull-right" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample" style="margin-right: 5px;" data-original-title="Collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
+                </div>
+                <i class="fa fa-map-marker"></i>
+                <h3 class="box-title"> Filtros de Busqueda </h3>
+            </div>
+            <div class="box-body collapse" style="background-color: white;" id="collapseExample">
+                <div class="col-xs-12">
+                    
+                    <div class="col-xs-4">
+                    </div>
+                    
+                    <div class="col-xs-4">
+                        <h style="font-size: 14px;color: black;font-weight: bold;">Fecha Solicitud</h>
+                        <div class="input-daterange input-group" id="datepicker" style="">
+                            <input type="text" class="input-sm form-control" name="start" id="FdesdeParamBE" autocomplete="off" />
+                            <span class="input-group-addon" style="border:none;font-weight: bold;">a</span>
+                            <input type="text" class="input-sm form-control" name="end" id="FhastaParamBE" autocomplete="off" />
+                        </div>
+                        <br>
+                    </div>
+
+
+                    <div class="col-xs-4" style="margin-top: 20px;">
+                        <button type="button" class="btn btn-block btn-success" style="width: 20%; float: right;" onclick="buscarCertificadosParametros('','frm_certifBE');">Buscar</button>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="box-body">
+            <table id="tabla_certifBE" class="display table table-striped table-bordered" width="100%" cellspacing="0" style="font-size: 10px; text-transform: uppercase;">
+                <thead>
+                  <tr class="bg-light-blue-gradient" style="color: white;">
+                    <th hidden></th>
+                    <th>Fecha Solicitud</th>
+                    <th>Secuencia</th>
+                    <th>Tipo</th>
+                    <th>Titulo</th>
+                    <th>Monto</th>
+                    <th>Estado Tramite</th>
+
+                    <th></th>
+                      
+                  </tr>
+                </thead>
+                <tbody class="botonera1" id="bodytabla_certifBE">
+                  <!-- FILTROS -->
+                  <!--
+                  {% for item in certificaciones %}
+                    <tr>
+                      <td align="center" id="td_fecha_solicitud_{{ item.id }}">{{ item.fecha_solicitud }}</td>
+                      {% if item.tipo == 'S' %}
+                        <td align='center' id='td_tipo_{{item.id}}'> SERVICIO </td>
+                      {% elif item.tipo == 'B' %}
+                        <td align='center' id='td_tipo_{{item.id}}'> BODEGA </td>
+                      {% else %}
+                        <td align='center' id='td_tipo_{{item.id}}'> </td>
+                      {% endif %}
+
+                      <td align="center" id="td_titulo_{{ item.id }}">{{ item.titulo }}</td>
+                      <td align="left" id="td_monto_{{ item.id }}">{{ item.monto }} </td>
+                      <td align="center" id="td_estado_tramite_{{ item.id }}"> 
+                        {% if item.estado_tramite == "B" %}
+                          <span class="badge bg-silver"> BORRADOR</span> 
+                        {% elif item.estado_tramite == "T" %}
+                          <span class="badge bg-silver"> EN TRAMITE </span> 
+                        {% elif item.estado_tramite == "A" %}
+                          <span class="badge bg-silver"> APROBADO </span> 
+                        {% elif item.estado_tramite == "D" %}
+                          <span class="badge bg-silver"> DEVUELTO </span> 
+                        {% elif item.estado_tramite == "C" %}
+                          <span class="badge bg-silver"> CANCELADO </span> 
+                        {% elif item.estado_tramite == "F" %}
+                          <span class="badge bg-silver"> FINALIZADO </span> 
+                        {% endif %}
+                      </td>
+                     
+                      <td align="center">
+                        <a style="font-size: 18px; cursor: pointer;" href="#addDafCertificacionesBE" data-stackbox="true" data-stackbox-position="absolute" data-stackbox-width="1000" onclick="editDafCertificaciones('{{ item.id }}','frm_certifBE');" title="Editar Certificaciones"><i class="fa fa-edit text-green"></i></a>
+                      </td>
+
+                     
+                      <td align="center">
+                          <a onclick="deleteModal('{{item.id}}','SP_iniciarTramite');"><i class="fa fa-trash text-green"></i></a>
+                      </td>
+                    
+                    </tr>
+                  {% endfor %}
+                  -->
+                </tbody>
+            </table>
+        </div>
+        <!-- /.box-body -->
+    </div>
+</div><!-- /.content_DafCertificacionesBE -->
+    
+<!-- AdminLTE datatable -->
+<!-- jQuery 3 -->
+<script src="{% static 'js/lib_internas/script_daf.js' %}"></script>
+<!--<script src="{% static 'js/lib_externas/tinymce.min.js' %}"></script> -->
+<script>
+    $(document).ready(function() {
+
+        /*
+        tinymce.init({
+          selector: '#fld_observacionBE',
+          height: 500,
+          menubar: false,
+          //inline: true,
+        });
+
+        tinyMCE.get('fld_observacionBE').getBody().setAttribute('contenteditable', true);
+        */
+        var d = new Date();
+        var f1 = d.getFullYear() + "-01-01";
+        var f2 = d.getFullYear() + "-12-31";
+        var dataini = f1 + "," + f2;
+
+        f1_aux = '01/01/' + d.getFullYear();
+        f2_aux = '12/31/' + d.getFullYear();
+
+        $("#FdesdeParamBE").val(f1_aux);
+        $("#FhastaParamBE").val(f2_aux);
+        
+        buscarCertificadosParametros(dataini,'frm_certifBE');
+        //initAccidentes();
+        /*
+        var table = $('#tabla_certifBE').DataTable({
+            orderCellsTop: true,
+            order: [
+                [0],
+            ]
+        });
+        */
+       
+        //Date picker
+        $('#datepicker').datepicker({
+            autoclose: true
+        })
+
+        $('#fld_tipoBE').select2();
+        $('#fld_estado_tramiteBE').select2();
+        $('#fld_tipo_revisionBE').select2();
+        $('#fld_func_reasignado_idBE').select2();
+        $('#fld_islatramiteBE').select2();
+        
+        if (tinyMCE.execCommand ('mceRemoveEditor', false, 'fld_observacionBE')) {
+          tinymce.init(
+            {
+            selector:'#fld_observacionBE',
+            plugins: "textcolor",
+            toolbar: "alignleft,aligncenter,alignright,|,forecolor, |,bullist,numlist,|,outdent,indent,|,bold,italic,underline,|,fontselect,fontsizeselect",
+            height:300
+            });
+        }
+
+        if (tinyMCE.execCommand ('mceRemoveEditor', false, 'fld_observacionBE2')) {
+          tinymce.init(
+            {
+            selector:'#fld_observacionBE2',
+            plugins: "textcolor",
+            toolbar: "alignleft,aligncenter,alignright,|,forecolor, |,bullist,numlist,|,outdent,indent,|,bold,italic,underline,|,fontselect,fontsizeselect"
+            });
+        }
+        
+    
+
+        // FOCUS ON SELECT FIELDS
+        //$("#content_DafCertificaciones").
+        $("document").on('focus', '.select2-selection.select2-selection--single', function(e) {
+            $(this).closest(".select2-container").siblings('select:enabled').select2('open');
+        })
+        $('select.select2').on('select2:closing', function(e) {
+            $(e.target).data("select2").$selection.one('focus focusin', function(e) {
+                e.stopPropagation();
+            });
+        });
+
+
+        //$('#fld_observacionBE').wysihtml5();
+
+    });
+
+</script>
+{% endblock %}

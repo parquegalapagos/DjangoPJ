@@ -1,0 +1,1399 @@
+{% extends "home.html" %}
+{% load static %}
+
+{% block principalhome %}
+
+  <div id="principal_home" style="margin-top: 10%;">
+    <p style="text-align: center;">
+      <span style="font-size: x-large;">Bienvenido al módulo de CUSO - Control Insular</span>
+    </p>
+    <p style="text-align: center;">
+      <span style="font-size: large;"></span>
+    </p>
+    <p style="text-align: center;">
+      <span style="font-size: xx-large;">
+        <img src="{% static '/image/login/logo-PNG.png' %}"  width="15%">
+      </span>
+    </p>
+     
+  </div>
+{%endblock%}
+
+{% block menu %}
+  <li class="header">DAF</li>
+  <li class="treeview menu-open">
+    
+    <a href="#">
+      <i style="font-size: 18px;" class="fa fa-user"></i> <span style="font-size: 16px;">Control Insular</span>
+      <span class="pull-right-container">
+        <i class="fa fa-angle-left pull-right"></i>
+      </span>
+    </a>
+
+    <ul class="treeview-menu" style="display: block;">
+      
+      <li style="cursor: pointer;">
+        <!-- <a><i id="idmenu2" class="fa fa-circle-o text-aqua"></i>Iniciar Tramite</a> -->
+        <a href="{% url 'control_turista' %}"><i id="idmenu1" class="fa fa-circle-o text-aqua"></i>Control Turista</a>
+      </li>
+      
+      <li style="cursor: pointer;">
+        <!-- <a><i id="idmenu2" class="fa fa-circle-o text-aqua"></i>Iniciar Tramite</a> -->
+        <a href="{% url 'control_pesca' %}"><i id="idmenu1" class="fa fa-circle-o text-aqua"></i>Control Pesca</a>
+      </li>
+
+      
+      <li style="cursor: pointer;">
+        <!-- <a><i id="idmenu2" class="fa fa-circle-o text-aqua"></i>Iniciar Tramite</a> -->
+        <a href="{% url 'control_contenedores' %}"><i id="idmenu1" class="fa fa-circle-o text-aqua"></i>Control Contenedores</a>
+      </li>
+
+
+      <li style="cursor: pointer;">
+        <!-- <a><i id="idmenu2" class="fa fa-circle-o text-aqua"></i>Iniciar Tramite</a> -->
+        <a href="{% url 'control_patrullaje' %}"><i id="idmenu1" class="fa fa-circle-o text-aqua"></i>Control Patrullaje</a>
+      </li>
+
+      
+      <li style="cursor: pointer;">
+        <!-- <a><i id="idmenu2" class="fa fa-circle-o text-aqua"></i>Iniciar Tramite</a> -->
+        <a href="{% url 'control_aeropuerto_principal' %}"><i id="idmenu1" class="fa fa-circle-o text-aqua"></i>Control Aero Princip.</a>
+      </li>
+
+      <li style="cursor: pointer;">
+        <!-- <a><i id="idmenu2" class="fa fa-circle-o text-aqua"></i>Iniciar Tramite</a> -->
+        <a href="{% url 'control_aeropuerto_iguanas' %}"><i id="idmenu1" class="fa fa-circle-o text-aqua"></i>Control Aero Iguanas</a>
+      </li>
+
+      <li style="cursor: pointer;">
+        <!-- <a><i id="idmenu2" class="fa fa-circle-o text-aqua"></i>Iniciar Tramite</a> -->
+        <a href="{% url 'control_aeropuerto_recorridos' %}"><i id="idmenu1" class="fa fa-circle-o text-aqua"></i>Control Aero Recorridos</a>
+      </li>
+
+      <li style="cursor: pointer;">
+        <a href="{% url 'cin_config_sitios' %}"><i id="idmenu1" class="fa fa-circle-o text-aqua"></i>Sitios</a>
+      </li>
+
+      
+      <li style="cursor: pointer;">
+        <a href="{% url 'cronograma' %}"><i id="idmenu7" class="fa fa-circle-o text-aqua"></i>Cronograma</a>
+      </li>                  
+ 
+    </ul>
+</li>
+
+      
+        
+      
+   
+
+  <!--********************************Popus**************************************-->
+  <!--********************************Popup Guia*********************************-->
+  <div id="popupGuias" style="display: none;">
+
+  <div class="stackbox-header cab_popup" align="center">
+    <img src="{% static 'image/favicon.ico' %}" width="40px" style="float:left;margin-top: -5px;"/>
+    <h id="">Buscar Guia Turistico</h>
+  </div>
+
+  <div class="stackbox-body" align="center">
+    <div class="row" style="box-shadow: 5px 5px 5px 10px #888888;width: 800px;">
+    <div class="divisor" style="text-align: left;">Filtros de Busqueda</div><br>
+        <div class="col-xs-12" style="border-color: #1b90ad;">
+          <table>
+            <tr>
+              <td align="left">Nombres:</td>
+              <td width="10px;"></td>
+              <td>
+                <input id="guiaPopup" type="text" class="form-control" style="width: 100%;" autofocus onkeypress="return isEnterKey(event,'ct_guia_turistico');">
+              </td>
+              <td width="10px;"></td>
+              
+              <td align="left">Identificacion:</td>
+              <td width="10px;"></td>
+              <td>
+                <input id="identificacionGuiaPopup" type="text" class="form-control" style="width: 100%;" onkeypress="return isEnterKey(event,'ct_guia_turistico');">
+              </td>
+              <td width="10px;"></td>
+              
+              <td><a style="cursor: pointer; font-size: 20px;" title="Buscar" onclick="getDataGuiasPop();"><i class="fa fa-search text-blue"></i></a></td>
+            </tr>
+          </table>
+         <br>
+        </div>
+    </div>
+    <br><br>
+    <div class="row">
+      <input type="hidden" id="pagina_enviaPopGuia">
+      <div class="col-xs-1"></div>
+      <div class="col-xs-10">
+        <div id="content_bodynido" align="center" style="box-shadow: 5px 10px #888888;width: 100%;">
+          <table id="tabla_PopupGuia" style="font-size: 12px; text-transform: uppercase;" class="display table table-striped table-bordered" width="100%" cellspacing="0">
+              <thead>
+              <tr style="background-color: #3c8dbc;    color: white;"> 
+                <th>Identificacion</th>
+                <th>Nombres y Apellidos</th>         
+                <th>Fecha Emision</th>         
+                <th>Fecha Caducidad</th>         
+                <th>Nro. Licencia</th>         
+                <th>Especializacion</th>         
+                <th>Estado</th>         
+                <th></th>
+              </tr>
+              </thead>
+              <tbody class="botonera1" id="body_tabla_PopupGuia">
+              
+              </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="col-xs-1"></div> 
+    </div>
+  </div>
+
+  <div class="stackbox-footer">
+    <!--button class="btn btn-primary" id="stackbox_save">Grabar</button-->
+    <button class="btn btn-default" data-close-stackbox="true">Close</button>
+  </div>
+</div>
+<!--**************************************************************************-->
+
+
+<!--*******************************Popup Embarcaciones Turisticas************************-->
+<div id="popupEmbarcacion" style="display: none;">
+
+  <div class="stackbox-header cab_popup" align="center">
+    <img src="{% static 'image/favicon.ico' %}" width="40px" style="float:left;margin-top: -5px;"/>
+    <h id="">Buscar Embarcacion</h>
+  </div>
+
+  <div class="stackbox-body" align="center">
+    <div class="row" style="box-shadow: 5px 5px 5px 10px #888888;width: 500px;">
+    <div class="divisor" style="text-align: left;">Filtros de Busqueda</div><br>
+        <div class="col-xs-12" style="border-color: #1b90ad;">
+          <table>
+            <tr>
+              
+              <td align="left">Embarcacion:</td>
+              <td width="10px;"></td>
+              <td>
+                <input id="embarcacionPopup" type="text" class="form-control" style="width: 100%;" autofocus onkeypress="return isEnterKey(event,'embarcacion_turismo');">
+              </td>
+              <td width="10px;"></td>
+              
+              <td align="left">Matricula:</td>
+              <td width="10px;"></td>
+              <td>
+                <input id="matriculaEmbarcacionPopup" type="text" class="form-control" style="width: 100%;" onkeypress="return isEnterKey(event,'embarcacion_turismo');">
+              </td>
+              <td width="10px;"></td>
+              
+              <td><a style="cursor: pointer; font-size: 20px;" title="Buscar" onclick="getDataEmbarcacionesPop();"><i class="fa fa-search text-blue"></i></a></td>
+            </tr>
+          </table>
+         <br>
+        </div>
+    </div>
+    <br><br>
+    <div class="row">
+      <input type="hidden" id="pagina_enviaPopEmbarcacion">
+      <div class="col-xs-1"></div>
+      <div class="col-xs-10">
+        <div id="content_bodyembarcacion" align="center" style="box-shadow: 5px 10px #888888;width:100%;">
+           <table id="tabla_PopupEmbarcacion" style="font-size: 12px; text-transform: uppercase;" class="display table table-striped table-bordered" width="100%" cellspacing="0">
+            <thead>
+              <tr style="background-color: #3c8dbc;color: white;"> 
+                <th>Embarcacion</th>         
+                <th>Matricula</th>         
+                <th>Fecha Vigencia</th>         
+                <th>Fecha Caducidad</th>         
+                <th>Nro. Patente</th>         
+                <th>Estado</th>         
+                <th></th>
+              </tr>
+            </thead>
+              <tbody class="botonera1" id="body_tabla_PopupEmbarcacion">
+              
+              </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="col-xs-1"></div> 
+    </div>
+  </div>
+
+  <div class="stackbox-footer">
+    <!--button class="btn btn-primary" id="stackbox_save">Grabar</button-->
+    <button class="btn btn-default" data-close-stackbox="true">Close</button>
+  </div>
+</div>
+<!--**************************************************************************-->
+
+
+<!--*******************************Popup Pasajeros************************-->
+<div id="popupPasajero" style="display: none;">
+
+  <div class="stackbox-header cab_popup" align="center">
+    <img src="{% static 'image/favicon.ico' %}" width="40px" style="float:left;margin-top: -5px;"/>
+    <h id="">Buscar Pasajero</h>
+  </div>
+
+  <div class="stackbox-body" align="center">
+    <div class="row" style="box-shadow: 5px 5px 5px 10px #888888;width: 600px;">
+    <div class="divisor" style="text-align: left;">Filtros de Busqueda</div><br>
+        <div class="col-xs-12" style="border-color: #1b90ad;">
+          <table>
+            <tr>
+              
+              <td align="left">Nombres:</td>
+              <td width="10px;"></td>
+              <td>
+                <input id="pasajeroPopup" type="text" class="form-control" style="width: 100%;" autofocus onkeypress="return isEnterKey(event,'ct_pasajero');">
+              </td>
+              <td width="10px;"></td>
+
+              <td align="left">Identificacion:</td>
+              <td width="10px;"></td>
+              <td>
+                <input id="identificacionPasajeroPopup" type="text" class="form-control" style="width: 100%;" onkeypress="return isEnterKey(event,'ct_pasajero');">
+              </td>
+              <td width="10px;"></td>
+
+              <td><a style="cursor: pointer; font-size: 20px;" title="Buscar" onclick="getDataPasajerosPop();"><i class="fa fa-search text-blue"></i></a></td>
+            </tr>
+          </table>
+         <br>
+        </div>
+    </div>
+    <br><br>
+    <div class="row">
+      <input type="hidden" id="pagina_enviaPopPasajero">
+      <div class="col-xs-1"></div>
+      <div class="col-xs-10">
+        <div id="content_bodyembarcacion" align="center" style="box-shadow: 5px 10px #888888;width: 100%;">
+          <table id="tabla_PopupPasajero" style="font-size: 12px; text-transform: uppercase;" class="display table table-striped table-bordered" width="100%" cellspacing="0">
+              <thead>
+              <tr style="background-color: #3c8dbc;    color: white;"> 
+                <th>Apellidos y Nombres</th>         
+                <th>Identificacio</th>
+                <th></th>
+              </tr>
+              </thead>
+              <tbody class="botonera1" id="body_tabla_PopupPasajero">
+              
+              </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="col-xs-1"></div> 
+    </div>
+  </div>
+
+  <div class="stackbox-footer">
+    <!--button class="btn btn-primary" id="stackbox_save">Grabar</button-->
+    <button class="btn btn-default" data-close-stackbox="true">Close</button>
+  </div>
+</div>
+<!--**************************************************************************-->
+
+
+<!--*******************************Popup Sitios************************-->
+<div id="popupSitios" style="display: none;">
+
+  <div class="stackbox-header cab_popup" align="center">
+    <img src="{% static 'image/favicon.ico' %}" width="40px" style="float:left;margin-top: -5px;"/>
+    <h id="">Buscar Sitio</h>
+  </div>
+  <div class="stackbox-body" align="center">
+    <div class="row" style="box-shadow: 5px 5px 5px 10px #888888;width: 500px;">
+    <div class="divisor" style="text-align: left;">Filtros de Busqueda</div><br>
+        <div class="col-xs-12" style="border-color: #1b90ad;">
+          <table>
+            <tr>
+              <td align="left">Sitio:</td>
+              <td width="10px;"></td>
+              <td>
+                <input id="sitioPopup" type="text" class="form-control" style="width: 100%;" autofocus onkeypress="return isEnterKey(event,'sitios');">
+              </td>
+              
+              <td width="10px;"></td>
+
+              <td align="left">Isla:</td>
+              <td width="10px;"></td>
+              <td>
+                <input id="islaPopup" type="text" class="form-control" style="width: 100%;" onkeypress="return isEnterKey(event,'sitios');">
+              </td>
+              <td width="10px;"></td>
+
+              <td><a style="cursor: pointer; font-size: 20px;" title="Buscar" onclick="getDataSitiosPop();"><i class="fa fa-search text-blue"></i></a></td>
+            </tr>
+          </table>
+         <br>
+        </div>
+    </div>
+    <br><br>
+    <div class="row">
+      <input type="hidden" id="pagina_enviaPopSitio">
+      <div class="col-xs-1"></div>
+      <div class="col-xs-10">
+        <div id="content_bodysitio" align="center" style="box-shadow: 5px 10px #888888;width: 100%;">
+          <table id="tabla_PopupSitio" style="font-size: 12px; text-transform: uppercase;" class="display table table-striped table-bordered" width="100%" cellspacing="0">
+              <thead>
+              <tr style="background-color: #3c8dbc;    color: white;"> 
+                <th>Sitio</th>         
+                <th>Isla</th>         
+                <th></th>
+              </tr>
+              </thead>
+              <tbody class="botonera1" id="body_tabla_PopupSitio">
+              
+              </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="col-xs-1"></div> 
+    </div>
+  </div>
+
+  <div class="stackbox-footer">
+    <!--button class="btn btn-primary" id="stackbox_save">Grabar</button-->
+    <button class="btn btn-default" data-close-stackbox="true">Close</button>
+  </div>
+</div>
+<!--**************************************************************************-->
+
+
+
+
+
+
+
+
+
+<!--*******************************Popup Monitoreador Pesquero************************-->
+<div id="popupMonitoreadorPesquero" style="display: none;">
+
+  <div class="stackbox-header cab_popup" align="center">
+    <img src="{% static 'image/favicon.ico' %}" width="40px" style="float:left;margin-top: -5px;"/>
+    <h id="">Buscar Monitoreador Pesquero</h>
+  </div>
+
+  <div class="stackbox-body" align="center">
+    <div class="row" style="box-shadow: 5px 5px 5px 10px #888888;width: 600px;">
+    <div class="divisor" style="text-align: left;">Filtros de Busqueda</div><br>
+        <div class="col-xs-12" style="border-color: #1b90ad;">
+          <table>
+            <tr>
+              <td align="left">Nombres:</td>
+              <td width="10px;"></td>
+              <td>
+                <input id="MonitoreadorPesqueroPopup" type="text" class="form-control" style="width: 100%;" autofocus onkeypress="return isEnterKey(event,'cp_monitoreador_pesquero');">
+              </td>
+              <td width="10px;"></td>
+              
+              <td align="left">Identificacion:</td>
+              <td width="10px;"></td>
+              <td>
+                <input id="identMonitoreadorPesqueroPopup" type="text" class="form-control" style="width: 100%;" onkeypress="return isEnterKey(event,'cp_monitoreador_pesquero');">
+              </td>
+              <td width="10px;"></td>
+              
+
+              <td><a style="cursor: pointer; font-size: 20px;" title="Buscar" onclick="getDataMonitoreadorPesqueroPop();"><i class="fa fa-search text-blue"></i></a></td>
+            </tr>
+          </table>
+         <br>
+        </div>
+    </div>
+    <br><br>
+    <div class="row">
+      <input type="hidden" id="pagina_enviaPopMonitoreadorPesquero">
+      <div class="col-xs-1"></div>
+      <div class="col-xs-10">
+        <div id="content_bodymonitoreador_pesquero" align="center" style="box-shadow: 5px 10px #888888;width: 100%;">
+          <table id="tabla_PopupMonitoreadorPesquero" style="font-size: 12px; text-transform: uppercase;" class="display table table-striped table-bordered" width="100%" cellspacing="0">
+              <thead>
+              <tr style="background-color: #3c8dbc;    color: white;"> 
+                <th>Monitoreador Pesquero</th>
+                <th>Identificacion</th>         
+                <th></th>
+              </tr>
+              </thead>
+              <tbody class="botonera1" id="body_tabla_PopupMonitoreadorPesquero">
+              
+              </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="col-xs-1"></div> 
+    </div>
+  </div>
+
+  <div class="stackbox-footer">
+    <!--button class="btn btn-primary" id="stackbox_save">Grabar</button-->
+    <button class="btn btn-default" data-close-stackbox="true">Close</button>
+  </div>
+</div>
+<!--**************************************************************************-->
+
+<!--*******************************Popup Pescador************************-->
+<div id="popupPescadores" style="display: none;">
+  <div class="stackbox-header cab_popup" align="center">
+    <img src="{% static 'image/favicon.ico' %}" width="40px" style="float:left;margin-top: -5px;"/>
+    <h id="">Buscar Pescador</h>
+  </div>
+
+  <div class="stackbox-body" align="center">
+    <div class="row" style="box-shadow: 5px 5px 5px 10px #888888;width: 900px;">
+    <div class="divisor" style="text-align: left;">Filtros de Busqueda</div><br>
+        <div class="col-xs-12" style="border-color: #1b90ad;">
+          <table>
+            <tr>
+
+              <td align="left">Nombres:</td>
+              <td width="10px;"></td>
+              <td>
+                <input id="nombresPescadorPopup" type="text" class="form-control" style="width: 100%;" autofocus onkeypress="return isEnterKey(event,'cp_pescador');">
+              </td>
+              <td width="10px;"></td>
+
+              <td align="left">Apellidos:</td>
+              <td width="10px;"></td>
+              <td>
+                <input id="apellidosPescadorPopup" type="text" class="form-control" style="width: 100%;" onkeypress="return isEnterKey(event,'cp_pescador');">
+              </td>
+              <td width="10px;"></td>
+
+              <td align="left">Identificacion:</td>
+              <td width="10px;"></td>
+              <td>
+                <input id="identificacionPescadorPopup" type="text" class="form-control" style="width: 100%;" onkeypress="return isEnterKey(event,'cp_pescador');">
+              </td>
+              <td width="10px;"></td>
+
+              <td align="left">Licencia Parma:</td>
+              <td width="10px;"></td>
+              <td>
+                <input id="parmaPescadorPopup" type="text" class="form-control" style="width: 100%;" onkeypress="return isEnterKey(event,'cp_pescador');">
+              </td>
+              <td width="10px;"></td>
+
+              <td><a style="cursor: pointer; font-size: 20px;" title="Buscar" onclick="getDataPescadoresPop();"><i class="fa fa-search text-blue"></i></a></td>
+            </tr>
+          </table>
+         <br>
+        </div>
+    </div>
+    <br><br>
+    <div class="row">
+      <input type="hidden" id="pagina_enviaPopPescador">
+      <div class="col-xs-1"></div>
+      <div class="col-xs-10">
+        <div id="content_bodynido" align="center" style="box-shadow: 5px 10px #888888;width: 100%;">
+          <table id="tabla_PopupPescador" style="font-size: 12px; text-transform: uppercase;" class="display table table-striped table-bordered" width="100%" cellspacing="0">
+              <thead>
+              <tr style="background-color: #3c8dbc;color:white;"> 
+                <th>Apellidos</th>
+                <th>Nombres</th>
+                <th>Identificacion</th>  
+                <th>Lic. Parma</th>               
+                <th>Fecha emisión</th>
+                <th>Fecha caducidad</th>
+                <th>Estado</th>     
+                <th></th>
+              </tr>
+              </thead>
+              <tbody class="botonera1" id="body_tabla_PopupPescador">
+              
+              </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="col-xs-1"></div> 
+    </div>
+  </div>
+
+  <div class="stackbox-footer">
+    <!--button class="btn btn-primary" id="stackbox_save">Grabar</button-->
+    <button class="btn btn-default" data-close-stackbox="true">Close</button>
+  </div>
+</div>
+<!--**************************************************************************-->
+
+
+<!--*******************************Popup Embarcacion Pesquera************************-->
+<div id="popupEmbarcacionesPesqueras" style="display: none;">
+  <div class="stackbox-header cab_popup" align="center">
+    <img src="{% static 'image/favicon.ico' %}" width="40px" style="float:left;margin-top: -5px;"/>
+    <h id="">Buscar Embarcacion</h>
+  </div>
+
+  <div class="stackbox-body" align="center">
+    <div class="row" style="box-shadow: 5px 5px 5px 10px #888888;width: 500px;">
+    <div class="divisor" style="text-align: left;">Filtros de Busqueda</div><br>
+        <div class="col-xs-12" style="border-color: #1b90ad;">
+          <table>
+            <tr>
+
+              <td align="left">Embarcacion:</td>
+              <td width="10px;"></td>
+              <td>
+                <input id="embarcacionPesqueraPopup" type="text" class="form-control" style="width: 100%;" autofocus onkeypress="return isEnterKey(event,'embarcacion_pesca');">
+              </td>
+
+              <td width="10px;"></td>
+
+              <td width="10px;"></td>
+              <td><a style="cursor: pointer; font-size: 20px;" title="Buscar" onclick="getDataEmbarcacionesPesquerasPop();"><i class="fa fa-search text-blue"></i></a></td>
+            </tr>
+          </table>
+         <br>
+        </div>
+    </div>
+    <br><br>
+    <div class="row">
+      <input type="hidden" id="pagina_enviaPopEmbarcacionPesquera">
+      <div class="col-xs-1"></div>
+      <div class="col-xs-10">
+        <div id="content_bodyembarcacionPesquera" align="center" style="box-shadow: 5px 10px #888888;width: 100%;">
+          <table id="tabla_PopupEmbarcacionPesquera" style="font-size: 12px; text-transform: uppercase;" class="display table table-striped table-bordered" width="100%" cellspacing="0">
+              <thead>
+              <tr style="background-color: #3c8dbc;    color: white;"> 
+                <th>Embarcacion</th>
+                <th>Permiso</th>
+                <th>Matricula</th> 
+                <th>Fecha emisión</th>
+                <th>Fecha caducidad</th>
+                <th>Estado</th>    
+                <th></th>
+              </tr>
+              </thead>
+              <tbody class="botonera1" id="body_tabla_PopupEmbarcacionPesquera">
+              
+              </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="col-xs-1"></div> 
+    </div>
+  </div>
+
+  <div class="stackbox-footer">
+    <!--button class="btn btn-primary" id="stackbox_save">Grabar</button-->
+    <button class="btn btn-default" data-close-stackbox="true">Close</button>
+  </div>
+</div>
+<!--**************************************************************************-->
+
+
+
+<!--*******************************Popup Add Datos Pesca************************-->
+<div id="popupAddPesca" style="display:none;">
+      
+      <div class="stackbox-header cab_popup" align="center">
+        <img src="{% static 'image/favicon.ico' %}" width="40px" style="float:left;margin-top: -5px;"/>
+        <h id="tituloAddPesca">Agregar Pesca</h>
+      </div>
+      
+      <div class="stackbox-body" id="bodypopupAddPesca" align="center">
+        <div class="notification" style="height: 100px;z-index: 99999;">
+            <span class="icon">
+              <i class=""></i>
+            </span>
+            <span class="text"></span>
+            <span class="close"><i class="fa fa-close"></i></span>
+          </div>
+
+          <div style="width:350px;text-align:left;">
+          <input type="hidden" id="pagina_enviaPopPesca">
+          
+          <input type="hidden" id="indiceRegPesca" value="">
+          <input type="hidden" id="opRegPesca" value="0">
+
+            *Especie
+            <div class="row">
+              <div class="col-xs-10">
+                <input type="hidden" id="idEspecie" value="">
+                <input id="nombreEspecie" type="text" name="nombreEspecie" text="Especie"  readonly="" style="width:100%;" class="form-control requerido">
+              </div>
+
+              <div class="col-xs-2">
+                <a style="width:100%;"  title="Buscar" href="#popupEspecies" data-stackbox="true" data-stackbox-position="absolute" data-stackbox-width="1000" onclick="limpiaPopupEpecies('control_pesca')">
+                  <i class="fa fa-search text-green"></i>
+                </a>
+              </div> 
+            </div>
+          
+            
+            <div class="row" style="height:10px;"></div>
+            
+            *Unidad
+            <div class="row">
+              <div class="col-xs-12">
+              <input id="unidadPesca" type="text" name="unidadPesca" text="Unidad" style="width: 50%;" autofocus class="form-control requerido" onkeypress="return isNumberKey(event);">
+              </div>
+            </div>
+
+            <div class="row" style="height:10px;"></div>
+
+            *Peso
+            <div class="row">
+              <div class="col-xs-12">
+              <input id="pesoPesca" type="text" style="width: 50%;" name="pesoPesca" text="Peso" class="form-control requerido" onkeypress="return isNumberKey(event);">
+               </div>
+            </div>
+
+            <div class="row" style="height:10px;"></div>
+           
+       
+            <div class="stackbox-footer">
+              <button class="btn btn-primary" id="btnAddPesca" onclick="addDataPesca()">Agregar</button>
+              <button class="btn btn-default" id="btnCloseAddPesca" data-close-stackbox="true">Cerrar</button>
+          </div>
+       
+      </div>
+    </div>
+  </div>
+
+
+
+    <!--*********************************end popups***************************************-->
+<!--**********************************************************************************-->
+
+
+
+
+<!--*******************************Popup Especies************************-->
+<div id="popupEspecies" style="display: none;">
+  <div class="stackbox-header cab_popup" align="center">
+    <img src="{% static 'image/favicon.ico' %}" width="40px" style="float:left;margin-top: -5px;"/>
+    <h id="">Buscar Especie</h>
+  </div>
+
+  <div class="stackbox-body" align="center">
+    <div class="row" style="box-shadow: 5px 5px 5px 10px #888888;width: 500px;">
+    <div class="divisor" style="text-align: left;">Filtros de Busqueda</div><br>
+        <div class="col-xs-12" style="border-color: #1b90ad;">
+          <table>
+            <tr>
+
+              <td align="left">Especie:</td>
+              <td width="10px;"></td>
+              <td>
+                <input id="especiePopup" type="text" class="form-control" style="width: 100%;" autofocus onkeypress="return isEnterKey(event,'cp_especie_pesca');">
+              </td>
+
+              <td width="10px;"></td>
+
+              <td><a style="cursor: pointer; font-size: 20px;" title="Buscar" onclick="getDataEspeciesPop();"><i class="fa fa-search text-blue"></i></a></td>
+            </tr>
+          </table>
+         <br>
+        </div>
+    </div>
+    <br><br>
+    <div class="row">
+      <input type="hidden" id="pagina_enviaPopEspecie">
+      <div class="col-xs-1"></div>
+      <div class="col-xs-10">
+        <div id="content_bodyespecie" align="center" style="box-shadow: 5px 10px #888888;width: 100%;">
+          <table id="tabla_PopupEspecie" style="font-size: 12px; text-transform: uppercase;" class="display table table-striped table-bordered" width="100%" cellspacing="0">
+              <thead>
+              <tr style="background-color: #3c8dbc;    color: white;"> 
+                <th>Nombre Comun</th>
+                <th>Nombre Cientifico</th>              
+                <th></th>
+              </tr>
+              </thead>
+              <tbody class="botonera1" id="body_tabla_PopupEspecie">
+              
+              </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="col-xs-1"></div> 
+    </div>
+  </div>
+
+  <div class="stackbox-footer">
+    <!--button class="btn btn-primary" id="stackbox_save">Grabar</button-->
+    <button class="btn btn-default" data-close-stackbox="true">Close</button>
+  </div>
+</div>
+<!--**************************************************************************-->
+
+
+
+<!--*******************************Popup Add Hito Patrullaje General************************-->
+<div id="popupAddHito" style="display:none;">
+      
+      <div class="stackbox-header cab_popup" align="center">
+        <img src="{% static 'image/favicon.ico' %}" width="40px" style="float:left;margin-top: -5px;"/>
+        <h id="tituloAddSitioPatrullaje">Agregar Hito</h>
+      </div>
+      
+      
+      <div class="stackbox-body" id="bodypopupAddHito" align="center">
+        <div class="notification" style="height:80px;z-index: 99999;">
+            <span class="icon">
+              <i class=""></i>
+            </span>
+            <span class="text"></span>
+            <span class="close"><i class="fa fa-close"></i></span>
+        </div>
+
+
+        <div style="width:auto;text-align:left;">
+          <input type="hidden" id="pagina_enviaPopHito">
+          <input type="hidden" id="indiceRegistroHito" value="">
+          <input type="hidden" id="opRegistroHito" value="0">
+        
+          <div class="row" style="height:10px;"></div>
+            
+            <fieldset style="width: 660px;">
+              <legend style="font-size: 14px; text-align: left;border-bottom: 1px solid;background-color: #005196;color: white;padding: 5px; width: 100%;">Coordenadas Hito</legend>
+              <div class="row" style="">
+              
+                <div class="col-xs-12">
+                  <div style="display:flex;justify-content:space-around;vertical-align:center;height:auto;width:100%;padding-top:10px;padding-bottom:10px;">  
+                    <div style="text-align:left">
+                      <label>Isla</label>
+                      <br>
+                      <select class="select2" id='cth_selectIsla' style="width:180px">
+                        <option value="0" disabled selected>Seleccione una opcion</option>
+                        <option value="1">ISABELA</option>
+                        <option value="2">BALTRA</option>
+                        <option value="3">FLOREANA</option>
+                        <option value="4">SAN CRISTOBAL</option>
+                        <option value="5">SANTA CRUZ</option>
+                      </select>
+                    </div>
+                  
+                    <div style="text-align:left">
+                      <label>Zona(Area)</label>
+                      <br>
+                      <select id='cth_selectArea' class="select2" style="width:180px">
+                          <option value="0" selected disabled>Seleccione Opcion</option>
+                            {% for area in areas %}
+                              <option value="{{ area.valor }}">{{ area.label }}</option>
+                            {% endfor %}
+                      </select>  
+                    </div>
+                  
+                    <div style="text-align:center">
+                      <label>Hito</label>
+                      <br>
+                      <input id="cth_numHito" type="text" class="form-control" text="Numero de Hito" style="width:150px" onkeypress="return isOnlyNumberKey(event)">
+                    </div>
+
+                    <div class="botonera" style="text-align:center">
+                      <br>
+                      <a title="Buscar" onclick="varificarHito()">
+                        <i class="fa fa-search text-green"></i>
+                      </a>
+                    </div>
+                  </div>
+
+                  <div class="row" style="height:20px;"></div>  
+
+                  <div style="display:flex;justify-content:left;margin-left:20px;width:auto">
+                    <div style="display:flex;flex-direction:column;justify-content:center">
+                      
+                      <div style="display:flex;justify-content:center;flex-direction:column;width:120px;height:30px;margin-bottom:10px">
+                        <div>Isla</div>
+                      </div>
+
+                      <div style="display:flex;justify-content:center;flex-direction:column;width:120px;height:30px;margin-bottom:10px">
+                        <div>Zona</div>
+                      </div>
+
+                      <div style="display:flex;justify-content:center;flex-direction:column;width:120px;height:30px;margin-bottom:10px">
+                        <div>Numero Hito</div>
+                      </div>
+
+                      <div style="display:flex;justify-content:center;flex-direction:column;width:120px;height:30px;margin-bottom:10px">
+                        <div>Latitud</div>
+                      </div>
+              
+                      <div style="display:flex;justify-content:center;flex-direction:column;width:120px;height:30px;margin-bottom:10px">
+                        <div>Longitud</div>
+                      </div>
+               
+                      <div style="display:flex;justify-content:center;flex-direction:column;width:120px;height:30px;margin-bottom:10px">
+                        <div>Sitio de referencia</div>
+                      </div>
+
+                      <div style="display:flex;justify-content:center;flex-direction:column;width:120px;height:30px;margin-bottom:10px">
+                        <div>Estado</div>
+                      </div>
+
+
+                    </div>
+
+                    <div style="display:flex;flex-direction:column">
+                      
+                      <input type="hidden" id="cth_hito_id">
+
+                      <div style="display:flex;justify-content:center;flex-direction:column;height:30px;margin-bottom:10px;">
+                        <input type="text" id="cth_isla" class="form-control requerido" style="width:50%" readonly>
+                      </div>
+
+                      <div style="display:flex;justify-content:center;flex-direction:column;height:30px;margin-bottom:10px;">
+                        <input type="text" id="cth_area" class="form-control requerido" style="width:50%" readonly>
+                      </div>
+
+                       <div style="display:flex;justify-content:center;flex-direction:column;height:30px;margin-bottom:10px;">
+                        <input type="text" id="cth_hito" class="form-control requerido" style="width:50%" readonly>
+                      </div>
+
+
+                      <div style="display:flex;justify-content:center;flex-direction:column;height:30px;margin-bottom:10px;">
+                        <input type="text" id="cth_latitud" class="form-control requerido" style="width:50%" readonly>
+                      </div>
+
+                      <div style="display:flex;justify-content:center;flex-direction:column;height:30px;margin-bottom:10px;">
+                        <input type="text" id="cth_longitud" class="form-control requerido" style="width:50%" readonly>
+                      </div> 
+
+                      <div style="display:flex;justify-content:center;flex-direction:column;height:30px;margin-bottom:10px;">
+                        <input type="text" id="cth_sitio_ref" class="form-control requerido" style="width:400px" readonly="">
+                      </div>
+
+                      <div style="display:flex;justify-content:center;flex-direction:column;height:30px;margin-bottom:10px;">       
+                        <select id='cth_estado' class="select2" style="width:180px">
+                          <option value="0" selected disabled>Seleccione Opcion</option>
+                            {% for estado in estados_hito %}
+                              <option value="{{ estado.valor }}">{{ estado.label }}</option>
+                            {% endfor %}
+                        </select>
+                      </div>
+
+                    </div>
+                  </div>
+                   <div class="row" style="height:10px;"></div>
+                </div>
+              </div>
+
+            </fieldset>    
+ 
+            
+            <div class="stackbox-footer">
+              <button class="btn btn-primary" id="btnAddHito" onclick="addDataHitoPatrullaje()">Agregar</button>
+              <button class="btn btn-default" id="btnClosePopupHito" data-close-stackbox="true">Cerrar</button>
+            </div>
+      </div>
+    </div>
+  </div>
+
+    <!--*********************************end popups***************************************-->
+<!--**********************************************************************************-->
+
+
+
+<!--*******************************Popup Add Sitio Patrullaje General************************-->
+<div id="popupAddSitioPatrullaje" style="display:none;">
+      
+      <div class="stackbox-header cab_popup" align="center">
+        <img src="{% static 'image/favicon.ico' %}" width="40px" style="float:left;margin-top: -5px;"/>
+        <h id="tituloAddSitioPatrullaje">Agregar Sitio</h>
+      </div>
+      
+      
+      <div class="stackbox-body" id="bodypopupAddSitioPatrullaje" align="center">
+        <div class="notification" style="height:80px;z-index: 99999;">
+            <span class="icon">
+              <i class=""></i>
+            </span>
+            <span class="text"></span>
+            <span class="close"><i class="fa fa-close"></i></span>
+        </div>
+
+
+          <input type="hidden" id="pagina_enviaPopSitioPatrullaje">
+          <input type="hidden" id="indiceRegistroSitioPatrullaje" value="">
+          <input type="hidden" id="opRegistroSitioPatrullaje" value="0">
+        
+          <div class="row" style="height:20px;"></div>
+            
+            <fieldset style="width: 800px;">
+              <legend style="font-size: 14px; text-align: left;border-bottom: 1px solid;background-color: #005196;color: white;padding: 5px; width: 100%;">Sitios</legend>
+              
+               <div class="row">
+                  <div class="col-xs-6">
+                    <div style="display:flex;">  
+                      
+                      <div style="display:flex;justify-content:center;flex-direction:column;width:60px;height:30px;padding:10px 0px;text-align:left">
+                        <div>Sitio</div>
+                      </div>
+
+                      <input type="hidden" id="ctpa_idSitio" class="form-control">
+                      <input type="hidden" id="ctpa_nombreIsla" class="form-control">
+                      <input type="text" id="ctpa_nombreSitio" class="form-control" text="Sitio" readonly="" style="width: 90%;margin-right:10px;">
+                                                              
+                     
+
+                      <a style=""  title="Buscar" href="#popupSitios" data-stackbox="true" data-stackbox-position="absolute" data-stackbox-width="1000" onclick="limpiaPopupSitio('cpa_sitio')">
+                        <i class="fa fa-search text-green"></i>
+                      </a>
+                    </div>
+                  </div>             
+                </div>  
+
+
+             <div class="row" style="height:20px;"></div>
+              
+
+              <div class="row">    
+              <div style="width:350px;padding:5px;text-align:left">
+                Movilizacion
+              </div>
+                <div style="border:solid 2px #aaa;border-radius:5px;width:350px;padding:10px">
+
+
+                      <div style="display:flex;justify-content:left;vertical-align:center;width:300px;height:28px">                                                                                        
+                        <input type="checkbox" id="ctpa_optVehiculo" style="margin-right:5px;">
+                        <label style="margin-top:3px;">Vehiculo</label>
+
+                        <div style="width:50px;"></div>
+                          
+                        <input type="checkbox" id="ctpa_optPie" style="margin-right:5px;">
+                        <label style="margin-top:3px;">A pie</label>
+                          
+                        <div style="width:50px;"></div>
+                          
+                        <input type="checkbox" id="ctpa_optCemila" style="margin-right:5px;">
+                        <label style="margin-top:3px;">A cemila</label>
+                      </div>
+
+
+                      <div style="display:flex;justify-content:center;vertical-align:center;width:300px;height:28px;">                                                                                         
+                        <input type="checkbox" id="ctpa_Otro" style="margin-right:5px;">
+                        <label style="margin-top:3px;">Otros</label>
+                        <div style="width:40px;"></div>
+                        <input type="text" id="ctpa_otraMovilizacion" class="form-control" text="Sitio" readonly="true" style="width:200px;margin-right:10px;">  
+                        
+                      </div>
+
+                     
+                </div> 
+              </div> 
+
+              <div class="row" style="height:20px;"></div>
+
+              <div class="row">
+                <div class="col-xs-6">
+                  <div style="display:flex;justify-content:left;vertical-align:center;width:auto;height:auto">                                                                                        
+                          <label style="margin-top:3px;">Existe Novedad?</label>
+
+                          <div style="width:30px;"></div>
+                            
+                          <input type="checkbox" id="ctpa_existe_novedad" style="margin-right:5px;">
+                          <label style="margin-top:3px;">Si</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row" id="ctpa_novedadesPatrullaje">
+                <div class="col-xs-12" style="border-color: #1b90ad;">
+                  <div style="text-align:right;">
+                    <a style="cursor: pointer; font-size:20px;"  title="Buscar" href="#popupAddNovedadPatrullaje" data-stackbox="true" data-stackbox-position="absolute" data-stackbox-width="auto" onclick="limpiarPopupNovedad()">
+                      <i class="fa fa-plus-square text-blue"></i>
+                    </a>
+                  </div>
+                  <table id="tablaNovedades" style="font-size: 12px; text-transform: uppercase;" class="display table table-striped table-bordered" width="100%" cellspacing="0">
+                    <thead>
+                      <tr style="background-color:#3c8dbc;color:white;"> 
+                        <th>#</th>
+                        <th>DESCRIPCION</th>
+                        <th>CANTIDAD</th>
+                        <th>OBSERVACION</th>
+                        <th></th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody class="botonera1" id="body_tablaNovedadesPatrullaje">
+                    </tbody>
+                  </table>
+                </div>
+             </div>
+
+
+                </fieldset>    
+             
+          </div>
+      
+            
+            <div class="stackbox-footer">
+              <button class="btn btn-primary" id="btnAddSitioPatrullaje" onclick="addDataSitiosPatrullaje()">Agregar</button>
+              <button class="btn btn-default" id="btnClosePopupSitioPatrullaje" data-close-stackbox="true">Cerrar</button>
+            </div>
+      </div>
+ 
+
+<!--*******************************Popup Add Novedad Patrullaje General************************-->
+<div id="popupAddNovedadPatrullaje" style="display:none;">
+      
+      <div class="stackbox-header cab_popup" align="center">
+        <img src="{% static 'image/favicon.ico' %}" width="40px" style="float:left;margin-top: -5px;"/>
+        <h id="tituloAddSitioPatrullaje">Agregar Novedad</h>
+      </div>
+      
+      
+      <div class="stackbox-body" id="bodypopupAddNovedadPatrullaje" align="center">
+        <div class="notification" style="height:80px;z-index: 99999;">
+            <span class="icon">
+              <i class=""></i>
+            </span>
+            <span class="text"></span>
+            <span class="close"><i class="fa fa-close"></i></span>
+        </div>
+
+
+          <input type="hidden" id="pagina_enviaPopNovedadPatrullaje">
+          <input type="hidden" id="indiceRegistroNovedadPatrullaje" value="">
+          <input type="hidden" id="opRegistroNovedadPatrullaje" value="0">
+        
+          <div class="row" style="height:20px;"></div>
+            
+            <fieldset style="width: 600px;">
+              <legend style="font-size: 14px; text-align: left;border-bottom: 1px solid;background-color: #005196;color: white;padding: 5px; width: 100%;">Novedades</legend>
+              
+              <div class="row" style="height:20px;"></div>
+
+               <div class="row">
+                  <div class="col-xs-12">
+                    <div style="display:flex;margin-left:10px">  
+                      
+                      <div style="display:flex;justify-content:center;flex-direction:column;width:60px;height:30px;padding:10px 0px;text-align:left">
+                        <div>Descripción</div>
+                      </div>
+
+                      <div style="width:30px"></div>
+
+                      <div style="display:flex;justify-content:center;flex-direction:column;height:30px;margin-bottom:10px;">
+                        <select id='ctpa_selectNovedad' class="select2" style="width:180px">
+                          <option value="0" selected disabled>Seleccione Opcion</option>
+                            {% for novedad in novedades %}
+                              <option value="{{ novedad.valor }}">{{ novedad.label }}</option>
+                            {% endfor %}
+                        </select>  
+                      </div>
+                    </div>
+                  </div>             
+                </div>  
+
+            <div class="row" style="height:10px;"></div>
+            
+            <div class="row">
+              <div class="col-xs-12">
+                <div style="display:flex;margin-left:10px">  
+                      
+                      <div style="display:flex;justify-content:center;flex-direction:column;width:60px;height:30px;padding:10px 0px;text-align:left">
+                        <div>Cantidad</div>
+                      </div>
+
+                      <div style="width:30px"></div>
+
+                      <div style="display:flex;justify-content:center;flex-direction:column;height:30px;margin-bottom:10px">
+                        <input type="text" id="ctpa_cantidad" class="form-control requerido" text="cantidad" style="width:180px" onkeypress="return isOnlyNumberKey(event)">
+                      </div>
+                  </div>
+              </div>             
+            </div>  
+
+            <div class="row" style="height:10px;"></div>
+
+            <div class="row">
+              <div class="col-xs-12">
+                <div style="display:flex;margin-left:10px">  
+                      
+                      <div style="display:flex;justify-content:center;flex-direction:column;width:60px;height:30px;padding:10px 0px;text-align:left">
+                        <div>Observación</div>
+                      </div>
+
+                      <div style="width:30px"></div>
+
+                      <div style="display:flex;justify-content:center;flex-direction:column;height:30px;margin-bottom:10px">
+                        <input type="text" id="ctpa_observacion" class="form-control" style="width:450px">
+                      </div>
+                  </div>
+              </div>             
+            </div>  
+
+
+            <div class="row" style="height:20px;"></div>
+
+  
+
+                </fieldset>    
+             
+          </div>
+      
+            
+            <div class="stackbox-footer">
+              <button class="btn btn-primary" id="btnAddNovedad" onclick="addDataNovedadPatrullaje()">Agregar</button>
+              <button class="btn btn-default" id="btnClosePopupNovedad" data-close-stackbox="true">Cerrar</button>
+            </div>
+      </div>
+ 
+
+
+
+<!--*******************************Popup Add Guia Aero Princ************************-->
+<div id="popupAddAeropGuia" style="display:none;">
+      
+      <div class="stackbox-header cab_popup" align="center">
+        <img src="{% static 'image/favicon.ico' %}" width="40px" style="float:left;margin-top: -5px;"/>
+        <h id="tituloAddMuestra">Agregar Guia</h>
+      </div>
+      
+      <div class="stackbox-body" id="bodypopupAddAeropGuia" align="center">
+        <div class="notification" style="height: 100px;z-index: 99999;">
+            <span class="icon">
+              <i class=""></i>
+            </span>
+            <span class="text"></span>
+            <span class="close"><i class="fa fa-close"></i></span>
+          </div>
+
+          <div style="width:350px;text-align:left;">
+          <input type="hidden" id="pagina_enviaPopAeropGuia">
+          
+          <input type="hidden" id="indiceRegAeropGuia" value="">
+          <input type="hidden" id="opRegAeropGuia" value="0">
+
+            #Guia
+            <div class="row">
+              <div class="col-xs-12">
+                <input id="capp_guia" type="text" readonly="" text="guia" style="width:100%;" class="form-control requerido">
+              </div>
+            </div>
+          
+            <div class="row" style="height:20px;"></div>
+
+            Tipo Guia
+            <div class="row">
+              <div class="col-xs-12">
+                <input type="hidden" id="capp_idTipoGuia">
+                <input id="capp_tipoGuia" type="text" readonly="" text="tipo de guia" style="width:100%;" class="form-control requerido">
+              </div>
+            </div>
+          
+            <div class="row" style="height:20px;"></div>
+
+
+            
+            <div class="row">
+              <div class="col-xs-12">
+                <div style="display:flex-column;justify-content:left;">
+                    <div><label>*Tipo Pesca</label></div>
+                      <div>
+                          <select id='capp_tipoPesca' style="width:100%;height:30px;" class="select2">
+                            <option value="0" selected disabled>Seleccione Opcion</option>
+                            {% for tipo_pesca in tipos_pesca %}
+                              <option value="{{ tipo_pesca.valor }}">{{ tipo_pesca.label }}</option>
+                            {% endfor %}
+                          </select>
+                      </div>
+                </div> 
+              </div>
+            </div>
+
+            <div class="row" style="height:20px;"></div>
+
+            *Peso(Lbs)
+            <div class="row">
+              <div class="col-xs-12">
+              <input id="capp_peso" type="text" style="width: 100%;" text="peso" class="form-control requerido">
+               </div>
+            </div>
+
+            <div class="row" style="height:10px;"></div>
+           
+       
+            <div class="stackbox-footer">
+              <button class="btn btn-primary" id="btnAddAeropGuia" onclick="addDataAeropGuia()">Agregar</button>
+              <button class="btn btn-default" id="btnCloseAeropGuia" data-close-stackbox="true">Cerrar</button>
+          </div>
+       
+      </div>
+    </div>
+  </div>
+    <!--*********************************end popups***************************************-->
+<!--**********************************************************************************-->
+
+
+
+
+
+<!--*******************************Popup Add Muestra Aero Princ************************-->
+<div id="popupAddAeropMuestra" style="display:none;">
+      
+      <div class="stackbox-header cab_popup" align="center">
+        <img src="{% static 'image/favicon.ico' %}" width="40px" style="float:left;margin-top: -5px;"/>
+        <h id="tituloAddMuestra">Agregar Muestra</h>
+      </div>
+      
+      <div class="stackbox-body" id="bodypopupAddAeropMuestra" align="center">
+        <div class="notification" style="height: 100px;z-index: 99999;">
+            <span class="icon">
+              <i class=""></i>
+            </span>
+            <span class="text"></span>
+            <span class="close"><i class="fa fa-close"></i></span>
+          </div>
+
+          <div style="width:350px;text-align:left;">
+          <input type="hidden" id="pagina_enviaPopMuestra">
+          
+          <input type="hidden" id="indiceRegAeropMuestra" value="">
+          <input type="hidden" id="opRegAeropMuestra" value="0">
+
+            *#Muestra
+            <div class="row">
+              <div class="col-xs-12">
+                <input id="capp_muestra" type="text" name="capp_numeroMuestra" text="Numero de Muestra" style="width:100%;" class="form-control requerido" onkeypress="return isOnlyNumberKey(event);" maxlength="4">
+              </div>
+            </div>
+          
+            <div class="row" style="height:20px;"></div>
+            
+            <div class="row">
+              <div class="col-xs-12">
+                <div style="display:flex-column;justify-content:left;">
+                    <div><label>*Tipo</label></div>
+                      <div>
+                          <select id='capp_tipoMuestra' style="width:100%;height:30px;" class="select2">
+                            <option value="0" selected disabled>Seleccione Opcion</option>
+                            {% for tipo_muestra in tipos_muestra %}
+                              <option value="{{ tipo_muestra.valor }}">{{ tipo_muestra.label }}</option>
+                            {% endfor %}
+                          </select>
+                      </div>
+                </div> 
+              </div>
+            </div>
+
+            <div class="row" style="height:20px;"></div>
+
+            Observacion
+            <div class="row">
+              <div class="col-xs-12">
+              <input id="capp_observacionMuestras" type="text" style="width: 100%;" class="form-control">
+               </div>
+            </div>
+
+            <div class="row" style="height:10px;"></div>
+           
+       
+            <div class="stackbox-footer">
+              <button class="btn btn-primary" id="btnAddAeropMuestra" onclick="addDataAeropMuestra()">Agregar</button>
+              <button class="btn btn-default" id="btnCloseAeropMuestra" data-close-stackbox="true">Cerrar</button>
+          </div>
+       
+      </div>
+    </div>
+  </div>
+    <!--*********************************end popups***************************************-->
+<!--**********************************************************************************-->
+
+
+<!--*******************************Popup Add Vuelos Aero Princ************************-->
+<div id="popupAddAeropVuelo" style="display:none;">
+      
+      <div class="stackbox-header cab_popup" align="center">
+        <img src="{% static 'image/favicon.ico' %}" width="40px" style="float:left;margin-top: -5px;"/>
+        <h id="tituloAddMuestra">Agregar Vuelos</h>
+      </div>
+      
+      <div class="stackbox-body" id="bodypopupAddAeropVuelo" align="center">
+        <div class="notification" style="height: 100px;z-index: 99999;">
+            <span class="icon">
+              <i class=""></i>
+            </span>
+            <span class="text"></span>
+            <span class="close"><i class="fa fa-close"></i></span>
+          </div>
+
+          <div style="width:350px;text-align:left;">
+          <input type="hidden" id="pagina_enviaPopVuelo">
+          
+          <input type="hidden" id="indiceRegAeropVuelo" value="">
+          <input type="hidden" id="opRegAeropVuelo" value="0">
+
+            <div class="row">
+              <div class="col-xs-12">
+                <div style="display:flex-column;justify-content:left;">
+                    <div><label>*Aerolinea</label></div>
+                      <div>
+                          <select id='capp_aerolinea' style="width:100%;height:30px;" class="select2">
+                            <option value="0" selected disabled>Seleccione Opcion</option>
+                            {% for aerolinea in aerolineas %}
+                              <option value="{{ aerolinea.valor }}">{{ aerolinea.label }}</option>
+                            {% endfor %}
+                          </select>
+                      </div>
+                </div> 
+              </div>
+            </div>
+
+            <div class="row" style="height:20px;"></div>
+
+            *Cantidad
+            <div class="row">
+              <div class="col-xs-12">
+                <input id="capp_cantidadVuelos" type="text" text="Cantidad de Vuelos" style="width:100%;" class="form-control requerido">
+              </div>
+            </div>
+          
+            <div class="row" style="height:20px;"></div>
+
+            Observacion
+            <div class="row">
+              <div class="col-xs-12">
+              <input id="capp_observacionVuelos" type="text" style="width: 100%;" class="form-control">
+               </div>
+            </div>
+
+            <div class="row" style="height:10px;"></div>
+           
+       
+            <div class="stackbox-footer">
+              <button class="btn btn-primary" id="btnAddAeropVuelo" onclick="addDataAeropVuelo()">Agregar</button>
+              <button class="btn btn-default" id="btnCloseAeropVuelo" data-close-stackbox="true">Cerrar</button>
+          </div>
+       
+      </div>
+    </div>
+  </div>
+
+
+
+    <!--*********************************end popups***************************************-->
+<!--**********************************************************************************-->
+
+
+
+
+
+
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+  <script src="{% static 'js/lib_externas/jquery-1.12.4.js' %}"></script>
+  <script src="{% static 'js/lib_externas/jquery-ui.js' %}"></script>
+  
+  <script>document.write('<script src="{% static "js/lib_externas/camera/func_camera.js" %}?dev=' + Math.floor(Math.random() * 100) + '"\><\/script>');</script>
+  <script>document.write('<script src="{% static "js/lib_internas/script.js" %}?dev=' + Math.floor(Math.random() * 100) + '"\><\/script>');</script>
+
+  <script>document.write('<script src="{% static "js/lib_internas/script_cin.js" %}?dev=' + Math.floor(Math.random() * 100) + '"\><\/script>');</script>
+
+  <script>
+    sessionStorage.setItem("islas", JSON.stringify({{ islas | safe }}));
+
+  </script>
+{%endblock%}
+
+
+

@@ -1,0 +1,289 @@
+.cajaNumero{
+	width: 60px;
+	height: 25px;
+}
+
+.filters input {
+    width: 100%;
+    padding: 3px;
+    box-sizing: border-box;
+}
+
+.botonera1{
+    color: black;
+    font-weight: bold;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+      background-color: #0073b7  !important;
+    }
+
+/*cabecera popups*/
+.cab_popup{
+	color:white; 
+	background-color: #0073b7; 
+	font-weight: bold; 
+	font-size: 18px;
+}
+
+/*botones de excel y pdf*/
+.botonera > a{
+	cursor: pointer;
+	font-size: 20px;
+}
+
+.disabledTab{
+    pointer-events: none;
+}
+
+/*botones en la tabla*/
+tbody.botonera1  tr td  a{
+	cursor: pointer;
+	font-size: 16px;
+}
+
+.stackbox-footer{
+	margin-top: -30px;
+}
+
+.select2{
+	width: 300px; 
+	z-index: 999999;
+}
+
+.stackbox-body{
+	font-size: 12px; 
+	font-weight: bold;
+}
+
+.divisor{
+	height: 30px; 
+	padding: 5px; 
+	border : 2px solid #3c8dbc; 
+	font-size: 14px; 
+	font-weight: bold; 
+	background-color: #3c8dbc; 
+	color: white;
+}
+
+/*.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  
+  /* Position the tooltip */
+  /*position: absolute;
+  z-index: 1;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -60px;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}*/
+
+.CellWithComment{
+  position:relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
+
+.CellComment{
+  display:none;
+  position:absolute; 
+  width: 100px;
+  z-index:1;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  font-size: 12px;
+  font-weight: bold;
+  border-radius: 6px;
+  padding: 5px 0;
+  color: #fff;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -60px;
+}
+
+.CellWithComment .CellComment::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: black transparent transparent transparent;
+}
+
+.CellWithComment:hover span.CellComment{
+  display:block;
+}
+
+
+.btn-label {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 5px 5px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 12px;
+}
+
+
+.disabled-select {
+	background-color: #eee;
+	opacity: 1;
+	cursor:no-drop;
+	pointer-events: none;
+}
+.form-control{
+	height: 28px;
+	font-size: 11px !important;
+	width: 300px; 
+	z-index: 999999;
+	text-transform: uppercase;
+}
+.field-readonly{
+	height: 35px;
+	font-size: 11px;
+	width: 300px; 
+	z-index: 999999;
+	text-transform: uppercase;
+}
+
+input[type=text]{
+	background-color: #fff;
+	border: 1px solid #aaa;
+	border-radius: 4px;
+}
+.form-control{
+	background-color: #fff;
+	border: 1px solid #aaa;
+	border-radius: 4px;
+}
+.requerido::first-letter {
+	color: red;
+}
+/* Select option */
+.select2-results__option, .select2-selection__rendered { 
+	font-size: 11px;
+	text-transform: uppercase;
+	color: black;
+}
+.select2-container .select2-selection--single .select2-selection__rendered {
+	padding-left: 0px;
+}
+.stackbox-header{
+	/*font-family: Comic Sans MS, Comic Sans, cursive;*/
+	font-family: Comic Sans;
+}
+
+/*table, th, td {
+font-family: Comic Sans MS, Comic Sans, cursive;
+}*/
+.stackbox-header:before {
+	content: "campos obligatorios(*)";
+	top: 60px;
+	color:red;
+	position: absolute;
+	right: 1px;
+	font-size: 12px;
+}
+
+#modalLoadin {
+	position: fixed;
+	font-family: Arial, Helvetica, sans-serif;
+	top: 0;
+	left: 0;
+	background: rgba(0, 0, 0, 0.8);
+	z-index: 99999;
+	height: 100%;
+	width: 100%;
+}
+
+
+.notification {
+	box-shadow: 0px 0px 5px 0px rgba(0,0,0,.1);
+	border-radius: 5px;
+	display: flex;
+	height: 60px;
+	justify-content: space-between;
+	opacity: 0;
+	padding-right: 15px;
+	position: absolute;
+	right: 30px;
+	top: 10px;
+	visibility: hidden;
+	transition: all .5s ease;
+	width: 270px;
+	z-index: 9999999;
+}
+.notification.visible {
+	opacity: .8;
+	top: 20px;
+	visibility: visible;
+}
+.notification.info {
+	background-color: #2980b9;
+}
+.notification.success {
+	background-color: green;
+}
+.notification.error {
+	background-color: #e74c3c;
+}
+.notification.warning {
+	background-color: #f39c12;
+}
+.notification > .icon {
+	align-items: center;
+	display: flex;
+	height: 100%;
+	justify-content: center;
+	width: 50px;
+}
+.notification > .icon > i {
+	color: white;
+	cursor: default;
+}
+.notification > .text {
+	align-items: center;
+	color: white;
+	cursor: default;
+	display: flex;
+	font-family: 'Open Sans';
+	font-weight: 400;
+	font-size: 15px;
+	width: calc(95% - 50px);
+	word-wrap: normal;
+}
+.notification > .close {
+	color: rgba(255, 255, 255, .8);
+	cursor: pointer;
+	position: absolute;
+	right: 8px;
+	top: 5px;
+	transition: color .3s ease;
+}
+.notification > .close:hover {
+	color: #fff;
+}
+
+.box-title {
+	font-weight: bold;
+}

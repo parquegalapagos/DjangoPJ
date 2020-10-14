@@ -1,0 +1,500 @@
+{% load static %} 
+{% block content %}
+<!-- DataTables -->
+<link rel="stylesheet" type="text/css" href="{% static 'css/select2.min.css' %}">
+
+<style type="text/css">
+    .filters input {
+        width: 100%;
+        padding: 3px;
+        box-sizing: border-box;
+        fieldset {
+            border: 1px solid #ddd !important;
+            margin: 0;
+            xmin-width: 0;
+            padding: 10px;
+            position: relative;
+            border-radius: 4px;
+            background-color: #f5f5f5;
+            padding-left: 10px!important;
+        }
+        legend {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 0px;
+            width: 35%;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 5px 5px 5px 10px;
+            background-color: #ffffff;
+        }
+        #map {
+            height: 500px;
+        }
+    }
+</style>
+
+<!-- PERMISOS PARA LOS ICONOS DE LA LISTA -->
+{% if perms.ap_especiesnativas.view_spncontrolhuevosnidos or perms.ap_especiesnativas.change_spncontrolhuevosnidos %}
+<input type="hidden" id="perm_change_spncontrolhuevosnidos" value="1" /> {% else %}
+<input type="hidden" id="perm_change_spncontrolhuevosnidos" value="0" /> {% endif %} {% if perms.ap_especiesnativas.delete_spncontrolhuevosnidos %}
+<input type="hidden" id="perm_delete_spncontrolhuevosnidos" value="1" /> {% else %}
+<input type="hidden" id="perm_delete_spncontrolhuevosnidos" value="0" /> {% endif %}
+
+<!-- FORMULARIO  -->
+<div id="content_TorNido">
+    <div id="mapaNido" style="display: none;">
+        <div class="stackbox-body">
+            <div id="map" style="height: 500px;"></div>
+        </div>
+
+    </div>
+    <div id="addTorNido" style="display: none;">
+        <div class="stackbox-header cab_popup" align="center">
+            <h id="tituloTornidol"> </h> Registro Nido de Tortugas </div>
+
+        <div class="stackbox-body" id="bodyaddTorNido">
+            <div class="notification">
+                <span class="icon">
+            <i class=""></i>
+        </span>
+                <span class="text"></span>
+                <span class="close"><i class="fa fa-close"></i></span>
+            </div>
+            <div class="row" align="center">
+                <div class="col-xs-12 callout" style="border-color: #1b90ad;">
+
+                    <!-- CAMPOS FORM -->
+                    {% csrf_token %}
+                    <form id="frm_TorNido" action="#" method="post">
+
+                        <table align="left">
+
+                            <input type="hidden" id="idTorNido" name="idTorNido" value="" />
+
+                            <tr height='10px;'></tr>
+                            <tr>
+                                <td align="left">* #Nido</td>
+                                <td width="10px"></td>
+                                <td>
+                                    <legend style="text-align: left;">
+                                        <select class="select2 requerido" id="SnidoTN" text="Nido" style="width: 200px;" onchange="getDataNido(this.value)">
+                                            <option value="">Seleccion una Opcion</option>
+                                            {% for nido in nidos %}
+                                            <option value="{{ nido.id }}" data-lat="{{ nido.latitud }}" data-lng="{{ nido.longitud }}" data-zona="{{ nido.sitio_id.descripcion }}" data-isla="{{ nido.sitio_id.isla_id.descripcion }}" data-resp="{{ nido.responsable_nido }}" data-resp_id="{{ nido.responsable_nido_id }}" data-fecha="{{ nido.fecha_protegido }}" data-inv="{{ nido.invitado}}">{{ nido.descripcion }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </legend>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <div>
+                            <fieldset class="col-md-12">
+                                <!-- <label style="position: relative;float: left;left: 12px;">* #Nido</label> -->
+
+                                <div class="panel panel-default">
+                                    <table>
+                                        <!-- FIELDS -->
+                                        <tr height='10px;'></tr>
+
+                                        <tr>
+                                            <td align="right">* Responsable Registro</td>
+                                            <td width="10px"></td>
+                                            <td>
+                                                <select class="select2 requerido" id="responRegTN" text="Responsable Registro" name="respReg[]" multiple="multiple" style="width: 100%;" disabled>
+                                                    <option value="">Seleccion una Opcion</option>
+                                                    {% for funcionario in funcionarios %}
+                                                    <option value="{{ funcionario.id }}" data-nombre="{{ funcionario.persona_id.nombre_completo }}">{{ funcionario.persona_id.apellidos }} {{ funcionario.persona_id.nombres }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr height='10px;'></tr>
+                                        <tr>
+                                            <td align="right">Invitado</td>
+                                            <td width="20px;"></td>
+                                            <td>
+                                                <input type="text" id="invTorN" name="invTorN" text="Invitado" value="" class="form-control requerido" style="width: 200px;" readonly="readonly" />
+                                            </td>
+                                        </tr>
+                                        <tr height='10px;'></tr>
+                                        <tr>
+                                            <td align="right">* Fecha Protegido</td>
+                                            <td width="10px"></td>
+                                            <td>
+                                                <input type="date" autocomplete='off' class="form-control requerido" text="Fecha Protegido" id="FProt" style="width: 200px; height:25px; font-size: 12px; " readonly="readonly" />
+                                            </td>
+                                        </tr>
+                                        <tr height='10px;'></tr>
+                                    </table>
+                                    <div class="panel-body">
+
+                                        <table>
+                                            <tr>
+                                                <td align="center">Isla</td>
+                                                <td align="center">Zona</td>
+                                                <td align="center">Punto Gps</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <input type="text" class="form-control" id="islaNT" style="width: 200px;font-size: 12px;text-align: center;" readonly/>
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control" id="zonaNT" style="width: 200px;font-size: 12px;text-align: center;" readonly/>
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control" id="ptoGpsNT" style="width: 200px;font-size: 12px;text-align: center;" readonly/>
+                                                </td>
+                                                <td>
+                                                    <a href='#mapaNido' data-stackbox='true' data-stackbox-position='absolute' data-stackbox-width='500' data-stackbox-height='500' style="font-size: 20px;" onclick="initMap();">
+                                                        <i class="fa fa-street-view text-blue"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+
+                            </fieldset>
+                        </div>
+
+                        <div>
+                            <fieldset class="col-md-12">
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+
+                                        <table>
+                                            <tr>
+                                                <td align="center">Neonatos
+                                                    <br>Liberados</td>
+                                                <td align="center">Huevos
+                                                    <br>no Eclosionados</td>
+                                                <td align="center">Muertos</td>
+                                                <td align="center">Escapados</td>
+                                                <td align="center">Huevos
+                                                    <br>Traidos</td>
+                                                <td align="center">Neonatos
+                                                    <br>Traidos</td>
+
+                                            </tr>
+                                            <tr>
+
+                                                <td>
+                                                    <input type="text" class="form-control" id="neoLib" style="width: 100px;text-align: center;" onkeypress='return isNumberKey(event);' />
+                                                </td>
+
+                                                <td>
+                                                    <input type="text" class="form-control" id="hnoEclo" style="width: 100px;text-align: center;" onkeypress='return isNumberKey(event);' />
+                                                </td>
+
+                                                <td>
+                                                    <input type="text" class="form-control" id="muertosTN" style="width: 100px;text-align: center;" onkeypress='return isNumberKey(event);' />
+                                                </td>
+
+                                                <td>
+                                                    <input type="text" class="form-control" id="escapaTN" style="width: 100px;text-align: center;" onkeypress='return isNumberKey(event);' />
+                                                </td>
+
+                                                <td>
+                                                    <input type="text" class="form-control" id="htraidoTN" style="width: 100px;text-align: center;" onkeypress='return isNumberKey(event);' />
+                                                </td>
+
+                                                <td>
+                                                    <input type="text" class="form-control" id="ntraidoTN" style="width: 100px;text-align: center;" onkeypress='return isNumberKey(event);' />
+                                                </td>
+
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+
+                            </fieldset>
+                        </div>
+
+                        <table style="width: 100%">
+                            <tr height='10px;'></tr>
+                            <tr>
+                                <td align="left">Invitado</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="text" id="InvTorN" class="form-control" style="width: 200px;" /> </td>
+                            </tr>
+
+                            <tr>
+                                <td align="left">Fecha Liberado</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="date" autocomplete='off' class="form-control" id="FLiber" style="width: 200px; height:30px; font-size: 12px; " />
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td align="left">Responsable de liberacion</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <select class="select2" id="responlibTN" name="respLib[]" multiple="multiple" style="width: 100%;">
+                                        <option value="">Seleccion una Opcion</option>
+                                        {% for funcionario in funcionarios %}
+                                        <option value="{{ funcionario.id }}" data-nombre="{{ funcionario.persona_id.nombre_completo }}">{{ funcionario.persona_id.apellidos }} {{ funcionario.persona_id.nombres }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="left">Observacion</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <textarea id="observacionTN" class="form-control" rows="3" style="width: 100%; font-size: 12px;"></textarea>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <input type="hidden" id="tipoTN" value="0" />
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="stackbox-footer">
+            {% if perms.ap_especiesnativas.add_spncontrolhuevosnidos or perms.ap_especiesnativas.change_spncontrolhuevosnidos %}
+            <button class="btn btn-primary" onclick="setInsertUpdateTorNido();">Grabar</button>
+            {% endif %}
+            <button class="btn btn-default" data-close-stackbox="true">Close</button>
+        </div>
+    </div>
+
+    <div class="box">
+
+        <div class="box-header">
+            <i class="fa fa-list"></i>
+            <h3 class="box-title">Lista Registros Nidos Tortugas</h3> <img src="{% static 'image/tortuga.svg' %}" width="2%">
+            <div class="botonera" style="float: right; right: 1px;">
+
+                {% if perms.ap_especiesnativas.add_spncontrolhuevosnidos %}
+                <a onclick="limpiarFormTorNido();" href='#addTorNido' data-stackbox='true' data-stackbox-position="absolute"><i class="fa fa-plus-circle text-green btn_nuevo"></i></a> {% endif %}
+
+                <!--a title="pfd" onclick="generarPdf('tabla_TorNido',11)"><i class="fa fa-file-pdf-o text-green"></i></a-->
+
+                <a title="excel" onclick="generarExcel('tabla_TorNido',14)"><i class="fa fa-file-excel-o text-green"></i></a>
+
+                <!--a title="Agregar Nuevo" onclick="limpiarFormLicencia_SP();"   href='#addLicenciaL' data-stackbox='true' data-stackbox-position="absolute"><i class="fa fa-plus-circle text-green"></i></a-->
+            </div>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+
+            <div class="box box-default" style="position: relative;top: 10px;">
+                <div class="box-header with-border" style="cursor: move;">
+                    <!-- tools box -->
+                    <div class="pull-right box-tools">
+                        <button type="button" class="btn btn-primary btn-sm pull-right" data-toggle="collapse" href="#collapseTorNid" role="button" aria-expanded="false" aria-controls="collapseTorNid" style="margin-right: 5px;" data-original-title="Collapse">
+                            <i class="fa fa-minus"></i></button>
+                    </div>
+                    <!-- /. tools -->
+                    <i class="fa fa-search"></i>
+                    <h3 class="box-title">
+                Filtros de Busqueda
+              </h3>
+                </div>
+                <div class="box-body collapse" style="background-color: white;" id="collapseTorNid">
+                    <div class="col-xs-12" align="center" style="box-shadow: 0px 5px 5px 0px;">
+                        <table>
+                            <tr>
+                                <td align="right">Fecha Protegido</td>
+                                <td width="10px"></td>
+                                <td>
+                                    <div class="input-daterange input-group" id="datepicker" style="">
+                                        <input type="text" autocomplete="off" class="input-sm form-control" name="start" id="FdesdePTorNido" />
+                                        <span class="input-group-addon" style="border:none;font-weight: bold;">a</span>
+                                        <input type="text" autocomplete="off" class="input-sm form-control" name="end" id="FhastaPTorNido" />
+                                    </div>
+                                </td>
+                                <td width="10px"></td>
+                                <td align="right">Nido</td>
+                                <td width="10px"></td>
+                                <td>
+                                    <input type="text" class="form-control" name="" id="nidoPTorNido" style="width: 100%;" />
+                                </td>
+                                <td width="10px"></td>
+                                <td align="right">Zona</td>
+                                <td width="10px"></td>
+                                <td>
+                                    <input type="text" class="form-control" name="" id="zonaPTorNido" style="width: 100%;" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="right">Fecha Liberacion</td>
+                                <td width="10px"></td>
+                                <td>
+                                    <div class="input-daterange input-group" id="datepicker" style="">
+                                        <input type="text" autocomplete="off" class="input-sm form-control" name="start" id="FdLibPTorNido" />
+                                        <span class="input-group-addon" style="border:none;font-weight: bold;">a</span>
+                                        <input type="text" autocomplete="off" class="input-sm form-control" name="end" id="FhLibPTorNido" />
+                                    </div>
+                                </td>
+                                <td width="10px"></td>
+                                <td align="right">Responsable</td>
+                                <td width="10px"></td>
+                                <td>
+                                    <input type="text" class="form-control" name="" id="respPTorNido" style="width: 100%;" />
+                                </td>
+                                <td width="10px"></td>
+                                <td colspan="3" align="right">
+                                    <button type="button" class="btn btn-block btn-success" style="width:80px;float:right;" onclick="buscarTorNidoParametros();">Buscar</button>
+                                </td>
+                            </tr>
+                            <tr height="10px"> </tr>
+                        </table>
+
+                    </div>
+
+                </div>
+            </div>
+
+            <!--div class="col-md-12"-->
+
+            <div class="box box-default" style="position: relative;top: 10px;">
+                <div class="box-header with-border" style="cursor: move;">
+                    <!-- tools box -->
+                    <div class="pull-right box-tools">
+                        <button type="button" class="btn btn-primary btn-sm pull-right" data-toggle="collapse" href="#collapseG" role="button" aria-expanded="false" aria-controls="collapseG" style="margin-right: 5px;" data-original-title="Collapse">
+                            <i class="fa fa-minus"></i></button>
+                    </div>
+                    <!-- /. tools -->
+                    <i class="fa fa-search"></i>
+                    <h3 class="box-title">
+                Gráfico
+              </h3>
+                </div>
+                <div class="box-body collapse in" style="background-color: white;" id="collapseG">
+                    <div id="containerTorN" style="width: 100%;"></div>
+                </div>
+            </div>
+
+            <!--/div-->
+
+            <div class="col-md-12">
+                <div class="col-md-9"></div>
+                <div class="col-md-3">
+                    <div class="box box-default" style="position: relative;top: 10px; float: right;right: -10%;">
+                        <div class="box-header with-border" style="cursor: move;">
+                            <!-- tools box -->
+                            <div class="pull-right box-tools">
+                                <button type="button" class="btn btn-primary btn-sm pull-right" data-toggle="collapse" href="#collapseTable" role="button" aria-expanded="false" aria-controls="collapseTable" style="margin-right: 5px;" data-original-title="Collapse">
+                                    <i class="fa fa-minus"></i></button>
+                            </div>
+                            <!-- /. tools -->
+                            <i class="fa fa-search"></i>
+                            <h3 class="box-title">
+                                Ver Ocultar Columnas
+                            </h3>
+                        </div>
+                        <div class="box-body collapse" style="background-color: white;" id="collapseTable">
+                            <div class="col-xs-12" align="left" style="box-shadow: 0px 5px 5px 0px;" id="filterTableTor">
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <table id="tabla_TorNido" style="font-size: 10px; text-transform: uppercase;font-weight: bold;" class="table table-striped table-bordered" width="100%" cellspacing="0">
+                <thead>
+                    <tr style="background-color: #0073b7;    color: white;">
+                        <th>Fecha
+                            <br>Protegido</th>
+                        <th>Fecha
+                            <br>Liberacion</th>
+                        <th>Zona</th>
+                        <th>Num Nido</th>
+                        <th>Neonatos
+                            <br>Liberados</th>
+                        <th>Huevos no
+                            <br>Ecosionados</th>
+                        <th>Muertos</th>
+                        <th>Escapados</th>
+                        <th>Huevos
+                            <br>Traidos</th>
+                        <th>Neonatos
+                            <br>Traidos</th>
+                        <th>Responsable
+                            <br>Registro</th>
+                        <th>Responsable
+                            <br>Liberar</th>
+                        <th>Observacion</th>
+                        <th></th>
+                        <th></th>
+
+                    </tr>
+                </thead>
+                <tbody id="bodytabla_TorNido">
+
+                </tbody>
+            </table>
+        </div>
+        <!-- /.box-body -->
+
+    </div>
+    <!-- /.box -->
+
+</div>
+<!-- /.content -->
+
+<!-- AdminLTE datatable -->
+<!-- jQuery 3 -->
+{% load static %}
+
+<!-- <script src="{% static 'js/lib_internas/script_espnativas.js' %}"></script> -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBHJxzPHD_egYnhxntqcvfem35YRjruzAg" async defer></script>
+
+<script>
+    $(document).ready(function() {
+        dataCabFla = ['Fecha Protegido', 'Fecha Liberacion', 'Zona', 'Num Nido', 'Neonatos Liberados', 'Huevos no Ecosionados', 'Muertos', 'Escapados', 'Huevos Traidos', 'Neonatos Traidos', 'Responsable Registro', 'Responsable Liberar', 'Observacion'];
+        dataDisableFla = [11, 12];
+        intFilterTabla('filterTableTor', dataCabFla, dataDisableFla);
+        $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
+            checkboxClass: 'icheckbox_flat-green',
+            radioClass: 'iradio_flat-green'
+        })
+
+        var table = $('#tabla_TorNido').DataTable();
+        var f1 = (new Date).getFullYear() + "-01-01";
+        var f2 = (new Date).getFullYear() + "-12-31";
+        var dataini = f1 + "," + f2;
+        buscarTorNidoParametros(dataini);
+
+        $('.input-daterange').datepicker();
+        $('#SnidoTN').select2();
+        $('#responRegTN').select2();
+        $('#responlibTN').select2();
+
+    });
+    var map;
+
+    function initMap() {
+        geo = $("#ptoGpsNT").val();
+        arrGeo = [];
+        arrGeo = geo.split("|");
+        var myLatlng = new google.maps.LatLng(arrGeo[0], arrGeo[1]);
+        var mapOptions = {
+            zoom: 12,
+            center: myLatlng
+        }
+        var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+        var marker = new google.maps.Marker({
+            position: myLatlng,
+            title: ""
+        });
+
+        // To add the marker to the map, call setMap();
+        marker.setMap(map);
+    }
+</script>
+
+{% endblock %}

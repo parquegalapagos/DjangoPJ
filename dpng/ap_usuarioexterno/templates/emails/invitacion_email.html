@@ -1,0 +1,11 @@
+{% autoescape off %}
+
+Hola {{ user.username }}, Bienvenido al sistema S.I.A.
+
+Su registro se realizó con éxito!!
+
+Por favor de clic en el enlace a continuación para activar su cuenta: 
+
+http://{{ domain }}{% url 'activate' uidb64=uid token=token %}
+
+{% endautoescape %}

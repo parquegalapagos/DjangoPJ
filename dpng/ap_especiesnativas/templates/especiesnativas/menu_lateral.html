@@ -1,0 +1,295 @@
+{% extends "home.html" %} 
+{% load static %} 
+{% block principalhome %}
+
+<input type="hidden" id="menu_centrocrianza" value="{{menu_centrocrianza}}">
+
+
+<div id="principal_home" style="position: relative; top:-40px;">
+
+    {% if menu_centrocrianza %}
+
+        <div class="input-group" style="width: 500px;position: relative;float: right;top: -30px;display: none;">
+            <div class="input-group-addon">
+                <i class="fa fa-calendar"></i>
+            </div>
+            <select class="select2 pull-right" id="SccrianzaMenu" style="width: 200px;">
+                <option value="">Seleccion una Opcion</option>
+                {% for centrocrianza in centroscrianzas %} {% if centrocrianza.isla_id == isla_id %}
+                <option value="{{ centrocrianza.id }}" selected>{{ centrocrianza.descripcion }}</option>
+                {% else %}
+                <option value="{{ centrocrianza.id }}">{{ centrocrianza.descripcion }}</option>
+                {% endif %} {% endfor %}
+            </select>
+            <div class="input-group-addon">
+                <i class="fa fa-calendar"></i>
+            </div>
+            <select class="select2" id="SgnacimientoMenu" style="width: 200px;">
+            </select>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <div id="container" style="width: 98%;margin-left:15px;"></div>
+            </div>
+            <div class="col-xs-12" style="height: 20px;"></div>
+            <div class="col-xs-12">
+                <div class="col-xs-6">
+                    <div id="container2"></div>
+                </div>
+                <div class="col-xs-6">
+                    <div id="container4"></div>
+                </div>
+            </div>
+        </div>
+
+
+    {% else %}
+        <div style="margin-top: 15%;">
+            <p style="text-align: center;">
+              <span style="font-size: x-large;">Bienvenido al módulo de CREI - ESPECIES NATIVAS</span>
+            </p>
+            <p style="text-align: center;">
+              <span style="font-size: large;"></span>
+            </p>
+            <p style="text-align: center;">
+              <span style="font-size: xx-large;">
+                <img src="{% static '/image/login/logo-PNG.png' %}"  width="15%">
+              </span>
+            </p>
+        </div>
+    {% endif %}
+
+    
+
+</div>
+{%endblock%}
+
+ 
+{% block menu %}
+<li class="header">ESPECIES NATIVAS</li>
+
+{% if menu_centrocrianza %}
+<li class="treeview menu-open">
+    <a href="#">
+        <i style="font-size: 18px;" class="fa fa-user"></i> <span style="font-size: 18px;"> Centro de Crianza </span>
+        <span class="pull-right-container">
+      <i class="fa fa-angle-left pull-right"></i>
+    </span>
+    </a>
+    <ul class="treeview-menu" style="display: block;">
+        <li onclick="addTab('Control de Huevos','control','idmenu1');" style="cursor: pointer;">
+            <a><i id="idmenu1" class="fa fa-circle-o text-aqua"></i>Control de Huevos </a>
+        </li>
+        <li onclick="addTab('Control de Crecimiento','control_crecimiento','idmenu2');" style="cursor: pointer;">
+            <a><i id="idmenu2" class="fa fa-circle-o text-aqua"></i>Control de Crecimiento</a>
+        </li>
+        <li onclick="addTab('Control de Crecimiento Encontrados','control_crecimiento_encontrados','idmenu6');" style="cursor: pointer;">
+            <a><i id="idmenu6" class="fa fa-circle-o text-aqua"></i>Control de Crecimiento <br> Encontrados</a>
+        </li>
+        <li onclick="addTab('Tortugas Adultas','tortugasAdultas','idmenu22');" style="cursor: pointer;">
+            <a><i id="idmenu22" class="fa fa-circle-o text-aqua"></i>Tortugas Adultas</a>
+        </li>
+    </ul>
+
+</li>
+
+{% endif %}
+
+{% if submenu_nidostortuga or submenu_nidospetreles or submenu_flamingos %}
+<li class="treeview menu-open">
+    <a href="#">
+        <i style="font-size: 18px;" class="fa fa-map-marker"></i> <span style="font-size: 18px;">Revisiones en  <br> Sitio</span>
+        <span class="pull-right-container">
+      <i class="fa fa-angle-left pull-right"></i>
+    </span>
+    </a>
+    <ul class="treeview-menu" style="display: block;">
+        <li onclick="addTab('Nidos','nidos','idmenu26');" style="cursor: pointer;">
+            <a><i id="idmenu26" class="fa fa-circle-o text-aqua"></i>Nidos</a>
+        </li>
+        
+        {% if submenu_nidostortuga %}
+        <li onclick="addTab('Nidos Tortugas','tortugasNidos','idmenu24');" style="cursor: pointer;">
+            <a><i id="idmenu24" class="fa fa-circle-o text-aqua"></i>Nidos Tortugas</a>
+        </li>
+        {% endif %} 
+        {% if submenu_nidospetreles %}
+        <li onclick="addTab('Nidos Petrel','petrelesNidos','idmenu27');" style="cursor: pointer;">
+            <a><i id="idmenu27" class="fa fa-circle-o text-aqua"></i>Nidos Petreles</a>
+        </li>
+        {% endif %} 
+        {% if submenu_flamingos %}
+        <li onclick="addTab('Flamingos','flamingosNidos','idmenu28');" style="cursor: pointer;">
+            <a><i id="idmenu28" class="fa fa-circle-o text-aqua"></i>Flamingos</a>
+        </li>
+        {% endif %}
+
+    </ul>
+</li>
+{% endif %} 
+{% if menu_reportes %}
+<!-- REPORTES -->
+<li class="treeview menu-open">
+    <a href="#">
+        <i style="font-size: 18px;" class="fa fa-file"></i> <span style="font-size: 18px;">Reportes</span>
+        <span class="pull-right-container">
+      <i class="fa fa-angle-left pull-right"></i>
+    </span>
+    </a>
+    <ul class="treeview-menu" style="display: block;">
+
+        <li onclick="addTab('Datos Huevos','buscar_pintura','idmenu3');" style="cursor: pointer;">
+            <a><i id="idmenu3" class="fa fa-circle-o text-aqua"></i>Datos de Huevos</a>
+        </li>
+        <li onclick="addTab('Ver Control Crecimiento','ver_control_crecimiento','idmenu4');" style="cursor: pointer;">
+            <a><i id="idmenu4" class="fa fa-circle-o text-aqua"></i>Ver Control de Crecimiento</a>
+        </li>
+        <li onclick="addTab('Reporte Control Crecimiento','reporte_control_crecimiento','idmenu5');" style="cursor: pointer;">
+            <a><i id="idmenu5" class="fa fa-circle-o text-aqua"></i>Reporte Control Crecimiento</a>
+        </li>
+        <li onclick="addTab('Reporte Grupo','reporte_grupo','idmenu7');" style="cursor: pointer;">
+            <a><i id="idmenu7" class="fa fa-circle-o text-aqua"></i>Reporte Grupo</a>
+        </li>
+        <li onclick="addTab('Estado Actual','estadoActual','idmenu23');" style="cursor: pointer;">
+            <a><i id="idmenu23" class="fa fa-circle-o text-aqua"></i>Estado Actual</a>
+        </li>
+        <li onclick="addTab('Reporte Sitio','reporteAvistamientos','idmenu33');" style="cursor: pointer;">
+            <a><i id="idmenu33" class="fa fa-circle-o text-aqua"></i>Reporte Datos en Sitio</a>
+        </li>
+        <li onclick="addTab('Reporte Petreles','reportePetreles','idmenu99');" style="cursor: pointer;">
+            <a><i id="idmenu99" class="fa fa-circle-o text-aqua"></i>Reporte Datos Petreles</a>
+        </li>
+    </ul>
+</li>
+
+{% endif %} 
+{% if menu_dashboard %}
+<li class="treeview menu-open">
+    <a href="#">
+        <i style="font-size: 18px;" class="fa fa-dashboard"></i> <span style="font-size: 18px;">Dashboard</span>
+        <span class="pull-right-container">
+      <i class="fa fa-angle-left pull-right"></i>
+    </span>
+    </a>
+    <ul class="treeview-menu" style="display: block;">
+        <li onclick="addTab('Dashboard','dashboard','idmenu30');" style="cursor: pointer;">
+            <a><i id="idmenu30" class="fa fa-circle-o text-aqua"></i>Dashboard</a>
+        </li>
+    </ul>
+</li>
+{% endif %} 
+
+{% if menu_config %}
+<!-- CONFIGURACIONES -->
+<li class="treeview menu-open">
+    <a href="#">
+        <i style="font-size: 18px;" class="fa fa-gears"></i> <span style="font-size: 18px;">Configuración</span>
+        <span class="pull-right-container">
+      <i class="fa fa-angle-left pull-right"></i>
+    </span>
+    </a>
+    <ul class="treeview-menu" style="display: block;">
+        <li onclick="addTab('Centros de Crianzas','centrosCrianza','idmenu20');" style="cursor: pointer;">
+            <a><i id="idmenu20" class="fa fa-circle-o text-aqua"></i>Centros de Crianza</a>
+        </li>
+
+        <li onclick="addTab('Poblacion','poblacion','idmenu21');" style="cursor: pointer;">
+            <a><i id="idmenu21" class="fa fa-circle-o text-aqua"></i>Poblacion</a>
+        </li>
+
+        <li onclick="addTab('Sitios','sitios','idmenu25');" style="cursor: pointer;">
+            <a><i id="idmenu25" class="fa fa-circle-o text-aqua"></i>Sitios</a>
+        </li>
+
+        
+
+        <li onclick="addTab('Especies','especies','idmenu30');" style="cursor: pointer;">
+            <a><i id="idmenu30" class="fa fa-circle-o text-aqua"></i>Especies</a>
+        </li>
+    </ul>
+
+</li>
+
+<div id="popupNidos" style="display: none;">
+
+  <div class="stackbox-header cab_popup" align="center">
+    <img src="{% static 'image/favicon.ico' %}" width="40px" style="float:left;margin-top: -5px;"/>
+    <h id="">Buscar Nidos</h>
+  </div>
+
+  <div class="stackbox-body" align="center">
+    <div class="row" style="box-shadow: 5px 5px 5px 10px #888888;width: 500px;">
+    <div class="divisor" style="text-align: left;">Filtros de Busqueda</div><br>
+        <div class="col-xs-12" style="border-color: #1b90ad;">
+          <table>
+            <tr>
+              <td align="left">Nido:</td>
+              <td width="10px;"></td>
+              <td>
+                <input id="nidoPopup" type="text" class="form-control" style="width: 100%;" autofocus>
+              </td>
+              <td width="10px;"></td>
+              <td align="left">Zona:</td>
+              <td width="10px;"></td>
+              <td>
+                <input id="zonaPopup" type="text" class="form-control" style="width: 100%;" autofocus>
+              </td>
+              <td width="10px;"></td>
+              <td><a style="cursor: pointer; font-size: 20px;" title="Buscar" onclick="getDataNidosPop();"><i class="fa fa-search text-blue"></i></a></td>
+            </tr>
+          </table>
+         <br>
+        </div>
+    </div>
+    <br><br>
+    <div class="row">
+      <input type="hidden" id="pagina_enviaPopNido">
+      <div class="col-xs-1"></div>
+      <div class="col-xs-10">
+        <div id="content_bodynido" align="center" style="box-shadow: 5px 10px #888888;width: 100%;">
+          <table id="tabla_PopupNido" style="font-size: 12px; text-transform: uppercase;" class="display table table-striped table-bordered" width="100%" cellspacing="0">
+              <thead>
+              <tr style="background-color: #3c8dbc;    color: white;"> 
+                <th>Nido</th>
+                <th>Zona</th>              
+                <th></th>
+              </tr>
+              </thead>
+              <tbody class="botonera1" id="body_tabla_PopupNido">
+              
+              </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="col-xs-1"></div> 
+    </div>
+  </div>
+
+  <div class="stackbox-footer">
+    <!--button class="btn btn-primary" id="stackbox_save">Grabar</button-->
+    <button class="btn btn-default" data-close-stackbox="true">Close</button>
+  </div>
+</div>
+
+
+{% endif %} 
+{% load static %}
+
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+<script src="{% static 'js/lib_externas/jquery-1.12.4.js' %}"></script>
+<script src="{% static 'js/lib_externas/jquery-ui.js' %}"></script>
+<script>document.write('<script src="{% static "js/lib_internas/script.js" %}?dev=' + Math.floor(Math.random() * 100) + '"\><\/script>');</script>
+<script>document.write('<script src="{% static "js/lib_internas/script_espnativas.js" %}?dev=' + Math.floor(Math.random() * 100) + '"\><\/script>');</script>
+<script>
+    $(document).ready(function() {
+        iniciarGruposYears("SgnacimientoMenu");
+        if($("#menu_centrocrianza").val() == 'True')
+            graficoHuevosCentroCrianzaByFilter('SgnacimientoMenu', 'SccrianzaMenu', 'Menu');
+    });
+</script>
+
+{%endblock%}

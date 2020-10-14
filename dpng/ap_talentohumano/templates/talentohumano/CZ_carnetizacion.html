@@ -1,0 +1,397 @@
+{% load static %} 
+{% block content %}
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <!--
+    <script type="text/javascript" src="{% static 'js/lib_externas/camera/webcam.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/lib_externas/camera/func_camera.js' %}"></script>
+    -->     
+    <link rel="stylesheet" href="{% static 'css/carnetizacion.css' %}">
+
+</head>
+
+<!-- PERMISOS -->
+{% if perms.ap_talentohumano.add_perfuncionariocarnet or perms.ap_talentohumano.change_perfuncionariocarnet %}
+<input type="hidden" id="perm_add_perfuncionariocarnet" value="1" /> {% else %}
+<input type="hidden" id="perm_add_perfuncionariocarnet" value="0" /> {% endif %}
+
+<div id="content_carnetizacion">
+
+    <!----------------- FORMULARIO  --------------->
+    <textarea id="cont_form_carnetizacion" style="display: none;">
+        <div class="col-xs-12 callout" style="width: 700px;">
+            <script language="JavaScript">
+                Webcam.set({
+                    width: 317,
+                    height: 237,
+                    image_format: 'jpeg',
+                    jpeg_quality: 100,
+                });
+                Webcam.attach('#my_camera');
+
+                //Activación de Select Auto-Search  
+                //$("#cntz_funcionario_id").select2();
+                $("#ctnz_estadocredencial").select2();
+                $("#ctnz_cargo").select2();
+            </script>
+
+            <form id="frm_carnetizacion" action="#" method="post" style="width: 1000px;">
+
+                <div class="row">
+                    <div class="col-xs-4">
+                        <h4 style="text-align: center; text-decoration-color: blue">Datos Del Funcionario</h4>
+                        <table>
+                            <input type="hidden" id="cntz_id" name="cntz_id" value="" />
+                            <tr>
+                                <td align="left">*Funcionario</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <select id="cntz_funcionario_id" class="" text="Funcionario" style="width: 300px;" onchange="set_funcionariocarnet_detalles();">
+                                    </select>
+                                </td>
+                            </tr>
+
+                            <tr height="10px;"> </tr>
+
+                            <tr style="text-align: right;">
+                                <td>
+                                    <span class="btn_cntz_mostrarfunc" onclick="mostra_cntz_funcionario(1)" style="color: blue;">Mostrar (+)</span>
+                                    <span class="btn_cntz_ocultarfunc" onclick="mostra_cntz_funcionario(0)" style="color: red;">Ocultar (-)</span>
+                                </td>
+
+                            </tr>
+
+                            <tr>
+                                <table id="cntz_info_funcionario" class="form_info_cntz_func">
+                                    <tr class="form-cntz-info">
+                                        <td style="text-align: left;">IDENTIFICACION: <span id="cntz_identificacion" name="cntz_identificacion" type="text" class="select2" text="Identificacion"> </span>
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+
+                                    </tr>
+                                    <tr height="5px;"> </tr>
+
+                                    <tr class="form-cntz-info">
+                                        <td style="text-align: left;">DIRECCION:
+                                            <span id="cntz_direccion" name="cntz_direccion" type="text" class="select2" text="Dirección"> </span>
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+
+                                    </tr>
+                                    <tr height="5px;"> </tr>
+
+                                    <tr class="form-cntz-info">
+                                        <td style="text-align: left;">ISLA TRABAJO:
+                                            <span id="cntz_islatrabajo" name="cntz_islatrabajo" type="text" class="select2" text="Isla Trabajo" style="width: 300px; font-size: 11px;"> </span>
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+
+                                    </tr>
+                                    <tr height="10px;"> </tr>
+
+                                </table>
+
+                            </tr>
+
+                            <tr height="10px;" style="margin-top: 20px;"> </tr>
+                            <tr>
+                                <td align="left">*Estado Carnet</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <select id="ctnz_estadocredencial" class="select2" text="Estado Credencial">
+                                        <option value=""> Seleccione una Opcion</option>
+                                        <option value="Pendiente">PENDIENTE</option>
+                                        <option value="Impreso">IMPRESO</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr height="10px;"></tr>
+
+                            <tr>
+                                <td align="left">*Cargo</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <select id="ctnz_cargo" class="select2" text="Estado Credencial">
+                                        <option value=""> Seleccione una Opcion</option>
+                                        {% for cargo in cargos %}
+                                        <option value="{{ cargo.id }}">{{ cargo.label }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr height="10px;"></tr>
+                            <tr>
+                                <td style="text-align: left; ">Observación</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="text" id="cntz_observacion" name="cntz_observacion" class="form-control" />
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-xs-4">
+                        <h4>Visualización:</h4>
+                        <div id="marco_camara" class="carnet-marco">
+                            <div id="my_camera"></div>
+                        </div>
+
+                    </div>
+                    <div class="col-xs-4">
+                        <h4>Foto:</h4>
+                        <div id="results" class="carnet-marco">
+                            <img id="foto_personal" src="" alt="Error Imagen" style="width: 100%">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-4" />
+
+                    <div class="col-xs-4">
+                        <input type=button value="Tomar Foto" onClick="take_snapshot()">
+                    </div>
+
+                    <div class="col-xs-4">
+                        <label for="ctnz_foto_archivo" class="btn-label">Subir Foto</label>
+                        <input type="file" name="ctnz_foto_archivo" id="ctnz_foto_archivo" value="" accept="image/*" onchange="readURL(this);" style="visibility:hidden;">
+
+                        <!-- ICONO -->
+                        <div style="margin-left: 20px;">
+                            <img id="cntz_imgContentFileAcc" src="" width="50px" />
+                        </div>
+
+                        <!-- ARCHIVOS -->
+                        <div id="cntz_contentFileAcc" style="margin-left: 20px;">
+                        </div>
+
+                    </div>
+                </div>
+
+        </div>
+
+        <input type="hidden" id="tipot_carnetizacion" value="0" />
+        </form>
+</div>
+<!--fin col 12-->
+</textarea>
+
+<!----------------- LISTA -------------------->
+<div class="box">
+
+    <!-- HEADER -->
+    <div class="box-header">
+        <i class="fa fa-list"></i>
+        <h3 class="box-title">Lista de Carnets</h3>
+        <div class="botonera" style="float: right; right: 1px;">
+            <a title="pfd" onclick="generarPdf('tabla_carnetizacion',5)"><i class="fa fa-file-pdf-o text-green"></i></a>
+            <a title="excel" onclick="generarExcel('tabla_carnetizacion',5)"><i class="fa fa-file-excel-o text-green"></i></a> {% if perms.ap_talentohumano.add_perfuncionariocarnet %}
+            <a title="Agregar Nuevo" onclick="limpiarFormCarnetizacion();" href='#popupGeneral' data-stackbox='true' data-stackbox-position="absolute" data-stackbox-width='1200' data-stackbox-height='300'>
+                <i class="fa fa-plus-circle text-green"></i>
+            </a>
+            {% endif %}
+            <input type="hidden" id="cargaFunc" value="0">
+        </div>
+    </div>
+
+    <textarea id="optionFuncS" style="display: none;"></textarea>
+
+    <!-- BODY -->
+    <div class="box-body">
+        <table id="tabla_carnetizacion" style="font-size: 10px; text-transform: uppercase;" class="table table-striped table-bordered" width="100%" cellspacing="0">
+            <thead>
+                <tr class="bg-light-blue-gradient" style="color: white;">
+                    <th>Fecha Creación</th>
+                    <th>Identificación</th>
+                    <th>Nombres</th>
+                    <th>Cargo</th>
+                    <th>Estado</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                <tr class="filters" id="ftrol">
+                    <th>Fecha Creación</th>
+                    <th>Identificación</th>
+                    <th>Nombres</th>
+                    <th>Cargo</th>
+                    <th>Estado</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody class="botonera1">
+                {% for item in ctnz_funcionariocarnet_list %}
+                <tr>
+                    <textarea style="display:none;" id="td_datos_{{ item.id }}">{{ item }}</textarea>
+                    <input type="hidden" id="td_observacion_{{ item.id }}" value="{{ item.observaciones }}">
+                    <input type="hidden" id="td_funcionario_id_{{ item.id }}" value="{{ item.funcionario_id.id }}">
+                    <input type="hidden" id="td_cargo_id_{{ item.id }}" value="{{ item.cargo_id.id }}">
+                    <td align="left" id="td_cntz_fecha_{{ item.id }}" style="font-weight: bold;">{{ item.fecha_ingreso }}</td>
+                    <td align="left" id="td_cntz_ident_{{ item.id }}">{{ item.funcionario_id.persona_id.identificacion }}</td>
+                    <td align="left" id="td_cntz_nombrecompleto_{{ item.id }}">{{ item.funcionario_id.persona_id.nombre_completo }}</td>
+                    <td align="center" id="td_cntz_cargofunc_{{ item.id }}">{{ item.cargo_id.label }}</td>
+                    <td align="center" id="td_cntz_estadocred_{{ item.id }}">{{ item.estado_credencial }}</td>
+
+                    <td align="center">
+                        {% if perms.ap_talentohumano.change_perfuncionariocarnet or perms.ap_talentohumano.view_perfuncionariocarnet %}
+                        <a href='#popupGeneral' data-stackbox='true' data-stackbox-width='1200' data-stackbox-height='300' data-stackbox-position='absolute' onclick="editCarnetizacion('{{ item.id }}')">
+                            <i class="fa fa-edit text-green"></i>
+                        </a>
+                        {% endif %}
+
+                    </td>
+
+                    <td align="center">
+                        {% if perms.ap_talentohumano.delete_perfuncionariocarnet %}
+                        <a onclick="deleteModal('{{ item.id }}','carnetizacion');"><i class="fa fa-trash text-green"></i></a> {% endif %}
+
+                    </td>
+
+                    <td align="center">
+                        
+                        <!--
+                        <a style="font-size: 18px; cursor: pointer;" href='#pdfaccion_ctnz' data-stackbox-width='1000' data-stackbox-heigth='600' data-stackbox='true' data-stackbox-position='absolute' onclick="verPdfAccion_cntz('{{ item.id }}');"><i class="fa fa-file-pdf-o text-green"></i></a>
+                        -->
+
+                        <a style="font-size: 18px; cursor: pointer;" href='https://produccion.sia.dpng.gob.ec:8243/pentaho/api/repos/%3Ahome%3ADPNG%3AReportes%3ADAF%3AGTH%3ACarnetDpng.prpt/viewer?id={{ item.id }}' target="_blank"><i class="fa fa-file-pdf-o text-green" ></i></a>
+
+                    </td>
+
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+    <!-- /.box-body -->
+
+</div>
+
+<!---------------- PDF ----------------------->
+
+<div id="pdfaccion_ctnz" style="display: none;">
+    <!-- TITULO DE CABECERA -->
+    <div class="stackbox-header" align="center" style="color:white; background-color: #3c8dbc; font-weight: bold; font-size: 18px;">
+        <img src="{% static 'image/favicon.ico' %}" width="40px" style="float:left;margin-top: -5px;" />DPNG - CARNET
+    </div>
+
+    <div class="stackbox-body">
+        <div id="section_rep" style="color: black;">
+
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="col-xs-12" align="center" style="padding: 0px; height: 325px; ">
+
+                        <img src="static/image/carnetizacion/fondo_carnet_frontal.png" height="325px" width="205.5px" />
+
+                        <div style="position: relative; top: -240px; z-index: 100; font-size: 10px;">
+                            <img id="pdf_cntz_foto" class="pdf_ctnz" src="" width="100px" height="110px" />
+                        </div>
+
+                        <div style="position: relative;color:white; top: -223px; z-index: 100; font-size: 12px; font-family: arial; font-weight: bold; margin: 0px;height: 30px;">
+                            <div style="font-size: 12px; font-family: arial; font-weight: bold; margin: 0px;">
+                                <div id="pdf_cntz_nombres" class="pdf_ctnz" style="text-align: center; "></div>
+                            </div>
+
+                            <div style="font-size: 8px; font-family: arial; font-weight: bold; margin: 0px;">
+                                <div id="pdf_cntz_dpngdireccion" class="pdf_ctnz"> </div>
+                            </div>
+                        </div>
+
+                        <div style="position: relative; top: -210px;z-index: 100;font-size: 11px;margin-bottom: 5px; font-weight: bold; ">
+                            <div id="pdf_ctnz_identificacion" class="pdf_ctnz"> </div>
+                        </div>
+                        <div style="position: relative; top: -215px; z-index: 100; font-size: 8px; font-weight: bold;">
+                            <div id="pdf_cntz_cargo" class="pdf_ctnz"> </div>
+                        </div>
+
+                        </img>
+
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="col-xs-12" align="center" style="padding: 0px; height: 324px; ">
+                        <img src="static/image/carnetizacion/fondo_carnet_posterior.png" height="324px" width="205.5px" />
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <!-- BOTONES FOOTER -->
+        <div class="stackbox-footer" style="margin-top: -30px;">
+            <button class="btn btn-primary" onClick="generarPdf_cntz();">Generar Pdf</button>
+            <button class="btn btn-default" data-close-stackbox="true">Close</button>
+        </div>
+
+    </div>
+</div>
+
+<div id="pdfaccion_ctnz_pentaho" style="display: none;">
+    <p><iframe id="prueba_212" width="100%" height="1100" src="" frameborder="0" scrolling="no"></iframe></p>
+</div>
+
+</div>
+
+<!--
+<script type="text/javascript" src="{% static 'js/lib_internas/uath_carnetizacion.js' %}"></script>
+<script src="{% static 'js/lib_internas/script.js' %}"></script>
+-->
+
+<script>
+    $(document).ready(function() {
+
+        var table = $('#tabla_carnetizacion').DataTable({
+            orderCellsTop: true,
+            "order": [
+                [0, "desc"]
+            ],
+            responsive: true
+        });
+
+        $('#tabla_carnetizacion thead .filters th').each(function() {
+            var title = $('#tabla_carnetizacion thead tr:eq(0) th').eq($(this).index()).text();
+            cont = 0;
+            if ((title == "")) {
+                $(this).html('');
+            } else {
+                $(this).html('<input id="filtro_tdcarnetizacion' + cont + '" type="text" placeholder="Buscar ' + title + '" style="color:black;"/>');
+            }
+            cont++;
+        });
+
+        // Apply the search
+        table.columns().eq(0).each(function(colIdx) {
+            $('input', $('#ftrol th')[colIdx]).on('keyup change', function() {
+                table
+                    .column(colIdx)
+                    .search(this.value)
+                    .draw();
+            });
+        });
+
+    });
+</script>
+
+{% endblock %}

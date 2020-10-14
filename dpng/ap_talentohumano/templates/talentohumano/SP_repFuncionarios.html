@@ -1,0 +1,92 @@
+{% load static %} 
+{% block content %}
+
+<div id="content_graficoSP">
+    <div class="box" style="background-color: black;">
+        <div class="box-header" style="color: white;">
+            <i class="fa fa-list"></i>
+            <h3 class="box-title">Reportes y Gráficos de Funcionarios</h3>
+        </div>
+        <!-- /.box-header -->
+
+        <div class="box-body">
+            <div class="box box-solid bg-light-blue-gradient">
+                <div class="box-header with-border">
+                    <!-- tools box -->
+                    <div class="pull-right box-tools">
+                        <button type="button" class="btn btn-primary btn-sm pull-right" data-toggle="collapse" href="#collapseGrF1" role="button" aria-expanded="false" aria-controls="collapseGrF1" style="margin-right: 5px;" data-original-title="Collapse">
+                            <i class="fa fa-minus"></i></button>
+                    </div>
+                    <!-- /. tools -->
+                    <i class="fa fa-search"></i>
+                    <h3 class="box-title">
+                  Gráficos Funcionarios
+                </h3>
+                </div>
+                <div class="box-body collapse in" style="background-color: white;" id="collapseGrF1">
+                    <div class="col-md-6">
+                        <div class="box box-success">
+                            <div style="box-shadow: 5px 5px 15px 5px #888888;">
+                                <div id="containerGrF1" class="chart-container"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="box box-success">
+                            <div style="box-shadow: 5px 5px 15px 5px #888888;">
+                                <div id="containerGrF2" class="chart-container"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="box box-success">
+                            <div style="box-shadow: 5px 5px 15px 5px #888888;">
+                                <div id="containerGrF3" class="chart-container"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="box box-success">
+                            <div style="box-shadow: 5px 5px 15px 5px #888888;">
+                                <div id="containerGrF4" class="chart-container"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--div class="box-body">
+        <div class="box box-solid bg-light-blue-gradient">
+            <div class="box-header with-border">
+                <!-- tools box -->
+        <!---div class="pull-right box-tools">
+                  <button type="button" class="btn btn-primary btn-sm pull-right" data-toggle="collapse" href="#collapseGr2" role="button" aria-expanded="false" aria-controls="collapseGr2" style="margin-right: 5px;" data-original-title="Collapse">
+                    <i class="fa fa-minus"></i></button>
+                </div>
+                <!-- /. tools -->
+        <!--i class="fa fa-search"></i>
+                <h3 class="box-title">
+                  Tabla Dinámica de Funcionarios
+                </h3>
+            </div>
+            <div class="box-body collapse in" style="background-color: white;"  id="collapseGr2">
+                <div class="col-md-12"><div id="outputFun" style="margin: 30px;width: 95%;overflow-x: auto;"></div></div>
+            </div>
+        </div>  
+      </div-->
+        <!-- /.box-body -->
+    </div>
+</div>
+
+<!-- /.box -->
+<!-- AdminLTE datatable -->
+<!-- jQuery 3 -->
+{% load static %}
+<script src="{% static 'js/lib_internas/script.js' %}"></script>
+<script>
+    $(document).ready(function() {
+        getDataFuncionarioGra();
+    });
+</script>
+{% endblock %}

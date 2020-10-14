@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang='es'>
+	{% load static %}
+	<head>
+		<title> SIA </title>
+		<meta charset = 'utf-8'>
+			<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+		    <link rel="stylesheet" href="{% static '/css/loginDpng/eca65102f370.css' %}" type="text/css" />
+		    <link rel="stylesheet" href="{% static '/css/loginDpng/login.css' %}">
+		    <link rel="icon" href="{% static 'image/favicon.ico' %}">
+		</meta>
+
+		<script src="{% static 'js/lib_externas/jquery-1.12.4.js' %}"></script>
+		<script src="{% static 'js/lib_externas/jquery-ui.js' %}"></script>
+
+		
+	</head>
+	<!--PaginaRegistro-->
+	<body id="registro">
+
+		<div id="modalLoadin" style="display:none;">
+	      <span>
+	        <label>
+	          <img id="loadingimg" src="static/image/loading.gif" style="position: fixed;
+	          height: 12em;
+	          width: 12em;
+	          overflow: show;
+	          margin: auto;
+	          top: 0;
+	          left: 0;
+	          bottom: 0;
+	          right: 0;
+	          font-family: Arial, Helvetica, sans-serif;">
+	        </label>      
+	       </span>
+	    </div>
+
+		<div class="app-container" style="overflow-y:scroll">
+			<!-- IMAGENES DPNG - MAE -->
+			<div id="login_imagen" style="text-align: center; margin-top: 20px;">
+				<div style="margin-bottom: 12px;" >
+					<div style="display: inline-block;">
+						<img id="imagen1" src="{% static '/image/login/logo-PNG.png' %}" alt="galeria" width="60%" height="60%" style="margin: auto;"> 
+					</div>
+				</div>
+				<div style="margin-bottom: 12px;" >
+					<div style="display: inline-block;">
+						<img id="imagen1" src="{% static '/image/login/Logo mae-2020_2.png' %}" alt="galeria" width="40%" style="margin: auto;"> 
+					</div>
+				</div>
+			</div>
+
+
+			<!-- FORMULARIO REGISTRO -->
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-md-8 col-md-offset-2 col-sm-6 col-sm-offset-3">
+						<form id="formregistro" class="form-horizontal login-box dt-sheet dt-sheet-1" action="success-registro" method="POST" name="formregistro" style="text-align: center">
+
+							<input type='hidden' name='csrfmiddlewaretoken' value='8cIe29JWxpKj4K1ZuDcttTwI8ApSxImj' />
+							<h2 class="hidden-xs"><b>Registro</b></h2>
+							<p class="hidden-xs" style="color: blue">Por favor digite su No. de identificación y de click en el botón consultar para obtener su nombre e ingrese los datos faltantes en los campos vacíos</p>
+							<p class="hidden-xs">&nbsp;</p>
+
+							<div class="col-md-6">
+								<table>
+									<tr>
+										<td style="text-align: left;">
+											&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;No. de Identificación&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-success btn-sm" id="btn_cedulaP" onclick="getDatosRegistroCivil()" style="height: 30px">Consultar</button>
+										</td>
+									</tr>
+									<tr>
+                                        <td>
+                                        	<input id="userCedula" name="userCedula" autocapitalize="none" autocorrect="off" class="form-control" maxlength="50" type="text" style="text-align: left" required />
+                                        </td>
+                                    </tr>
+                                    <tr hidden>
+                                        <td>
+                                        	<input id="userNombres" name="userNombres" autocapitalize="none" autocorrect="off" class="form-control" maxlength="50" placeholder="Nombres" type="text" style="text-align: left" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                        	<input id="userNombresAux" name="userNombresAux" autocapitalize="none" autocorrect="off" class="form-control" maxlength="50" placeholder="Nombres" type="text" style="text-align: left" disabled />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                        	<input id="userEmail" name="userEmail" autocapitalize="none" autocorrect="off" class="form-control" maxlength="50" placeholder="Correo electrónico" type="email" style="text-align: left; text-transform: lowercase" required />
+                                        </td>
+                                    </tr>
+                                    <tr hidden>
+                                        <td>
+                                        	<input id="userFechaNaci" name="userFechaNaci" autocapitalize="none" autocorrect="off" class="form-control" type="date" style="text-align: left"/>
+                                        </td>
+                                    </tr>
+                                    <tr hidden>
+                                        <td>
+                                        	<input id="userEstadoCivil" name="userEstadoCivil" autocapitalize="none" autocorrect="off" class="form-control" maxlength="50" placeholder="Estado Civil" type="text" style="text-align: left" />
+                                        </td>
+                                    </tr>
+								</table>
+							</div>
+							<div class="col-md-6">
+								<table>
+									<tr height="3px;"> </tr>
+									<tr>
+										<td style="text-align: left;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ingrese un nombre de usuario:</td>
+									</tr>
+									<tr height="7px;"> </tr>
+									<tr>
+                                        <td>
+                                        	<input id="userName" name="userName" autocapitalize="none" autocorrect="off" class="form-control" maxlength="50" placeholder="Ej: joseperez" type="text" style="text-align: left; text-transform: lowercase" required />
+                                        </td>
+                                    </tr>
+                                    <tr hidden>
+                                        <td>
+                                        	<input id="userApellidos" name="userApellidos" autocapitalize="none" autocorrect="off" class="form-control" maxlength="50" placeholder="Apellidos" type="text" style="text-align: left" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                        	<input id="userApellidosAux" name="userApellidosAux" autocapitalize="none" autocorrect="off" class="form-control" maxlength="50" placeholder="Apellidos" type="text" style="text-align: left;" disabled />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                        	<input id="userContraseña" name="userContraseña" autocapitalize="none" autocorrect="off" class="form-control" maxlength="50" placeholder="contraseña" type="password" style="text-align: left" required />
+                                        </td>
+                                    </tr>
+                                    <tr hidden>
+                                        <td>
+                                        	<input id="userSexo" name="userSexo" autocapitalize="none" autocorrect="off" class="form-control" maxlength="50" placeholder="Sexo" type="text" style="text-align: left" />
+                                        </td>
+                                    </tr>
+								</table>
+							</div>
+
+							<input type="checkbox" name="terminosycondiciones" id="terminosycondiciones" onclick="validar()">
+							<a href="{% url 'terminosycondiciones' %}" target="_blank" title='Leer términos y condiciones' style="margin-right: 0px; color: black">Acepto los términos y condiciones</a>
+							
+							<p class="hidden-xs">&nbsp;</p>
+							
+							<div class="g-recaptcha" data-sitekey="6Leoz9QZAAAAAELFrBV029xSJRJ2hfMjmcnAM61W" align="center"></div>
+							
+							<p class="hidden-xs">&nbsp;</p>
+
+							<button type="submit" class="btn btn-primary btn-sm btn-block" style="margin-top: 10px;font-size: 16px" id="formbutton" name="formbutton" disabled >Crear cuenta</button>
+
+							<!-- Mensaje de campo de identificacion vacío -->
+							<p id="mensaje" style="margin-top: 15px; color: red; " hidden >Ingrese un número de identificación</p>
+
+							<!-- Mensaje de numero de identifación no valido -->
+							<p id="mensajeCedIncorrecta" style="margin-top: 15px; color: red; " hidden >Número de identificación no válido, intente nuevamente</p>
+
+							<!-- Mensaje de envío de correo electronico -->
+							<p id="mensajeEmail" style="margin-top: 15px; color: green; ">{{txt_mensaje}}</p>
+
+							<p id="mensajeError" style="margin-top: 15px; color: red; ">{{txt_error}}</p>
+
+							<input name="ret" value="/panel" type="hidden" />
+							
+							<p style="margin-top: 50px; color: black; font-family: Arial; text-align: center;  ">Para su correcto funcionamiento se recomienda <span style="color: #D83A08;font-weight: bold;"> GOO</span><span style="color: #11B33C;font-weight: bold;">GLE</span> <span style="color: #0741B1;font-weight: bold;"> CHROME. </span> </p>
+						</form>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+
+		<script src='https://www.google.com/recaptcha/api.js?hl=es'></script>
+
+	</body>
+
+	<script src="{% static 'js/lib_externas/jquery-1.12.4.js' %}"></script>
+	<script src="{% static 'js/lib_externas/jquery-ui.js' %}"></script>
+	<script>document.write('<link rel="stylesheet" href="{% static "css/styles_internos.css" %}?dev=' + Math.floor(Math.random() * 100) + '"\><\/link>');</script>
+    <script src="{% static 'js/lib_internas/script_usuarioexterno.js' %}"></script>
+    <script src="{% static 'js/lib_internas/bs_general.js' %}"></script>
+
+    <script>
+    	function validar(){
+			var seleccionado=document.getElementById('terminosycondiciones');
+			if(seleccionado.checked){
+				document.getElementById('formbutton').disabled  = false;
+			}else{
+				document.getElementById('formbutton').disabled = true;
+			}
+		}
+    </script>
+
+</html>

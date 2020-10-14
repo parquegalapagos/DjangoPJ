@@ -1,0 +1,427 @@
+{% extends "home.html" %}
+
+{% load static %}
+{% block principalhome %}
+	<div id="principal_home" style="margin-top: 10%;">
+	    <p style="text-align: center;">
+	      <span style="font-size: x-large;">Bienvenido al módulo de Soporte de TIC</span>
+	    </p>
+	    <p style="text-align: center;">
+	      <span style="font-size: large;"></span>
+	    </p>
+	    <p style="text-align: center;">
+	      <span style="font-size: xx-large;">
+	        <img src="{% static '/image/login/logo-PNG.png' %}"  width="15%">
+	      </span>
+	    </p>
+	     
+	</div>
+{%endblock%}
+
+{% block menu %}
+
+	<li class="header">SOPORTE TIC</li>
+	<li class="treeview menu-open">
+	  <a href="#">
+	    <i style="font-size: 18px;" class="fa fa-wrench"></i> <span style="font-size: 18px;">Mantenimiento</span>
+	    <span class="pull-right-container">
+	      <i class="fa fa-angle-left pull-right"></i>
+	    </span>
+	  </a>
+	  <ul class="treeview-menu" style="display: block;">
+	    <li onclick="addTab('Equipos','equipos','idmenu1');" style="cursor: pointer;">
+	      <a><i id="idmenu1" class="fa fa-circle-o text-aqua"></i>Equipos</a>
+	    </li>
+	  </ul>
+	  <ul class="treeview-menu" style="display: block;">
+	    <li onclick="addTab('Solicitud Servicio','solserv','idmenu7');" style="cursor: pointer;">
+	      <a><i id="idmenu7" class="fa fa-circle-o text-aqua"></i>Solicitud de Servicio</a>
+	    </li>
+	  </ul>
+	  <ul class="treeview-menu" style="display: block;">
+	    <li onclick="addTab('Informe de Baja','infobajas','idmenu8');" style="cursor: pointer;">
+	      <a><i id="idmenu8" class="fa fa-circle-o text-aqua"></i>Informe de Baja</a>
+	    </li>
+	  </ul>
+	  <ul class="treeview-menu" style="display: block;">
+	    <li onclick="addTab('Marcas','marcas','idmenu2');" style="cursor: pointer;">
+	      <a><i id="idmenu2" class="fa fa-circle-o text-aqua"></i>Marcas</a>
+	    </li>
+	  </ul>
+	  <ul class="treeview-menu" style="display: block;">
+	    <li onclick="addTab('Ubicaciones','ubicaciones','idmenu3');" style="cursor: pointer;">
+	      <a><i id="idmenu3" class="fa fa-circle-o text-aqua"></i>Ubicaciones</a>
+	    </li>
+	  </ul>
+	  <ul class="treeview-menu" style="display: block;">
+	    <li onclick="addTab('Productos','productos','idmenu6');" style="cursor: pointer;">
+	      <a><i id="idmenu6" class="fa fa-circle-o text-aqua"></i>Productos</a>
+	    </li>
+	  </ul>
+	  <ul class="treeview-menu" style="display: block;">
+	    <li onclick="addTab('UnidadMedida','unidadmedida','idmenu5');" style="cursor: pointer;">
+	      <a><i id="idmenu5" class="fa fa-circle-o text-aqua"></i>Unidad Medida</a>
+	    </li>
+	  </ul>
+    <ul class="treeview-menu" style="display: block;">
+      <li onclick="addTab('Preguntas','preguntas','idmenu9');" style="cursor: pointer;">
+        <a><i id="idmenu9" class="fa fa-circle-o text-aqua"></i>Preguntas</a>
+      </li>
+    </ul>
+	</li>
+
+	<div id="popupEquipos" style="display: none;">
+
+      <div class="stackbox-header cab_popup" align="center">
+        <img src="{% static 'image/favicon.ico' %}" width="40px" style="float:left;margin-top: -5px;"/>
+        <h id="">Buscar Equipos</h>
+      </div>
+
+      <div class="stackbox-body" align="center">
+        <div class="row" style="box-shadow: 5px 5px 5px 10px #888888;width: 80%;">
+        <div class="divisor" style="text-align: left;">Filtros de Busqueda</div><br>
+            <div class="col-xs-12" style="border-color: #1b90ad;">
+              <table>
+                <tr>
+                  <td align="left">Código:</td>
+                  <td width="10px;"></td>
+                  <td>
+                    <input id="codigoPopup" type="text" class="form-control" style="width: 100%;" autofocus>
+                  </td>
+                  <td width="10px;"></td>
+                  <td align="left">Código Ext:</td>
+                  <td width="10px;"></td>
+                  <td>
+                    <input id="codigoextPopup" type="text" class="form-control" style="width: 100%;">
+                  </td>
+                  <td width="10px;"></td>
+                  <td align="left">Equipo:</td>
+                  <td width="10px;"></td>
+                  <td>
+                    <input id="equipoPopup" type="text" class="form-control" style="width: 100%;">
+                  </td>
+                  <td width="10px;"></td>
+                  <td><a style="cursor: pointer; font-size: 20px;" title="Buscar" onclick="getDataEquipoPop();"><i class="fa fa-search text-blue"></i></a></td>
+                </tr>
+              </table>
+             <br>
+            </div>
+        </div>
+        <br><br>
+        <div class="row">
+          <input type="hidden" id="pagina_enviaPopSolServ1">
+          <div class="col-xs-1"></div>
+          <div class="col-xs-10">
+            <div id="content_bodyequipo" align="center" style="box-shadow: 5px 10px #888888;width: 100%;">
+              <table id="tabla_PopupEquipo" style="font-size: 12px; text-transform: uppercase;" class="display table table-striped table-bordered" width="100%" cellspacing="0">
+                  <thead>
+                  <tr style="background-color: #3c8dbc;    color: white;"> 
+                    <!--th>Estado</th-->
+                    <th>Producto</th>              
+                    <th>codigo</th>
+                    <th>codigo Ext</th>
+                    <th>Marca</th>
+                    <th></th>
+                  </tr>
+                  </thead>
+                  <tbody class="botonera1" id="body_tabla_PopupEquipo">
+                  
+                  </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="col-xs-1"></div> 
+        </div>
+      </div>
+
+      <div class="stackbox-footer">
+        <!--button class="btn btn-primary" id="stackbox_save">Grabar</button-->
+        <button class="btn btn-default" data-close-stackbox="true">Close</button>
+      </div>
+  </div>
+
+
+  <div id="popupSolSer" style="display: none;">
+
+      <div class="stackbox-header cab_popup" align="center">
+        <img src="{% static 'image/favicon.ico' %}" width="40px" style="float:left;margin-top: -5px;"/>
+        <h id="">Buscar Solicitud</h>
+      </div>
+
+      <div class="stackbox-body" align="center">
+        <div class="row" style="box-shadow: 5px 5px 5px 10px #888888;width: 80%;">
+            <div class="col-xs-12" style="border-color: #1b90ad;top: 10px;">
+              <table>
+                <tr>
+                  <td align="left">Solicitud:</td>
+                  <td width="10px;"></td>
+                  <td>
+                    <input id="solservPopup" type="text" class="form-control" style="width: 100%;" autofocus>
+                  </td>
+                  <td width="10px;"></td>
+                  <td align="left">Referencia:</td>
+                  <td width="10px;"></td>
+                  <td>
+                    <input id="referenciaPopup" type="text" class="form-control" style="width: 100%;" autofocus>
+                  </td>
+                  <td width="10px;"></td>
+                  <td align="left">Titulo:</td>
+                  <td width="10px;"></td>
+                  <td>
+                    <input id="tituloPopup" type="text" class="form-control" style="width: 100%;" autofocus>
+                  </td>
+                  <td width="10px;"></td>
+                  <td><a style="cursor: pointer; font-size: 20px;" title="Buscar" onclick="getDataSolservPop();"><i class="fa fa-search text-blue"></i></a></td>
+                </tr>
+              </table>
+             <br>
+            </div>
+        </div>
+        <br><br>
+        <div class="row">
+          <input type="hidden" id="pagina_enviaPopSolServ2">
+          <div class="col-xs-1"></div>
+          <div class="col-xs-10">
+            <div id="content_bodySolServ" align="center" style="box-shadow: 5px 10px #888888;width: 100%;">
+              <table id="tabla_PopupSolServ" style="font-size: 12px; text-transform: uppercase;" class="display table table-striped table-bordered" width="100%" cellspacing="0">
+                  <thead>
+                  <tr style="background-color: #3c8dbc;    color: white;"> 
+                    <th>#Solicitud</th>
+                    <th>Referncia</th>
+                    <th>Titulo</th>
+                    <th>Equipo</th>              
+                    <th></th>
+                  </tr>
+                  </thead>
+                  <tbody class="botonera1" id="body_tabla_PopupSolServ">
+                  
+                  </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="col-xs-1"></div> 
+        </div>
+      </div>
+
+      <div class="stackbox-footer">
+        <!--button class="btn btn-primary" id="stackbox_save">Grabar</button-->
+        <button class="btn btn-default" data-close-stackbox="true">Close</button>
+      </div>
+  </div>
+
+  <div id="popupProducto" style="display: none;">
+
+      <div class="stackbox-header cab_popup" align="center">
+        <img src="{% static 'image/favicon.ico' %}" width="40px" style="float:left;margin-top: -5px;"/>
+        <h id="">Buscar Productos</h>
+      </div>
+
+      <div class="stackbox-body" align="center">
+        <!--div class="row" style="box-shadow: 5px 5px 5px 10px #888888;width: 500px;height: 80px;"-->
+        <!--div class="divisor" style="text-align: left;">Filtros de Busqueda</div><br-->
+            <div class="col-xs-12" style="border-color: #1b90ad;">
+              <table style="box-shadow: 5px 5px 5px 10px #888888;width: 500px; height: 50px;">
+                <tr>
+                  <td width="10px;"></td>
+                  <td align="left">Producto:</td>
+                  <td width="10px;"></td>
+                  <td>
+                    <input id="productoPopup" type="text" class="form-control" style="width: 100%;" autofocus>
+                  </td>
+                  <td width="10px;"></td>
+                  <td><a style="cursor: pointer; font-size: 20px;" title="Buscar" onclick="getDataProductoPop();"><i class="fa fa-search text-blue"></i></a></td>
+                </tr>
+              </table>
+             <br>
+            </div>
+        <!--/div-->
+        <br><br>
+        <div class="row">
+          <input type="hidden" id="pagina_enviaPopSolServ3">
+          <div class="col-xs-1"></div>
+          <div class="col-xs-10">
+            <div id="content_bodyproducto" align="center" style="box-shadow: 5px 10px #888888;width: 100%;">
+              <table id="tabla_PopupProducto" style="font-size: 12px; text-transform: uppercase;" class="display table table-striped table-bordered" width="100%" cellspacing="0">
+                  <thead>
+                  <tr style="background-color: #3c8dbc;    color: white;"> 
+                    <th>Nombre</th>
+                    <th>Precio Venta</th>              
+                    <th>Precio Costo</th>
+                    <th>Udm</th>
+                    <th></th>
+                  </tr>
+                  </thead>
+                  <tbody class="botonera1" id="body_tabla_PopupProducto">
+                  
+                  </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="col-xs-1"></div> 
+        </div>
+      </div>
+
+      <div class="stackbox-footer">
+        <!--button class="btn btn-primary" id="stackbox_save">Grabar</button-->
+        <button class="btn btn-default" data-close-stackbox="true">Close</button>
+      </div>
+  </div>
+
+  <div id="popupMarca" style="display: none;">
+
+      <div class="stackbox-header cab_popup" align="center">
+        <img src="{% static 'image/favicon.ico' %}" width="40px" style="float:left;margin-top: -5px;"/>
+        <h id="">Buscar Marcas</h>
+      </div>
+
+      <div class="stackbox-body" align="center">
+        <!--div class="row" style="box-shadow: 5px 5px 5px 10px #888888;width: 500px;height: 80px;"-->
+        <!--div class="divisor" style="text-align: left;">Filtros de Busqueda</div><br-->
+            <div class="col-xs-12" style="border-color: #1b90ad;">
+              <table style="box-shadow: 5px 5px 5px 10px #888888;width: 500px; height: 50px;">
+                <tr>
+                  <td width="10px;"></td>
+                  <td align="left">Marca:</td>
+                  <td width="10px;"></td>
+                  <td>
+                    <input id="marcaPopup" type="text" class="form-control" style="width: 100%;" autofocus>
+                  </td>
+                  <td width="10px;"></td>
+                  <td><a style="cursor: pointer; font-size: 20px;" title="Buscar" onclick="getDataMarcaPop();"><i class="fa fa-search text-blue"></i></a></td>
+                </tr>
+              </table>
+             <br>
+            </div>
+        <!--/div-->
+        <br><br>
+        <div class="row">
+          <input type="hidden" id="pagina_enviaPopSolServ4">
+          <div class="col-xs-1"></div>
+          <div class="col-xs-10">
+            <div id="content_bodymarca" align="center" style="box-shadow: 5px 10px #888888;width: 100%;">
+              <table id="tabla_PopupMarca" style="font-size: 12px; text-transform: uppercase;" class="display table table-striped table-bordered" width="100%" cellspacing="0">
+                  <thead>
+                  <tr style="background-color: #3c8dbc;    color: white;"> 
+                    <th>Nombre</th>
+                    <th></th>
+                  </tr>
+                  </thead>
+                  <tbody class="botonera1" id="body_tabla_PopupMarca">
+                  
+                  </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="col-xs-1"></div> 
+        </div>
+      </div>
+
+      <div class="stackbox-footer">
+        <!--button class="btn btn-primary" id="stackbox_save">Grabar</button-->
+        <button class="btn btn-default" data-close-stackbox="true">Close</button>
+      </div>
+  </div>
+
+  <div id="popupUbicacion" style="display: none;">
+
+      <div class="stackbox-header cab_popup" align="center">
+        <img src="{% static 'image/favicon.ico' %}" width="40px" style="float:left;margin-top: -5px;"/>
+        <h id="">Buscar Ubicación</h>
+      </div>
+
+      <div class="stackbox-body" align="center">
+        <!--div class="row" style="box-shadow: 5px 5px 5px 10px #888888;width: 500px;height: 80px;"-->
+        <!--div class="divisor" style="text-align: left;">Filtros de Busqueda</div><br-->
+            <div class="col-xs-12" style="border-color: #1b90ad;">
+              <table style="box-shadow: 5px 5px 5px 10px #888888;width: 500px; height: 50px;">
+                <tr>
+                  <td width="10px;"></td>
+                  <td align="left">Ubicación:</td>
+                  <td width="10px;"></td>
+                  <td>
+                    <input id="ubicacionPopup" type="text" class="form-control" style="width: 100%;" autofocus>
+                  </td>
+                  <td width="10px;"></td>
+                  <td><a style="cursor: pointer; font-size: 20px;" title="Buscar" onclick="getDataUbicacionPop();"><i class="fa fa-search text-blue"></i></a></td>
+                </tr>
+              </table>
+             <br>
+            </div>
+        <!--/div-->
+        <br><br>
+        <div class="row">
+          <input type="hidden" id="pagina_enviaPopSolServ5">
+          <div class="col-xs-1"></div>
+          <div class="col-xs-10">
+            <div id="content_bodyubicacion" align="center" style="box-shadow: 5px 10px #888888;width: 100%;">
+              <table id="tabla_PopupUbicacion" style="font-size: 12px; text-transform: uppercase;" class="display table table-striped table-bordered" width="100%" cellspacing="0">
+                  <thead>
+                  <tr style="background-color: #3c8dbc;    color: white;"> 
+                    <th>Nombre</th>
+                    <th></th>
+                  </tr>
+                  </thead>
+                  <tbody class="botonera1" id="body_tabla_PopupUbicacion">
+                  
+                  </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="col-xs-1"></div> 
+        </div>
+      </div>
+
+      <div class="stackbox-footer">
+        <!--button class="btn btn-primary" id="stackbox_save">Grabar</button-->
+        <button class="btn btn-default" data-close-stackbox="true">Close</button>
+      </div>
+  </div>
+
+  <div id="popupEquipoHist" style="display: none;">
+
+      <div class="stackbox-header cab_popup" align="center">
+        <img src="{% static 'image/favicon.ico' %}" width="40px" style="float:left;margin-top: -5px;"/>
+        <h id="">Historico Custodio Equipo</h>
+      </div>
+
+      <div class="stackbox-body" align="center">
+
+        <div class="row">
+          <input type="hidden" id="pagina_enviaPopEquipoCust">
+          <div class="col-xs-1"></div>
+          <div class="col-xs-10">
+            <div id="content_bodyEquipoCust" align="center" style="box-shadow: 5px 10px #888888;width: 100%;">
+              <table id="tabla_PopupEquipoCust" style="font-size: 12px; text-transform: uppercase;" class="display table table-striped table-bordered" width="100%" cellspacing="0">
+                  <thead>
+                  <tr style="background-color: #3c8dbc;    color: white;"> 
+                    <th>Fecha</th>
+                    <th>Equipo</th>
+                    <th>Custodio Nuevo</th>
+                    <th>Custodio Anterior</th>
+                    <th>Observaciones</th>
+                  </tr>
+                  </thead>
+                  <tbody class="botonera1" id="body_tabla_PopupEquipoCust">
+                  
+                  </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="col-xs-1"></div> 
+        </div>
+      </div>
+
+      <div class="stackbox-footer">
+        <!--button class="btn btn-primary" id="stackbox_save">Grabar</button-->
+        <button class="btn btn-default" data-close-stackbox="true">Close</button>
+      </div>
+  </div>
+
+	{% load static %}
+	  <script src="{% static 'js/lib_externas/jquery-1.12.4.js' %}"></script>
+	  <script src="{% static 'js/lib_externas/jquery-ui.js' %}"></script>
+	  
+	  <script>document.write('<script src="{% static "js/lib_internas/script_soporte.js" %}?dev=' + Math.floor(Math.random() * 100) + '"\><\/script>');</script>
+    <script>document.write('<script src="{% static "js/lib_internas/script.js" %}?dev=' + Math.floor(Math.random() * 100) + '"\><\/script>');</script>
+
+{% endblock %}

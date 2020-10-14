@@ -1,0 +1,561 @@
+{% load static %} 
+{% block content %}
+
+<div id="content_TramiteSP">
+    <div id="addTramiteSP" style="display: none;" class="efecto">
+        <div class="stackbox-header cab_popup" align="center">
+            <img src="{% static 'image/favicon.ico' %}" width="40px" style="float:left;margin-top: -5px;" />
+            <h id="tituloTraSol"> </h> Solicitud de Permisos
+        </div>
+
+        <div class="stackbox-body" id="bodyaddTramiteSP">
+            <input type="hidden" id="idSolTramite" name="idSolTramite" value="" />
+            <input type="hidden" id="idFunSolTramite" name="idFunSolTramite" value="" />
+            <input type="hidden" id="tipot_Sol" value="0" />
+
+            <!-- USER INFORMATION -->
+            <input type="hidden" id="slt_funcionario_id" name="st_funcionario_id" value="{{funcionario_id}}" />
+            <input type="hidden" id="slt_persona_nombres" name="st_persona_nombres" value="{{persona_nombres}}" />
+            <input type="hidden" id="slt_isla_trabaja_id" name="slt_isla_trabaja_id" value="{{isla_trabaja_id}}" />
+            <input type="hidden" id="slt_isla_trabaja_nm_tmp" name="slt_isla_trabaja_nm_tmp" value="{{isla_trabaja}}" />
+
+            <!-- -FORM INFORMATION -->
+            <input type="hidden" id="slt_estado_tramite" name="slt_estado_tramite" value="{{estado_tramite}}" /> {% csrf_token %}
+
+            <div class="row" style="box-shadow: 5px 5px 5px 5px #888888; width: 103%; margin-top: 20px;">
+                <!--div usado para que se muestren las notificaciones cuando un campo es obligatorio es necesario agregar id stackbox-body y agregar atributo "text" (con el nombre de la etiqueta) a cada input obligatorio-->
+                <div class="notification">
+                    <span class="icon">
+                        <i class=""></i>
+                    </span>
+                    <span class="text"></span>
+                    <span class="close"><i class="fa fa-close"></i></span>
+                </div>
+                <!--fin notificacion-->
+                <br>
+                <form id="frm_TramiteSol" action="#" method="post" enctype="multipart/form-data">
+                    <div class="col-xs-12">
+                        <div class="col-xs-6 callout" style="border-color: #1b90ad;">
+                            <table>
+
+                                <tr>
+                                    <td align="left">*Funcionario {% if perms.talentohumano.add_gthsolicitudpermiso %}
+                                        <a style="cursor: pointer; font-size: 14px; margin-left: 10px" title="Buscar Funionario" href='#popupFuncionarios' onclick="limpiaPopupFuncionario('SP_iniciarTramite');" data-stackbox='true' data-stackbox-position="absolute"><i class="fa fa-search text-blue"></i></a> {% endif %}
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="3">
+                                        <input type="text" class="form-control requerido" name="nombrefuncionarioTra" text="Funcionario" id="nombrefuncionarioTra" style="width: 300px; font-size: 11px;" readonly />
+                                        <input type="hidden" name="cedfuncionarioTrx" id="cedfuncionarioTrx" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-xs-6 callout" style="border-color: white;" align="right">
+                            <table>
+                                <tr>
+                                    <td align="right">#Solicitud</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3">
+                                        <input type="text" class="form-control" name="numsolicitudTra" id="numsolicitudTra" style="width: 300px; font-size: 11px;" readonly />
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td align="right">Isla Trabajo</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3">
+                                        <input type="text" class="form-control" name="slt_isla_trabaja_nm" id="slt_isla_trabaja_nm" style="width: 300px; font-size: 11px;" readonly align="right" />
+                                    </td>
+                                </tr>
+
+                            </table>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="col-xs-12">
+                        <div class="col-xs-6 callout" style="border-color: #1b90ad;">
+                            <table>
+                                <tr>
+                                    <td align="left">Motivo</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <select id="SmotivoTrx" class="select2 requerido" text="Motivo Permiso">
+                                            <option value=""> Seleccione una Opcion</option>
+
+                                        </select>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="col-xs-6 callout" style="border-color: white;">
+                            <table>
+                                <tr>
+                                    <td align="left">Revisor</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <select id="pms_revisor_id" class="select2" text="Motivo Permiso">
+                                            <option value=""> Seleccione una Opcion</option>
+                                            {% for item in funcionarios %}
+                                            <option value="{{ item.id }}" direccion="{{ item.direccion_estatuto_id.name }}" cargoinst="{{ item.cargo_institucional_id.nombre }}" islatrabajo="{{ item.isla_trabaja_id.descripcion }}" identificacion="{{ item.persona_id.identificacion }}">{{ item.persona_id.nombre_completo }}</option>
+                                            {% endfor %}
+
+                                        </select>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                    </div>
+
+                    <br>
+                    <div class="col-xs-12">
+                        <div class="divisor">Periodo</div>
+                        <br>
+                        <div class="col-xs-6 callout" style="border-color: #1b90ad;">
+                            <table>
+                                <tr>
+                                    <td align="left">*Desde</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input type="date" name="fdesdetramite" id="fdesdetramite">
+                                        <input type="time" name="hdesdetramite" id="hdesdetramite" min=8:00 max=17:00 step=900>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="left">*Hasta</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input type="date" name="fhastatramite" id="fhastatramite">
+                                        <input type="time" name="hhastatramite" id="hhastatramite" min=8:00 max=17:00 step=900>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td height="10px"></td>
+                                </tr>
+                                <!--
+                <tr>
+                    <td align="left">Registrado</td>
+                </tr>
+                <tr>
+                    <td>
+                      <input type="text" class="form-control requerido" name="registradoTra" id="registradoTra" style="width: 300px; font-size: 11px;"/>
+                    </td>
+                </tr>
+
+                -->
+
+                            </table>
+                        </div>
+                        <div class="col-xs-6 callout" style="border-color: #1b90ad;">
+                            <table>
+                                <tr>
+                                    <td align="left">Observación</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <textarea id="observacion_SolTra" class="form-control" rows="3"></textarea>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+
+        </div>
+
+        <div class="stackbox-footer">
+            <button class="btn btn-primary" onclick="setInsertUpdateSolicitudPermiso('BORRADOR');">Borrador</button>
+            <button class="btn btn-primary" onclick="setInsertUpdateSolicitudPermiso('GUARDAR');">Grabar</button>
+            <button class="btn btn-default" data-close-stackbox="true">Close</button>
+        </div>
+    </div>
+
+    <div class="box">
+        <div class="box-header">
+            <i class="fa fa-list"></i>
+            <h3 class="box-title">Lista de Tramites</h3>
+
+            <div class="botonera" style="float: right; right: 1px;">
+                <a title="pfd" onclick="generarPdf('tabla_tramitesS',5)"><i class="fa fa-file-pdf-o text-green"></i></a>
+                <a title="excel" onclick="generarExcel('tabla_tramitesS',5)"><i class="fa fa-file-excel-o text-green"></i></a>
+                <a title="Agregar Nuevo" onclick="limpiarFormSolicitudPermiso();" href='#addTramiteSP' data-stackbox='true' data-stackbox-position="absolute"><i class="fa fa-plus-circle text-green"></i></a>
+
+            </div>
+        </div>
+        <!-- /.box-header -->
+
+        <div class="box-body">
+
+            <table id="tabla_tramitesS" style="font-size: 10px; text-transform: uppercase;" class="table table-striped table-bordered" width="100%" cellspacing="0">
+                <thead>
+                    <tr class="bg-light-blue-gradient" style="color: white;">
+                        <th style="text-align: center;">FECHA</th>
+                        <th style="text-align: center;">IDENTIFICACION</th>
+                        <th style="text-align: center;">NOMBRE</th>
+                        <th style="text-align: center;">TIPO</th>
+                        <th style="text-align: center;">FECHA DESDE</th>
+                        <th style="text-align: center;">FECHA HASTA</th>
+                        <th style="text-align: center;">ESTADO TRAMITE</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    <tr class="filters" id="ftramS">
+                        <th>FECHA</th>
+                        <th>IDENTIFICACION</th>
+                        <th>NOMBRE</th>
+                        <th>TIPO</th>
+                        <th>FECHA DESDE</th>
+                        <th>FECHA HASTA</th>
+                        <th>ESTADO TRAMITE</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody class="botonera1">
+                    {% for permiso in permisos %}
+                    <tr>
+                        <td align="center" id="td_fecha_{{ permiso.id }}">{{ permiso.fecha_ultima_modificacion }}</td>
+                        <td align="center" id="td_nombre_{{ permiso.id }}">{{ permiso.funcionario_id.persona_id.identificacion }}</td>
+                        <td align="left" id="td_ident_{{ permiso.id }}" nombre="{{ permiso.funcionario_id.persona_id.nombres }}" apellidos="{{ permiso.funcionario_id.persona_id.apellidos }}">{{ permiso.funcionario_id.persona_id.nombre_completo }} </td>
+
+                        <td align="center" id="td_tipo_{{ permiso.id }}">{{ permiso.motivo_id.label }}</td>
+                        <td align="center" id="td_fechad_{{ permiso.id }}">{{ permiso.fecha_desde }}</td>
+                        <td align="center" id="td_fechah_{{ permiso.id }}">{{ permiso.fecha_hasta }}</td>
+
+                        <td align="center" id="td_estadotramite_{{ permiso.id }}">
+                            {% if permiso.estado_tramite == 'BORRADOR' %}
+                            <span class="badge bg-silver">{{ permiso.estado_tramite }}</span> {% elif permiso.estado_tramite == 'TRAMITE' %}
+                            <span class="badge bg-yellow">{{ permiso.estado_tramite }}</span> {% elif permiso.estado_tramite == 'APROBADO' %}
+                            <span class="badge bg-green">{{ permiso.estado_tramite }}</span> {% elif permiso.estado_tramite == 'RECHAZADO' %}
+                            <span class="badge bg-red">{{ permiso.estado_tramite }}</span> {% endif%}
+                        </td>
+
+                        <td align="center">
+                            <a data-stackbox='true' data-stackbox-position="absolute" href='#addTramiteSP' onclick="editSolicitudPermiso('{{ permiso.id }}');"> <i class="fa fa-edit text-green"></i></a>
+                        </td>
+                        <!--
+                  <td align="center"> 
+                    <a style="font-size: 18px;cursor: pointer;" href='#pdfSolicitud' data-stackbox-width='1050' data-stackbox-heigth='500' data-stackbox='true' data-stackbox-position='absolute' onclick="verPdfSolicitud('{{ permiso.id }}')"><i class="fa fa-file-pdf-o text-green"></i></a>  
+                  </td>
+                  -->
+                        <td align="center">
+                            <a onclick="deleteModal('{{permiso.id}}','SP_iniciarTramite');"><i class="fa fa-trash text-green"></i></a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+        <!-- /.box-body -->
+
+    </div>
+
+</div>
+
+<div id="pdfSolicitud" style="display: none;">
+
+    <div class="stackbox-header cab_popup" align="center">
+        <img src="{% static 'image/favicon.ico' %}" width="40px" style="float:left;margin-top: -5px;" />
+        <h>Solicitud de Permiso</h>
+    </div>
+
+    <div class="stackbox-body" id="section_rep" style="font-size: 12px;">
+        <div class="row" style="box-shadow: 5px 5px 10px 10px #888888; margin-top: 20px;background-color: #eae2d7;color:#2e2e9c;font-size: 12px;border-radius: 10px 10px 10px 10px;width: 1050px; margin-left: 10px;">
+            <br>
+            <br>
+            <div>
+                <div class="row" style="margin-right: 0px;margin-left: 0px;">
+                    <div class="col-xs-12">
+                        <table width="100%">
+                            <tr>
+                                <td><img src="{% static 'image/min_ambiente.png' %}" style="width: 100%;" /></td>
+                                <td style="text-align: center;font-size: 16px; font-weight:bold; width: 60%;">
+                                    DIRECCIÓN PARQUE NACIONAL GALÁPAGOS
+                                    <br> DIRECCIÓN ADMINISTRATIVA FINANCIERA
+                                    <br> SOLICITUD DE PERMISO
+                                </td>
+                                <td><img src="{% static 'image/parque.png' %}" style="width: 100%;" /></td>
+                            </tr>
+                        </table>
+                        <div style="position: relative;float: right;right: 150px;">
+                            <h style="font-size: 14px;">No:</h>
+                            <span style="text-transform: capitalize;margin-left: 10px;font-size: 16px; color: red;" id="for_numSol" class="pdf"></span>
+                        </div>
+                        <div style="height: 40px;"></div>
+                    </div>
+
+                    <div class="col-xs-12">
+                        <div class="col-xs-6">
+                            <table style="width: 100%; font-weight: bold; font-family: arial;">
+                                <tr>
+                                    <td align="right" style="font-size: 12px;">NOMBRE FUNCIONARIO:</td>
+                                    <td style="border-bottom:1px dotted black; text-align:left;width: 60%;"><span style="text-transform: capitalize;margin-left: 10px;font-size: 12px;" id="for_nombreFun" class="pdf"></span></td>
+                                </tr>
+                                <tr>
+                                    <td height="15px"></td>
+                                </tr>
+                                <tr>
+                                    <td align="right" style="font-size: 12px;">ASUNTO ADMINISTRATIVO:</td>
+                                    <td style="border-bottom:1px dotted black; text-align:left;text-transform: capitalize;"><span style="font-size: 14px;margin-left: 100px;" id="for_asunto" class="pdf"></span></td>
+                                </tr>
+                                <tr>
+                                    <td height="15px"></td>
+                                </tr>
+                                <tr>
+                                    <td align="right" style="font-size: 12px;">ENFERMEDAD:</td>
+                                    <td style="border-bottom:1px dotted black; text-align:left; text-transform: capitalize;"><span style="font-size: 14px;margin-left: 100px;" id="for_enfermedad" class="pdf"></span></td>
+                                </tr>
+                                <tr>
+                                    <td height="15px"></td>
+                                </tr>
+                                <tr>
+                                    <td align="right" style="font-size: 12px;">CALAMIDAD DOMESTICA:</td>
+                                    <td style="border-bottom:1px dotted black; text-align:left;text-transform: capitalize;"><span style="font-size: 14px;margin-left: 100px;" id="for_calamidad" class="pdf"></span></td>
+                                </tr>
+                                <tr>
+                                    <td height="15px"></td>
+                                </tr>
+                                <tr>
+                                    <td align="right" style="font-size: 12px;">ASUNTO PARTICULAR:</td>
+                                    <td style="border-bottom:1px dotted black; text-align:left;text-transform: capitalize;"><span style="font-size: 14px;margin-left: 100px;" id="for_particular" class="pdf"></span></td>
+                                </tr>
+                                <tr>
+                                    <td height="15px"></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-xs-6" style="left: -30px;">
+                            <table style="width: 100%;  font-weight: bold; font-family: arial;">
+
+                                <tr>
+                                    <td style="font-size: 12px;" align="right">LUGAR Y FECHA:</td>
+                                    <td style="border-bottom:1px dotted black; width:60%;margin-left: -80px;"><span id="for_lugar" class="pdf" style="text-transform: capitalize;margin-left: 10px;font-size: 12px;"></span></td>
+                                </tr>
+                                <tr>
+                                    <td height="15px"></td>
+                                </tr>
+                                <tr>
+                                    <td style="font-size: 12px;" align="right" style="width: 35%;">PROCESO O SUBPROCESO:</td>
+                                    <td style="border-bottom:1px dotted black; text-align:left;text-transform: capitalize;width: 30%;"><span id="for_proceso" class="pdf" style="text-transform: capitalize;margin-left: 10px;font-size: 11px;"></span></td>
+                                </tr>
+                                <tr>
+                                    <td height="15px"></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td style="font-size: 12px;" align="center">TIEMPO</td>
+                                </tr>
+                                <tr>
+                                    <td height="15px"></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        <table>
+                                            <tr>
+                                                <td style="font-size: 12px;">DESDE</td>
+                                                <td style="border-bottom:1px dotted black;text-align: center;" width="90px;"><span style="font-size: 12px;" id="for_hdesde" class="pdf"></span></td>
+                                                <td style="font-size: 12px;">HASTA</td>
+                                                <td style="border-bottom:1px dotted black;text-align: center;" width="90px;"><span style="font-size: 12px;" id="for_hhasta" class="pdf"></span></td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td height="15px"></td>
+                                </tr>
+                                <tr>
+                                    <td align="right" style="font-size: 12px;">FECHA/HORAS:</td>
+                                    <td style="border-bottom:1px dotted black; text-align:left;text-transform: capitalize;"><span id="for_fechas" class="pdf" style="text-transform: capitalize;margin-left: 10px;font-size: 12px;"></span></td>
+                                </tr>
+                                <tr>
+                                    <td height="15px"></td>
+                                </tr>
+                                <tr>
+                                    <td align="right" style="font-size: 12px;">TOTAL HORAS:</td>
+                                    <td colspan="2" style="border-bottom:1px dotted black; text-align:left; height:10px;"><span id="for_totalh" class="pdf" style="text-transform: capitalize;margin-left: 10px;font-size: 12px;margin-left: 50px;"></span></td>
+                                </tr>
+                                <tr>
+                                    <td height="15px"></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12">
+                        <div style="height: 100px;"></div>
+                        <div class="col-xs-4" align="center" style="height: 100%;margin-top: -20px; text-align:center;">
+                            <table width="100%" style="margin-top:20px;font-family: arial;font-weight:bold;">
+                                <tr>
+                                    <td style="top: 5px; position:relative;font-weight: 800;">
+                                        <h id="for_f1" class="pdf"></h>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="80%" style="border-bottom:1px dotted black;"></td>
+                                </tr>
+                                <tr>
+                                    <td style="position:relative;top: 5px;font-size: 12px;">(F.)INTERESADO</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-xs-4" style="height: 100%;margin-top: -20px; text-align:center;">
+                            <table align="center" width="100%" style="margin-top:20px;font-family:arial;font-weight:bold;">
+                                <tr>
+                                    <td style="top: 5px; position:relative;font-weight: 800;">
+                                        <h id="for_f2" class="pdf"></h>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="80%" style="border-bottom:1px dotted black;"></td>
+                                </tr>
+                                <tr>
+                                    <td style="position:relative;top: 5px;font-size: 12px;">(F.)RESPONSABLE PROCESO/SUBPROCESO</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-xs-4" style="text-align:center;margin-top: -20px;">
+                            <table align="center" width="100%" style="margin-top:20px;font-family: arial;font-weight:bold;">
+                                <tr>
+                                    <td style="top: 5px; position:relative;font-weight: 800;">
+                                        <h id="for_f3" class="pdf"></h>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="80%" style="border-bottom:1px dotted black;"></td>
+                                </tr>
+                                <tr>
+                                    <td style="position:relative;top: 5px;font-size: 12px;">(F.)RESPONSABLE DE RECURSOS HUMANOS</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12">
+                        <div style="height: 20px;"></div>
+                        <table align="center" width="100%" style="margin-top:20px;font-family: arial;font-weight:bold;">
+                            <tr>
+                                <td align="left" style="font-size: 12px;">OBSERVACIONES:</td>
+                                <td style="border-bottom:1px dotted black; text-align:left; height:10px; width: 100%;"><span id="for_observacion" class="pdf" style="text-transform: capitalize;margin-left: 10px;font-size: 12px;"></span></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="border-bottom:1px dotted black; text-align:left; height:10px; width: 100%; height: 30px;"></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <br>
+                    <div class="col-xs-6">
+                        <table align="center" width="100%" style="margin-top:20px;font-size: 12px;font-family: arial;font-weight:bold;">
+                            <tr>
+                                <td align="left" style="font-size: 12px;">RECURSOS HUMANOS:</td>
+                            </tr>
+                        </table>
+                        <br>
+                        <table>
+                            <tr>
+                                <td align="left" style="font-size: 12px;">REGISTRADO:</td>
+                                <td style="border-bottom:1px dotted black; text-align:left; height:10px; width: 100%;"><span id="for_registro" class="pdf" style="text-transform: capitalize;margin-left: 10px;font-size: 12px;"></span></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div style="height: 50px;"></div>
+        </div>
+    </div>
+
+    <div class="stackbox-footer">
+        <button class="btn btn-primary" id="stackbox_save" onclick="generarPdfSolicitud();">PDF</button>
+        <button class="btn btn-default" data-close-stackbox="true">Close</button>
+    </div>
+</div>
+
+<!-- /.box -->
+<!-- AdminLTE datatable -->
+<!-- jQuery 3 -->
+{% load static %}
+<input type="hidden" id="verifica_init_sancion" value=0>
+<script src="{% static 'js/lib_internas/script.js' %}"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://npmcdn.com/flatpickr/dist/flatpickr.min.js"></script>
+<script src="https://npmcdn.com/flatpickr/dist/l10n/de.js"></script>
+<script>
+    function generarPdfSolicitud() {
+        const element = document.getElementById("section_rep");
+
+        filename = 'solicitudPer.pdf'
+        var opt = {
+            margin: [0.10, 0.10, 0.10, 0.10],
+            filename: 'myfile.pdf',
+            image: {
+                type: 'jpeg',
+                quality: 0.98
+            },
+            html2canvas: {
+                scale: 2
+            },
+            jsPDF: {
+                unit: 'in',
+
+                orientation: 'landscape'
+            }
+
+        };
+
+        html2pdf().set(opt).from(element).save();
+    }
+
+    $(document).ready(function() {
+
+        iniciarCombo('SmotivoTrx', 'ASUNTO_PERMISO', 'catalogos');
+        $("#SmotivoTrx").select2({
+            sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
+        });
+
+        $("#pms_revisor_id").select2({
+            sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
+        });
+
+        var table = $('#tabla_tramitesS').DataTable({
+            orderCellsTop: true,
+            "destroy": true,
+            "order": [
+                [0, "desc"]
+            ]
+        });
+
+        $('#tabla_tramitesS thead .filters th').each(function() {
+            var title = $('#tabla_tramitesS thead tr:eq(0) th').eq($(this).index()).text();
+
+            if ((title == "")) {
+                $(this).html('');
+            } else {
+                $(this).html('<input type="text" placeholder="Buscar" style="color:black;"/>');
+            }
+        });
+
+        // Apply the search
+        table.columns().eq(0).each(function(colIdx) {
+            $('input', $('#ftramS th')[colIdx]).on('keyup change', function() {
+                table
+                    .column(colIdx)
+                    .search(this.value)
+                    .draw();
+            });
+        });
+
+    });
+</script>
+{% endblock %}

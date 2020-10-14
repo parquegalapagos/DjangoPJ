@@ -1,0 +1,378 @@
+{% load static %} 
+{% block content %}
+
+<div id="content_encargo">
+    <div id="addEncargoE" style="display: none;">
+        <div class="stackbox-header cab_popup" align="center">
+            <img src="{% static 'image/favicon.ico' %}" width="40px" style="float:left;margin-top: -5px;" />
+            <h id="tituloSanS"> </h> Encargos y Subrogaciones</div>
+        <div class="stackbox-body">
+
+            <input type="hidden" id="idEncargoE" name="idEncargoE" value="" />
+            <input type="hidden" id="tipot_EncE" value="0" />
+            <input type="hidden" id="idaccPerE" name="idaccPerE" value="" />
+            <input type="hidden" id="idFuncionarioE" name="idFuncionarioE" value="" />
+            <input type="hidden" id="bandEncSP" name="bandEncSP" value="" />
+
+            <section class="content">
+                <div class="row" style="box-shadow: 5px 5px 5px 5px #888888;margin-top: 20px;">
+                    <div class="col-xs-12">
+                        <div class="nav-tabs-custom">
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a href="#tab_funcionarioE" data-toggle="tab" aria-expanded="true" style="font-weight: bold;">Funcionario</a></li>
+                                <li class=""><a href="#tab_nuevoE" data-toggle="tab" aria-expanded="false" style="font-weight: bold;display: none;">Nuevo Encargo</a></li>
+                                <!--li class=""><a href="#tab_periodoE" data-toggle="tab" aria-expanded="false" style="font-weight:bold;">Periodo</a></li-->
+                            </ul>
+                            <div class="tab-content" style="border-top: 2px solid #3c8dbc;">
+                                <!-- Font Awesome Icons -->
+                                <div class="tab-pane active" id="tab_funcionarioE">
+                                    <div class="row">
+                                        <br>
+                                        <div style="border-bottom:2px solid #3c8dbc;font-size: 14px;box-shadow: 1px 5px 5px;"><i class="fa fa-fw fa-user"></i> Datos Generales</div>
+                                        <br>
+                                        <div class="col-xs-6 callout" style="border-color: #1b90ad;">
+                                            <table>
+                                                <tr>
+                                                    <td style="text-align: left;">Funcionario</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <input type="text" name="funcionarioE" id="funcionarioE" class="form-control" readonly="">
+                                                    </td>
+                                                </tr>
+                                                <tr height="10px;"> </tr>
+                                                <tr>
+                                                    <td style="text-align: left;">Fecha</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <input type="date" name="fecha_funcE" id="fecha_funcE" class="form-control" style="width: 300px;" readonly="">
+                                                    </td>
+                                                </tr>
+                                                <tr height="10px;"> </tr>
+                                                <tr>
+                                                    <td style="text-align: left;">#Memorandum</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <input id="num_memoE" type="text" readonly class="form-control">
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <div class="col-xs-6 callout" style="border-color: #1b90ad;">
+                                            <table>
+                                                <tr>
+                                                    <td style="text-align: left;">Tipo</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <input type="text" name="tipoEnc" id="tipoEnc" class="form-control" style="width: 300px;" readonly>
+                                                    </td>
+                                                </tr>
+                                                <tr height="10px;"> </tr>
+                                                <tr>
+                                                    <td align="left">Estado Ejecución</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <select id="estadoEjeE" class="select2" style="width: 300px;">
+
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                                <tr height='10px;'></tr>
+                                                <tr>
+                                                    <td style="text-align: left;">Archivo Memo</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div id="contentFileEnc" style="margin-left: 20px;"><img id="imgContentFileEncSP" src="" width="50px" />
+                                                            <a style="margin-left: 10px;color: black; cursor: pointer;" id="nombreFileEncSP"></a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr height='10px;'></tr>
+                                            </table>
+                                        </div>
+                                        <br>
+                                        <div class="col-xs-12" style="top: -20px;">
+                                            <label style="position: relative;">Observaciones</label>
+                                            <textarea class="form-control" name="obser_Enc" id="obser_Enc" readonly rows="3"></textarea>
+                                        </div>
+
+                                        <div class="col-xs-12">
+                                            <div style="border-bottom:2px solid #3c8dbc; font-size: 14px;box-shadow: 1px 5px 5px;"><i class="fa fa-fw fa-file-text"></i> Puesto Actual</div>
+                                            <br>
+                                            <div class="col-xs-12">
+                                                <table class="table" style="box-shadow: 5px 5px 5px 5px;font-size: 10px">
+                                                    <thead>
+                                                        <tr style="background-color: #3c8dbc; color:#fff; text-align: center; text-transform: uppercase;">
+                                                            <td></td>
+                                                            <td style="border: 1px solid black;">Dirección</td>
+                                                            <td style="border: 1px solid black;">Proceso</td>
+                                                            <td style="border: 1px solid black;">Subproceso</td>
+                                                            <td style="border: 1px solid black;">Puesto Institucional</td>
+                                                            <td style="border: 1px solid black;">Grupo Ocupacional</td>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="tbody_puesto_act_enc" style="font-size: 10px;"></tbody>
+                                                </table>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /#fa-icons -->
+
+                                <!-- glyphicons-->
+                                <div class="tab-pane" id="tab_nuevoE">
+                                    <div class="row">
+                                        <br>
+                                        <div class="col-xs-12">
+                                            <div style="border-bottom:2px solid #3c8dbc; font-size: 14px;box-shadow: 1px 5px 5px;"><i class="fa fa-fw fa-arrow-circle-right"></i> Nuevo Encargo</div>
+                                            <br>
+                                            <div class="col-xs-6 callout" style="border-color: #1b90ad;">
+                                                <table>
+                                                    <tr>
+                                                        <td style="text-align: left;">Dirección</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <select id="SdireccionEn" class="select2" style="width: 300px;">
+                                                                <option value=""> Seleccione una Opcion</option>
+
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+                                                    <tr height='10px;'></tr>
+                                                    <tr>
+                                                        <td style="text-align: left;">Proceso</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <select id="SprocesoEn" class="select2" style="width: 300px;">
+                                                                <option value=""> Seleccione una Opcion</option>
+
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+                                                    <tr height='10px;'></tr>
+                                                    <tr>
+                                                        <td style="text-align: left;">Subproceso</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <select id="SsubprocesoEn" class="select2" style="width: 300px;">
+                                                                <option value="0">Seleccione una Opcion</option>
+
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                            <div class="col-xs-6 callout" style="border-color: #1b90ad;">
+                                                <table>
+                                                    <tr>
+                                                        <td align="left">Puesto Institucional</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <select id="SpuestoEn" class="select2" style="width: 300px;">
+                                                                <option value=""> Seleccione una Opcion</option>
+                                                                {% for ginstitucional in ginstitucionals %}
+                                                                <option value="{{ ginstitucional.id }}">{{ ginstitucional.nombre }}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+                                                    <tr height='10px;'></tr>
+                                                    <tr>
+                                                        <td align="left">Grupo Ocupacional </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <select id="SpuestoDistEn" class="select2" style="width: 300px;">
+                                                                <option value=""> Seleccione una Opcion</option>
+                                                                {% for gocupacional in gocupacionals %}
+                                                                <option value="{{ gocupacional.id }}">{{ gocupacional.nombre }}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--fin tab_datosI-->
+                                <!-- /#ion-icons -->
+
+                                <!-- /.tab-content -->
+                            </div>
+                            <!-- /.nav-tabs-custom -->
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                    <!-- /.row -->
+                </div>
+            </section>
+        </div>
+        <!-- /.body -->
+        <div class="stackbox-footer">
+            <!--button class="btn btn-primary" onclick="setInsertUpdateEncargos_SP();">Grabar</button-->
+            <button class="btn btn-default" data-close-stackbox="true">Close</button>
+        </div>
+    </div>
+
+    <body>
+
+        <div class="box">
+            <div class="box-header">
+                <i class="fa fa-list"></i>
+                <h3 class="box-title">Lista de Encargos y Subrogaciones</h3>
+                <div class="botonera" style="float: right; right: 1px;">
+                    <a style="cursor: pointer; font-size: 20px;" title="pfd" onclick="generarPdf('tabla_encargo_SP',9,1)"><i class="fa fa-file-pdf-o text-green"></i></a>
+                    <a style="cursor: pointer; font-size: 20px;" title="excel" onclick="generarExcel('tabla_encargo_SP',9)"><i class="fa fa-file-excel-o text-green"></i></a>
+                </div>
+            </div>
+            <!-- /.box-header -->
+
+            <div class="box box-solid bg-light-blue-gradient">
+                <div class="box-header ui-sortable-handle" style="cursor: move;">
+                    <!-- tools box -->
+                    <div class="pull-right box-tools">
+                        <button type="button" class="btn btn-primary btn-sm pull-right" data-toggle="collapse" href="#collapseEnc" role="button" aria-expanded="false" aria-controls="collapseEnc" style="margin-right: 5px;" data-original-title="Collapse">
+                            <i class="fa fa-minus"></i></button>
+                    </div>
+                    <!-- /. tools -->
+                    <i class="fa fa-map-marker"></i>
+                    <h3 class="box-title">
+                Filtros de Busqueda
+              </h3>
+                </div>
+                <div class="box-body collapse" style="background-color: white;" id="collapseEnc">
+                    <div class="col-xs-12">
+
+                        <div class="col-xs-4">
+                            <h style="font-size: 14px;color: black;font-weight: bold;height: 20px;">Nombre</h>
+                            <input type="text" class="form-control" name="" id="nombreParamEnc" style="width: 100%;" />
+                        </div>
+                        <div class="col-xs-4">
+                            <h style="font-size: 14px;color: black;font-weight: bold;">Identificación</h>
+                            <input type="text" class="form-control" name="" id="cedParamEnc" style="width: 100%;" />
+                        </div>
+                        <div class="col-xs-4">
+                            <h style="font-size: 14px;color: black;font-weight: bold;">Fecha Vigencia</h>
+                            <div class="input-daterange input-group" id="datepicker" style="">
+                                <input type="text" class="input-sm form-control" name="start" id="FdesdeParamEnc" autocomplete="off" />
+                                <span class="input-group-addon" style="border:none;font-weight: bold;">a</span>
+                                <input type="text" class="input-sm form-control" name="end" id="FhastaParamEnc" autocomplete="off" />
+                            </div>
+                            <br>
+                            <button type="button" class="btn btn-block btn-success" style="width: 20%; float: right;" onclick="buscarEncargosParametros();">Buscar</button>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- /.box-body-->
+            </div>
+
+            <div class="box-body">
+
+                <table id="tabla_encargo_SP" class="table table-striped table-bordered nowrap" width="100%" cellspacing="0" style="font-size: 10px; text-transform: uppercase;">
+                    <thead>
+                        <tr class="bg-light-blue-gradient" style="color: white;">
+                            <th align="center">FECHA CREACIÓN</th>
+                            <th align="center">#ACC PERSONAL</th>
+                            <th align="center">IDENTIFICACION</th>
+                            <th align="center">NOMBRE</th>
+                            <th align="center">TIPO</th>
+                            <th align="center">ESTADO
+                                <br>EJECUCION</th>
+                            <th align="center">ISLA</th>
+                            <th align="center">DESDE</th>
+                            <th align="center">HASTA</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody class="botonera1" id="bodytabla_encargo_SP">
+
+                    </tbody>
+                </table>
+            </div>
+            <!-- /.box-body -->
+    </body>
+
+    </div>
+
+</div>
+<!-- /.box -->
+<!-- AdminLTE datatable -->
+<!-- jQuery 3 -->
+<!-- esta pendiente realizar el historial de encargos y los eccargos activos por empleado -->
+{% load static %}
+<script src="{% static 'js/lib_internas/script.js' %}"></script>
+<script>
+    $(document).ready(function() {
+
+        var d = new Date();
+        var f1 = d.getFullYear() + "-01-01";
+        //var f2 = d.getFullYear()+"-"+(d.getMonth()+1)+"-"+ d.getDate();
+        var f2 = d.getFullYear() + "-12-31";
+        var dataini = f1 + "," + f2;
+
+        f1_aux = '01/01/' + d.getFullYear();
+        // f2_aux = (d.getMonth()+1)+'/'+d.getDate()+'/'+ d.getFullYear();
+        f2_aux = '12/31/' + d.getFullYear();
+        $("#FdesdeParamEnc").val(f1_aux);
+        $("#FhastaParamEnc").val(f2_aux);
+
+        var dataini = f1 + "," + f2;
+        buscarEncargosParametros(dataini);
+
+        $("#SestadoEnc").select2({
+            disabled: true
+        });
+
+        /*situacion actual*/
+        iniciarComboDirecciones('SdireccionEn', 'DIR', 'direcciones');
+        $("#SdireccionEn").select2({
+            disabled: true
+        });
+        iniciarComboDirecciones('SprocesoEn', 'PRC', 'direcciones');
+        $("#SprocesoEn").select2({
+            disabled: true
+        });
+        iniciarComboDirecciones('SsubprocesoEn', 'SPC', 'direcciones');
+        $("#SsubprocesoEn").select2({
+            disabled: true
+        });
+        //iniciarCombo('SpuestoDistEn','f','ocupacional');
+        $("#SpuestoDistEn").select2({
+            disabled: true
+        });
+        //iniciarCombo('SpuestoEn','f','institucional');
+        $("#SpuestoEn").select2({
+            disabled: true
+        });
+        //iniciarCombo('STipoDocE','TIPO_ACCION_PERSONAL','catalogos');
+        //$("#STipoDocE").select2({disabled: true});
+        iniciarCombo('estadoEjeE', 'ESTADO_PROCESOS_GTH', 'catalogos');
+        $("#estadoEjeE").select2({
+            disabled: true
+        });
+
+        var table = $('#tabla_encargo_SP').DataTable({
+            orderCellsTop: true,
+            "order": [
+                [0, "desc"]
+            ],
+        });
+
+        $('.input-daterange').datepicker();
+
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,130 @@
+ {% load static %} 
+ {% block content %}
+
+<style type="text/css">
+    #circle {
+        background: black;
+        width: 120%;
+        height: 120%;
+        border-radius: 50% 50% 50% 50%;
+        border: 2px solid orange;
+    }
+    
+    #circle div {
+        position: relative;
+        left: 25%;
+        color: white;
+        text-align: center;
+        font-size: 10px;
+    }
+    
+    .equis {
+        display: none;
+        position: absolute;
+        top: 10px;
+        font-size: 100px;
+        left: 15px;
+        z-index: 9999;
+        opacity: 0.8;
+    }
+    
+    .select2 {
+        z-index: 0;
+    }
+</style>
+<div id="content_control" style="height: 100%;">
+    <div class="box">
+        <div class="box-header">
+            <i class="fa fa-list"></i>
+            <h3 class="box-title">Estado Actual del Centro de Crianza</h3>
+            <br>
+            <div align="center" class="col-xs-12 callout callout-info" style="background-color: white !important;margin-top: 10px;">
+
+                <table style="color: black;font-size: 12px; font-weight: bold;box-shadow: 5px 5px 5px 5px;">
+                    <tr style="height: 20px;"></tr>
+                    <tr>
+                        <td width="50px"></td>
+                        <td align="right">Centro Crianza</td>
+                        <td width="10px"></td>
+                        <td>
+                            <select class="select2 requerido" id="SccEstadoAct" text="Centro Crianza" style="width: 200px;">
+                                <option value="">Seleccion una Opcion</option>
+                                {% for centrocrianza in centroscrianzas %}
+                                <option value="{{ centrocrianza.id }}">{{ centrocrianza.descripcion }}</option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                        <td width="10px"></td>
+                        <td align="right">Periodo</td>
+                        <td width="10px"></td>
+                        <td>
+                            <div class="input-daterange input-group" id="datepicker" style="">
+                                <input type="text" autocomplete="off" class="input-sm form-control" name="start" id="FdesdeRep" style="width: 100px;" />
+                            </div>
+                        </td>
+                        <td width="10px"></td>
+                        <td>
+                            <button type="button" class="btn btn-block btn-primary" style="width: 40px; position: relative;float: right; left: 20px; border-radius: 50%;box-shadow: 5px 5px 5px black;" onclick="dataEstadoActualCC();"><i class="fa fa-search"></i></button>
+                        </td>
+                        <td width="50px"></td>
+                    </tr>
+                    <tr style="height: 20px;"></tr>
+                </table>
+
+            </div>
+
+        </div>
+        <!-- /.box-header -->
+
+        <div class="box-body">
+            <a style="float: right;font-size: 20px;cursor: pointer;" title="excel" onclick="tableToExcel('tabla_estAct','reporte_mes')"><i class="fa fa-file-excel-o text-green"></i></a>
+            <div class="row">
+                <div class="col-xs-12">
+                    <table id="tabla_estAct" class="table table-bordered" style="box-shadow: 5px 5px 5px 5px;font-size: 10px; font-weight: bold;text-transform: uppercase;width: 100%;">
+                        <thead>
+
+                            <tr style="text-align: center; text-transform: uppercase;">
+                                <td style="background-color:#0073b7; color:#fff;">ISLA</td>
+                                <td style="background-color:#0073b7; color:#fff;">GRUPO</td>
+                                <td style="background-color:#0073b7; color:#fff;">HUEVOS
+                                    <BR>MES
+                                    <BR>ANTERIOR</td>
+                                <td style="background-color:#0073b7; color:#fff;">HUEVOS
+                                    <BR>INGRE</td>
+                                <td style="background-color:#0073b7; color:#fff;">HUEVOS
+                                    <BR>MALOS</td>
+                                <td style="background-color:#0073b7; color:#fff;">HUEVOS
+                                    <BR>INCUB</td>
+                                <td style="background-color:#0073b7; color:#fff;">NACIDOS</td>
+                                <td style="background-color:#0073b7; color:#fff;">MUERTOS</td>
+                                <td style="background-color:#0073b7; color:#fff;">REPATRIADOS</td>
+                                <td style="background-color:#0073b7; color:#fff;">EN EL
+                                    <BR>CENTRO</td>
+                                <td style="background-color:#0073b7; color:#fff;">COMENTARIOS</td>
+                                <td style="background-color:#0073b7; color:#fff;"></td>
+                            </tr>
+                        </thead>
+                        <tbody id="bodytabla_estAct" align="center" class="table-section"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- /.box-body -->
+    </div>
+    <!-- /.box -->
+</div>
+<!--content -->
+
+<!-- <script src="{% static 'js/lib_internas/script_espnativas.js' %}"></script> -->
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('.input-daterange').datepicker({
+            format: "mm-yyyy",
+            viewMode: "months",
+            minViewMode: "months"
+        });
+        $('#SccEstadoAct').select2();
+    });
+</script>
+{% endblock %}

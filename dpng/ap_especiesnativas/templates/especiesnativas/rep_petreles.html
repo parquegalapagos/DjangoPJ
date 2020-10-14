@@ -1,0 +1,119 @@
+ {% load static %} 
+ {% block content %}
+
+<style type="text/css">
+    #circle {
+        background: black;
+        width: 120%;
+        height: 120%;
+        border-radius: 50% 50% 50% 50%;
+        border: 2px solid orange;
+    }
+    
+    #circle div {
+        position: relative;
+        left: 25%;
+        color: white;
+        text-align: center;
+        font-size: 10px;
+    }
+    
+    .equis {
+        display: none;
+        position: absolute;
+        top: 10px;
+        font-size: 100px;
+        left: 15px;
+        z-index: 9999;
+        opacity: 0.8;
+    }
+    
+    .select2 {
+        z-index: 0;
+    }
+    /* it will work better with this box-sizing, you may adapt it to your needs */
+    /*html { box-sizing: border-box; }
+*, *:before, *:after {
+  box-sizing: inherit;
+}*/
+</style>
+<div id="content_control" style="height: 100%;">
+    <div class="box">
+        <div class="box-header">
+            <i class="fa fa-list"></i>
+            <h3 class="box-title">Reporte de Avistamientos</h3>
+            <br>
+            <div align="center" class="col-xs-12 callout callout-info" style="background-color: white !important;margin-top: 10px;">
+
+                <table style="color: black;font-size: 12px; font-weight: bold;box-shadow: 5px 5px 5px 5px;">
+                    <tr style="height: 20px;"></tr>
+                    <tr>
+                        <td width="50px"></td>
+                        <td align="right">Temporada</td>
+                        <td width="10px"></td>
+                        <td>
+                            <select class="select2" id="StemporadaAP" style="width: 230px;">
+                            </select>
+                        </td>
+                        <td width="10px"></td>
+                        <td align="right">Fechas</td>
+                        <td width="10px"></td>
+                        <td>
+                            <div class="input-daterange input-group" id="datepicker" style="">
+                                <input type="text" autocomplete="off" class="input-sm form-control" name="start" id="FdesdeParamAP" style="width: 100px;" />
+                                <span class="input-group-addon" style="border:none;font-weight: bold;">a</span>
+                                <input type="text" autocomplete="off" class="input-sm form-control" name="end" id="FhastaParamAP" style="width: 100px;" />
+                            </div>
+                        </td>
+                        <td width="10px"></td>
+                        <td>
+                            <button type="button" class="btn btn-block btn-primary" style="width: 40px; position: relative;float: right; left: 20px; border-radius: 50%;box-shadow: 5px 5px 5px black;" onclick="buscarReporteAvistamientoParametros('filtro');"><i class="fa fa-search"></i></button>
+                        </td>
+                        <td width="50px"></td>
+                    </tr>
+                    <tr style="height: 20px;"></tr>
+                </table>
+
+            </div>
+
+        </div>
+        <!-- /.box-header -->
+
+        <div class="box-body">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div id="outputPet" style="margin: 30px;width: 95%;overflow-x: auto;"></div>
+                </div>
+            </div>
+        </div>
+        <!-- /.box-body -->
+    </div>
+    <!-- /.box -->
+</div>
+<!--content -->
+
+<!-- <script src="{% static 'js/lib_internas/script_espnativas.js' %}"></script> -->
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        iniciaYears("StemporadaAP");
+        //$('#SgnacimientoCCG').select2();
+        iniciarGruposYears("SgnacimientoCCG");
+        $('.input-daterange').datepicker();
+
+        var d = new Date();
+        var f1 = d.getFullYear() + "-"+(d.getMonth()+1)+"-01";
+        // var f2 = d.getFullYear()+"-"+(d.getMonth()+1)+"-"+ d.getDate();
+        var f2 = d.getFullYear() + "-"+(d.getMonth()+1)+"-"+d.getDate();
+        var dataini = f1 + "," + f2;
+        buscarReporteAvistamientoParametros(dataini);
+
+        f1_aux = (d.getMonth()+1)+ '/01/' + d.getFullYear();
+        //f2_aux = (d.getMonth()+1)+'/'+d.getDate()+'/'+ d.getFullYear();
+        f2_aux = (d.getMonth()+1)+'/'+ d.getDate() +'/'+ d.getFullYear();
+
+        $("#FdesdeParamAP").val(f1_aux);
+        $("#FhastaParamAP").val(f2_aux);
+    });
+</script>
+{% endblock %}

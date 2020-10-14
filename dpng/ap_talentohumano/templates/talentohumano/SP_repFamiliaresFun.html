@@ -1,0 +1,117 @@
+{% load static %} 
+{% block content %}
+<!-- DataTables -->
+<style>
+    .dataTables_filter {
+        display: none;
+    }
+</style>
+
+<div id="content_repFun">
+
+    <div class="box">
+
+        <div class="box-header">
+            <i class="fa fa-list"></i>
+            <h3 class="box-title">Lista de Personal DPNG y Familiares</h3>
+            <div class="botonera" style="float: right; right: 1px;">
+                <!--a title="pfd" onclick="generarPdf('tabla_personas',3)"><i class="fa fa-file-pdf-o text-green"></i></a-->
+                <a title="excel" onclick="generarExcel('tabla_repFun',9)"><i class="fa fa-file-excel-o text-green"></i></a>
+            </div>
+        </div>
+        <!-- /.box-header -->
+
+        <div class="box box-solid bg-light-blue-gradient">
+            <div class="box-header ui-sortable-handle" style="cursor: move;">
+                <div class="pull-right box-tools">
+                    <button type="button" class="btn btn-primary btn-sm pull-right" data-toggle="collapse" href="#collapseRepF" role="button" aria-expanded="false" aria-controls="collapseRepF" style="margin-right: 5px;" data-original-title="Collapse">
+                        <i class="fa fa-minus"></i></button>
+                </div>
+                <i class="fa fa-map-marker"></i>
+                <h3 class="box-title">
+          Filtros de Busqueda
+        </h3>
+            </div>
+            <div class="box-body" style="background-color: white;" id="collapseRepF">
+                <div class="col-xs-12">
+
+                    <div class="col-xs-4">
+                        <h style="font-size: 14px;color: black;font-weight: bold;height: 20px;">Nombres</h>
+                        <input type="text" class="form-control" name="" id="nombresfilterR" style="width: 75%; height: 50%" />
+                    </div>
+
+                    <div class="col-xs-4">
+                        <h style="font-size: 14px;color: black;font-weight: bold;height: 20px;">Cédula</h>
+                        <input type="text" class="form-control" name="" id="cedulafilterR" style="width: 75%;height: 50%" />
+                    </div>
+
+                    <div class="col-xs-4">
+                        <button type="button" class="btn btn-block btn-success" style="width: 20%; float:right;" onclick="getDataPersonaFuncionarioFam();">Buscar</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="box-body" style="position: relative;">
+
+            <table id="tabla_repFun" style="font-size: 10px; text-transform: uppercase;" class="table table-striped table-bordered" width="100%" cellspacing="0">
+                <thead>
+                    <tr class="bg-light-blue-gradient" style="color: white;">
+                        <th>NOMBRE</th>
+                        <th>IDENTIFICACIÓN</th>
+                        <th>FAMILIAR</th>
+                        <th>IDENTIFICACION</th>
+                        <th>PARENTESCO</th>
+                        <th>FECHA NACIMIENTO</th>
+                        <th>DISCAPACITADO</th>
+                        <th>SUSTITUTO</th>
+                        <th>CARGA FAMILIAR</th>
+                    </tr>
+                </thead>
+                <tbody id="bodytabla_repFun">
+
+                </tbody>
+            </table>
+
+        </div>
+        <!-- /.box-body -->
+    </div>
+    <!-- /.box -->
+</div>
+<!-- content_persona -->
+<!-- /.box -->
+
+<!-- jQuery 3 -->
+{% load static %}
+
+<script src="{% static 'js/lib_internas/script.js' %}"></script>
+<script>
+    $(document).ready(function() {
+
+        getDataPersonaFuncionarioFam(1);
+
+        // ENTER 
+        $('#nombresfilterR').keypress(function(event) {
+            var keycode = (event.keyCode ? event.keyCode : event.which);
+            if (keycode == '13') {
+                getDataPersonaFuncionarioFam();
+
+            }
+        });
+
+        $('#cedulafilterR').keypress(function(event) {
+            var keycode = (event.keyCode ? event.keyCode : event.which);
+            if (keycode == '13') {
+                getDataPersonaFuncionarioFam();
+            }
+        });
+
+        //init();
+
+        var table = $('#tabla_repFun').DataTable();
+        // Setup - add a text input to each footer cell
+
+    });
+</script>
+{% endblock %}

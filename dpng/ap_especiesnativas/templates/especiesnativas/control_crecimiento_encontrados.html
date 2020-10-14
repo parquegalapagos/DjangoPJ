@@ -1,0 +1,194 @@
+{% load static %} 
+{% block content %}
+
+<style type="text/css">
+    #circle {
+        background: black;
+        width: 120%;
+        height: 120%;
+        border-radius: 50% 50% 50% 50%;
+        border: 2px solid orange;
+    }
+    
+    #circle div {
+        position: relative;
+        left: 25%;
+        color: white;
+        text-align: center;
+        font-size: 10px;
+    }
+    
+    .equis {
+        display: none;
+        position: absolute;
+        top: 10px;
+        font-size: 100px;
+        left: 15px;
+        z-index: 9999;
+        opacity: 0.8;
+    }
+    
+    .select2 {
+        z-index: 0;
+    }
+</style>
+<div id="content_control" style="height: 100%;">
+    <div class="box">
+        <div class="box-header">
+            <i class="fa fa-list"></i>
+            <h3 class="box-title">Control de crecimiento de Galapaguitos</h3>
+            <br>
+            <div align="center" class="col-xs-12 callout callout-info" style="background-color: white !important;margin-top: 10px;">
+                <table style="color: black;font-size: 12px; font-weight: bold;box-shadow: 5px 5px 5px 5px;">
+
+                    <!-- Flag para mostrar/ ocultar boton de agregar en el detalle del control de crecimiento -->
+                    {% if perms.ap_especiesnativas.add_spncontrolhuevos %}
+                    <input type="hidden" id="perm_controlcrec_encont_add" value="1" /> {% else %}
+                    <input type="hidden" id="perm_controlcrec_encont_add" value="0" /> {% endif %}
+
+                    <!-- Flag para mostrar/ ocultar boton de agregar en el detalle del control de crecimiento -->
+                    {% if perms.ap_especiesnativas.delete_spncontrolhuevos %}
+                    <input type="hidden" id="perm_controlcrec_encont_delete" value="1" /> {% else %}
+                    <input type="hidden" id="perm_controlcrec_encont_delete" value="0" /> {% endif %}
+
+                    <tr style="height: 20px;"></tr>
+                    <tr>
+                        <td width="100px"></td>
+                        <td align="right">Centro Crianza</td>
+                        <td width="10px"></td>
+                        <td>
+                            <select class="select2" id="SccrianzaCCE" style="width: 200px;">
+                                <option value="">Seleccion una Opcion</option>
+                                {% for centrocrianza in centroscrianzas %}
+                                <option value="{{ centrocrianza.id }}">{{ centrocrianza.descripcion }}</option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                        <td width="20px"></td>
+                        <td align="right">Grupo Nacimiento</td>
+                        <td width="10px"></td>
+                        <td>
+                            <select class="select2" id="SgnacimientoCCE" style="width: 230px;">
+
+                            </select>
+                        </td>
+                        <td width="100px"></td>
+                    </tr>
+                    <tr style="height: 10px;"></tr>
+                    <tr>
+                        <td width="100px"></td>
+                        <td align="right">Poblacion</td>
+                        <td width="10px"></td>
+                        <td>
+                            <select id="poblacionOcultaCCE" hidden>
+                                {% for poblacion in poblacions %}
+                                <option value="{{ poblacion.id }}">{{ poblacion.descripcion }}</option>
+                                {% endfor %}
+                            </select>
+                            <select class="select2" id="SpoblacionCCE" style="width: 200px;">
+                                <option value="2cc7250b-87d5-4cc6-a15e-bb0ea07c30c5" selected="">Encontrado</option>
+                            </select>
+                        </td>
+                        <td width="20px"></td>
+                        <td align="right">Periodo</td>
+                        <td width="10px"></td>
+                        <td>
+                            <select class="select2" id="SmedicionCCE" style="width: 100px;">
+                                <option value="1">ENERO</option>
+                                <option value="2">FEBRERO</option>
+                                <option value="3">MARZO</option>
+                                <option value="4">ABRIL</option>
+                                <option value="5">MAYO</option>
+                                <option value="6">JUNIO</option>
+                                <option value="7">JULIO</option>
+                                <option value="8">AGOSTO</option>
+                                <option value="9">SEPTIEMBRE</option>
+                                <option value="10">OCTUBRE</option>
+                                <option value="11">NOVIEMBRE</option>
+                                <option value="12">DICIEMBRE</option>
+                            </select>
+                            <select class="" id="SanioCCE" style="width: 80px;">
+
+                            </select>
+
+                            <button type="button" class="btn btn-block btn-primary" style="width: 40px; position: relative;float: right; left: 20px; border-radius: 50%;box-shadow: 5px 5px 5px black;" onclick="buscarMedicionesParametrosEnc();"><i class="fa fa-search"></i></button>
+                            {% if perms.ap_especiesnativas.add_spncontrolhuevos %} {% endif %}
+
+                        </td>
+                    </tr>
+                    <tr style="height: 20px;"></tr>
+                </table>
+            </div>
+        </div>
+        <!-- /.box-header -->
+
+        <div class="box-body">
+            <div class="row">
+                {% if perms.ap_especiesnativas.add_spncontrolhuevos %}
+                <div class="btn-group-vertical" style="position: fixed; z-index: 99999; right: 1%;">
+
+                    <button style="border-radius: 50%;width: 40px;height: 40px;box-shadow: 5px 5px 5px black;" type="button" onclick="insertUpdateMedicionesParametrosEnc();" class="btn btn-success"><i class="fa fa-save"></i></button>
+
+                    <button style="border-radius: 50%;margin-top: 10px;width: 40px;height: 40px;box-shadow: 5px 5px 5px black;" type="button" class="btn btn-success" id="addNewTortuTablaCCE"><i class="fa fa-plus"></i></button>
+                </div>
+                {% endif %}
+
+                <div class="col-xs-12">
+                    <!--button type="button" class="btn btn-block btn-primary" style="width: 80px; position: absolute;right: 1%; top: -40px;" onclick="insertUpdateMedicionesParametros();">Grabar</button-->
+                    <input type="hidden" id="control_crecimientoE_id">
+                    <table id="tabla_controlcE" class="table table-bordered" style="box-shadow: 5px 5px 5px 5px;font-size: 10px; font-weight: bold;text-transform: uppercase;width: 100%;">
+                        <thead>
+                            <tr style="background-color: #0073b7; color:#fff; text-align: center; text-transform: uppercase;">
+                                <td>FECHA</td>
+                                <td>#CON
+                                    <BR>PINTURA</td>
+                                <td>#CON
+                                    <BR>HIERRO</td>
+                                <td>#CON
+                                    <BR>PIT</td>
+                                <td>LARGO
+                                    <BR>CURVO
+                                    <BR>(cm)</td>
+                                <td>ANCHO
+                                    <BR>CURVO
+                                    <BR>(cm)</td>
+                                <td>LARGO
+                                    <BR>PLASTRON
+                                    <BR>(cm)</td>
+                                <td>PESO(g)</td>
+                                <td>COMETARIO</td>
+                                <td></td>
+                            </tr>
+                        </thead>
+                        <tbody id="bodytabla_controlcE" align="center" class="table-section"></tbody>
+                    </table>
+                    <!--button type="button" class="btn btn-block btn-primary" style="width: 80px; position: absolute;right: 1%;" id="addNewTortuTablaCC">Add</button-->
+                    <table id="tabla_controlcE_aux" class="table table-bordered" style="box-shadow: 5px 5px 5px 5px;font-size: 10px; font-weight: bold;text-transform: uppercase;width: 100%;position: relative; top: 40px;">
+                        <tbody id="bodytabla_controlcE_aux" align="center" class="table-section"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- /.box-body -->
+    </div>
+    <!-- /.box -->
+</div>
+<!--content -->
+
+<div id="tooltip_id_2nd_example" class="hidden">Woot, you can take the content of a hidden <code>div</code>.</div>
+
+<script src="{% static 'js/lib_internas/script_espnativas.js' %}"></script>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        iniciaYears("SanioCCE");
+
+        $('#SccrianzaCCE').select2();
+        $('#SpoblacionCCE').select2();
+        $('#SmedicionCCE').select2();
+        //$('#SgnacimientoCCE').select2();
+        iniciarGruposYears("SgnacimientoCCE");
+
+    });
+</script>
+{% endblock %}

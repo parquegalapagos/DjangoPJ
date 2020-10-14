@@ -1,0 +1,680 @@
+{% load static %} 
+{% block content %}
+<!-- DataTables -->
+<link rel="stylesheet" type="text/css" href="{% static 'css/select2.min.css' %}">
+
+<style type="text/css">
+    .filters input {
+        width: 100%;
+        padding: 3px;
+        box-sizing: border-box;
+        fieldset {
+            border: 1px solid #ddd !important;
+            margin: 0;
+            xmin-width: 0;
+            padding: 10px;
+            position: relative;
+            border-radius: 4px;
+            background-color: #f5f5f5;
+            padding-left: 10px!important;
+        }
+        legend {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 0px;
+            width: 35%;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 5px 5px 5px 10px;
+            background-color: #ffffff;
+        }
+        #map {
+            height: 500px;
+        }
+    }
+</style>
+
+<!-- PERMISOS PARA LOS ICONOS DE LA LISTA -->
+{% if perms.ap_especiesnativas.change_spncontrolflamingos or perms.ap_especiesnativas.view_spncontrolflamingos %}
+<input type="hidden" id="perm_change_spncontrolflamingos" value="1" /> {% else %}
+<input type="hidden" id="perm_change_spncontrolflamingos" value="0" /> {% endif %} {% if perms.ap_especiesnativas.delete_spncontrolflamingos %}
+<input type="hidden" id="perm_delete_spncontrolflamingos" value="1" /> {% else %}
+<input type="hidden" id="perm_delete_spncontrolflamingos" value="0" /> {% endif %}
+
+<!-- FORMULARIO  -->
+<div id="content_FlaNido">
+
+    <div id="addFlaNido" style="display: none;">
+        <div class="stackbox-header cab_popup" align="center">Registro Datos Flamingos </div>
+
+        <div class="stackbox-body" id="bodyaddFlaNido">
+            <div class="notification">
+                <span class="icon">
+            <i class=""></i>
+        </span>
+                <span class="text"></span>
+                <span class="close"><i class="fa fa-close"></i></span>
+            </div>
+
+            <!-- CAMPOS FORM -->
+            {% csrf_token %}
+            <form id="frm_FlaNido" action="#" method="post">
+                <section class="content">
+                    <div class="row" style="box-shadow: 5px 5px 5px 5px #888888;margin-top: 20px;">
+                        <div class="col-xs-12">
+                            <div class="nav-tabs-custom">
+                                <ul class="nav nav-tabs">
+                                    <li class="active"><a href="#tab_fla" data-toggle="tab" aria-expanded="true" style="font-weight: bold;">Datos Flamingo</a></li>
+                                    <li id="tabAve" class="disabledTab"><a href="#tab_otras_aves" data-toggle="tab" aria-expanded="false" style="font-weight: bold;" onclick="getDataAves();">Observaciones Otras Aves</a></li>
+                                    <li id="tabOtro" class="disabledTab"><a href="#tab_otras_esp" data-toggle="tab" aria-expanded="false" style="font-weight: bold;" onclick="getDataOtras();">Observaciones Otras Especies Introducidas</a></li>
+                                    <li id="tabNidos" class="disabledTab"><a href="#tab_nidos" data-toggle="tab" aria-expanded="false" style="font-weight: bold;" onclick="getDataNidos();">Datos Nidos</a></li>
+                                </ul>
+                                <div class="tab-content" style="border-top: 2px solid #3c8dbc;">
+                                    <!-- Font Awesome Icons -->
+                                    <div class="tab-pane active" id="tab_fla">
+                                        <div class="row" align="center">
+                                            <table>
+                                                <!-- FIELDS -->
+                                                <input type="hidden" id="idFlaNido" name="idFlaNido" value="" />
+                                                <tr>
+                                                    <td align="right">Fecha</td>
+                                                    <td width="10px"></td>
+                                                    <td>
+                                                        <input type="date" autocomplete='off' class="requerido" text="Fecha" id="FregFla" style="width: 200px; height:25px; font-size: 12px; " />
+                                                    </td>
+                                                </tr>
+                                                <tr height='10px;'></tr>
+                                                <tr>
+                                                    <td align="right">Encargados</td>
+                                                    <td width="10px"></td>
+                                                    <td colspan="6">
+                                                        <select class="select2 requerido" id="SparticipantesFla" text="Encargados" name="participantesFla[]" multiple="multiple" style="width: 100%;">
+                                                            <option value="">Seleccion una Opcion</option>
+                                                            {% for funcionario in funcionarios %}
+                                                            <option value="{{ funcionario.id }}" data-nombre="{{ funcionario.persona_id.nombre_completo }}">{{ funcionario.persona_id.apellidos }} {{ funcionario.persona_id.nombres }}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                                <tr height='10px;'></tr>
+                                                <tr>
+                                                    <td align="right">Sitio</td>
+                                                    <td width="10px;"></td>
+                                                    <td>
+                                                        <select class="select2 requerido" id="SsitioFla" text="Sitio" style="width: 200px;">
+                                                            <option value="">Seleccion una Opcion</option>
+                                                            {% for zona in zonas %}
+                                                            <option value="{{ zona.id }}">{{ zona.descripcion }}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                                <tr height='10px;'></tr>
+                                                <tr>
+                                                    <td align="right">Hora Inicio</td>
+                                                    <td width="10px;"></td>
+                                                    <td>
+                                                        <input type="time" name="hdesdeFla" id="hdesdeFla" class="requerido" text="Hora Inicio" step=900>
+                                                    </td>
+                                                </tr>
+                                                <tr height='10px;'></tr>
+                                                <tr>
+                                                    <td align="right">Hora Fin</td>
+                                                    <td width="10px;"></td>
+                                                    <td>
+                                                        <input type="time" name="hfinFla" id="hfinFla" class="requerido" text="Hora Fin" step=900>
+                                                    </td>
+                                                </tr>
+                                                <tr height='10px;'></tr>
+                                                <tr>
+                                                    <td align="right">Nivel Agua</td>
+                                                    <td width="10px;"></td>
+                                                    <td align="left">
+                                                        <!-- <select class="select2 requerido" id="SnivAve" style="width: 200px;">
+                                        <option value=""></option>
+                                        <option value="1">Alto</option>
+                                        <option value="2">Bajo</option>
+                                        <option value="3">Medio</option>
+                                        <option value="4">Medida</option>
+                                      </select> -->
+                                                        <select class="select2 requerido" id="SnivAve" style="width: 200px;">
+                                                            <option value="">Seleccion una Opcion</option>
+                                                            {% for nivel in datos %} {% if nivel.categoria == 'SPN_NIVEL_AGUA' %}
+                                                            <option value="{{ nivel.valor }}">{{ nivel.label }}</option>
+                                                            {% endif %} {% endfor %}
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                                <tr height='10px;'></tr>
+                                                <tr>
+                                                    <td align="right">Caracteristicas Agua</td>
+                                                    <td width="10px;"></td>
+                                                    <td align="left">
+                                                        <!-- <select class="select2 requerido" id="ScarAguaAve" style="width: 200px;">
+                                  <option value=""></option>
+                                  <option value="1">Crustaceos</option>
+                                  <option value="2">Limpia</option>
+                                  <option value="3">Peces</option>
+                                  <option value="4">Sucia</option>
+                                  <option value="4">Vegetacion</option>
+                              </select> -->
+                                                        <select class="select2 requerido" id="ScarAguaAve" style="width: 200px;">
+                                                            <option value="">Seleccion una Opcion</option>
+                                                            {% for caracteristica in datos %} {% if caracteristica.categoria == 'SPN_CARACTERISTICA_AGUA' %}
+                                                            <option value="{{ caracteristica.valor }}">{{ caracteristica.label }}</option>
+                                                            {% endif %} {% endfor %}
+                                                        </select>
+                                                        <input type="hidden" id="iddatoAve" value=0/>
+                                                        <input type="hidden" id="tipo_acc_ave" value="1" />
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            <br>
+                                            <div id="infoFladiv" hidden>
+                                                <div>
+                                                    <fieldset class="col-md-12">
+                                                        <div class="panel panel-default">
+                                                            <div class="panel-body">
+                                                                <table>
+                                                                    <tr>
+                                                                        <td align="center">Estado
+                                                                            <br>Comportamiento</td>
+                                                                        <td align="center">Adulto
+                                                                            <br>Color
+                                                                            <br>Rosado</td>
+                                                                        <td align="center">Edad
+                                                                            <br>Indeterminada
+                                                                            <br>(Color
+                                                                            <br>Rosado Palido)</td>
+                                                                        <td align="center">Juveniles
+                                                                            <br>(Color
+                                                                            <br>Grisaceo)</td>
+                                                                        <td align="center">Pichones
+                                                                            <br>(Color Blanco)</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <select class="select2 requerido" id="SestadoComp" text="Estado/Comportamiento" style="width: 200px;">
+                                                                                <option value="">Seleccion una Opcion</option>
+                                                                                {% for estado in estados %}
+                                                                                <option value="{{ estado.valor }}">{{ estado.label }}</option>
+                                                                                {% endfor %}
+                                                                            </select>
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type="text" class="form-control" id="adulFla" style="width: 100px;text-align: center; height: 26px;" onkeypress='return isNumberKey(event);' />
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type="text" class="form-control" id="edadFla" style="width: 100px;text-align: center; height: 26px;" onkeypress='return isNumberKey(event);' />
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type="text" class="form-control" id="juvFla" style="width: 100px;text-align: center; height: 26px;" onkeypress='return isNumberKey(event);' />
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type="text" class="form-control" id="picFla" style="width: 100px;text-align: center; height: 26px;" onkeypress='return isNumberKey(event);' />
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                                <input type="hidden" id="tipo_acc_fla_det" value="1" />
+                                                                <input type="hidden" id="iddatoFla" />
+                                                                <div style="position: relative; right: 1%; float:right;top:10px;">
+                                                                    <a id="btnCleanRowFla" onclick="limpiarDatosFla();" title="Limpiar" style="position: relative; left: -10px;"><i style="font-size: 20px;cursor: pointer;" class="fa fa-eraser text-green"></i></a>
+                                                                    <a style="width: 10px;"></a>
+                                                                    <a id="btnAddRowFla" title="Grabar"><i style="font-size: 20px;cursor: pointer;" class="fa fa-save text-green"></i></a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </fieldset>
+                                                </div>
+
+                                                <div>
+                                                    <fieldset class="col-md-12">
+                                                        <div class="panel panel-default">
+                                                            <div class="panel-body">
+                                                                <table id="table_fla" class="table table-striped table-bordered" style="box-shadow: 5px 5px 5px 5px;font-size: 10px; font-weight: bold;text-transform: uppercase;">
+                                                                    <thead>
+                                                                        <tr style="background-color: #3c8dbc; color:#fff; text-align: center; text-transform: uppercase;">
+                                                                            <td style="border: 1px solid black;">Estado</td>
+                                                                            <td style="border: 1px solid black;">Adulto</td>
+                                                                            <td style="border: 1px solid black;">Edad</td>
+                                                                            <td style="border: 1px solid black;">Juveniles</td>
+                                                                            <td style="border: 1px solid black;">Pichones</td>
+                                                                            <td align="center" style="border: 1px solid black;"></td>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody id="tbody_fla" class="table-section"></tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </fieldset>
+                                                </div>
+                                            </div>
+
+                                            <table align="left">
+                                                <tr height='10px;'></tr>
+                                                <tr>
+                                                    <td align="left">Invitado</td>
+                                                    <td width="10px"></td>
+                                                    <td>
+                                                        <input type="text" id="InvFla" class="form-control" style="width: 200px; height: 35px" /> </td>
+                                                </tr>
+                                            </table>
+
+                                            <table style="width: 100%">
+
+                                                <tr height='10px;'></tr>
+                                                <tr>
+                                                    <td align="left">Observacion</td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="5">
+                                                        <textarea id="observacionFla" class="form-control" rows="3" style="width: 100%;font-size: 12px;"></textarea>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <!-- /#fa-icons -->
+
+                                    <!-- glyphicons-->
+                                    <div class="tab-pane" id="tab_otras_aves">
+                                        <div class="row">
+                                            <div style="position: relative;">
+                                                <fieldset class="col-md-12">
+                                                    <div class="panel panel-default">
+                                                        <div class="panel-body" align="center">
+                                                            <table>
+                                                                <tr>
+                                                                    <td align="right">Nombre Individuo</td>
+                                                                    <td width="10px;"></td>
+                                                                    <td align="left">
+                                                                        <select class="select2 requerido" id="SindividuoAve" style="width: 200px;">
+                                                                            <option value="">Seleccion una Opcion</option>
+                                                                            {% for ave in especies %} {% if ave.categoria == 1 %}
+                                                                            <option value="{{ ave.id }}">{{ ave.nombre_comun }}</option>
+                                                                            {% endif %} {% endfor %}
+                                                                        </select>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr height='10px;'></tr>
+                                                                <tr>
+                                                                    <td align="right">Numero</td>
+                                                                    <td width="10px;"></td>
+                                                                    <td align="left">
+                                                                        <input type="text" class="form-control" id="numAve" style="width: 100px;text-align: center;font-size: 12px;" onkeypress='return isNumberKey(event);' />
+                                                                    </td>
+                                                                </tr>
+                                                                <tr height='10px;'></tr>
+
+                                                            </table>
+                                                            <div style="position: relative; right: 1%; float:right;top:10px;">
+                                                                <a id="btnCleanRowAve" onclick="limpiarDatosAves();" title="Limpiar" style="position: relative; left: -10px;"><i style="font-size: 20px;cursor: pointer;" class="fa fa-eraser text-green"></i></a>
+                                                                <a style="width: 10px;"></a>
+                                                                <a id="btnAddRowAve" title="Grabar"><i style="font-size: 20px;cursor: pointer;" class="fa fa-save text-green"></i></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </fieldset>
+                                            </div>
+                                            <table id="table_otras_aves" class="table table-striped table-bordered" style="box-shadow: 5px 5px 5px 5px;font-size: 10px; font-weight: bold;text-transform: uppercase;">
+                                                <thead>
+                                                    <tr style="background-color: #3c8dbc; color:#fff; text-align: center; text-transform: uppercase;">
+                                                        <td style="border: 1px solid black;">Nombre Individuo</td>
+                                                        <td style="border: 1px solid black;">Numero</td>
+                                                        <td style="border: 1px solid black;">Nivel Agua</td>
+                                                        <td style="border: 1px solid black;">Caracteristica Agua</td>
+                                                        <td align="center" style="border: 1px solid black;"></td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="tbody_otras_aves" class="table-section"></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <!--fin tab_datosI-->
+                                    <!-- glyphicons-->
+                                    <div class="tab-pane" id="tab_otras_esp">
+                                        <div class="row">
+                                            <div style="position: relative;">
+                                                <fieldset class="col-md-12">
+                                                    <div class="panel panel-default">
+                                                        <div class="panel-body" align="center">
+                                                            <table>
+                                                                <tr>
+                                                                    <td align="right">Nombre Individuo</td>
+                                                                    <td width="10px;"></td>
+                                                                    <td align="left">
+                                                                        <select class="select2 requerido" id="SindividuoOtro" style="width: 200px;">
+                                                                            <option value="">Seleccion una Opcion</option>
+                                                                            {% for ave in especies %} {% if ave.categoria == 2 %}
+                                                                            <option value="{{ ave.id }}">{{ ave.nombre_comun }}</option>
+                                                                            {% endif %} {% endfor %}
+                                                                        </select>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr height='10px;'></tr>
+                                                                <tr>
+                                                                    <td align="right">Numero</td>
+                                                                    <td width="10px;"></td>
+                                                                    <td align="left">
+                                                                        <input type="text" class="form-control" id="numOtro" style="width: 100px;text-align: center;font-size: 12px;" onkeypress='return isNumberKey(event);' />
+                                                                        <input type="hidden" id="iddatoOtro" value=0/>
+                                                                        <input type="hidden" id="tipo_acc_otro" value="1" />
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                            <div style="position: relative; right: 1%; float:right;top:10px;">
+                                                                <a id="btnCleanRowOtro" onclick="limpiarDatosOtras();" title="limpiar" style="position: relative; left: -10px;"><i style="font-size: 20px;cursor: pointer;" class="fa fa-eraser text-green"></i></a>
+
+                                                                <a id="btnAddRowOtro" title="Grabar"><i style="font-size: 20px;cursor: pointer;" class="fa fa-save text-green"></i></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </fieldset>
+                                            </div>
+                                            <table id="table_otras_esp" class="table table-striped table-bordered" style="box-shadow: 5px 5px 5px 5px;font-size: 10px; font-weight: bold;text-transform: uppercase;">
+                                                <thead>
+                                                    <tr style="background-color: #3c8dbc; color:#fff; text-align: center; text-transform: uppercase;">
+                                                        <td style="border: 1px solid black;">Nombre Individuo</td>
+                                                        <td style="border: 1px solid black;">Numero</td>
+                                                        <td align="center" style="border: 1px solid black;"></td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="tbody_otras_esp" class="table-section"></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <!--fin tab_datosI-->
+
+                                    <!-- DATOS NIDOS -->
+                                    <div class="tab-pane" id="tab_nidos">
+                                        <div class="row">
+                                            <div style="position: relative;">
+                                                <fieldset class="col-md-12">
+                                                    <div class="panel panel-default">
+                                                        <div class="panel-body" align="center">
+                                                            <table>
+                                                                <tr>
+                                                                    <td align="right">Datos Nido</td>
+                                                                    <td width="10px;"></td>
+                                                                    <td align="left">
+                                                                        <select class="select2 requerido" id="Snido" text="" style="width: 200px;">
+                                                                            <option value="">Seleccion una Opcion</option>
+                                                                            {% for dato in datos %} {% if dato.categoria == 'SPN_DATOS_NIDO' %}
+                                                                            <option value="{{ dato.valor }}">{{ dato.label }}</option>
+                                                                            {% endif %} {% endfor %}
+                                                                        </select>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr height='10px;'></tr>
+                                                                <tr>
+                                                                    <td align="right">Numero</td>
+                                                                    <td width="10px;"></td>
+                                                                    <td align="left">
+                                                                        <input type="text" class="form-control" id="numNido" style="width: 100px;text-align: center;font-size: 12px;" onkeypress='return isNumberKey(event);' />
+                                                                        <input type="hidden" id="iddatoNido" value=0/>
+                                                                        <input type="hidden" id="tipo_acc_nido" value="1" />
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                            <div style="position: relative; right: 1%; float:right;top:10px;">
+                                                                <a id="btnCleanRowOtro" onclick="limpiarDatosOtras();" title="limpiar" style="position: relative; left: -10px;"><i style="font-size: 20px;cursor: pointer;" class="fa fa-eraser text-green"></i></a>
+
+                                                                <a id="btnAddRowNidos" title="Grabar"><i style="font-size: 20px;cursor: pointer;" class="fa fa-save text-green"></i></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </fieldset>
+                                            </div>
+                                            <table id="table_datos_nido" class="table table-striped table-bordered" style="box-shadow: 5px 5px 5px 5px;font-size: 10px; font-weight: bold;text-transform: uppercase;">
+                                                <thead>
+                                                    <tr style="background-color: #3c8dbc; color:#fff; text-align: center; text-transform: uppercase;">
+                                                        <td style="border: 1px solid black;">Datos Nido</td>
+                                                        <td style="border: 1px solid black;">Numero</td>
+                                                        <td align="center" style="border: 1px solid black;"></td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="tbody_datos_nidos" class="table-section"></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <!--fin tab_datosNidos-->
+
+                                </div>
+                                <!-- /.nav-tabs-custom -->
+                            </div>
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                    <!-- /.row -->
+                </section>
+                <input type="hidden" id="tipo_acc_fla" value="0" />
+            </form>
+
+        </div>
+        <div class="stackbox-footer">
+            {% if perms.ap_especiesnativas.change_spncontrolflamingos or perms.ap_especiesnativas.add_spncontrolflamingos %}
+            <button class="btn btn-primary" onclick="setInsertUpdateFla();">Grabar</button>
+            {% endif %}
+            <button class="btn btn-default" data-close-stackbox="true">Close</button>
+        </div>
+    </div>
+
+    <div class="box">
+
+        <div class="box-header">
+            <i class="fa fa-list"></i>
+            <h3 class="box-title">Lista Registros Flamingos</h3> <img src="{% static 'image/fla.png' %}" width="1.5%">
+            <div class="botonera" style="float: right; right: 1px;">
+
+                {% if perms.ap_especiesnativas.add_spncontrolflamingos %}
+                <a onclick="limpiarFormFla();" href='#addFlaNido' data-stackbox='true' data-stackbox-position="absolute"><i class="fa fa-plus-circle text-green btn_nuevo"></i></a> {% endif %}
+
+                <!--a title="pfd" onclick="generarPdf('tabla_Fla',13)"><i class="fa fa-file-pdf-o text-green"></i></a-->
+                <a title="excel" onclick="generarExcel('tabla_Fla_aux',19)"><i class="fa fa-file-excel-o text-green"></i></a>
+
+                <!--a title="Agregar Nuevo" onclick="limpiarFormLicencia_SP();"   href='#addLicenciaL' data-stackbox='true' data-stackbox-position="absolute"><i class="fa fa-plus-circle text-green"></i></a-->
+            </div>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+
+            <div class="box box-default" style="position: relative;top: 10px;">
+                <div class="box-header with-border" style="cursor: move;">
+                    <!-- tools box -->
+                    <div class="pull-right box-tools">
+                        <button type="button" class="btn btn-primary btn-sm pull-right" data-toggle="collapse" href="#collapseFlaNid" role="button" aria-expanded="false" aria-controls="collapseFlaNid" style="margin-right: 5px;" data-original-title="Collapse">
+                            <i class="fa fa-minus"></i></button>
+                    </div>
+                    <!-- /. tools -->
+                    <i class="fa fa-search"></i>
+                    <h3 class="box-title">Filtros de Busqueda </h3>
+                </div>
+                <div class="box-body collapse" style="background-color: white;" id="collapseFlaNid">
+                    <div class="col-xs-12" align="center" style="box-shadow: 0px 5px 5px 0px;">
+                        <table>
+                            <tr>
+                                <td align="right">Fecha</td>
+                                <td width="10px"></td>
+                                <td>
+                                    <div class="input-daterange input-group" id="datepicker" style="">
+                                        <input type="text" autocomplete="off" class="input-sm form-control" name="start" id="FdesdePFla" />
+                                        <span class="input-group-addon" style="border:none;font-weight: bold;">a</span>
+                                        <input type="text" autocomplete="off" class="input-sm form-control" name="end" id="FhastaPFla" />
+                                    </div>
+                                </td>
+                                <td width="10px"></td>
+                                <td align="right">Sitio</td>
+                                <td width="10px"></td>
+                                <td>
+                                    <input type="text" class="form-control" name="" id="sitioPFla" style="width: 100%;" />
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td align="right">Encargado</td>
+                                <td width="10px"></td>
+                                <td>
+                                    <input type="text" class="form-control" name="" id="respPFla" style="width: 100%;" />
+                                </td>
+                                <td width="10px"></td>
+                                <td align="right">Estado</td>
+                                <td width="10px"></td>
+                                <td>
+                                    <input type="text" class="form-control" name="" id="estPFla" style="width: 100%;" />
+                                </td>
+                                <td width="10px"></td>
+                                <td align="right">
+                                    <button type="button" class="btn btn-block btn-success" style="width:80px;float:right;" onclick="buscarFlaParametros();">Buscar</button>
+                                </td>
+                            </tr>
+                            <tr height="10px"> </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="box box-default" style="position: relative;top: 10px;">
+                <div class="box-header with-border" style="cursor: move;">
+                    <!-- tools box -->
+                    <div class="pull-right box-tools">
+                        <button type="button" class="btn btn-primary btn-sm pull-right" data-toggle="collapse" href="#collapseFla" role="button" aria-expanded="false" aria-controls="collapseFla" style="margin-right: 5px;" data-original-title="Collapse">
+                            <i class="fa fa-minus"></i></button>
+                    </div>
+                    <!-- /. tools -->
+                    <i class="fa fa-search"></i>
+                    <h3 class="box-title"> Gráfico</h3>
+                </div>
+                <div class="box-body collapse in" style="background-color: white;" id="collapseFla">
+                    <div class="col-md-5">
+                        <div id="containerFla" class="chart-container" style="width: 100%;"></div>
+                    </div>
+                    <div class="col-md-7">
+                        <div id="outputFla" style="margin: 30px;width: 95%;overflow-x: auto;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="col-md-9"></div>
+                <div class="col-md-3">
+                    <div class="box box-default" style="position: relative;top: 10px; float: right;right: -10%;">
+                        <div class="box-header with-border" style="cursor: move;">
+                            <!-- tools box -->
+                            <div class="pull-right box-tools">
+                                <button type="button" class="btn btn-primary btn-sm pull-right" data-toggle="collapse" href="#collapseTableF" role="button" aria-expanded="false" aria-controls="collapseTableF" style="margin-right: 5px;" data-original-title="Collapse">
+                                    <i class="fa fa-minus"></i></button>
+                            </div>
+                            <!-- /. tools -->
+                            <i class="fa fa-search"></i>
+                            <h3 class="box-title">Ver Ocultar Columnas</h3>
+                        </div>
+                        <div class="box-body collapse" style="background-color: white;" id="collapseTableF">
+                            <div class="col-xs-12" align="left" style="box-shadow: 0px 5px 5px 0px;" id="filterTableF">
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <table id="tabla_Fla" style="font-size: 10px; text-transform: uppercase;font-weight: bold;" class="table table-striped table-bordered" width="100%" cellspacing="0">
+                <thead>
+                    <tr align="center" style="background-color: #0073b7;color: white; text-align: center;">
+                        <th style="text-align: center;">Fecha</th>
+                        <th style="text-align: center;">Encargados</th>
+                        <th style="text-align: center;">Sitio</th>
+                        <th style="text-align: center;">Hora
+                            <br>Inicio</th>
+                        <th style="text-align: center;">Hora
+                            <br>Fin</th>
+                        <th style="text-align: center;">Observacion</th>
+                        <th></th>
+                        <th></th>
+
+                    </tr>
+                </thead>
+                <tbody id="bodytabla_Fla">
+
+                </tbody>
+            </table>
+
+            <div hidden>
+                <table id="tabla_Fla_aux" style="font-size: 10px; text-transform: uppercase;font-weight: bold;" class="table table-striped table-bordered" width="100%" cellspacing="0">
+                    <thead>
+                        <tr align="center" style="background-color: #0073b7;color: white; text-align: center;">
+                            <th style="text-align: center;">Fecha</th>
+                            <th style="text-align: center;">Encargados</th>
+                            <th style="text-align: center;">Sitio</th>
+                            <th style="text-align: center;">Hora
+                                <br>Inicio</th>
+                            <th style="text-align: center;">Hora
+                                <br>Fin</th>
+                            <th style="text-align: center;">Datos
+                                <br>Nido</th>
+                            <th style="text-align: center;">Numero</th>
+                            <th style="text-align: center;">Observacion</th>
+                            <td style="text-align: center;">Estado</td>
+                            <td style="text-align: center;">Adulto</td>
+                            <td style="text-align: center;">Edad</td>
+                            <td style="text-align: center;">Juveniles</td>
+                            <td style="text-align: center;">Pichones</td>
+                            <th style="text-align: center;">Especies Marinas</th>
+                            <th style="text-align: center;">Numero</th>
+                            <th style="text-align: center;">Nivel Agua</th>
+                            <th style="text-align: center;">Caracteristica Agua</th>
+                            <th style="text-align: center;">Especies Introducidas</th>
+                            <th style="text-align: center;">Numero</th>
+                            <th style="text-align: center;">tipo</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bodytabla_Fla_aux">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- /.box-body -->
+
+    </div>
+    <!-- /.box -->
+
+</div>
+<!-- /.content -->
+
+<!-- AdminLTE datatable -->
+<!-- jQuery 3 -->
+{% load static %}
+
+
+
+<script>
+    $(document).ready(function() {
+        dataCabFla = ['Fecha', 'Encargados', 'Sitio', 'Hora Inicio', 'Hora Fin', 'Observacion'];
+        dataDisableFla = [];
+        intFilterTabla('filterTableF', dataCabFla, dataDisableFla);
+
+        $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
+            checkboxClass: 'icheckbox_flat-green',
+            radioClass: 'iradio_flat-green'
+        })
+        var f1 = (new Date).getFullYear() + "-01-01";
+        var f2 = (new Date).getFullYear() + "-12-31";
+        var dataini = f1 + "," + f2;
+        buscarFlaParametros(dataini);
+        $('.input-daterange').datepicker();
+        $('#tipo_acc_ave').val(1);
+        $('#SsitioFla').select2();
+        $('#Snido').select2();
+        $('#SparticipantesFla').select2();
+        $('#SestadoComp').select2();
+        $('#SindividuoAve').select2();
+        $('#ScarAguaAve').select2();
+        $('#SindividuoOtro').select2();
+        $('#SnivAve').select2();
+
+        //var table = $('#tabla_Fla').DataTable();
+    });
+</script>
+
+{% endblock %}

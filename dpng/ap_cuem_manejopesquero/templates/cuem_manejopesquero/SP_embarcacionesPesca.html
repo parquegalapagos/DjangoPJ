@@ -1,0 +1,295 @@
+{% extends 'cuem_manejopesquero/menu_lateral.html' %}
+{% block principalhome %}
+
+{% load static %}
+<style>
+    .dataTables_filter {
+        display: none;
+    }
+</style>
+
+<input type="hidden" id="option_pais" value="" /> 
+<input type="hidden" id="option_provincia" value="" /> 
+<input type="hidden" id="option_ciudad" value="" />
+<input type="hidden" id="option_isla" value="" />
+<input type="hidden" id="option_instruc_academ" value="" />
+<input type="hidden" id="option_cooperativas" value="" />
+<input type="hidden" id="option_categoria" value="" />
+
+<div id="content_Embarcacionpesca" style="top: 0px;">
+    <!-- Ficha Embarcaciones -->
+    <div id="verFicha" style="display: none;">
+        <div class="stackbox-header cab_popup" align="center">
+            <img src="{% static 'image/favicon.ico' %}" width="40px" style="float:left;margin-top: -5px;" /> Ficha Embarcaciones
+        </div>
+        <div class="stackbox-body" id="bodyverFicha">
+
+            <div class="row" style="box-shadow: 5px 5px 5px 5px #888888; width: 104%; margin-top: 20px;">
+
+                <div class="col-xs-12">
+                    <div class="col-xs-1"></div>
+                    <div class="col-xs-10" style="">
+                        <table style="width: 100%">
+                            <tr height="50px">
+                                <td colspan="2" style="border: 1px solid black; text-align: center;background-color: #c1c1c1; font-size: 16px;" id="td_c_nombreembarcacion"></td>
+                                <td rowspan="7" style="border: 1px solid black; text-align: center;background-color: #c1c1c1;">
+                                    <div id="contentFileFotF" style=""><img id="imgContentFileFotF" src="" width="150px" height="192px"></div>
+                                </td>
+                            </tr>
+                            <tr height="30px">
+                                <td style="border: 1px solid black; text-align: left;padding: 5px; width: 20%;">Matrícula:</td>
+                                <td style="border: 1px solid black; text-align: left;padding: 5px; width: 55%;" id="td_c_matricula"></td>
+                            </tr>
+
+                            <tr height="30px">
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;">Tipo Embarcación:</td>
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;" id="td_c_tipoembarcacion"></td>
+                            </tr>
+
+                            <tr height="30px">
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;">Categoría:</td>
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;" id="td_c_categoria"></td>
+                            </tr>
+
+                            <tr height="30px">
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;">Isla Origen:</td>
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;" id="td_c_islaorigen"></td>
+                            </tr>
+
+                            <tr height="30px">
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;">Puerto Registro:</td>
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;" id="td_c_puertoregistro"></td>
+                            </tr>
+
+                            <tr height="30px">
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;">Permiso Pesca:</td>
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;" id="td_c_permiso"></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-xs-1"></div>
+                </div>
+                <!-- /.col -->
+                <div class="col-xs-12" style="height: 30px;"></div>
+                <div class="col-xs-12">
+                    <div class="col-xs-1"></div>
+                    <div class="col-xs-10">
+                        <table style="width: 100%">
+                            <tr height="50px">
+                                <td colspan="2" style="border: 1px solid black; text-align: left;background-color: #c1c1c1;padding: 5px;font-size: 16px;">Datos Embarcación</td>
+
+                            </tr>
+                            <tr height="30px">
+                                <td style="border: 1px solid black; text-align: left;padding: 5px; width: 20%;">Eslora (m):</td>
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;" id="td_c_eslora"></td>
+                            </tr>
+
+                            <tr height="30px">
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;">Manga (m):</td>
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;" id="td_c_manga"></td>
+                            </tr>
+
+                            <tr height="30px">
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;">Puntal (m):</td>
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;" id="td_c_puntal"></td>
+                            </tr>
+
+                            <tr height="30px">
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;">Calado (m):</td>
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;" id="td_c_calado"></td>
+                            </tr>
+
+                            <tr height="30px">
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;">Lugar Construcción:</td>
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;" id="td_c_lugarconstruccion"></td>
+                            </tr>
+
+                            <tr height="30px">
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;">Año Construcción:</td>
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;" id="td_c_anioconstruccion"></td>
+                            </tr>
+                            <tr height="30px">
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;">Número Tripulantes:</td>
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;" id="td_c_tripulantes"></td>
+                            </tr>
+                            <tr height="30px">
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;">Tonelaje Neto:</td>
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;" id="td_c_tonelaje"></td>
+                            </tr>
+                            <tr height="30px">
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;">Motor 1 HP:</td>
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;" id="td_c_motoruno"></td>
+                            </tr>
+                            <tr height="30px">
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;">Marca Motor 1:</td>
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;" id="td_c_marcauno"></td>
+                            </tr>
+                            <tr height="30px">
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;">Motor 2 HP:</td>
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;" id="td_c_motordos"></td>
+                            </tr>
+                            <tr height="30px">
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;">Marca Motor 2:</td>
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;" id="td_c_marcados"></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-xs-1"></div>
+                </div>
+                <div class="col-xs-12" style="height: 30px;"></div>
+
+            </div>
+
+        </div>
+        <!-- body -->
+        <div class="stackbox-footer">
+            <button class="btn btn-primary" onclick="generarPdfFicha();">PDF</button>
+            <button class="btn btn-default" data-close-stackbox="true">Close</button>
+        </div>
+    </div> <!-- fin ficha -->
+
+
+    <div class="box">
+
+        <div class="box-header">
+            <i class="fa fa-list"></i>
+            <h3 class="box-title">Lista de Embarcaciones</h3>
+            <div class="botonera" style="float: right; right: 1px;">
+                <!--a title="pfd" onclick="generarPdf('tabla_embarcaciones',3)"><i class="fa fa-file-pdf-o text-green"></i></a-->
+                <!--a title="excel" onclick="generarExcel('tabla_embarcaciones',3)"><i class="fa fa-file-excel-o text-green"></i></a-->
+                <a title="excel" onclick="getDataPersonaEmbarcacionesExcel()"><i class="fa fa-file-excel-o text-green"></i></a> {% if perms.ap_talentohumano.add_perEmbarcaciones %}
+                <a style="cursor: pointer;" title="Agregar Nuevo" onclick="limpiarFormEmbarcacionpesca();" href='#addEmbarcaciones' data-stackbox-width='75%' data-stackbox='true' data-stackbox-position="absolute"><i class="fa fa-plus-circle text-green btn_nuevo"></i></a> {% endif %}
+
+            </div>
+        </div>
+        <!-- /.box-header -->
+
+        <div class="box box-solid bg-light-blue-gradient">
+            <div class="box-header ui-sortable-handle" style="cursor: move;">
+                <div class="pull-right box-tools">
+                    <button type="button" id="btn_divfiltro" class="btn btn-primary btn-sm pull-right" data-toggle="collapse" href="#collapseIng" role="button" aria-expanded="false" aria-controls="collapseIng" style="margin-right: 5px;" data-original-title="Collapse">
+                        <i class="fa fa-plus" id="ic_filtro"></i></button>
+                </div>
+                <i class="fa fa-map-marker"></i>
+                <h3 class="box-title">
+		          Filtros de Busqueda
+		        </h3>
+            </div>
+            <!-- <div class="box-body collapse" style="background-color: white;"  id="collapseIng"> -->
+            <div class="box-body collapse" style="background-color: white;" id="collapseIng">
+                <div class="col-xs-12">
+
+                    <div class="col-xs-3">
+                        <h style="font-size: 14px;color: black;font-weight: bold;height: 20px;">Embarcación</h>
+                        <input type="text" class="form-control" name="" id="nombresfilter" style="width: 75%; height: 50%" />
+                    </div>
+
+                    <div class="col-xs-3">
+                        <h style="font-size: 14px;color: black;font-weight: bold;height: 20px;">Matrícula</h>
+                        <input type="text" class="form-control" name="" id="matriculafilter" style="width: 75%;height: 50%" />
+                    </div>
+
+                    <div class="col-xs-3">
+                        <h style="font-size: 14px;color: black;font-weight: bold;height: 20px;">Puerto Registro</h>
+                        <select id="SpuertoregistroFilter" class="form-control" style="width: 200px;">
+                            <option value="">Seleccione una Opción</option>
+                            <option value="Puerto Ayora">PUERTO AYORA</option>
+                            <option value="Puerto Baquerizo Moreno">PUERTO BAQUERIZO MORENO</option>
+                            <option value="Puerto Velasco Ibarra">PUERTO VELASCO IBARRA</option>
+                            <option value="Puerto Villamil">PUERTO VILLAMIL</option>
+                        </select>
+                    </div>
+
+                    <div class="col-xs-3">
+                        <h style="font-size: 14px;color: black;font-weight: bold;height: 20px;">Estado</h>
+                        <select id="SestadoFilter" class="form-control" style="width: 250px;">
+                            <option value="">Seleccione una Opción</option>
+                            <option value="ACTIVO">ACTIVO</option>
+                            <option value="ELIMINADO">ELIMINADO</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-xs-12">
+                    <h1></h1>
+                    <button type="button" class="btn btn-block btn-success" style="width:80px;height: 30px;float:right;" onclick="buscarEmbarcacionesPesca();">Buscar</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="box-body" style="position: relative;">
+
+            <table id="tabla_embarcaciones" style="font-size: 10px; text-transform: uppercase;" class="table table-striped table-bordered" width="100%" cellspacing="0">
+                <thead>
+                    <tr class="bg-light-blue-gradient" style="color: white;">
+                        <th>MATRICULA</th>
+                        <th>EMBARCACION</th>
+                        <th>TIPO EMBARCACION</th>
+                        <th>ISLA ORIGEN</th>
+                        <th>ESTADO</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    <tr class="filters" id="ftper">
+                        <th>MATRICULA</th>
+                        <th>EMBARCACION</th>
+                        <th>TIPO EMBARCACION</th>
+                        <th>ISLA ORIGEN</th>
+                        <th>ESTADO</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="bodytabla_embarcaciones">
+
+                </tbody>
+            </table>
+
+        </div>
+        <!-- /.box-body -->
+    </div>
+    <!-- /.box -->
+</div>
+<!-- content_persona -->
+<!-- /.box -->
+
+<!-- jQuery 3 -->
+{% load static %}
+
+<!-- <script src="{% static 'js/lib_internas/script_cuem_mp.js' %}"></script> -->
+<script src="{% static 'js/lib_externas/camera/func_camera.js' %}"></script>
+<script>
+
+  $(document).ready(function(){
+
+    $("#fld_categoria").select2();
+    $("#fld_tipoembarcacion").select2();
+    $("#fld_estado").select2();
+    $("#fld_tiempomotor1").select2();
+    $("#fld_tiempomotor2").select2();
+    $("#ins_modificacionembarcacion").select2();
+    $("#ins_estapintado").select2();
+    $("#ins_tienepintadomatricula").select2();
+    $("#ins_coincidenmatricula").select2();
+    $("#ins_coincidefotografia").select2();
+    $("#ins_inspeccion").select2();
+    $("#ins_armadorpresente").select2();
+
+    buscarEmbarcacionesPesca();
+
+  });
+
+  document.getElementById('btn_divfiltro').addEventListener('click', function(){
+    var icon = document.getElementById('ic_filtro');
+    icon.classList.toggle('fa-minus');
+    icon.classList.toggle('fa-plus');
+  })
+    
+
+</script>
+{% endblock %}

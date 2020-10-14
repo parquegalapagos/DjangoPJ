@@ -1,0 +1,1776 @@
+{% load static %} 
+{% block content %}
+<style type="text/css">
+    .select2-results .select2-disabled,
+    .select2-results__option[aria-disabled=true] {
+        display: none;
+    }
+</style>
+
+<!-- PERMISOS PARA LOS ICONOS DE LA LISTA -->
+{% if perms.ap_talentohumano.view_perfuncionarioaccionpersonal or perms.ap_talentohumano.change_perfuncionarioaccionpersonal %}
+<input type="hidden" id="perm_change_perfuncionarioaccionpersonal" value="1" /> 
+{% else %}
+<input type="hidden" id="perm_change_perfuncionarioaccionpersonal" value="0" /> 
+{% endif %} 
+
+{% if perms.ap_talentohumano.delete_perfuncionarioaccionpersonal %}
+<input type="hidden" id="perm_delete_perfuncionarioaccionpersonal" value="1" /> 
+{% else %}
+<input type="hidden" id="perm_delete_perfuncionarioaccionpersonal" value="0" /> 
+{% endif %} 
+
+{% if perms.ap_talentohumano.add_perfuncionarioaccionpersonal %}
+<input type="hidden" id="perm_add_perfuncionarioaccionpersonal" value="1" /> 
+{% else %}
+<input type="hidden" id="perm_add_perfuncionarioaccionpersonal" value="0" /> 
+{% endif %}
+
+<div id="content_AccPersonal">
+    <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="addAccPersonal">
+        <div class="modal-dialog modal-lg" style="width:71%;">
+            <div class="modal-content">
+                <div class="modal-header cab_popup">
+                <table style="width: 100%;">
+                  <tr>
+                    <td style="width: 15%">
+                      <img src="{% static 'image/favicon.ico' %}" width="40px" style="float:left;margin-top: -5px;" />
+                    </td>
+                    <td align="center" style="font-weight: bold; font-size: 18px;">
+                      <h id="tituloAccP"> </h> Acción Personal - {{isla_trabaja_user}}
+                    </td>
+                    <td style="width: 15%">
+                      <button style="float: right;background-color: #0073b7;" type="button"  data-dismiss="modal" aria-label="Close"><span style="font-size: 16px; color: white; opacity: 1 !important;" aria-hidden="true">&times;</span></button>
+                    </td>
+                  </tr>
+                </table>
+                
+                </div>
+                <div class="modal-body" id="bodyaddAccPersonal">
+                    <!-- INFORMATION -->
+                    <input type="hidden" id="rrhhresps_id" value="{{rrhhresps_default}}" />
+                    <input type="hidden" id="aut_nominadora_id" value="{{aut_nominadoras_default}}" />
+                    <input type="hidden" id="accp_isla_trabaja_user" value="{{isla_trabaja_user}}" />
+                    <input type="hidden" id="accp_isla_trabaja_user_id" value="{{isla_trabaja_user_id}}" />
+                    <input type="hidden" id="accp_es_responsable" value="{{es_responsable}}" />
+                    <input type="hidden" id="accp_es_root" value="{{es_root}}" />
+
+                    <input type="hidden" id="accp_bandera_SitProp" value="0" />
+
+<<<<<<< HEAD
+                    <!-- Contiene el id del cargo institucional 
+                    <input type="hidden" id="SsitpuestInstSA" value="" /> -->
+=======
+                    <!-- Contiene el id del cargo institucional -->
+                    <input type="hidden" id="SsitpuestInstSA" value="" />
+>>>>>>> 9468fa45149aeee19c9fc642922ac3c7986049dd
+
+                    <section class="content">
+                        <!-- <div class="row" style="box-shadow: 5px 5px 15px 5px #888888;margin-top: 20px;"> -->
+                        <div class="row" style="box-shadow: 5px 5px 15px 5px #888888;margin-top: 20px;">
+                            <form id="frm_accionper" action="#" method="post">
+                                <div class="row">
+
+                                    <div class="col-xs-12">
+                                        <div class="nav-tabs-custom">
+                                            <ul class="nav nav-tabs">
+
+                                                <li class="active"><a href="#tab_funcionario" data-toggle="tab" aria-expanded="true" style="font-weight: bold;" data-stackbox-width="1000px">Funcionario</a></li>
+                                                <li class=""><a href="#tab_documento" data-toggle="tab" aria-expanded="false" style="font-weight: bold;">Documento</a></li>
+                                                <!--li class=""><a href="#tab_item" data-toggle="tab" aria-expanded="false" style="font-weight: bold;">Items</a></li-->
+                                                <!--li class=""><a href="#tab_otro_item" data-toggle="tab" aria-expanded="false" style="font-weight: bold;">Otro Item</a></li-->
+                                                <li class=""><a href="#tab_situacion" data-toggle="tab" aria-expanded="false" style="font-weight: bold;">Situación</a></li>
+                                                <li class=""><a href="#tab_acta" data-toggle="tab" aria-expanded="false" style="font-weight: bold;">Datos Acta</a></li>
+                                                <!--li class=""><a href="#tab_rrhh" data-toggle="tab" aria-expanded="false" style="font-weight: bold;">Datos RRHH</a></li-->
+                                                <li class=""><a href="#tab_observ" data-toggle="tab" aria-expanded="false" style="font-weight: bold;">Observación</a></li>
+                                            </ul>
+                                            <div class="tab-content" style="border-top: 2px solid #3c8dbc;">
+
+                                                <div class="notification" style="height: 100px;z-index: 99999;">
+                                                    <span class="icon">
+                                                        <i class=""></i>
+                                                    </span>
+                                                    <span class="text"></span>
+                                                    <span class="close"><i class="fa fa-close"></i></span>
+                                                </div>
+
+                                                <!-- Font Awesome Icons -->
+                                                <div class="tab-pane active" id="tab_funcionario" style="top:10px;">
+                                                    <div style="border-bottom:2px solid #3c8dbc;font-size: 14px;box-shadow: 1px 5px 5px;"><i class="fa fa-fw fa-user"></i> Datos Generales</div>
+                                                    <div class="row" style="margin-top: 15px;">
+                                                        <input type="hidden" id="idaccPersonal" name="idaccPersonal" value="" />
+                                                        <input type="hidden" id="tipot_accP" value="0" />
+                                                        <input type="hidden" id="diasItem_accP" value="0" />
+                                                        <input type="hidden" id="diasLic_accP" value="0" />
+                                                        <input type="hidden" id="diasLic_accOld" value="0" />
+                                                        <!--para guardar el total de dias de la accion en el caso hacer una modificacion -->
+                                                        <div style="margin-left: 20px;">
+                                                            <table>
+                                                                <tr>
+                                                                    <td style="text-align: left;">*Funcionario&nbsp; </td>
+                                                                    <td>
+                                                                        <input type="text" class="form-control requerido" name="funcionaioAcc" text="Funcionario" id="funcionaioAcc" style="width: 350px; font-size: 11px;" readonly />
+                                                                    </td>
+                                                                    <td>
+
+                                                                        {% if perms.ap_talentohumano.add_perfuncionarioaccionpersonal %}
+                                                                        <a style="cursor: pointer; font-size: 20px;margin-left: 10px;" title="Buscar Funionario" href='#popupFuncionarios' onclick="limpiaPopupFuncionario('SP_accPersonal')" data-stackbox='true' data-stackbox-width="1000px" data-stackbox-height="300px" data-stackbox-position="absolute"><i class="fa fa-search text-blue"></i>
+                                                                        </a> 
+                                                                        {% endif %}
+
+                                                                        <input type="hidden" name="funcionaioAccid" id="funcionaioAccid" />
+                                                                        <input type="hidden" name="funcionaioAccced" id="funcionaioAccced" />
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+
+                                                        <div class="col-xs-6 callout" style="border-color: #1b90ad;top: 10px;">
+                                                            <table>
+                                                                <tr>
+                                                                    <td style="text-align: left;">*Estado Ejecución</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        <select id="SEstadoAcc" class="select2" text="Estado" style="width: 300px;">
+                                                                            <option value=""> Seleccione una Opción</option>
+
+                                                                        </select>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr height="5px;"> </tr>
+                                                                <tr>
+                                                                    <td style="text-align: left;">*Estado</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        <select id="SEstado" class="select2 requerido" text="Estado" style="width: 300px;">
+                                                                            <option value=""> Seleccione una Opción</option>
+                                                                            <option value="A">ACTIVO</option>
+                                                                            <option value="I">INACTIVO</option>
+                                                                        </select>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr height="5px;"> </tr>
+                                                                <tr>
+                                                                    <td style="text-align: left;">*Item</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        <select id="SitemAcc" class="select2 requerido" style="width: 300px;text-transform: uppercase;" onchange="ocultarItemOtro(this.value);ocultarAccionesFechaFin($(this.options[this.selectedIndex]).attr('solo_feVigencia'));verAccionesActivas(this.value);">
+                                                                            <option value=""> Seleccione una Opción</option>
+                                                                            {% for item in items %} {% if item.tipo != 'O' %}
+                                                                            <option value="{{ item.id }}" max_dias="{{item.max_dias}}" req_fechaFin="{{item.requiere_fecha_fin}}" tipo_item="{{item.tipo}}" solo_feVigencia="{{item.flag_solo_fechavigencia}}">{{ item.descripcion }}</option>
+                                                                            {% endif %} {% endfor %}
+                                                                        </select>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr height='5px;'></tr>
+                                                                <tr id="tr_itemotroL" hidden>
+                                                                    <td style="text-align: left;">Otro Item</td>
+                                                                </tr>
+                                                                <tr id="tr_itemotro" hidden>
+                                                                    <td>
+                                                                        <select id="SitemAccOtro" class="select2" style="width: 300px;text-transform: uppercase;" onchange="buscarDiasAccionesParametros(this.value,$(this.options[this.selectedIndex]).attr('padre')); ocultarAccionesFechaFin($(this.options[this.selectedIndex]).attr('solo_feVigencia'));verAccionesActivas(this.value);">
+                                                                            <option value=""> Seleccione una Opción</option>
+                                                                            {% for item in items %} {% if item.tipo == 'O' %}
+                                                                            <option value="{{ item.id }}" padre="{{ item.accion_id.id }}" actualiza="{{ item.actualiza_funcionario }}" max_dias="{{item.max_dias}}" req_fechaFin="{{item.requiere_fecha_fin}}" solo_feVigencia="{{item.flag_solo_fechavigencia}}" accionpredecesora_id="{{item.accion_predecesora_id}}">{{ item.descripcion }}</option>
+                                                                            {% endif %} {% endfor %}
+                                                                        </select>
+                                                                        <br>
+                                                                        <div id="div_dias_acc" style="margin-top: 10px;"><span id="dias_disponibles_acc" style="color: red;"></span></div>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr height='5px;'></tr>
+                                                                <tr class="tr_item_predente" hidden>
+                                                                    <td style="text-align: left;"># Accion Personal Vigente</td>
+                                                                </tr>
+                                                                <tr class="tr_item_predente" hidden>
+                                                                    <td>
+                                                                        <select id="SitemActivos" class="select2" style="width: 300px;text-transform: uppercase;">
+
+                                                                        </select>
+
+                                                                    </td>
+                                                                </tr>
+                                                                <tr height='5px;'></tr>
+                                                                <tr class="tr_item_predente" hidden>
+                                                                    <td style="text-align: left;">Descripcion:</td>
+                                                                </tr>
+                                                                <tr class="tr_item_predente" hidden>
+                                                                    <td>
+                                                                        <div id="SitemActivos_descripcion"> </div>
+                                                                    </td>
+                                                                </tr>
+
+                                                            </table>
+                                                        </div>
+                                                        <div class="col-xs-6 callout" style="border-color: #1b90ad;top: 10px;">
+                                                            <table>
+                                                                <tr>
+                                                                    <td style="text-align: left;">*No. Acción Personal</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        <input type="text" class="form-control" text="No. Accion Personal" name="num_acc_pers" id="num_acc_pers" style="width: 150px; font-size: 11px; " onkeypress='return isNumberKey(event);' />
+                                                                    </td>
+                                                                </tr>
+                                                                <tr height="5px;"> </tr>
+                                                                <tr>
+                                                                    <td style="text-align: left;">*Fecha Acción Personal</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        <input type="date" class="form-control requerido" text="Fecha Accion Personal" name="fec_acc_pers" id="fec_acc_pers" style="width: 150px; font-size: 11px;" />
+                                                                    </td>
+                                                                </tr>
+                                                                <tr height="5px;"> </tr>
+                                                                <tr>
+                                                                    <td style="text-align: left;" id="accp_fecha_vigencia">*Fecha Vigencia</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        <input type="date" class="form-control requerido" text="Fecha Vigencia" name="fec_vigencia" id="fec_vigencia" style="width: 150px; font-size: 11px;" />
+                                                                    </td>
+                                                                </tr>
+
+                                                                <tr height="5px;"> </tr>
+                                                                <tr id="cont_accp_fecha_hasta_lbl">
+                                                                    <td style="text-align: left; width: 150px;" id="accp_fecha_hasta">Fecha Hasta</td>
+                                                                    <td width="20px"></td>
+                                                                    <td style="text-align: left; width: 150px;">Número Días</td>
+                                                                </tr>
+
+                                                                <tr id="cont_accp_fecha_hasta_valor">
+                                                                    <td>
+                                                                        <input type="date" class="form-control" name="fec_hasta" text="Fecha Hasta" id="fec_hasta" style="width: 180px; font-size: 11px;" />
+                                                                    </td>
+                                                                    <td width="20px"></td>
+                                                                    <td>
+                                                                        <input type="text" class="form-control" name="num_diasAccPer" text="Numero de Dias" id="num_diasAccPer" style="width: 50px; font-size: 11px;" onkeypress='return isNumberKey(event);' />
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+<<<<<<< HEAD
+                                                </div>
+                                                <!-- /#fa-icons -->
+
+                                                <!-- glyphicons-->
+                                                <div class="tab-pane" id="tab_documento">
+                                                    <div class="row">
+                                                        <div class="col-xs-12 callout" style="border-color: #1b90ad;">
+                                                            <table width="100%">
+                                                                <tr>
+                                                                    <td style="text-align: left; font-size: 11px;font-weight: bold;">Descripción(Explicación)</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td style="text-align:right;">
+                                                                        <textarea style="width: 100%;text-transform: none;" class="form-control" name="doc_descripcion" id="doc_descripcion" rows="5"></textarea>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr height="10px;"> </tr>
+
+                                                                <tr>
+                                                                    <td style="text-align: left;">#Memorandum</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        <input id="num_memoAcc" type="text" class="form-control">
+                                                                    </td>
+                                                                </tr>
+
+                                                                <tr height="10px;"> </tr>
+                                                                <tr>
+                                                                    <td style="text-align: left; font-size: 11px;font-weight: bold;">Anexo</td>
+                                                                    <td width="10px;"></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        <input type="file" name="myfile" id="doc_anexo" multiple>
+                                                                        <div style="margin-left: 20px;">
+                                                                            <img id="imgContentFileAcc" src="" width="50px" />
+                                                                            <!-- <a style="margin-left: 10px; color: black; cursor: pointer;" id="nombreFileAcc"></a> -->
+                                                                        </div>
+                                                                        <div id="contentFileAcc" style="margin-left: 20px;">
+                                                                            <!-- <img id="imgContentFileAcc" src="" width="50px"/> -->
+                                                                            <!-- <a style="margin-left: 10px; color: black; cursor: pointer;" id="nombreFileAcc"></a> -->
+                                                                        </div>
+
+                                                                    </td>
+
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+=======
+                                                </div>
+                                                <!-- /#fa-icons -->
+
+                                                <!-- glyphicons-->
+                                                <div class="tab-pane" id="tab_documento">
+                                                    <div class="row">
+                                                        <div class="col-xs-12 callout" style="border-color: #1b90ad;">
+                                                            <table width="100%">
+                                                                <tr>
+                                                                    <td style="text-align: left; font-size: 11px;font-weight: bold;">Descripción(Explicación)</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td style="text-align:right;">
+                                                                        <textarea style="width: 100%;text-transform: none;" class="form-control" name="doc_descripcion" id="doc_descripcion" rows="5"></textarea>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr height="10px;"> </tr>
+
+                                                                <tr>
+                                                                    <td style="text-align: left;">#Memorandum</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        <input id="num_memoAcc" type="text" class="form-control">
+                                                                    </td>
+                                                                </tr>
+
+                                                                <tr height="10px;"> </tr>
+                                                                <tr>
+                                                                    <td style="text-align: left; font-size: 11px;font-weight: bold;">Anexo</td>
+                                                                    <td width="10px;"></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        <input type="file" name="myfile" id="doc_anexo" multiple>
+                                                                        <div style="margin-left: 20px;">
+                                                                            <img id="imgContentFileAcc" src="" width="50px" />
+                                                                            <!-- <a style="margin-left: 10px; color: black; cursor: pointer;" id="nombreFileAcc"></a> -->
+                                                                        </div>
+                                                                        <div id="contentFileAcc" style="margin-left: 20px;">
+                                                                            <!-- <img id="imgContentFileAcc" src="" width="50px"/> -->
+                                                                            <!-- <a style="margin-left: 10px; color: black; cursor: pointer;" id="nombreFileAcc"></a> -->
+                                                                        </div>
+
+                                                                    </td>
+
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+>>>>>>> 9468fa45149aeee19c9fc642922ac3c7986049dd
+
+                                                <!-- /#ion-icons -->
+
+                                                <!-- glyphicons-->
+                                                <div class="tab-pane" id="tab_situacion">
+                                                    <div class="row">
+
+                                                        <div class="col-xs-6 callout" style="border-color: #1b90ad;" id="div_sitAct">
+                                                            <table>
+                                                                <tr>
+                                                                    <td style="text-align: left; font-size: 14px;font-weight: bold;border-bottom: 3px solid #1b90ad; padding: 5px; box-shadow: 1px 5px 5px;" colspan="3"><i class="fa fa-fw fa-arrow-circle-down"></i> Situación Actual</td>
+                                                                </tr>
+
+                                                                <tr height="10px;"> </tr>
+                                                                <tr>
+                                                                    <td style="text-align: right; font-size: 11px;font-weight: bold;">Dirección</td>
+                                                                    <td width="10px;"></td>
+                                                                    <td>
+                                                                        <select id="SsitdireSA" class="select2" style="width: 350px;" onchange="cambiarComboinfo('SsitprocSA',this.value,'direcciones','parent_id','name');">
+                                                                            <option value=""> Seleccione una Opción</option>
+
+                                                                        </select>
+                                                                    </td>
+                                                                </tr>
+
+                                                                <tr height="5px;"> </tr>
+                                                                <tr>
+                                                                    <td style="text-align: right; font-size: 11px;font-weight: bold;">Proceso</td>
+                                                                    <td width="10px;"></td>
+                                                                    <td>
+                                                                        <select id="SsitprocSA" class="select2" style="width: 350px;" onchange="cambiarComboinfo('SsitsubprocSA',this.value,'direcciones','parent_id','name');">
+                                                                            <option value=""> Seleccione una Opción</option>
+
+                                                                        </select>
+                                                                    </td>
+                                                                </tr>
+
+                                                                <tr height="5px;"> </tr>
+                                                                <tr>
+                                                                    <td style="text-align: right; font-size: 11px;font-weight: bold;">Subproceso</td>
+                                                                    <td width="10px;"></td>
+                                                                    <td>
+                                                                        <select id="SsitsubprocSA" class="select2" style="width: 350px;">
+                                                                            <option value="0">Seleccione una Opción</option>
+
+                                                                        </select>
+                                                                    </td>
+                                                                </tr>
+
+                                                                <tr height="5px;"> </tr>
+                                                                <tr>
+                                                                    <td style="text-align: right; font-size: 11px;font-weight: bold;">Grupo Ocupacional</td>
+                                                                    <td width="10px;"></td>
+                                                                    <td>
+                                                                        <select id="SsitgrupoSA" class="select2" style="width: 350px;">
+                                                                            <option value=""> Seleccione una Opción</option>
+                                                                            {% for gocupacional in gocupacionals %}
+                                                                            <option value="{{ gocupacional.id }}" ncorto="{{ gocupacional.nombre_corto }}">{{ gocupacional.nombre }}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </td>
+                                                                </tr>
+
+                                                                <tr height="5px;"> </tr>
+                                                                <tr>
+                                                                    <td style="text-align: right; font-size: 11px;font-weight: bold;">Puesto (Distributivo)</td>
+                                                                    <td width="10px;"></td>
+                                                                    <td>
+                                                                        <select id="SsitpuestDistSA" class="select2" style="width: 350px;">
+                                                                            <option value=""> Seleccione una Opción</option>
+                                                                            {% for gdistributivo in gdistributivos %}
+                                                                            <option value="{{ gdistributivo.id }}">{{ gdistributivo.nombre }}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </td>
+                                                                </tr>
+
+<<<<<<< HEAD
+                                                                <tr hidden>
+                                                                    <td style="text-align: right; font-size: 11px;font-weight: bold;">Puesto (Institucional)</td>
+                                                                    <td width="10px;"></td>
+                                                                    <td>
+                                                                        <select id="SsitpuestInstSA" class="select2" style="width: 350px;">
+                                                                            <option value=""> Seleccione una Opción</option>
+                                                                            {% for ginstitucional in ginstitucionals %}
+                                                                            <option value="{{ ginstitucional.id }}">{{ ginstitucional.nombre }}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </td>
+                                                                </tr>
+=======
+>>>>>>> 9468fa45149aeee19c9fc642922ac3c7986049dd
+                                                            
+                                                                <tr height="5px;"> </tr>
+                                                                <tr>
+                                                                    <td style="text-align: right; font-size: 11px;font-weight: bold;">Isla Trabajo</td>
+                                                                    <td width="10px;"></td>
+                                                                    <td>
+                                                                        <select id="SsitislaSA" class="select2" style="width: 350px;">
+                                                                            <option value=""> Seleccione una Opción</option>
+
+                                                                        </select>
+                                                                    </td>
+                                                                </tr>
+
+                                                                <tr height="5px;"> </tr>
+                                                                <tr>
+                                                                    <td style="text-align: right; font-size: 11px;font-weight: bold;">RMU</td>
+                                                                    <td width="10px;"></td>
+                                                                    <td>
+                                                                        <!--
+                                                                        <input type="text" name="TrmuSA" id="TrmuSA" class="form-control" style="width:350px;" onkeypress='return isNumberKey(event);' />
+                                                                        -->
+                                                                        <input type="text" name="TrmuSA" id="TrmuSA" class="form-control" style="width:350px;" />
+                                                                    </td>
+                                                                </tr>
+
+                                                                <tr height="5px;"> </tr>
+                                                                <tr>
+                                                                    <td style="text-align: right; font-size: 11px;font-weight: bold;">Partida Presupuestaria</td>
+                                                                    <td width="10px;"></td>
+                                                                    <td>
+                                                                        <!--
+                                                                        <input type="text" name="TppresupSA" id="TppresupSA" class="form-control" style="width:350px;font-size: 12px" value="" onkeypress='return isNumberKey(event);' />
+                                                                        -->
+                                                                        <input type="text" name="TppresupSA" id="TppresupSA" class="form-control" style="width:350px;font-size: 12px" value="" />
+                                                                    </td>
+                                                                </tr>
+
+                                                            </table>
+
+                                                            <a style="cursor: pointer; font-size: 40px;margin-left: 10px; float: right;" title="Copiar" onclick="copiarSituacionActual()"><i class="fa fa-arrow-circle-right text-blue"></i>
+                                                            </a>
+
+                                                            <a style="cursor: pointer; font-size: 40px;margin-left: 10px; float: left;" title="Borrar" onclick="limpiarDataSituacionActual()"><i class="fa fa-trash text-blue"></i>
+                                                            </a>
+
+                                                        </div>
+
+                                                        <div class="col-xs-6 callout" style="border-color: #1b90ad;" id="div_sitPro">
+                                                            <table>
+                                                                <tr>
+                                                                    <td style="text-align: left; font-size: 14px;font-weight: bold; border-bottom: 3px solid #1b90ad; padding: 5px;box-shadow: 1px 5px 5px;" colspan="3"><i class="fa fa-fw fa-arrow-circle-right"></i> Situación Propuesta</td>
+                                                                </tr>
+
+                                                                <tr height="10px;"> </tr>
+                                                                <tr>
+                                                                    <td style="text-align: right; font-size: 11px;font-weight: bold;">Dirección</td>
+                                                                    <td width="10px;"></td>
+                                                                    <td>
+                                                                        <select id="SsitdireSP" class="select2" style="width: 350px;" onchange="cambiarComboinfo('SsitprocSP',this.value,'direcciones','parent_id','name');">
+                                                                            <option value=""> Seleccione una Opción</option>
+
+                                                                        </select>
+                                                                    </td>
+                                                                </tr>
+
+                                                                <tr height="5px;"> </tr>
+                                                                <tr>
+                                                                    <td style="text-align: right; font-size: 11px;font-weight: bold;">Proceso</td>
+                                                                    <td width="10px;"></td>
+                                                                    <td>
+                                                                        <select id="SsitprocSP" class="select2" style="width: 350px;" onchange="cambiarComboinfo('SsitsubprocSP',this.value,'direcciones','parent_id','name');">
+                                                                            <option value=""> Seleccione una Opción</option>
+
+                                                                        </select>
+                                                                    </td>
+                                                                </tr>
+
+                                                                <tr height="5px;"> </tr>
+                                                                <tr>
+                                                                    <td style="text-align: right; font-size: 11px;font-weight: bold;">Subproceso</td>
+                                                                    <td width="10px;"></td>
+                                                                    <td>
+                                                                        <select id="SsitsubprocSP" class="select2" style="width: 350px;">
+                                                                            <option value="0">Seleccione una Opción</option>
+
+                                                                        </select>
+                                                                    </td>
+                                                                </tr>
+
+                                                                <tr height="5px;"> </tr>
+                                                                <tr>
+                                                                    <td style="text-align: right; font-size: 11px;font-weight: bold;">Grupo Ocupacional</td>
+                                                                    <td width="10px;"></td>
+                                                                    <td>
+                                                                        <select id="SsitgrupoSP" class="select2" class="select2" style="width: 350px;">
+                                                                            <option value=""> Seleccione una Opción</option>
+                                                                            {% for gocupacional in gocupacionals %}
+                                                                            <option value="{{ gocupacional.id }}" ncorto="{{ gocupacional.nombre_corto }}">{{ gocupacional.nombre }}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </td>
+                                                                </tr>
+
+                                                                <tr height="5px;"> </tr>
+                                                                <tr>
+                                                                    <td style="text-align: right; font-size: 11px;font-weight: bold;">Puesto</td>
+                                                                    <td width="10px;"></td>
+                                                                    <td>
+                                                                        <select id="SsitpuestDistSP" class="select2" style="width: 350px;">
+                                                                            <option value=""> Seleccione una Opción</option>
+                                                                            {% for ginstitucional in ginstitucionals %}
+                                                                            <option value="{{ ginstitucional.id }}">{{ ginstitucional.nombre }}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </td>
+                                                                </tr>
+
+                                                                
+
+                                                                <tr height="5px;"> </tr>
+                                                                <tr>
+                                                                    <td style="text-align: right; font-size: 11px;font-weight: bold;">Isla Trabajo</td>
+                                                                    <td width="10px;"></td>
+                                                                    <td>
+                                                                        <select id="SsitislaSP" class="select2" style="width: 350px;">
+                                                                            <option value=""> Seleccione una Opción</option>
+
+                                                                        </select>
+                                                                    </td>
+                                                                </tr>
+
+                                                                <tr height="5px;"> </tr>
+                                                                <tr>
+                                                                    <td style="text-align: right; font-size: 11px;font-weight: bold;">RMU</td>
+                                                                    <td width="10px;"></td>
+                                                                    <td>
+                                                                        <!--
+                                                                        <input type="text" name="TrmuSP" id="TrmuSP" class="form-control" style="width:350px;" onkeypress='return isNumberKey(event);' />
+                                                                        -->
+                                                                        <input type="text" name="TrmuSP" id="TrmuSP" class="form-control" style="width:350px;" />
+                                                                    </td>
+                                                                </tr>
+
+                                                                <tr height="5px;"> </tr>
+                                                                <tr>
+                                                                    <td style="text-align: right; font-size: 11px;font-weight: bold;">Partida Presupuestaria</td>
+                                                                    <td width="10px;"></td>
+                                                                    <td>
+                                                                        <!--
+                                                                        <input type="text" name="TppresupSP" id="TppresupSP" class="form-control" style="width:350px;font-size: 12px" value="" onkeypress='return isNumberKey(event);' />
+                                                                        -->
+                                                                        <input type="text" name="TppresupSP" id="TppresupSP" class="form-control" style="width:350px;font-size: 12px" value="" />
+                                                                    </td>
+                                                                </tr>
+
+                                                            </table>
+
+                                                            <a style="cursor: pointer; font-size: 40px;margin-left: 10px; float: right;" title="Borrar" onclick="limpiarDataSituacionPropuesta()"><i class="fa fa-trash text-blue"></i>
+                                                            </a>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                                <!-- /#ion-icons -->
+
+                                                <!-- glyphicons-->
+                                                <div class="tab-pane" id="tab_acta">
+                                                    <div class="row">
+
+                                                        <div class="col-xs-6 callout" style="border-color: #1b90ad;">
+                                                            <table>
+
+                                                                <tr>
+                                                                    <td style="text-align: left; font-size: 14px;font-weight: bold;border-bottom: 3px solid #1b90ad; padding: 5px;box-shadow: 1px 5px 5px;" colspan="2"><i class="fa fa-fw fa-users"></i> Proceso de Recursos Humanos</td>
+                                                                </tr>
+                                                                <tr height="20px;"> </tr>
+                                                                <tr>
+                                                                    <td style="text-align: left; font-size: 11px;font-weight: bold;">Resp. RRHH</td>
+                                                                    <td width="10px;"></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        <select id="Sactaresprrhh" class="select2" style="width: 300px;">
+                                                                            <option value=""> Seleccione una Opción</option>
+                                                                            {% for rrhhresp in rrhhresps %}
+                                                                            <option value="{{ rrhhresp.id }}" titulo="{{ rrhhresp.persona_id.grado_academico }}">{{ rrhhresp.persona_id.nombre_completo }}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </td>
+                                                                </tr>
+
+                                                                <tr height="25px;"> </tr>
+                                                                <tr>
+                                                                    <td style="text-align: left; font-size: 14px;font-weight: bold;border-bottom: 3px solid #1b90ad; padding: 5px;box-shadow: 1px 5px 5px;" colspan="2"><i class="fa fa-fw   fa-user"></i> Autoridad Nominadora</td>
+                                                                </tr>
+                                                                <tr height="20px;"> </tr>
+                                                                <tr>
+                                                                    <td style="text-align: left; font-size: 11px;font-weight: bold;">Autoridad Nominadora</td>
+                                                                    <td width="10px;"></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        <select id="SactaAutor" class="select2" style="width: 300px;">
+                                                                            <option value=""> Seleccione una Opción</option>
+                                                                            {% for autoridad in aut_nominadoras %}
+                                                                            <option value="{{ autoridad.id }}" titulo="{{ autoridad.persona_id.grado_academico }}">{{ autoridad.persona_id.nombre_completo }}</option>
+                                                                            {% endfor %}
+
+                                                                        </select>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+                                                        <div class="col-xs-6 callout" style="border-color: #1b90ad;">
+                                                            <table>
+
+                                                                <tr>
+                                                                    <td style="text-align: left; font-size: 14px;font-weight: bold;border-bottom: 3px solid #1b90ad; padding: 5px; box-shadow: 1px 5px 5px;" colspan="3"><i class="fa fa-fw  fa-file-text"></i> Acta Final Del Concurso</td>
+                                                                </tr>
+                                                                <tr height="20px;"> </tr>
+                                                                <tr>
+                                                                    <td style="text-align: left; font-size: 11px;font-weight: bold;">No.</td>
+                                                                </tr>
+                                                                <tr>
+                                                                <td align="left">
+                                                                    <input type="text" class="form-control" name="acta_no_doc" id="acta_no_doc" style="width: 300px;font-size: 11px;font-size: 11px;" />
+                                                                </td>
+                                                                </tr>
+                                                                <tr height="10px;"> </tr>
+                                                                <tr>
+                                                                    <td style="text-align: left; font-size: 11px;font-weight: bold;">Fecha</td>
+                                                                    <td width="10px;"></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td align="left">
+                                                                        <input type="date" class="form-control" name="fecha_acta" id="fecha_acta" style="width: 300px;font-size: 11px;" />
+                                                                    </td>
+                                                                </tr>
+
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+          
+                                                <!-- /#ion-icons -->
+
+                                                <!-- glyphicons-->
+                                                <div class="tab-pane" id="tab_observ">
+                                                    <div class="row">
+                                                        <div class="col-xs-12">
+                                                            <br>
+                                                            <p style="text-align: left; font-size: 11px;font-weight: bold;"> Observación</p>
+                                                            <textarea class="form-control" name="obser_obser" id="obser_obser" rows="5" style="width: 100%;"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- /.tab-content -->
+                                            </div>
+                                            <!-- /.nav-tabs-custom -->
+                                        </div>
+                                        <!-- /.col -->
+                                    </div>
+                                </div>   <!-- /.row -->
+                            </form>
+                        </div>
+                    </section>
+                </div>
+                <div class="modal-footer" style="margin-top: -30px;">
+                    {% if perms.ap_talentohumano.add_perfuncionarioaccionpersonal or perms.ap_talentohumano.change_perfuncionarioaccionpersonal %}
+                    <button class="btn btn-primary" id="btn_accPersonal" onclick="setInsertUpdateAccionPersonal();">Grabar</button>
+                    {% endif %}
+                    <button class="btn btn-default" data-dismiss="modal" aria-label="Close">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+  
+
+    <div class="box">
+        <div class="box-header">
+            <i class="fa fa-list"></i>
+            <h3 class="box-title">Lista de Acción Personal</h3>
+            <div class="botonera" style="float: right; right: 1px;">
+                <a title="pfd" onclick="generarPdf('tabla_accPers',8,1)"><i class="fa fa-file-pdf-o text-green"></i></a>
+                <a title="excel" onclick="generarExcel('tabla_accPers',8)"><i class="fa fa-file-excel-o text-green"></i></a> {% if perms.ap_talentohumano.add_perfuncionarioaccionpersonal %}
+<<<<<<< HEAD
+                <a style="cursor: pointer;" title="Agregar Nuevo" onclick="limpiarFormAccionPersonal();openModel('addAccPersonal')"><i class="fa fa-plus-circle text-green btn_nuevo"></i></a> {% endif %}
+=======
+                <a style="cursor: pointer;" title="Agregar Nuevo" onclick="limpiarFormAccionPersonal();openModel('addAccPersonal');" ><i class="fa fa-plus-circle text-green btn_nuevo"></i></a> {% endif %}
+>>>>>>> 9468fa45149aeee19c9fc642922ac3c7986049dd
+
+            </div>
+        </div>
+
+        <div class="box box-solid bg-light-blue-gradient">
+            <div class="box-header ui-sortable-handle" style="cursor: move;">
+                <!-- tools box -->
+                <div class="pull-right box-tools">
+                    <button type="button" class="btn btn-primary btn-sm pull-right" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample" style="margin-right: 5px;" data-original-title="Collapse">
+                        <i class="fa fa-minus"></i></button>
+                </div>
+                <!-- /. tools -->
+                <i class="fa fa-map-marker"></i>
+                <h3 class="box-title">
+                Filtros de Busqueda
+              </h3>
+            </div>
+            <div class="box-body collapse" style="background-color: white;" id="collapseExample">
+                <div class="col-xs-12">
+
+                    <div class="col-xs-3">
+                        <h style="font-size: 14px;color: black;font-weight: bold;height: 20px;">Nombre</h>
+                        <input type="text" class="form-control" name="" id="nombreParam" style="width: 100%;" />
+                    </div>
+                    <div class="col-xs-3">
+                        <h style="font-size: 14px;color: black;font-weight: bold;">Identificación</h>
+                        <input type="text" class="form-control" name="" id="cedParam" style="width: 100%;" />
+                    </div>
+                    <div class="col-xs-3">
+                        <h style="font-size: 14px;color: black;font-weight: bold;height: 20px;">Estado</h>
+                        <select id="SestadoFilterAcc" class="form-control" style="width: 250px;">
+                            <option value="">Seleccione una Opción</option>
+                            <option value="A">ACTIVO</option>
+                            <option value="I">INACTIVO</option>
+                        </select>
+                    </div>
+                    <div class="col-xs-3">
+                        <h style="font-size: 14px;color: black;font-weight: bold;">Fecha Vigencia</h>
+                        <div class="input-daterange input-group" id="datepicker" style="">
+                            <input type="text" class="input-sm form-control" name="start" id="FdesdeParam" autocomplete="off" />
+                            <span class="input-group-addon" style="border:none;font-weight: bold;">a</span>
+                            <input type="text" class="input-sm form-control" name="end" id="FhastaParam" autocomplete="off" />
+                        </div>
+                        <br>
+                        <button type="button" class="btn btn-block btn-success" style="width: 20%; float: right;" onclick="buscarAcionesParametros();">Buscar</button>
+                    </div>
+
+                </div>
+            </div>
+            <!-- /.box-body-->
+        </div>
+
+        <div class="box box-solid bg-light-blue-gradient" style="position: relative;top: 10px;">
+            <div class="box-header with-border" style="cursor: move;">
+                <!-- tools box -->
+                <div class="pull-right box-tools">
+                    <button type="button" class="btn btn-primary btn-sm pull-right" data-toggle="collapse" href="#collapseAccP" role="button" aria-expanded="false" aria-controls="collapseAccP" style="margin-right: 5px;" data-original-title="Collapse">
+                        <i class="fa fa-minus"></i></button>
+                </div>
+                <!-- /. tools -->
+                <i class="fa fa-search"></i>
+                <h3 class="box-title">
+                Gráfico
+              </h3>
+            </div>
+            <div class="box-body collapse" style="background-color: white;" id="collapseAccP">
+                <div class="col-md-5">
+                    <div id="containerAccP" class="chart-container" style="width: 100%;"></div>
+                </div>
+                <div class="col-md-7">
+                    <div id="outputAccP" style="margin: 30px;width: 95%;overflow-x: auto;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- /.box-header -->
+
+        <div class="box-body">
+            <table id="tabla_accPers" class="display table table-striped table-bordered" width="100%" cellspacing="0" style="font-size: 10px; text-transform: uppercase;">
+                <thead>
+
+                    <tr class="bg-light-blue-gradient" style="color: white;">
+                        <th>Fecha Creación</th>
+                        <th>#Acción Personal</th>
+                        <th>Identificación</th>
+                        <th>Nombre Completo</th>
+
+                        <th>Tipo</th>
+                        <th>Isla</th>
+                        <th>Fecha Desde</th>
+                        <th>Fecha Hasta</th>
+                        <th>Estado Ejecucion</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody class="botonera1" id="bodytabla_accPers">
+
+                </tbody>
+            </table>
+        </div>
+        <!-- /.box-body -->
+    </div>
+
+    <!--------------- PDF ---------------------------->
+    <div id="pdfaccion" style="display: none;">
+        <div class="stackbox-header" align="center" style="color:white; background-color: #3c8dbc; font-weight: bold; font-size: 18px;">
+            <img src="{% static 'image/favicon.ico' %}" width="40px" style="float:left;margin-top: -5px;" />ACCIÓN PERSONAL
+        </div>
+
+        <div class="stackbox-body">
+            <div id="section_rep" style="color: black;">
+                <div style="position: relative;border-left: 1px solid black; border-right: 1px solid ">
+                    <div class="row" style="margin-right: 0px;margin-left: -2px;border-left: 2px solid white;">
+                        <div class="col-xs-12" style="height: 80px">
+
+                            <div class="col-xs-8" align="center" style="">
+                                <img src="static/image/ico_min_trabajo.png" height="130px" style="top: -20px; position: relative;" />
+                            </div>
+
+                            <div class="col-xs-4" style="border-top: 1px solid black;position:relative;height: 80px;left: 15px;border-left: 1px solid;" align="center">
+                                <table style="font-size: 12px;font-family: arial;font-weight:bold;">
+                                    <tr height="20px">
+                                        <td colspan="4" align="center" style="font-weight: bold;">ACCIÓN DE PERSONAL</td>
+                                    </tr>
+                                    <tr height="36px">
+                                        <td align="right" style="font-weight: bold;">No.</td>
+                                        <td width="10px;"></td>
+                                        <!-- <td colspan="2" style="font-weight:bold;">DPNG-UATH-<h id="for_numaccper" class="pdf"></h>-{% now 'Y' %}</td> -->
+                                        <td colspan="2" id="num_accion_personal" style="font-weight:bold;font-size: 11px;">DPNG-UATH-
+                                            <h id="for_numaccper" class="pdf"></h>-{% now 'Y' %}</td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right" style="font-weight: bold;">Fecha:</td>
+                                        <td width="10px;"></td>
+                                        <td colspan="2" style="font-weight:bold;border-bottom:1px solid black;"><span style="font-weight: 100;" id="for_fechaaccper" class="pdf"></spam></td>
+                          </tr>
+                      </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" style="margin-right: 0px;margin-left: 0px;">
+                <div class="col-xs-12" style="border-top:1px solid black; border-bottom:1px solid black; height:70px;">
+                    <div class="col-xs-4" align="left" style="margin-top: 10px;font-family: arial;">
+                      <span style="font-weight: 100;">DECRETO &nbsp;&nbsp;<input type="checkbox" id="for_tipodoc1" class="pdf" disabled="true"></span>
+                            </div>
+                            <div class="col-xs-4" align="left" style="margin-top: 10px;font-family: arial;">
+                                <span style="font-weight: 100;">ACUERDO &nbsp;&nbsp;<input type="checkbox" id="for_tipodoc2" class="pdf" disabled="true"></span>
+                            </div>
+                            <div class="col-xs-4" align="left" style="margin-top: 10px;font-family: arial;">
+                                <span style="font-weight: 100;">RESOLUCIÓN &nbsp;&nbsp;<input type="checkbox" id="for_tipodoc3" class="pdf" disabled="true"></span>
+                            </div>
+                            <br>
+                            <div class="col-xs-5" align="left" style="margin-top: 10px;font-family: arial;">
+                                <label style="font-weight: 100;">NO:___________________________</label>
+                                <h style="position: relative;left: -170px;" id="for_numtipodoc" class="pdf"></h>
+                            </div>
+                            <div class="col-xs-7" align="left" style="margin-top: 10px;font-family: arial;">
+                                <label style="font-weight: 100;">FECHA:___________________________</label>
+                                <h style="position: relative;left: -170px;" id="for_fechatipodoc" class="pdf"></h>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row" style="margin-right: 0px;margin-left: 0px;">
+                        <div class="col-xs-12" style="border-bottom: 1px solid black; height:50px;">
+
+                            <div class="col-xs-6" align="center" style="margin-top: 8px;">
+                                <label style="font-weight: bold;" id="for_apellidos" class="pdf"></label>
+                                <br><span style="top: -5px;position: relative;font-weight: 100;">APELLIDOS</span>
+                            </div>
+                            <div class="col-xs-6" align="center" style="margin-top: 8px;">
+                                <label style="font-weight: bold;" id="for_nombres" class="pdf"></label>
+                                <br><span style="top: -5px;position: relative;font-weight: 100;">NOMBRES</span>
+                            </div>
+                        </div>
+                        <div class="col-xs-12" style="border-bottom:1px solid black; height:65px; ">
+                            <br>
+                            <div class="col-xs-4" align="center" style="height: 100%;border-right: 1px solid black;margin-top: -20px; text-align:center;">
+                                <table width="100%" style="margin-top:20px;font-family: arial;font-weight:bold;">
+                                    <tr>
+                                        <td style="top: -15px; position:relative;font-weight: 100;">No. de Cédula de Ciudadania</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border:0.5px solid black;position: absolute;left: 0%;width: 960px;margin-left: -15px;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="top: 5px; position:relative;font-weight: bold;">
+                                            <h id="for_cedula" class="pdf"></h>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <div class="col-xs-4" style="height: 100%;border-right: 1px solid black;margin-top: -20px; text-align:center;">
+                                <table align="center" width="100%" style="margin-top:20px;font-family:arial;font-weight:bold;">
+                                    <tr>
+                                        <td style="top: -15px; position:relative;font-weight: 100;">No. De Afiliación IESS</td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="top: 5px; position:relative;font-weight: bold;">
+                                            <h id="for_numiess" class="pdf"></h>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <div class="col-xs-4" style="text-align:center;margin-top: -20px;">
+                                <table align="center" width="100%" style="margin-top:20px;font-family: arial;font-weight:bold;">
+                                    <tr>
+                                        <td id="for_accp_rige_fecha" style="top: -15px; position:relative;font-weight: 100;">Rige a partir de:</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="top: 5px; position:relative;font-weight: bold;">
+                                            <h id="for_fecharige" class="pdf"></h>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-right: -10px;margin-left: -10px;color: black;">
+                        <p style="margin-left: 15px;margin-top: 5px; ">EXPLICACIÓN: (Opcional: adjuntar Anexo)</p>
+                        <div class="col-xs-12" style="height: 122px; display: flex;  align-items: center;">
+                            <p style="font-size: 11px;font-weight: 100;text-align:justify; font: 'calibri'" id="for_explicacion" class="pdf"></p>
+                            <br>
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-right: 0px;margin-left: 0px;color: black">
+                        <div class="col-xs-12" style="border-bottom:1px solid black; border-top: 1px solid;">
+                            <div class="col-xs-3" style="position: relative; left: -10px;">
+                                <table width="100%" style=" font-weight: 100; margin-top:10px; font-family: arial;font-size: 10px;">
+                                    <tr>
+                                        <td align="left">INGRESO</td>
+                                        <td width="10px"></td>
+                                        <td align="left">
+                                            <input id="for_accper1" type="checkbox" class="pdf" disabled="true">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="left">NOMBRAMIENTO</td>
+                                        <td width="10px"></td>
+                                        <td align="left">
+                                            <input id="for_accper2" type="checkbox" class="pdf" disabled="true">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="left">ASCENSO</td>
+                                        <td width="10px"></td>
+                                        <td align="left">
+                                            <input id="for_accper3" type="checkbox" class="pdf" disabled="true">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="left">SUBROGACIÓN</td>
+                                        <td width="10px"></td>
+                                        <td align="left">
+                                            <input id="for_accper4" type="checkbox" class="pdf" disabled="true">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="left">ENCARGO</td>
+                                        <td width="10px"></td>
+                                        <td align="left">
+                                            <input id="for_accper5" type="checkbox" class="pdf" disabled="true">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="left">VACACIONES</td>
+                                        <td width="10px"></td>
+                                        <td align="left">
+                                            <input id="for_accper6" type="checkbox" class="pdf" disabled="true">
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-xs-3" style="color: black;position: relative; left: -15px;">
+                                <table width="100%" style=" font-weight: 100; margin-top:10px; font-family: arial;font-size: 10px;">
+                                    <tr>
+                                        <td align="left">TRASLADO</td>
+                                        <td width="10px"></td>
+                                        <td align="left">
+                                            <input id="for_accper7" type="checkbox" class="pdf" disabled="true">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="left">TRASPASO</td>
+                                        <td width="10px"></td>
+                                        <td align="left">
+                                            <input id="for_accper8" type="checkbox" class="pdf" disabled="true">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="left">CAMBIO ADMINISTRATIVO</td>
+                                        <td width="10px"></td>
+                                        <td align="left">
+                                            <input id="for_accper9" type="checkbox" class="pdf" disabled="true">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="left">INTERCAMBIO</td>
+                                        <td width="10px"></td>
+                                        <td align="left">
+                                            <input id="for_accper10" type="checkbox" class="pdf" disabled="true">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="left">COMISIÓN DE SERVICIOS</td>
+                                        <td width="10px"></td>
+                                        <td align="left">
+                                            <input id="for_accper11" type="checkbox" class="pdf" disabled="true">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="left">LICENCIA</td>
+                                        <td width="10px"></td>
+                                        <td align="left">
+                                            <input id="for_accper12" type="checkbox" class="pdf" disabled="true">
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <div class="col-xs-3" style="color: black">
+                                <table width="100%" style=" font-weight: 100; margin-top:10px; font-family: arial;font-size: 10px;">
+                                    <tr>
+                                        <td align="left">REVALORIZACIÓN</td>
+                                        <td width="10px"></td>
+                                        <td align="left">
+                                            <input id="for_accper13" type="checkbox" class="pdf" disabled="true">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="left">RECLASIFICACIÓN</td>
+                                        <td width="10px"></td>
+                                        <td align="left">
+                                            <input id="for_accper14" type="checkbox" class="pdf" disabled="true">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="left">UBICACIÓN</td>
+                                        <td width="10px"></td>
+                                        <td align="left">
+                                            <input id="for_accper15" type="checkbox" class="pdf" disabled="true">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="left">REINTEGRO</td>
+                                        <td width="10px"></td>
+                                        <td align="left">
+                                            <input id="for_accper16" type="checkbox" class="pdf" disabled="true">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="left">RESTITUCIÓN</td>
+                                        <td width="10px"></td>
+                                        <td align="left">
+                                            <input id="for_accper17" type="checkbox" class="pdf" disabled="true">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="left">RENUNCIA</td>
+                                        <td width="10px"></td>
+                                        <td align="left">
+                                            <input id="for_accper18" type="checkbox" class="pdf" disabled="true">
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <div class="col-xs-3" style="color: black">
+                                <table width="100%" style=" font-weight: 100; margin-top:10px; font-family: arial;font-size: 10px;">
+                                    <tr>
+                                        <td align="left">SUPRESIÓN</td>
+                                        <td width="10px"></td>
+                                        <td align="left">
+                                            <input id="for_accper19" type="checkbox" class="pdf" disabled="true">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="left">DESTITUCIÓN</td>
+                                        <td width="10px"></td>
+                                        <td align="left">
+                                            <input id="for_accper20" type="checkbox" class="pdf" disabled="true">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="left">REMOCIÓN</td>
+                                        <td width="10px"></td>
+                                        <td align="left">
+                                            <input id="for_accper21" type="checkbox" class="pdf" disabled="true">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="left">JUBILACIÓN</td>
+                                        <td width="10px"></td>
+                                        <td align="left">
+                                            <input id="for_accper22" type="checkbox" class="pdf" disabled="true">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="left">OTRO</td>
+                                        <td width="10px"></td>
+                                        <td style="top: -10px; position:relative;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3" height="10px" style="border-bottom: 1px solid black;font-size: 11px;">
+                                            <h id="tipoOtro" class="pdf"></h>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-right: 0px;margin-left: 0px;">
+                        <div class="col-xs-12" style="border-bottom:1px solid black;">
+                            <div class="col-xs-6" style="height: 178px;border-right: 1px solid black;color: black;">
+                                <table style="width: 100%; font-weight: 100; font-family: arial;margin-left: -2%;font-size: 10px;">
+                                    <tr>
+                                        <td colspan="2" align="center" style="font-weight:800; height:30px;">
+                                            <label style="font-weight:bold;">SITUACION ACTUAL</label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>PROCESO:</td>
+                                        <td style="border-bottom:1px solid black; text-align:left;width: 65%;"><span style="text-transform: capitalize;" id="for_procesoact" class="pdf"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>SUBPROCESO:</td>
+                                        <td style="border-bottom:1px solid black; text-align:left;text-transform: capitalize;">
+                                            <h id="for_subprocesoact" class="pdf"></h>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>PUESTO:</td>
+                                        <td style="border-bottom:1px solid black; text-align:left; text-transform: capitalize;">
+                                            <h id="for_puestoact" class="pdf"></h>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>LUGAR DE TRABAJO:</td>
+                                        <td style="border-bottom:1px solid black; text-align:left;text-transform: capitalize;">
+                                            <h id="for_lugaract" class="pdf"></h>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>REMUNERACIÓN MENSUAL:</td>
+                                        <td style="border-bottom:1px solid black; text-align:left;text-transform: capitalize;">
+                                            <h id="for_rmuact" class="pdf"></h>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>PARTIDA PRESUPUESTARIA:</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" style="border-bottom:1px solid black; text-align:left; height:10px;">
+                                            <h style="position: relative;float: right;right: 1%;" id="for_partpresact" class="pdf"></h>
+                                        </td>
+                                    </tr>
+                                    <tr height="10px;"></tr>
+                                </table>
+                            </div>
+                            <div class="col-xs-6" style="height: 178px;color: black;border-left: 1px solid black;left:-1px;">
+                                <table style="width: 100%; font-weight: 100; font-family: arial; font-size: 10px;">
+                                    <tr>
+                                        <td colspan="2" align="center" style="font-weight:800; height:30px;">
+                                            <label style="font-weight:bold;">SITUACION PROPUESTA</label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>PROCESO:</td>
+                                        <td style="border-bottom:1px solid black; text-align:left;width: 65%;">
+                                            <h id="for_procesonew" class="pdf"></h>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>SUBPROCESO:</td>
+                                        <td style="border-bottom:1px solid black; text-align:left;text-transform: capitalize;">
+                                            <h id="for_subprocesonew" class="pdf"></h>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>PUESTO:</td>
+                                        <td style="border-bottom:1px solid black; text-align:left; text-transform: capitalize;">
+                                            <h id="for_puestonew" class="pdf"></h>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>LUGAR DE TRABAJO:</td>
+                                        <td style="border-bottom:1px solid black; text-align:left;text-transform: capitalize;">
+                                            <h id="for_lugarnew" class="pdf"></h>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>REMUNERACIÓN MENSUAL:</td>
+                                        <td style="border-bottom:1px solid black; text-align:left;text-transform: capitalize;">
+                                            <h id="for_rmunew" class="pdf"></h>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>PARTIDA PRESUPUESTARIA:</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" style="border-bottom:1px solid black; text-align:left; height:10px;">
+                                            <h style="position: relative;float: right;right: 1%;" id="for_partpresnew" class="pdf"></h>
+                                        </td>
+                                    </tr>
+                                    <tr height="10px;"></tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-right: 0px;margin-left: 0px;">
+                        <div class="col-xs-12" style="border-bottom:1px solid black;height: 100px;">
+
+                            <div class="col-xs-6" style="height: 100px;border-right: 1px solid black;">
+                                <table style="width: 100%; font-family: arial;font-weight:bold;font-size: 12px;">
+                                    <tr>
+                                        <td colspan="4" align="center" style="font-weight:bold; height:30px;">ACTA FINAL DEL CONCURSO</td>
+                                    </tr>
+                                    <tr height="20px;"></tr>
+                                    <tr>
+                                        <td style="font-weight:bold;">No.</td>
+                                        <td style="border-bottom:1px solid black; text-align:center;width:40%;">
+                                            <h style="font-weight: 100;" id="for_numactafinal" class="pdf"></h>
+                                        </td>
+                                        <td style="font-weight:bold;">&nbsp;&nbsp;&nbsp;&nbsp;Fecha:</td>
+                                        <td style="border-bottom:1px solid black; text-align:center;width:40%">
+                                            <h style="font-weight: 100;" id="for_fechaactafinal" class="pdf"></h>
+                                        </td>
+                                    </tr>
+                                    <tr height="20px;"></tr>
+                                </table>
+                            </div>
+
+                            <div class="col-xs-6" style="height: 100px;">
+                                <table style="width: 100%; font-family: arial;font-weight:bold;font-size: 12px;">
+                                    <tr>
+                                        <td colspan="2" align="center" style="font-weight:bold; height:30px;">PROCESO DE RECURSOS HUMANOS</td>
+                                    </tr>
+                                    <tr height="20px;"></tr>
+                                    <tr>
+                                        <td width="1%" style="font-weight:bold;">f.</td>
+                                        <td style="border-bottom:1px solid black; text-align:left;width:99%"></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" align="center" style="font-weight:bold;font-size: 11px;">Nombre:
+                                            <h id="for_tituloprcrrhh" class="pdf" style="font-size: 10px;"></h>
+                                            <h id="for_nombreprcrrhh" class="pdf" style="font-size: 10px;"></h>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" align="center" style="font-weight:bold;">Responsable (e) de Recursos Humanos </td>
+                                    </tr>
+                                    <tr height="10px;"></tr>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-right: 0px;margin-left: 0px;">
+                        <div class="col-xs-12" style="border-bottom:1px solid black;" align="center">
+
+                            <table style="width: 80%; font-size: 12px;">
+                                <tr>
+                                    <td align="center" style="font-weight:bold; height:20px;font-size: 12px;">
+                                        <h>DIOS, PATRIA Y LIBERTAD</h>
+                                    </td>
+                                </tr>
+                                <tr height="50px;"></tr>
+                                <tr>
+                                    <td style="border-bottom:1px solid black; text-align:center;"></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:center;  font-weight:bold;font-size: 12px;">Nombre:
+                                        <h id="for_tituloautnom" class="pdf"></h>.
+                                        <h id="for_nombreautnom" class="pdf"></h>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:center;  font-weight:bold;color: blackfont-size: 12px;">DELEGADO DE LA AUTORIDAD NOMINADORA</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-right: 0px;margin-left: 0px;">
+                        <div class="col-xs-12" style="border-bottom:1px solid black;font-size: 9px;" align="center">
+                            DELEGACIÓN DE LA DIRECCIÓN GENERAL MEDIANTE RESOLUCIÓN NRO. 0000038 DEL 22 DE JUNIO DEL 2016
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-right: 0px;margin-left: 0px;">
+                        <div class="col-xs-12" style="border-bottom:1px solid black;">
+                            <div class="col-xs-6" style="height: 100%;border-right: 1px solid black;">
+                                <table style="width: 100%;font-family: arial;font-weight:bold;font-size: 12px;">
+                                    <tr>
+                                        <td colspan="4" align="center" style="font-weight:bold; height:30px;font-size: 12px;">RECURSOS HUMANOS</td>
+                                    </tr>
+                                    <tr height="20px;"></tr>
+                                    <tr>
+                                        <td style="font-weight:bold;font-size: 12px;">No.</td>
+                                        <td style="border-bottom:1px solid black; text-align:center;width:40%">
+                                            <h style="font-weight: 100;" id="for_numrrhh" class="pdf"></h>
+                                        </td>
+                                        <td style="font-weight:bold;font-size: 12px;">&nbsp;&nbsp;&nbsp;&nbsp;Fecha:</td>
+                                        <td style="border-bottom:1px solid black; text-align:center;width:40%">
+                                            <h style="font-weight: 100;" id="for_fecharrhh" class="pdf"></h>
+                                        </td>
+                                    </tr>
+                                    <tr height="20px;"></tr>
+                                </table>
+                            </div>
+                            <div class="col-xs-6" style="height: 100%;">
+                                <table style="width: 100%; font-weight: bold;font-family: arial;font-size: 12px;">
+                                    <tr>
+                                        <td colspan="2" align="center" style="font-weight:bold; height:30px;">REGISTRO Y CONTROL</td>
+                                    </tr>
+                                    <tr height="20px;"></tr>
+                                    <tr>
+                                        <td width="1%" style="font-weight:bold;">f.</td>
+                                        <td style="border-bottom:1px solid black; text-align:left;width:99%"></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" align="center" style="font-weight:bold;">Responsable del Registro</td>
+                                    </tr>
+                                    <tr height="5px;"></tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-right: -2px;margin-left: -1px;border: 5px solid white;height: 20px;border-right: 10px solid white;">
+                        <div class="col-xs-12" style="font-size:9px; text-align: center; border: 5px solid white; height: 20px;">
+                            Fecha de creación de formato: 2014-05-27 / Versión: 01 / Página 1 de 2.
+
+                        </div>
+                    </div>
+                    <!--div class="col-xs-12" style="border-left:2px solid white;margin-left:-1px;border-right:10px solid white;width:965px; height: 20px;"></div-->
+
+                </div>
+                <!--div hoja1-->
+
+                <div style="page-break-before: always;"></div>
+                <!--page 2-->
+
+                <div style="margin-top: 50px;">
+                    <!--div hoja2-->
+                    <div class="row" style="margin-right: 0px;margin-left: 0px;">
+                        <div class="col-xs-12" style="border:1px solid black;">
+                            <table style="width: 100%; font-size: 11px;font-family: arial; margin-top: 20px;">
+                                <tr>
+                                    <td>CAUCIÓN REGISTRADA CON No.</td>
+                                    <td style="border-bottom:1px solid black; text-align:left;width:45%"></td>
+                                    <td>&nbsp;&nbsp;&nbsp;&nbsp;Fecha:</td>
+                                    <td style="border-bottom:1px solid black; text-align:left;width:20%"></td>
+                                </tr>
+                                <tr height="40px;"></tr>
+                            </table>
+                        </div>
+                        <div class="col-xs-12" style="border-bottom: 1px solid black; border-left: 1px solid black; border-right: 1px solid black;  height: 50px; width: 100%;">
+
+                        </div>
+                        <div class="col-xs-12" style="border-bottom: 1px solid black; border-left: 1px solid black; border-right: 1px solid black; height: 50px; width: 100%;">
+
+                        </div>
+                        <div class="col-xs-12" style="border-bottom: 1px solid black; border-left: 1px solid black; border-right: 1px solid black; height: 50px; width: 100%;">
+
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-right: 0px;margin-left: 0px;">
+                        <div class="col-xs-12" style="border:1px solid black;">
+                            <div class="col-xs-12">
+                                <table style="width: 100%; font-size: 11px;font-family: arial; margin-top: 20px;">
+                                    <tr>
+                                        <td>LA PERSONA REEMPLAZA A: </td>
+                                        <td style="border-bottom:1px solid black; text-align:left;width:40%"></td>
+                                        <td>EN EL PUESTO DE:</td>
+                                        <td style="border-bottom:1px solid black; text-align:left;width:20%"></td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-xs-12">
+                                <table style="width: 100%; font-size: 11px;font-family: arial; margin-top: 20px;">
+                                    <tr>
+                                        <td>QUIEN CESO EN FUNCIONES POR: </td>
+                                        <td style="border-bottom:1px solid black; text-align:left;width:70%"></td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-xs-12">
+                                <table style="width: 100%; font-size: 11px;font-family: arial; margin-top: 20px;">
+                                    <tr>
+                                        <td style="width: 40%;">ACCIÓN DE PERSONAL REGISTRADA CON No. </td>
+                                        <td style="border-bottom:1px solid black; text-align:left;width:30%"></td>
+                                        <td>FECHA:</td>
+                                        <td style="border-bottom:1px solid black; text-align:left;width:25%"></td>
+                                    </tr>
+                                    <tr height="20px;"></tr>
+                                </table>
+                                <br>
+                            </div>
+
+                            <div class="col-xs-12">
+                                <table style="width: 100%; font-size: 11px;font-family: arial; margin-top: 20px;">
+                                    <tr>
+                                        <td>AFILIACIÓN AL COLEGIO DE PROFESIONALES DE </td>
+                                        <td style="border-bottom:1px solid black; text-align:left;width:60%"></td>
+                                    </tr>
+                                </table>
+                                <br>
+                            </div>
+
+                            <div class="col-xs-12">
+                                <table style="width: 100%; font-size: 11px;font-family: arial; margin-top: 20px;">
+                                    <tr>
+                                        <td>NO. </td>
+                                        <td style="border-bottom:1px solid black; text-align:left;width:60%"></td>
+                                        <td style="width: 30px;"></td>
+                                        <td>FECHA:</td>
+                                        <td style="border-bottom:1px solid black; text-align:left;width:30%"></td>
+                                    </tr>
+                                    <tr height="40px;"></tr>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-right: 0px;margin-left: 0px;">
+                        <div class="col-xs-12" style="border:1px solid black;">
+                            <div class="col-xs-12">
+                                <br>
+                                <table style="width: 100%; font-size: 11px;font-family: arial; margin-top: 20px;">
+                                    <tr>
+                                        <td>POSESIÓN DEL CARGO</td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <div class="col-xs-12">
+                                <table style="width: 100%; font-size: 11px;font-family: arial; margin-top: 20px;">
+                                    <tr>
+                                        <td>YO</td>
+                                        <td id="for_accp_cargo_pers_nombre" style="border-bottom:1px solid black; text-align:left;width:50%"></td>
+                                        <td>CON CÉDULA DE CIUDADANIA No.</td>
+                                        <td id="for_accp_cargo_pers_identif" style="border-bottom:1px solid black; text-align:left;width:20%"></td>
+                                    </tr>
+                                    <tr height="20px;"></tr>
+                                </table>
+                                <p style="font-size: 11px;font-family: arial;">JURO LEALTAD AL ESTADO ECUATORIANO.</p>
+                            </div>
+
+                            <br>
+
+                            <div class="col-xs-12">
+                                <table style="width: 50%; font-size: 11px;font-family: arial; margin-top: 20px;">
+                                    <tr>
+                                        <td>LUGAR: </td>
+                                        <td id="for_accp_lugar" style="border-bottom:1px solid black; text-align:left;width:90%"></td>
+                                    </tr>
+                                    <tr height="10px;"></tr>
+                                    <tr>
+                                        <td>FECHA:</td>
+                                        <td id="for_accp_fecha" style="border-bottom:1px solid black; text-align:left;width:90%"></td>
+                                    </tr>
+                                    <tr height="40px;"></tr>
+                                </table>
+                                <br>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-right: 0px;margin-left: 0px;">
+                        <div class="col-xs-12" style="border:1px solid black;">
+                            <br>
+                            <br>
+                            <div class="col-xs-6" style="height: 100%;">
+                                <br>
+                                <br>
+                                <table style="width: 100%; font-size: 11px;font-family: arial;">
+                                    <tr height="20px;"></tr>
+                                    <tr>
+                                        <td width="1%">f.</td>
+                                        <td style="border-bottom:1px solid black; text-align:left;width:99%"></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" align="center">Funcionario</td>
+                                    </tr>
+                                    <tr height="10px;"></tr>
+                                </table>
+                                <br>
+                                <br>
+                            </div>
+                            <div class="col-xs-6" style="height: 100%;">
+                                <br>
+                                <br>
+                                <table style="width: 100%; font-size: 11px;font-family: arial;">
+                                    <tr height="20px;"></tr>
+                                    <tr>
+                                        <td width="1%">f.</td>
+                                        <td style="border-bottom:1px solid black; text-align:left;width:99%"></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" align="center">Responsable de Recursos Humanos</td>
+                                    </tr>
+                                    <tr height="10px;"></tr>
+                                </table>
+                                <br>
+                                <br>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-right: 0px;margin-left: 0px;">
+                            <div class="col-xs-12" style="font-size:8px; text-align: center; border-left:2px solid white;margin-left:-2px;border-right:2px solid white;">
+                                Fecha de creación de formato: 2014-05-27 / Versión: 01 / Página 2 de 2.
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!--div hoja2-->
+
+            </div>
+            <!--div principal-->
+        </div>
+
+        <div class="stackbox-footer" style="margin-top: -30px;">
+            <button type="button" class="btn btn-block btn-primary" style="width: 40px; position: fixed; top: 100px; right: 16%; border-radius: 50%;box-shadow: 5px 5px 5px black;" onclick="generarPdf2();"><i class="fa fa-file-pdf-o"></i></button>
+            <button type="button" class="btn btn-block btn-primary" data-close-stackbox="true" style="width: 40px; position: fixed; top: 135px; right: 16%; border-radius: 50%;box-shadow: 5px 5px 5px black;"><i class="fa fa-times-circle"></i></button>
+            <!--button class="btn btn-primary" onClick="generarPdf2();" style="position: fixed; top: 100px; align-content: center;border-radius: 80%">Generar Pdf</button-->
+            <!--button class="btn btn-default" data-close-stackbox="true" style="position: fixed; top: 135px; align-content: center; width:102.24px; border-radius: 80% ">Close</button-->
+        </div>
+
+    </div>
+
+    <!-- /.box -->
+    <!-- AdminLTE datatable -->
+    <!-- jQuery 3 -->
+    {% load static %}
+
+    <!-- <script src="{% static 'js/lib_internas/script.js' %}"></script> -->
+    <!--script>document.write('<script src="{% static "js/lib_internas/script.js" %}?dev=' + Math.floor(Math.random() * 100) + '"\><\/script>');</script-->
+    <script>
+        $(document).ready(function() {
+            var d = new Date();
+            var f1 = d.getFullYear() + "-01-01";
+            //var f2 = d.getFullYear()+"-"+(d.getMonth()+1)+"-"+ d.getDate();
+            var f2 = d.getFullYear() + "-12-31";
+            var dataini = f1 + "," + f2;
+
+            f1_aux = '01/01/' + d.getFullYear();
+            //f2_aux = (d.getMonth()+1)+'/'+d.getDate()+'/'+ d.getFullYear();
+            f2_aux = '12/31/' + d.getFullYear();
+
+            $("#FdesdeParam").val(f1_aux);
+            $("#FhastaParam").val(f2_aux);
+            buscarAcionesParametros(dataini);
+            //direcciones = {{ direcciones | safe }};
+            $("#SEstado").select2();
+            $("#SEstadoAcc").select2({
+                disabled: true
+            });
+            iniciarCombo('SEstadoAcc', 'ESTADO_PROCESOS_GTH', 'catalogos');
+            $("#SEstado").val("A").trigger("change");
+
+            $("#SfuncionaioAcc").select2({
+                sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
+            });
+            /*iniciarCombo('STipoDoc','TIPO_ACCION_PERSONAL','catalogos');
+            $("#STipoDoc").select2({
+              sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
+            });*/
+            $("#SitemAcc").select2({
+                sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
+            });
+
+            $("#SitemAccOtro").select2({
+                sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
+            });
+
+            iniciarCombo('SmodalidadAcc', 'f', 'modalidades');
+            $("#SmodalidadAcc").select2({
+                sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
+            });
+
+            /*situacion actual*/
+            iniciarComboDirecciones('SsitdireSA', 'DIR', 'direcciones');
+            $("#SsitdireSA").select2({
+                sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
+            });
+            iniciarComboDirecciones('SsitprocSA', 'PRC', 'direcciones');
+            $("#SsitprocSA").select2({
+                sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
+            });
+            iniciarComboDirecciones('SsitsubprocSA', 'SPC', 'direcciones');
+            $("#SsitsubprocSA").select2({
+                sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
+            });
+            //iniciarCombo('SsitgrupoSA','f','ocupacional');
+            $("#SsitgrupoSA").select2({
+                sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
+            });
+            /*iniciarCombo('SsitpuestoSA','f','institucional');
+            $("#SsitpuestoSA").select2({
+              sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
+            });*/
+            //iniciarCombo('SsitpuestDistSA','f','institucional');
+            $("#SsitpuestDistSA").select2({
+                sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
+            });
+            $("#SsitpuestInstSA").select2({
+                sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
+            });
+            iniciarCombo('SsitislaSA', 'f', 'islas');
+            $("#SsitislaSA").select2({
+                sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
+            });
+            /**/
+
+            /*situacion propuesta*/
+            iniciarComboDirecciones('SsitdireSP', 'DIR', 'direcciones');
+            $("#SsitdireSP").select2({
+                sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
+            });
+            iniciarComboDirecciones('SsitprocSP', 'PRC', 'direcciones');
+            $("#SsitprocSP").select2({
+                sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
+            });
+            iniciarComboDirecciones('SsitsubprocSP', 'SPC', 'direcciones');
+            $("#SsitsubprocSP").select2({
+                sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
+            });
+            //iniciarCombo('SsitgrupoSP','f','ocupacional');
+            $("#SsitgrupoSP").select2({
+                sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
+            });
+            /*iniciarCombo('SsitpuestoSP','f','institucional');
+            $("#SsitpuestoSP").select2({
+              sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
+            });*/
+            //iniciarCombo('SsitpuestDistSP','f','institucional');
+            $("#SsitpuestDistSP").select2({
+                sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
+            });
+            iniciarCombo('SsitislaSP', 'f', 'islas');
+            $("#SsitislaSP").select2({
+                sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
+            });
+            /**/
+
+            $("#Sactaresprrhh").select2({
+                sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
+            });
+            $("#SsitpuestoSP").select2({
+                sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
+            });
+            $("#SactaAutor").select2({
+                sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
+            });
+            $("#SrrhhrespReg").select2({
+                sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
+            });
+
+            $("#SitemActivos").select2();
+
+            //ENTER
+            $('#nombresPopup').keypress(function(event) {
+                var keycode = (event.keyCode ? event.keyCode : event.which);
+                if (keycode == '13') {
+                    getDataPersonaP();
+                }
+            });
+
+            //Date picker
+            $('#datepicker').datepicker({
+                autoclose: true
+            })
+
+            if (tinyMCE.execCommand ('mceRemoveEditor', false, 'doc_descripcion')) {
+              tinymce.init(
+              {
+                selector:'#doc_descripcion',
+                height : "300",
+                skin: "oxide-dark",
+                plugins: 'lists',
+                statusbar: false,
+                toolbar: "undo redo |alignleft aligncenter alignright alignjustify| forecolor | outdent indent numlist bullist | bold italic underline | fontselect fontsizeselect | styleselect"
+              });
+            }
+
+            // Fechas
+            set_config_fecha("#fec_vigencia");
+            set_config_fecha("#fec_hasta");
+            set_config_fecha("#fec_acc_pers");
+
+            $("#fec_hasta,#fec_vigencia")
+                .focusout(function() {
+                    //focus++;
+                    actNumDiasAccPersonal();
+                });
+
+            $('.input-daterange').datepicker();
+
+        });
+
+        // FOCUS ON SELECT FIELDS
+        //$("#content_AccPersonal").
+        $("document").on('focus', '.select2-selection.select2-selection--single', function(e) {
+            $(this).closest(".select2-container").siblings('select:enabled').select2('open');
+        })
+        $('select.select2').on('select2:closing', function(e) {
+            $(e.target).data("select2").$selection.one('focus focusin', function(e) {
+                e.stopPropagation();
+            });
+        });
+    </script>
+    {% endblock %}

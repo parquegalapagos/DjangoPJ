@@ -1,0 +1,679 @@
+{% load static %}
+
+<script src="{% static 'js/lib_internas/script.js' %}"></script>
+<script src="{% static 'js/select2.min.js' %}"></script>
+
+<!-- DataTables -->
+<link rel="stylesheet" type="text/css" href="{% static 'css/select2.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/filter.css' %}"> {% block content %}
+
+<div id="content_SL_Permisos">
+    <!----------------- FORMULARIO  --------------->
+    <div id="addsolicitudpermiso" style="display: none;">
+        <!-- CABECERA -->
+        <div class="stackbox-header" align="center" style="color:white; background-color: #3c8dbc; font-weight: bold; font-size: 18px;">
+            <img src="{% static 'image/favicon.ico' %}" width="40px" style="float:left;margin-top: -5px;" />
+            <h id="solicitudpermiso"> </h> Solicitud Permiso
+        </div>
+
+        <!-- CUERPO -->
+        <div class="stackbox-body" id="bodyaddsolicitudpermiso" style="font-size: 12px; font-weight: bold;">
+            <div class="row">
+                <!--div usado para que se muestren las notificaciones cuando un campo es obligatorio es necesario agregar id stackbox-body y agregar atributo "text" (con el nombre de la etiqueta) a cada input obligatorio-->
+                <div class="notification">
+                    <span class="icon">
+                  <i class=""></i>
+              </span>
+                    <span class="text"></span>
+                    <span class="close"><i class="fa fa-close"></i></span>
+                </div>
+                <!--fin notificacion-->
+
+                <br>
+                <br>
+
+                <div class="col-xs-12 callout" style="border-color: #1b90ad;">
+
+                    {% csrf_token %}
+                    <form id="frm_accionper" action="#" method="post">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="nav-tabs-custom">
+                                    <ul class="nav nav-tabs">
+                                        <li class="active">
+                                            <a href="#tab_funcionario" data-toggle="tab" aria-expanded="true" style="font-weight: bold;">Funcionario
+                        </a>
+                                        </li>
+                                    </ul>
+                                    <div class="tab-content" style="border-top: 2px solid #3c8dbc;">
+                                        <!-- Font Awesome Icons -->
+                                        <div class="tab-pane active" id="tab_funcionario">
+                                            <div class="row">
+                                                <br>
+                                                <br>
+                                                <input type="hidden" id="idaccPersonal" name="idaccPersonal" value="" />
+                                                <input type="hidden" id="tipot_accP" value="0" />
+                                                <div class="col-xs-6 callout" style="border-color: #1b90ad;">
+                                                    <table>
+                                                        <tr>
+                                                            <td style="text-align: left; font-size: 11px;font-weight: bold;">Funcionario</td>
+                                                        </tr>
+                                                        <tr height="10px;"> </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <select id="SfuncionaioAcc" class="select2" style="width: 300px;" onchange="getDataSituacion(this.value)">
+                                                                    <option value=""> Seleccione una Opcion</option>
+                                                                    {% for funcionario in funcionarios %}
+                                                                    <option value="{{ funcionario.id }}" apellidos="{{ funcionario.per_persona_by_persona_id.apellidos }}" nombres="{{ funcionario.per_persona_by_persona_id.nombres }}" cedula="{{ funcionario.per_persona_by_persona_id.identificacion }}" dataFuncionario="{{ funcionario }}">{{ funcionario.per_persona_by_persona_id.apellidos }} {{ funcionario.per_persona_by_persona_id.nombres }}</option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                                <div class="col-xs-6 callout" style="border-color: #1b90ad;">
+                                                    <table>
+                                                        <tr>
+                                                            <td style="text-align: left; font-size: 11px;font-weight: bold;">No. Accion Personal</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <input type="text" class="form-control" name="num_acc_pers" id="num_acc_pers" style="width: 300px; font-size: 11px;" />
+                                                            </td>
+                                                        </tr>
+                                                        <tr height="10px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: left; font-size: 11px;font-weight: bold;">Fecha Accion Personal</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <input type="date" class="form-control" name="fec_acc_pers" id="fec_acc_pers" style="width: 300px; font-size: 11px;" />
+                                                            </td>
+                                                        </tr>
+                                                        <tr height="10px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: left; font-size: 11px;font-weight: bold;">Fecha Vigencia</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <input type="date" class="form-control" name="fec_vigencia" id="fec_vigencia" style="width: 300px; font-size: 11px;" />
+                                                            </td>
+                                                        </tr>
+                                                        <tr height="10px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: left; font-size: 11px;font-weight: bold;">Fecha Hasta</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <input type="date" class="form-control" name="fec_hasta" id="fec_hasta" style="width: 300px; font-size: 11px;" />
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- /#fa-icons -->
+
+                                        <!-- glyphicons-->
+                                        <div class="tab-pane" id="tab_documento">
+                                            <div class="row">
+                                                <br>
+                                                <br>
+                                                <div class="col-xs-6 callout" style="border-color: #1b90ad;">
+                                                    <table>
+                                                        <tr>
+                                                            <td style="text-align: left; font-size: 11px;font-weight: bold;">Tipo Documento</td>
+                                                            <td width="10px;"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <select id="STipoDoc" class="select2" style="width: 300px;">
+                                                                    <option value=""> Seleccione una Opcion</option>
+                                                                    {% for tipoDoc in tipoDocs %}
+                                                                    <option value="{{ tipoDoc.id }}">{{ tipoDoc.label }}</option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                        <tr height="10px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: left; font-size: 11px;font-weight: bold;">No.</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <input type="text" class="form-control" name="no_doc" id="no_doc" style="width: 200px;font-size: 11px;" />
+                                                            </td>
+                                                        </tr>
+                                                        <tr height="10px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: left; font-size: 11px;font-weight: bold;">Fecha</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <input type="date" class="form-control" name="fecha_doc" id="fecha_doc" style="width: 200px;font-size: 11px;" />
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                                <div class="col-xs-6 callout" style="border-color: #1b90ad;">
+                                                    <table>
+                                                        <tr>
+                                                            <td colspan="3" style="text-align: left; font-size: 11px;font-weight: bold;">Descripción(Explicación)</td>
+                                                            <td width="10px;"></td>
+                                                        </tr>
+                                                        <tr height="10px;"> </tr>
+                                                        <tr>
+                                                            <td colspan="3" style="text-align: right;">
+                                                                <textarea class="form-control" name="doc_descripcion" id="doc_descripcion" rows="5"></textarea>
+                                                            </td>
+                                                        </tr>
+                                                        <tr height="10px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: right; font-size: 11px;font-weight: bold;">Anexo</td>
+                                                            <td width="10px;"></td>
+                                                            <td>
+                                                                <input type="file" name="myfile" id="doc_anexo">
+                                                                <div id="contentFileAcc" style="margin-left: 20px;"><img id="imgContentFileAcc" src="" width="50px" />
+                                                                    <label style="margin-left: 10px" id="nombreFileAcc"></label>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- /#ion-icons -->
+
+                                        <!-- glyphicons-->
+                                        <div class="tab-pane" id="tab_item">
+                                            <div class="row">
+
+                                                <div class="col-xs-12">
+                                                    <br>
+                                                    <p style="text-align: left; font-size: 11px;font-weight: bold;">Item</p>
+                                                    <select id="SitemAcc" class="select2" style="width: 300px;" onchange="ocultarSitPropuesta(this.value);">
+                                                        <option value=""> Seleccione una Opcion</option>
+                                                        {% for item in items %}
+                                                        <option value="{{ item.id }}">{{ item.descripcion }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+
+                                            </div>
+                                            <br>
+                                            <div class="row" style="border-top: 2px solid #3c8dbc;">
+                                                <div class="col-xs-12">
+                                                    <br>
+                                                    <p style="text-align: left; font-size: 11px;font-weight: bold;"> Otro Item</p>
+                                                    <textarea class="form-control" name="doc_otro_item" id="doc_otro_item" rows="5"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- /#ion-icons -->
+
+                                        <!-- glyphicons-->
+                                        <div class="tab-pane" id="tab_situacion">
+                                            <div class="row">
+                                                <br>
+                                                <br>
+                                                <div class="col-xs-6 callout" style="border-color: #1b90ad;">
+                                                    <table>
+                                                        <tr>
+                                                            <td style="text-align: left; font-size: 11px;font-weight: bold;border-bottom: 3px solid #1b90ad; padding: 5px;" colspan="3">Situacion Actual</td>
+                                                        </tr>
+                                                        <tr height="20px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: right; font-size: 11px;font-weight: bold;">Direccion</td>
+                                                            <td width="10px;"></td>
+                                                            <td>
+                                                                <select id="SsitdireSA" class="select2" style="width: 300px;" onchange="cambiarComboinfo('SsitprocSA',this.value);">
+                                                                    <option value=""> Seleccione una Opción</option>
+                                                                    {% for direccion in direcciones %}
+                                                                    <option value="{{ direccion.id }}">{{ direccion.name }}</option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                        <tr height="10px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: right; font-size: 11px;font-weight: bold;">Proceso</td>
+                                                            <td width="10px;"></td>
+                                                            <td>
+                                                                <select id="SsitprocSA" class="form-control" style="width: 300px;font-size: 11px;" onchange="cambiarComboinfo('SsitsubprocSA',this.value);">
+                                                                    <option value=""> Seleccione una Opción</option>
+                                                                    {% for proceso in procesos %}
+                                                                    <option value="{{ proceso.id }}" padre="{{ proceso.parentid }}">{{ proceso.name }}</option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                        <tr height="10px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: right; font-size: 11px;font-weight: bold;">Subproceso</td>
+                                                            <td width="10px;"></td>
+                                                            <td>
+                                                                <select id="SsitsubprocSA" class="form-control" style="width: 300px;font-size: 11px;">
+                                                                    <option value="0">Seleccione una Opción</option>
+                                                                    {% for subproceso in subprocesos %}
+                                                                    <option value="{{ subproceso.id }}" padre="{{ subproceso.parentid }}">{{ subproceso.name }}</option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                        <tr height="10px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: right; font-size: 11px;font-weight: bold;">Grupo Ocupacional</td>
+                                                            <td width="10px;"></td>
+                                                            <td>
+                                                                <select id="SsitgrupoSA" class="select2" style="width: 300px;font-size: 11px;">
+                                                                    <option value=""> Seleccione una Opción</option>
+                                                                    {% for gocupacional in gocupacionals %}
+                                                                    <option value="{{ gocupacional.id }}">{{ gocupacional.nombre }}</option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                        <tr height="10px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: right; font-size: 11px;font-weight: bold;">Puesto Institucional</td>
+                                                            <td width="10px;"></td>
+                                                            <td>
+                                                                <select id="SsitpuestoSA" class="select2" style="width: 300px;font-size: 11px;">
+                                                                    <option value=""> Seleccione una Opción</option>
+                                                                    {% for ginstitucional in ginstitucionals %}
+                                                                    <option value="{{ ginstitucional.id }}">{{ ginstitucional.nombre }}</option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                        <tr height="10px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: right; font-size: 11px;font-weight: bold;">Puesto Distributivo</td>
+                                                            <td width="10px;"></td>
+                                                            <td>
+                                                                <select id="SsitpuestDistSA" class="select2" style="width: 300px;font-size: 11px;">
+                                                                    <option value=""> Seleccione una Opción</option>
+                                                                    {% for gdistributivo in gdistributivos %}
+                                                                    <option value="{{ gdistributivo.id }}">{{ gdistributivo.nombre }}</option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                        <tr height="10px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: right; font-size: 11px;font-weight: bold;">Isla Trabajo</td>
+                                                            <td width="10px;"></td>
+                                                            <td>
+                                                                <select id="SsitislaSA" class="select2" style="width: 300px;font-size: 11px;">
+                                                                    <option value=""> Seleccione una Opción</option>
+                                                                    {% for isla in islas %}
+                                                                    <option value="{{ isla.id }}">{{ isla.descripcion }}</option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                        <tr height="10px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: right; font-size: 11px;font-weight: bold;">RMU</td>
+                                                            <td width="10px;"></td>
+                                                            <td>
+                                                                <input type="text" name="TrmuSA" id="TrmuSA" class="form-control" />
+                                                            </td>
+                                                        </tr>
+                                                        <tr height="10px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: right; font-size: 11px;font-weight: bold;">Partida Presupuestaria</td>
+                                                            <td width="10px;"></td>
+                                                            <td>
+                                                                <input type="text" name="TppresupSA" id="TppresupSA" class="form-control" />
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                                <div class="col-xs-6 callout" style="border-color: #1b90ad;" id="div_sitPro">
+                                                    <table>
+                                                        <tr>
+                                                            <td style="text-align: left; font-size: 11px;font-weight: bold; border-bottom: 3px solid #1b90ad; padding: 5px;" colspan="3">Situación Propuesta</td>
+                                                        </tr>
+                                                        <tr height="20px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: right; font-size: 11px;font-weight: bold;">Direccion</td>
+                                                            <td width="10px;"></td>
+                                                            <td>
+                                                                <select id="SsitdireSP" class="select2" style="width: 300px;">
+                                                                    <option value="0">Seleccione una Opción</option>
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                        <tr height="10px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: right; font-size: 11px;font-weight: bold;">Proceso</td>
+                                                            <td width="10px;"></td>
+                                                            <td>
+                                                                <select id="SsitprocSP" class="select2" style="width: 300px;">
+                                                                    <option value="0">Seleccione una Opción</option>
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                        <tr height="10px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: right; font-size: 11px;font-weight: bold;">Subproceso</td>
+                                                            <td width="10px;"></td>
+                                                            <td>
+                                                                <select id="SsitsubprocSP" class="select2" style="width: 300px;">
+                                                                    <option value="0">Seleccione una Opcion</option>
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                        <tr height="10px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: right; font-size: 11px;font-weight: bold;">Grupo Ocupacional</td>
+                                                            <td width="10px;"></td>
+                                                            <td>
+                                                                <select id="SsitgrupoSP" class="select2" style="width: 300px;">
+                                                                    <option value="0">Seleccione una Opción</option>
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                        <tr height="10px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: right; font-size: 11px;font-weight: bold;">Puesto Institucional</td>
+                                                            <td width="10px;"></td>
+                                                            <td>
+                                                                <select id="SsitpuestoSP" class="select2" style="width: 300px;">
+                                                                    <option value=""> Seleccione una Opción</option>
+                                                                    {% for rrhhresp in rrhhresps %}
+                                                                    <option value="{{ rrhhresp.id }}" modalidad="{{ rrhhresp }}">{{ rrhhresp.per_persona_by_persona_id.apellidos }} {{ rrhhresp.per_persona_by_persona_id.nombres }}</option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                        <tr height="10px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: right; font-size: 11px;font-weight: bold;">Isla Trabajo</td>
+                                                            <td width="10px;"></td>
+                                                            <td>
+                                                                <select id="SsitislaSP" class="select2" style="width: 300px;">
+                                                                    <option value="0">Seleccione una Opción</option>
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                        <tr height="10px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: right; font-size: 11px;font-weight: bold;">RMU</td>
+                                                            <td width="10px;"></td>
+                                                            <td>
+                                                                <input type="text" name="TrmuSP" id="TrmuSP" class="form-control" />
+                                                            </td>
+                                                        </tr>
+                                                        <tr height="10px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: right; font-size: 11px;font-weight: bold;">Partida Presupuestaria</td>
+                                                            <td width="10px;"></td>
+                                                            <td>
+                                                                <input type="text" name="TppresupSP" id="TppresupSP" class="form-control" />
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- /#ion-icons -->
+
+                                        <!-- glyphicons-->
+                                        <div class="tab-pane" id="tab_acta">
+                                            <div class="row">
+                                                <br>
+                                                <br>
+                                                <div class="col-xs-6 callout" style="border-color: #1b90ad;">
+                                                    <table>
+                                                        <tr>
+                                                            <td style="text-align: left; font-size: 11px;font-weight: bold;border-bottom: 3px solid #1b90ad; padding: 5px;" colspan="3">Acta Final Del Concurso</td>
+                                                        </tr>
+                                                        <tr height="20px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: left; font-size: 11px;font-weight: bold;">No.</td>
+                                                        </tr>
+                                                        </tr>
+                                                        <td align="left">
+                                                            <input type="text" class="form-control" name="acta_no_doc" id="acta_no_doc" style="width: 300px;font-size: 11px;font-size: 11px;" />
+                                                        </td>
+                                                        </tr>
+                                                        <tr height="10px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: left; font-size: 11px;font-weight: bold;">Fecha</td>
+                                                            <td width="10px;"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td align="left">
+                                                                <input type="date" class="form-control" name="fecha_acta" id="fecha_acta" style="width: 300px;font-size: 11px;" />
+                                                            </td>
+                                                        </tr>
+                                                        <tr height="10px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: left; font-size: 11px;font-weight: bold;border-bottom: 3px solid #1b90ad; padding: 5px;" colspan="2">Autoridad Nominadora</td>
+                                                        </tr>
+                                                        <tr height="20px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: left; font-size: 11px;font-weight: bold;">Autoridad Nominadora</td>
+                                                            <td width="10px;"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <select id="SactaAutor" class="select2" style="width: 300px;">
+                                                                    <option value=""> Seleccione una Opción</option>
+                                                                    {% for rrhhresp in rrhhresps %}
+                                                                    <option value="{{ rrhhresp.id }}" titulo="{{ rrhhresp.per_persona_by_persona_id.grado_academico }}">{{ rrhhresp.per_persona_by_persona_id.apellidos }} {{ rrhhresp.per_persona_by_persona_id.nombres }}</option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                                <div class="col-xs-6 callout" style="border-color: #1b90ad;">
+                                                    <table>
+                                                        <tr>
+                                                            <td style="text-align: left; font-size: 11px;font-weight: bold;border-bottom: 3px solid #1b90ad; padding: 5px;" colspan="2">Proceso de Recursos Humanos</td>
+                                                        </tr>
+                                                        <tr height="20px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: left; font-size: 11px;font-weight: bold;">Resp. RRHH</td>
+                                                            <td width="10px;"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <select id="Sactaresprrhh" class="select2" style="width: 300px;">
+                                                                    <option value=""> Seleccione una Opcion</option>
+                                                                    {% for rrhhresp in rrhhresps %}
+                                                                    <option value="{{ rrhhresp.id }}" titulo="{{ rrhhresp.per_persona_by_persona_id.grado_academico }}">{{ rrhhresp.per_persona_by_persona_id.apellidos }} {{ rrhhresp.per_persona_by_persona_id.nombres }}</option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- /#ion-icons -->
+
+                                        <!-- glyphicons-->
+                                        <div class="tab-pane" id="tab_rrhh">
+                                            <div class="row">
+                                                <br>
+                                                <br>
+                                                <div class="col-xs-6 callout" style="border-color: #1b90ad;">
+                                                    <table>
+                                                        <tr>
+                                                            <td style="text-align: left; font-size: 11px;font-weight: bold;border-bottom: 3px solid #1b90ad; padding: 5px;" colspan="3">Recursos Humanos</td>
+                                                        </tr>
+                                                        <tr height="20px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: right; font-size: 11px;font-weight: bold;">No.</td>
+                                                            <td width="10px;"></td>
+                                                            <td>
+                                                                <input type="text" class="form-control" name="rrhh_no_doc" id="rrhh_no_doc" style="width: 300px;font-size: 11px;" />
+                                                            </td>
+                                                        </tr>
+                                                        <tr height="10px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: right; font-size: 11px;font-weight: bold;">Fecha</td>
+                                                            <td width="10px;"></td>
+                                                            <td>
+                                                                <input type="date" class="form-control" name="fecha_rrhh" id="fecha_rrhh" style="width: 300px;font-size: 11px;" />
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                                <div class="col-xs-6 callout" style="border-color: #1b90ad;">
+                                                    <table>
+                                                        <tr>
+                                                            <td style="text-align: left; font-size: 11px;font-weight: bold;border-bottom: 3px solid #1b90ad; padding: 5px;" colspan="3">Registro Y Control</td>
+                                                        </tr>
+                                                        <tr height="20px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: left; font-size: 11px;font-weight: bold;">Resp. del Registro</td>
+                                                        </tr>
+                                                        <tr height="10px;"> </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <select id="SrrhhrespReg" class="select2" style="width: 300px;">
+                                                                    <option value=""> Seleccione una Opción</option>
+                                                                    {% for rrhhresp in rrhhresps %}
+                                                                    <option value="{{ rrhhresp.id }}" modalidad="{{ rrhhresp }}">{{ rrhhresp.per_persona_by_persona_id.apellidos }} {{ rrhhresp.per_persona_by_persona_id.nombres }}</option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- /#ion-icons -->
+
+                                        <!-- glyphicons-->
+                                        <div class="tab-pane" id="tab_observ">
+                                            <div class="row">
+                                                <div class="col-xs-12">
+                                                    <br>
+                                                    <p style="text-align: left; font-size: 11px;font-weight: bold;"> Observación</p>
+                                                    <textarea class="form-control" name="obser_obser" id="obser_obser" rows="5"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- /.tab-content -->
+                                    </div>
+                                    <!-- /.nav-tabs-custom -->
+                                </div>
+                                <!-- /.col -->
+                            </div>
+                            <!-- /.row -->
+                    </form>
+                    </div>
+                </div>
+            </div>
+            <div class="stackbox-footer" style="margin-top: -30px;">
+                <button class="btn btn-primary" onclick="setInsertUpdateRol();">Grabar</button>
+                <button class="btn btn-default" data-close-stackbox="true">Close</button>
+            </div>
+        </div>
+
+        <!----------------- LISTA -------------------->
+        <div class="box">
+
+            <!-- HEADER -->
+            <div class="box-header">
+                <i class="fa fa-list"></i>
+                <h3 class="box-title">Lista de Permisos</h3>
+                <div style="float: right; right: 1px;">
+                    <a style="cursor: pointer; font-size: 20px;" title="pfd" onclick="generarPdf('tabla_solicitudpermiso',2)"><i class="fa fa-file-pdf-o text-green"></i></a>
+                    <a style="cursor: pointer; font-size: 20px;" title="excel" onclick="generarExcel('tabla_solicitudpermiso',2)"><i class="fa fa-file-excel-o text-green"></i></a> {% if perms.talentohumano.add_persona %}
+                    <a style="cursor: pointer; font-size: 20px;" title="Agregar Nuevo" onclick="limpiarFormRol();" href='#addsolicitudpermiso' data-stackbox='true' data-stackbox-position="absolute"><i class="fa fa-plus-circle text-green"></i></a> {% endif %}
+                </div>
+            </div>
+
+            <!-- BODY -->
+            <div class="box-body">
+                <table id="tabla_solicitudpermiso" style="font-size: 10px; text-transform: uppercase;" class="table table-striped table-bordered " width="100%" cellspacing="0">
+                    <thead>
+                        <tr class="bg-light-blue-gradient" style="color: white;">
+                            <th>DESCRIPCION</th>
+                            <th>ESTADO</th>
+                            {% if perms.talentohumano.change_persona %}
+                            <th></th>{% endif %} {% if perms.talentohumano.change_persona %}
+                            <th></th>{% endif %}
+                        </tr>
+                        <tr class="filters" id="ftrol">
+                            <th>DESCRIPCION</th>
+                            <th>ESTADO</th>
+                            {% if perms.talentohumano.change_persona %}
+                            <th></th>{% endif %} {% if perms.talentohumano.change_persona %}
+                            <th></th>{% endif %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in items %}
+                        <tr>
+                            <input type="hidden" id="td_observacion_{{ item.id }}" value="{{ item.observaciones }}">
+                            <td align="left" id="td_desc_{{ item.id }}">{{ item.descripcion }}</td>
+                            <td align="center" id="td_estado_{{ item.id }}">{{ item.estado }}</td>
+                            {% if perms.talentohumano.change_persona %}
+                            <td align="center">
+                                <a style="font-size: 16px; cursor: pointer;" href='#addsolicitudpermiso' data-stackbox='true' data-stackbox-position='absolute' onclick="editRol('{{ item.id }}')">
+                                    <i class="fa fa-edit text-green"></i>
+                                </a>
+                            </td>
+                            {% endif %} {% if perms.talentohumano.change_persona%}
+                            <td align="center">
+                                <a style="font-size: 16px; cursor: pointer;" onclick="deleteModal('{{ item.id }}','SL_Permisos');"><i class="fa fa-trash text-green"></i></a>
+                            </td>
+                            {% endif %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+            </div>
+            <!-- /.box-body -->
+
+        </div>
+    </div>
+
+    <script src="{% static 'js/lib_internas/script.js' %}"></script>
+    <script>
+        $(document).ready(function() {
+
+            $("#SestadoRol").select2();
+            var table = $('#tabla_solicitudpermiso').DataTable({
+                orderCellsTop: true,
+                "order": [
+                    [0, "desc"]
+                ]
+            });
+
+            //Search
+            $('#tabla_solicitudpermiso thead .filters th').each(function() {
+                var title = $('#tabla_solicitudpermiso thead tr:eq(0) th').eq($(this).index()).text();
+                cont = 0;
+                if ((title == "")) {
+                    $(this).html('');
+                } else {
+                    $(this).html('<input id="filtro_tdrol' + cont + '" type="text" placeholder="Buscar ' + title + '" style="color:black;"/>');
+                }
+                cont++;
+            });
+
+            // Apply the search
+            table.columns().eq(0).each(function(colIdx) {
+                $('input', $('#ftrol th')[colIdx]).on('keyup change', function() {
+                    table
+                        .column(colIdx)
+                        .search(this.value)
+                        .draw();
+                });
+            });
+
+        });
+    </script>
+
+    <script src="{% static 'js/select2.min.js' %}"></script>
+    {% endblock %}

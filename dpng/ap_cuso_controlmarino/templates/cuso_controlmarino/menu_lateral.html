@@ -1,0 +1,633 @@
+{% extends "home.html" %}
+{% load static %}
+
+{% block principalhome %}
+  <div id="principal_home" style="margin-top: 10%;">
+    <p style="text-align: center;">
+      <span style="font-size: x-large;">Bienvenido al módulo de CUSO</span>
+    </p>
+    <p style="text-align: center;">
+      <span style="font-size: large;"></span>
+    </p>
+    <p style="text-align: center;">
+      <span style="font-size: xx-large;">
+        <img src="{% static '/image/login/logo-PNG.png' %}"  width="15%">
+      </span>
+    </p>
+     
+  </div>
+{%endblock%}
+
+{% block menu %}
+  <li class="header">CUSO</li>
+  <li class="treeview menu-open">
+    
+      <a href="#">
+        <i style="font-size: 18px;" class="fa fa-user"></i> <span style="font-size: 16px;">Actas</span>
+        <span class="pull-right-container">
+          <i class="fa fa-angle-left pull-right"></i>
+        </span>
+      </a>
+      
+
+      <ul class="treeview-menu" style="display: block;">       
+        <li style="cursor: pointer;">
+          <a href="{% url 'acta_visita_cuso' %}"><i id="idmenu1" class="fa fa-circle-o text-aqua"></i>Acta Visita<br>Embarcaciones Pesca</a>
+        </li>                   
+      </ul>
+
+      <ul class="treeview-menu" style="display: block;">       
+        <li style="cursor: pointer;">
+          <a href="{% url 'acta_inspec_cuso' %}"><i id="idmenu2" class="fa fa-circle-o text-aqua"></i>Acta Inspección<br>Embarcaciones Turisticas</a>
+        </li>                   
+      </ul>
+
+      <ul class="treeview-menu" style="display: block;">       
+        <li style="cursor: pointer;">
+          <a href="{% url 'infonovedades' %}"><i id="idmenu3" class="fa fa-circle-o text-aqua"></i>Informe de Novedades</a>
+        </li>                  
+      </ul>
+
+      <ul class="treeview-menu" style="display: block;">       
+        <li style="cursor: pointer;">
+          <a href="{% url 'infomonitoreos' %}"><i id="idmenu4" class="fa fa-circle-o text-aqua"></i>Informe de Monitoreo</a>
+        </li>                  
+      </ul>
+
+      <ul class="treeview-menu" style="display: block;">       
+        <li style="cursor: pointer;">
+          <a href="{% url 'infodiario' %}"><i id="idmenu9" class="fa fa-circle-o text-aqua"></i>Informe Diario</a>
+        </li>                  
+      </ul>
+
+      <ul class="treeview-menu" style="display: block;">       
+        <li style="cursor: pointer;">
+          <a href="{% url 'planpatrulla' %}"><i id="idmenu5" class="fa fa-circle-o text-aqua"></i>Plan Patrullaje</a>
+        </li>                  
+      </ul>
+
+      <ul class="treeview-menu" style="display: block;">       
+        <li style="cursor: pointer;">
+          <a href="{% url 'acta_retencion' %}"><i id="idmenu6" class="fa fa-circle-o text-aqua"></i>Acta Retención</a>
+        </li>                  
+      </ul>
+
+      <ul class="treeview-menu" style="display: block;">       
+        <li style="cursor: pointer;">
+          <a href="{% url 'cro_controlmarino' %}"><i id="idmenu8" class="fa fa-circle-o text-aqua"></i>Control de Personal</a>
+        </li>                  
+      </ul>
+    
+  </li>
+
+
+  <div id="popupParmas" style="display: none;">
+
+      <div class="stackbox-header cab_popup" align="center">
+        <img src="{% static 'image/favicon.ico' %}" width="40px" style="float:left;margin-top: -5px;"/>
+        <h id="">Buscar Licencias parmas</h>
+      </div>
+
+      <div class="stackbox-body" align="center">
+        <div class="row" style="box-shadow: 5px 5px 5px 10px #888888;width: 800px;">
+        <div class="divisor" style="text-align: left;">Filtros de Busqueda</div><br>
+            <div class="col-xs-12" style="border-color: #1b90ad;">
+              <table>
+                <tr>
+                  <td align="left">Identificacion:</td>
+                  <td width="10px;"></td>
+                  <td>
+                    <input id="cedPopup" type="text" class="form-control" style="width: 100%;" autofocus>
+                  </td>
+                  <td align="left">Nombre:</td>
+                  <td width="10px;"></td>
+                  <td>
+                    <input id="nombrePopup" type="text" class="form-control" style="width: 100%;" autofocus>
+                  </td>
+                  <td align="left">Licencia Parma:</td>
+                  <td width="10px;"></td>
+                  <td>
+                    <input id="parmaPopup" type="text" class="form-control" style="width: 100%;" autofocus>
+                  </td>
+                  <td width="10px;"></td>
+                  <td><a style="cursor: pointer; font-size: 20px;" title="Buscar" onclick="getDataParma(0);"><i class="fa fa-search text-blue"></i></a></td>
+                </tr>
+              </table>
+             <br>
+            </div>
+        </div>
+        <br><br>
+        <div class="row">
+          <input type="hidden" id="pagina_enviaPopParma">
+          <div class="col-xs-1"></div>
+          <div class="col-xs-10">
+            <div id="content_bodyequipo" align="center" style="box-shadow: 5px 10px #888888;width: 100%;">
+              <table id="tabla_PopupParma" style="font-size: 12px; text-transform: uppercase;" class="display table table-striped table-bordered" width="100%" cellspacing="0">
+                  <thead>
+                  <tr style="background-color: #3c8dbc;    color: white;"> 
+                    <th>Licencia</th>
+                    <th>Nombre</th>              
+                    <th>Cedula</th>
+                    <th></th>
+                  </tr>
+                  </thead>
+                  <tbody class="botonera1" id="body_tabla_PopupParma">
+                  
+                  </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="col-xs-1"></div> 
+        </div>
+      </div>
+
+      <div class="stackbox-footer">
+        <!--button class="btn btn-primary" id="stackbox_save">Grabar</button-->
+        <button class="btn btn-default" data-close-stackbox="true">Close</button>
+      </div>
+  </div>
+
+
+  <div id="popupLicenciaGuia" style="display: none;">
+
+      <div class="stackbox-header cab_popup" align="center">
+        <img src="{% static 'image/favicon.ico' %}" width="40px" style="float:left;margin-top: -5px;"/>
+        <h id="">Buscar Licencias Guias</h>
+      </div>
+
+      <div class="stackbox-body" align="center">
+        <div class="row" style="box-shadow: 5px 5px 5px 10px #888888;width: 500px;width: 90%;padding: 5px; height: 40px;">
+            <div class="col-xs-12" style="border-color: #1b90ad;">
+              <table style="width: 100%;">
+                <tr>
+                  <td align="left">#Licencia:</td>
+                  <td width="10px;"></td>
+                  <td>
+                    <input id="licGuiaPopup" type="text" class="form-control" style="width: 100%;">
+                  </td>
+                  <td width="10px;"></td>
+                  <td align="left">Nombre:</td>
+                  <td width="10px;"></td>
+                  <td>
+                    <input id="nombreGuiaPopup" type="text" class="form-control" style="width: 100%;">
+                  </td>
+                  <td align="left">Cedula:</td>
+                  <td width="10px;"></td>
+                  <td>
+                    <input id="cedGuiaPopup" type="text" class="form-control" style="width: 100%;">
+                  </td>
+                  <td width="10px;"></td>
+                  <td width="10px;"></td>
+                  <td><a style="cursor: pointer; font-size: 20px;" title="Buscar" onclick="getDataLicGuia();"><i class="fa fa-search text-blue"></i></a></td>
+                </tr>
+              </table>
+             <br>
+            </div>
+        </div>
+        <br><br>
+        <div class="row">
+          <input type="hidden" id="pagina_enviaPopLicGuia">
+          <div class="col-xs-1"></div>
+          <div class="col-xs-10">
+            <div id="content_bodyequipo" align="center" style="box-shadow: 5px 10px #888888;width: 100%;">
+              <table id="tabla_PopupLicGuia" style="font-size: 12px; text-transform: uppercase;" class="display table table-striped table-bordered" width="100%" cellspacing="0">
+                  <thead>
+                  <tr style="background-color: #3c8dbc;    color: white;"> 
+                    <th>Licencia</th>
+                    <th>Nombre</th>              
+                    <th>Cedula</th>
+                    <th></th>
+                  </tr>
+                  </thead>
+                  <tbody class="botonera1" id="body_tabla_PopupLicGuia">
+                  
+                  </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="col-xs-1"></div> 
+        </div>
+      </div>
+
+      <div class="stackbox-footer">
+        <!--button class="btn btn-primary" id="stackbox_save">Grabar</button-->
+        <button class="btn btn-default" data-close-stackbox="true">Close</button>
+      </div>
+  </div>
+
+  <div id="popupEmbarcaciones" style="display: none;">
+
+      <div class="stackbox-header cab_popup" align="center">
+        <img src="{% static 'image/favicon.ico' %}" width="40px" style="float:left;margin-top: -5px;"/>
+        <h id="">Buscar Embarcaciones PEsca</h>
+      </div>
+
+      <div class="stackbox-body" align="center">
+        <div class="row" style="box-shadow: 5px 5px 5px 10px #888888;width: 85%;">
+            <div class="col-xs-12" style="border-color: #1b90ad;top: 10px;">
+              <table>
+                <tr>
+                  <td align="left">Nombre:</td>
+                  <td width="10px;"></td>
+                  <td>
+                    <input id="nombreEmbPopup" type="text" class="form-control" style="width: 100%;" autofocus>
+                  </td>
+                  <td width="10px;"></td>
+                  <td align="left">Matricula:</td>
+                  <td width="10px;"></td>
+                  <td>
+                    <input id="matEmbPopup" type="text" class="form-control" style="width: 100%;" autofocus>
+                  </td>
+                  <td width="10px;"></td>
+                  <td align="left">Permiso Pesca:</td>
+                  <td width="10px;"></td>
+                  <td>
+                    <input id="perpescaEmbPopup" type="text" class="form-control" style="width: 100%;" autofocus>
+                  </td>
+                  <td width="10px;"></td>
+                  <td><a style="cursor: pointer; font-size: 20px;" title="Buscar" onclick="getDataEmbarcacion();"><i class="fa fa-search text-blue"></i></a></td>
+                </tr>
+              </table>
+             <br>
+            </div>
+        </div>
+        <br><br>
+        <div class="row">
+          <input type="hidden" id="pagina_enviaPopEmbarcPesca">
+          <div class="col-xs-1"></div>
+          <div class="col-xs-10">
+            <div id="content_bodyembarc" align="center" style="box-shadow: 5px 10px #888888;width: 100%;">
+              <table id="tabla_PopupEmbarc" style="font-size: 12px; text-transform: uppercase;" class="display table table-striped table-bordered" width="100%" cellspacing="0">
+                  <thead>
+                  <tr style="background-color: #3c8dbc;    color: white;"> 
+                    <th>Nombre</th>
+                    <th>Matricula</th>              
+                    <th>Permiso</th>
+                    <th>Armador</th>
+                    <th>F.Emision</th>
+                    <th>F.Caducidad</th>
+                    <th></th>
+                  </tr>
+                  </thead>
+                  <tbody class="botonera1" id="body_tabla_PopupEmbarc">
+                  
+                  </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="col-xs-1"></div> 
+        </div>
+      </div>
+
+      <div class="stackbox-footer">
+        <!--button class="btn btn-primary" id="stackbox_save">Grabar</button-->
+        <button class="btn btn-default" data-close-stackbox="true">Close</button>
+      </div>
+  </div>
+
+
+<div id="popupEmbarcacionesTuris" style="display: none;">
+
+      <div class="stackbox-header cab_popup" align="center">
+        <img src="{% static 'image/favicon.ico' %}" width="40px" style="float:left;margin-top: -5px;"/>
+        <h id="">Buscar Embarcaciones Turisticas</h>
+      </div>
+
+      <div class="stackbox-body" align="center">
+        <div class="row" style="box-shadow: 5px 5px 5px 10px #888888;width: 85%;">
+            <div class="col-xs-12" style="border-color: #1b90ad;top: 10px;">
+              <table>
+                <tr>
+                  <td align="left">Nombre:</td>
+                  <td width="10px;"></td>
+                  <td>
+                    <input id="nombreEmbTPopup" type="text" class="form-control" style="width: 100%;" autofocus>
+                  </td>
+                  <td width="10px;"></td>
+                  <td align="left">Matricula:</td>
+                  <td width="10px;"></td>
+                  <td>
+                    <input id="matEmbTPopup" type="text" class="form-control" style="width: 100%;" autofocus>
+                  </td>
+                  <td width="10px;"></td>
+                  <td align="left">Numero Patente</td>
+                  <td width="10px;"></td>
+                  <td>
+                    <input id="perpescaEmbTPopup" type="text" class="form-control" style="width: 100%;" autofocus>
+                  </td>
+                  <td width="10px;"></td>
+                  <td><a style="cursor: pointer; font-size: 20px;" title="Buscar" onclick="getDataEmbarcacionTuris();"><i class="fa fa-search text-blue"></i></a></td>
+                </tr>
+              </table>
+             <br>
+            </div>
+        </div>
+        <br><br>
+        <div class="row">
+          <input type="hidden" id="pagina_enviaPopEmbarc">
+          <div class="col-xs-1"></div>
+          <div class="col-xs-10">
+            <div id="content_bodyembarc" align="center" style="box-shadow: 5px 10px #888888;width: 100%;">
+              <table id="tabla_PopupEmbarcT" style="font-size: 12px; text-transform: uppercase;" class="display table table-striped table-bordered" width="100%" cellspacing="0">
+                  <thead>
+                  <tr style="background-color: #3c8dbc;    color: white;"> 
+                    <th>Nombre</th>
+                    <th>Matricula</th>              
+                    <th>Permiso</th>
+                    <th>F. Emision</th>
+                    <th>F. Caducidad</th>
+                    <th></th>
+                  </tr>
+                  </thead>
+                  <tbody class="botonera1" id="body_tabla_PopupEmbarcT">
+                  
+                  </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="col-xs-1"></div> 
+        </div>
+      </div>
+
+      <div class="stackbox-footer">
+        <!--button class="btn btn-primary" id="stackbox_save">Grabar</button-->
+        <button class="btn btn-default" data-close-stackbox="true">Close</button>
+      </div>
+  </div>
+
+
+  <div id="popupEmbPatrulla" style="display: none;">
+
+      <div class="stackbox-header cab_popup" align="center">
+        <img src="{% static 'image/favicon.ico' %}" width="40px" style="float:left;margin-top: -5px;"/>
+        <h id="">Buscar Embarcaciones Patrulla</h>
+      </div>
+
+      <div class="stackbox-body" align="center">
+        <div class="row" style="box-shadow: 5px 5px 5px 10px #888888;width: 85%;">
+            <div class="col-xs-12" style="border-color: #1b90ad;top: 10px;">
+              <table>
+                <tr>
+                  <td align="left">Nombre:</td>
+                  <td width="10px;"></td>
+                  <td>
+                    <input id="nombreEmbPatPopup" type="text" class="form-control" style="width: 100%;" autofocus>
+                  </td>
+                  <td width="10px;"></td>
+                  <td align="left">Matricula:</td>
+                  <td width="10px;"></td>
+                  <td>
+                    <input id="matEmbPatPopup" type="text" class="form-control" style="width: 100%;" autofocus>
+                  </td>
+                  <td width="10px;"></td>
+                  <td><a style="cursor: pointer; font-size: 20px;" title="Buscar" onclick="getDataEmbPatrulla();"><i class="fa fa-search text-blue"></i></a></td>
+                </tr>
+              </table>
+             <br>
+            </div>
+        </div>
+        <br><br>
+        <div class="row">
+          <input type="hidden" id="pagina_enviaPopEmbPat">
+          <div class="col-xs-1"></div>
+          <div class="col-xs-10">
+            <div id="content_bodyembarc" align="center" style="box-shadow: 5px 10px #888888;width: 100%;">
+              <table id="tabla_PopupEmbPat" style="font-size: 12px; text-transform: uppercase;" class="display table table-striped table-bordered" width="100%" cellspacing="0">
+                  <thead>
+                  <tr style="background-color: #3c8dbc;    color: white;"> 
+                    <th>Nombre</th>
+                    <th>Matricula</th>              
+                    <th>Tipo</th>
+                    <th>Puerto</th>
+                    <th></th>
+                  </tr>
+                  </thead>
+                  <tbody class="botonera1" id="body_tabla_PopupEmbPat">
+                  
+                  </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="col-xs-1"></div> 
+        </div>
+      </div>
+
+      <div class="stackbox-footer">
+        <!--button class="btn btn-primary" id="stackbox_save">Grabar</button-->
+        <button class="btn btn-default" data-close-stackbox="true">Close</button>
+      </div>
+  </div>
+
+  <div id="popupActaRet" style="display: none;">
+
+      <div class="stackbox-header cab_popup" align="center">
+        <img src="{% static 'image/favicon.ico' %}" width="40px" style="float:left;margin-top: -5px;"/>
+        <h id="">Buscar Informes de Novedades</h>
+      </div>
+
+      <div class="stackbox-body" align="center">
+        <div class="row" style="box-shadow: 5px 5px 5px 10px #888888;width: 85%;">
+            <div class="col-xs-12" style="border-color: #1b90ad;top: 10px;">
+              <table>
+                <tr>
+                  <td align="left">Embarcación:</td>
+                  <td width="10px;"></td>
+                  <td>
+                    <input id="embarcacionPopup" type="text" class="form-control" style="width: 100%;" autofocus>
+                  </td>
+                  <td width="10px;"></td>
+                  <td align="left">Numero:</td>
+                  <td width="10px;"></td>
+                  <td>
+                    <input id="numeroPopup" type="text" class="form-control" style="width: 100%;" autofocus>
+                  </td>
+                  <td width="10px;"></td>
+                  <td><a style="cursor: pointer; font-size: 20px;" title="Buscar" onclick="getDataActaRet();"><i class="fa fa-search text-blue"></i></a></td>
+                </tr>
+              </table>
+             <br>
+            </div>
+        </div>
+        <br><br>
+        <div class="row">
+          <input type="hidden" id="pagina_enviaPopActaR">
+          <div class="col-xs-1"></div>
+          <div class="col-xs-10">
+            <div id="content_bodyactar" align="center" style="box-shadow: 5px 10px #888888;width: 100%;">
+              <table id="tabla_PopupActaR" style="font-size: 12px; text-transform: uppercase;" class="display table table-striped table-bordered" width="100%" cellspacing="0">
+                  <thead>
+                  <tr style="background-color: #3c8dbc;    color: white;"> 
+                    <th>Numero</th>
+                    <th>Sitio</th>
+                    <th>Fecha</th>              
+                    <th></th>
+                  </tr>
+                  </thead>
+                  <tbody class="botonera1" id="body_tabla_PopupActaR">
+                  
+                  </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="col-xs-1"></div> 
+        </div>
+      </div>
+
+      <div class="stackbox-footer">
+        <!--button class="btn btn-primary" id="stackbox_save">Grabar</button-->
+        <button class="btn btn-default" data-close-stackbox="true">Close</button>
+      </div>
+  </div>
+
+  <div id="popupPersonasCuso" style="display: none;">
+
+      <div class="stackbox-header cab_popup" align="center">
+        <img src="{% static 'image/favicon.ico' %}" width="40px" style="float:left;margin-top: -5px;"/>
+        <h id="">Buscar Personas</h>
+      </div>
+
+      <div class="stackbox-body" align="center">
+        <div class="row" style="box-shadow: 5px 5px 5px 10px #888888;width: 100%;">
+        <div class="divisor" style="text-align: left;">Filtros de Busqueda</div><br>
+            <div class="col-xs-12" style="border-color: #1b90ad;">
+              <table>
+                <tr>
+                  <td align="left">Apellidos/Nombres/Cedula:</td>
+                  <td width="10px;"></td>
+                  <td>
+                    <input id="nombresPopupPercuso" type="text" class="form-control" style="width: 200px;" autofocus>
+                  </td>
+                  <td width="10px;"></td>
+                  <td><a style="cursor: pointer; font-size: 20px;" title="Buscar" onclick="getDataPersonaFuncionarioPopCuso();"><i class="fa fa-search text-blue"></i></a></td>
+                  <td width="10px;"></td>
+                  <td><a style="cursor: pointer; font-size: 20px;" title="Agregar Personas" href='#popupDatosPersonaCuso' onclick="document.getElementById('tipot_personaP').value=0;document.getElementById('tipoInsert_personaP').value=2;" data-stackbox='true' data-stackbox-position='absolute' data-stackbox-width='700' data-stackbox-heigth='400' data-stackbox-backdrop='true' class="btn btn-default" ><i class="fa  fa-plus text-blue"></i></a></td>
+                </tr>
+              </table>
+             <br>
+            </div>
+        </div>
+        <br><br>
+        <div class="row">
+          <input type="hidden" id="pagina_enviaPopPercuso">
+          <div class="col-xs-1"></div>
+          <div class="col-xs-10">
+            <div id="content_bodyPersonaFcuso" align="center" style="box-shadow: 5px 10px #888888;width: 600px;">
+              <table id="tabla_PopupPersonaFcuso" style="font-size: 12px; text-transform: uppercase;" class="display table table-striped table-bordered" width="100%" cellspacing="0">
+                  <thead>
+                  <tr style="background-color: #3c8dbc;    color: white;"> 
+                    <th>IDENTIFICACION</th>
+                    <th>NOMBRE</th>              
+                    <th></th>
+                  </tr>
+                  </thead>
+                  <tbody class="botonera1" id="body_PopupPersonaFcuso">
+                  
+                  </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="col-xs-1"></div> 
+        </div>
+      </div>
+      <div class="stackbox-footer">
+        <!--button class="btn btn-primary" id="stackbox_save">Grabar</button-->
+        <button class="btn btn-default" data-close-stackbox="true">Close</button>
+      </div>
+    </div>
+
+
+  <div id="popupDatosPersonaCuso" style="display: none;">
+
+      <div class="stackbox-header cab_popup" align="center">
+        <img src="{% static 'image/favicon.ico' %}" width="40px" style="float:left;margin-top: -5px;"/>
+        <h id="">Ingresar Persona</h>
+      </div>
+
+      <div class="stackbox-body" align="center" id="bodypopupDatosPersonaCuso">
+        <div class="notification">
+                    <span class="icon">
+                        <i class=""></i>
+                    </span>
+                    <span class="text"></span>
+                    <span class="close"><i class="fa fa-close"></i></span>
+                </div>
+        <div class="row">
+          <input type="hidden" id="pagina_enviaPopActaR">
+          <div class="col-xs-1"></div>
+          <div class="col-xs-10 callout" style="border-color: #1b90ad;">
+                      <table>
+                        <tbody><tr>
+                          <td style="text-align: left;">*Tipo Persona</td>
+                        </tr>
+                        <tr height="10px;"> </tr>
+                        <tr>
+                          <td>
+                            <select id="STipoPersPcuso" class="form-control requerido" text="Tipo Persona" style="width: 300px;">
+                              <option value="N">Natural</option>
+                              
+                            </select>
+                          </td>
+                        </tr>
+                        <tr height="10px;"> </tr>
+                        <tr>
+                          <td style="text-align: left;">*Tipo Identificación</td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <select id="StipoIdPersPcuso" class="form-control requerido" text="Tipo Identificación" style="width: 300px;">
+                              <option value="C">Cedula</option>
+                              
+                            </select>
+                          </td>
+                        </tr>
+                        <tr height="10px;"> </tr>
+                        <tr>
+                          <td style="text-align: left;">*No. Identificación</td>
+                        </tr>
+                        <tr>
+                          <td><input type="text" class="form-control requerido" text="No. Accion Personal" name="num_cedpersPcuso" id="num_cedpersPcuso" style="width: 300px; font-size: 11px;"></td>
+                        </tr>
+                        <tr height="10px;"> </tr>
+                        <tr>
+                          <td style="text-align: left;">*Nombres</td>
+                        </tr>
+                        <tr>
+                          <td><input type="text" class="form-control requerido" text="Nombres" name="nombres_persPcuso" id="nombres_persPcuso" style="width: 300px; font-size: 11px;"></td>
+                        </tr>
+                        <tr height="10px;"> </tr>
+                        <tr>
+                          <td style="text-align: left;">*Apellidos</td>
+                        </tr>
+                        <tr>
+                          <td><input type="text" class="form-control requerido" text="Apellidos" name="apellidos_persPcuso" id="apellidos_persPcuso" style="width: 300px; font-size: 11px;"></td>
+                        </tr>
+                      </tbody></table>
+                    </div>
+          <div class="col-xs-1"></div> 
+        </div>
+      </div>
+
+      <div class="stackbox-footer">
+        <button class="btn btn-primary" onclick="insertarTablaPersonaCuso();">Grabar</button>
+        <button class="btn btn-default" data-close-stackbox="true">Close</button>
+      </div>
+  </div>
+
+  <!-- SCRIPTS -->
+  <!--
+  <script src="https://code.highcharts.com/highcharts.js"></script>
+  <script src="https://code.highcharts.com/modules/exporting.js"></script>
+  <script src="https://code.highcharts.com/modules/export-data.js"></script>
+  <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+  -->
+  
+  <!--script src="https://code.highcharts.com/modules/pyramid3d.js"></script-->
+  <script src="{% static 'js/lib_externas/jquery-1.12.4.js' %}"></script>
+  <script src="{% static 'js/lib_externas/jquery-ui.js' %}"></script>
+  <script>document.write('<script src="{% static "js/lib_internas/script.js" %}?dev=' + Math.floor(Math.random() * 100) + '"\><\/script>');</script>
+  <script>document.write('<script src="{% static "js/lib_internas/script_cuso_jn.js" %}?dev=' + Math.floor(Math.random() * 100) + '"\><\/script>');</script>
+
+  <script>
+    //$(".select2").select2();
+  </script>
+{%endblock%}

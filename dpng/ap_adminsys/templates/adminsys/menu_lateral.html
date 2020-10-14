@@ -1,0 +1,71 @@
+{% extends "home.html" %}
+{% load static %}
+
+{% block principalhome %}
+  <div id="principal_home" style="margin-top: 10%;">
+    <p style="text-align: center;">
+      <span style="font-size: x-large;">Bienvenido a la Administracion del Sistema</span>
+    </p>
+    <p style="text-align: center;">
+      <span style="font-size: large;"></span>
+    </p>
+    <p style="text-align: center;">
+      <span style="font-size: xx-large;">
+        <img src="{% static '/image/login/logo-PNG.png' %}"  width="15%">
+      </span>
+    </p>
+     
+  </div>
+{%endblock%}
+
+{% block menu %}
+  <li class="header">DPNG</li>
+  
+
+
+  <!-- UATH-CONFIGURACION -->
+
+
+<li class="treeview menu-open">
+  <a href="#">
+    <i style="font-size: 18px;" class="fa fa-gears" ></i> <span style="font-size: 16px;">Configuración</span>
+    <span class="pull-right-container">
+      <i class="fa fa-angle-left pull-right"></i>
+    </span>
+  </a>
+  <ul class="treeview-menu" style="display: block;">
+
+    <li class="treeview">
+      <a href="#" style="color: white;"><i class="fa fa-circle text-aqua"></i>Permisos
+        <span class="pull-right-container">
+          <i class="fa fa-angle-left pull-right"></i>
+        </span>
+      </a>
+      <ul class="treeview-menu" style="display: block;">
+        <li style="cursor: pointer;color:#00c0ef;">
+          <a href="{% url 'usuariosPermisos' %}"><i id="idmenu13" class="fa fa-circle-o text-aqua"></i>Cambiar Permisos</a>
+        </li>
+        <li style="cursor: pointer;color:#00c0ef;">
+          <a href="{% url 'usuariosPermisos2' %}"><i id="idmenu14" class="fa fa-circle-o text-aqua"></i>Cambiar Permisos2</a>
+        </li>
+      </ul>
+    </li>
+
+  </ul>
+</li>
+
+
+ 
+
+
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+<!--script src="https://code.highcharts.com/modules/pyramid3d.js"></script-->
+<script>
+  //sessionStorage.setItem("cargos", JSON.stringify({{ cargos | safe }}));
+
+
+</script>
+{%endblock%}

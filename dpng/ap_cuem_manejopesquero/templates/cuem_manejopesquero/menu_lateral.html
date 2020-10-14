@@ -1,0 +1,2200 @@
+{% extends "home.html" %}
+{% load static %}
+
+{% block principalhome %}
+  <div id="principal_home" style="margin-top: 10%;">
+    <p style="text-align: center;">
+      <span style="font-size: x-large;">Bienvenido al módulo de CUEM - Manejo Pesquero</span>
+    </p>
+    <p style="text-align: center;">
+      <span style="font-size: large;"></span>
+    </p>
+    <p style="text-align: center;">
+      <span style="font-size: xx-large;">
+        <img src="{% static '/image/login/logo-PNG.png' %}"  width="15%">
+      </span>
+    </p>
+     
+  </div>
+{%endblock%}
+
+{% block menu %}
+  <li class="header">CUEM</li>
+  <li class="treeview menu-open">
+
+    <!-- CUEM MANEJO PESQUERO -->
+    <a href="#">
+      <i style="font-size: 18px;" class="fa fa-user"></i> <span style="font-size: 16px;">PESCADORES</span>
+      <span class="pull-right-container">
+        <i class="fa fa-angle-left pull-right"></i>
+      </span>
+    </a>
+
+    <ul class="treeview-menu" style="display: block;">
+      
+
+      <li style="cursor: pointer;">
+        <!-- <a><i id="idmenu4" class="fa fa-circle-o text-aqua"></i>Pescadores</a> -->
+        <a href="{% url 'SL_cuem_pescadores' %}"><i id="idmenu4" class="fa fa-circle-o text-aqua"></i>Pescadores</a>
+      </li>
+
+      <li style="cursor: pointer;">
+        <a href="{% url 'SL_cuem_parma' %}"><i id="idmenu8" class="fa fa-circle-o text-aqua"></i>Licencias PARMA</a>
+      </li>
+      
+    </ul>
+
+    
+  </li>
+
+  <li class="treeview menu-open">
+
+    <!-- CUEM MANEJO PESQUERO  -->
+    <a href="#">
+      <i style="font-size: 18px;" class="fa fa-user"></i> <span style="font-size: 16px;">PERMISO PESCA</span>
+      <span class="pull-right-container">
+        <i class="fa fa-angle-left pull-right"></i>
+      </span>
+    </a>
+
+    <ul class="treeview-menu" style="display: block;">
+      
+
+
+      <li style="cursor: pointer;">
+        <a href="{% url 'SL_cuem_embarcacionespescaPesca' %}"><i id="idmenu8" class="fa fa-circle-o text-aqua"></i>Embarcaciones</a>
+      </li>
+
+      <li style="cursor: pointer;">
+        <a href="{% url 'SL_cuem_inspeccionTecnicaEmbarcacion' %}"><i id="idmenu8" class="fa fa-circle-o text-aqua"></i>Inspección Técnica<br> Embarcaciones</a>
+      </li>
+      
+      <li style="cursor: pointer;">
+        <a href="{% url 'SL_cuem_permisopesca' %}"><i id="idmenu8" class="fa fa-circle-o text-aqua"></i>Permisos Pesca</a>
+      </li>
+      
+    </ul>
+ 
+  </li>
+
+  <li class="treeview menu-open">
+
+    <!-- CUEM MANEJO PESQUERO -->
+    <a href="#">
+      <i style="font-size: 18px;" class="fa fa-user"></i> <span style="font-size: 16px;">SOLICITANTE</span>
+      <span class="pull-right-container">
+        <i class="fa fa-angle-left pull-right"></i>
+      </span>
+    </a>
+
+    <ul class="treeview-menu" style="display: block;">
+      
+      <li style="cursor: pointer;">
+        <a href="{% url 'SL_cuem_solicitante' %}"><i id="idmenu4" class="fa fa-circle-o text-aqua"></i>Iniciar Trámite</a>
+      </li>
+      
+    </ul>
+
+    
+  </li>
+
+
+
+  <!-- addEmbarcaciones -->
+    <div id="addEmbarcaciones" style="display: none;">
+        <div class="stackbox-header cab_popup" align="center">
+            <img src="{% static 'image/favicon.ico' %}" width="40px" style="float:left;margin-top: -5px;" />
+            <h id="tituloE"> Embarcaciones </h> 
+            <h id="tituloInspeccion">INSPECCIÓN TÉCNICA OCULAR DE EMBARCACIONES DE PESCA ARTESANAL EN LA RESERVA MARINA GALÁPAGOS</h><h id="tituloPermiso">PERMISO DE PESCA</h>
+        </div>
+        <div class="col-10" style="float: bottom;margin-left: 20px;margin-right: 5px" id="lbl_reglamento">
+          <h4><b>REGLAMENTO ESPECIAL PARA LA ACTIVIDAD PESQUERA EN LA RESERVA MARINA DE GALÁPAGOS</b></h4>
+          <p>Según el puerto de registro, las embarcaciones serán identificadas de la siguiente manera:</p>
+          <ul>
+            <li>Las que constan con puerto de registro en Puerto Baquerizo Moreno, estarán pintadas de color blanco;</li>
+            <li>Las que constan con puerto de registro en Puerto Ayora, estarán pintadas de color azul; y</li>
+            <li>Las que consten en puerto de registro en Puerto Villamil, estarán pintadas de color verde.</li>
+          </ul>
+          <p>De conformidad con lo establecido en las normas marítimas, toda embarcación deberá llevar claramente escrito en la proa su nombre y número de matrícula; y en la proa el número del permiso de pesca, el nombre del puerto de origen y el número de matrícula</p>
+        </div>
+        <div class="stackbox-body" id="bodyaddEmbarcaciones">
+            <section class="content">
+                <div class="row" style="box-shadow: 5px 5px 5px 5px #888888; width: 104%; margin-top: 20px;">
+                    <form id="frm_Embarcacioneses" action="#" method="post">
+
+                        <input type="hidden" id="idEmbarcacionesP" name="idEmbarcacionesP" />
+                        <!--id Embarcaciones-->
+                        <input type="hidden" id="idpersonaE" name="idpersonaE" />
+                        <!--id persona-->
+                        <input type="hidden" id="nombrepersonaE" name="nombrepersonaE" />
+                        <input type="hidden" id="tipotEmbarcacionpesca" value="0" />
+
+                        <div class="col-xs-12">
+
+                            <div class="tab-content" style="border-top: 2px solid #3c8dbc;">
+
+                                <div class="notification">
+                                    <span class="icon">
+                                        <i class=""></i>
+                                    </span>
+                                    <span class="text"></span>
+                                    <span class="close"><i class="fa fa-close"></i></span>
+                                </div>
+                                
+                                <!-- Font Awesome Icons -->
+                                <div class="nav-tabs-custom">
+                                    <ul class="nav nav-tabs">
+                                        <li class="active"><a href="#tab_datosgenerales" data-toggle="tab" aria-expanded="true" style="font-weight: bold;">Datos Generales</a></li>
+                                        
+                                        <li class=""><a href="#tab_datostecnicos" data-toggle="tab" aria-expanded="false" style="font-weight: bold;">Datos Tecnicos</a></li>
+
+                                        <li class=""><a href="#tab_datosarmadores" data-toggle="tab" aria-expanded="false" style="font-weight: bold;">Datos Armadores</a></li>
+
+                                        <li id="tabdatospesca" class=""><a href="#tab_datospesca" data-toggle="tab" aria-expanded="false" style="font-weight: bold;">Datos Pesca</a></li>
+
+                                        <li id="tabobservaciones" class=""><a href="#tab_observaciones" data-toggle="tab" aria-expanded="false" style="font-weight: bold;">Observaciones</a></li>
+
+                                        <li id="tabpermisopesca" class=""><a href="#tab_permisospesca" data-toggle="tab" aria-expanded="false" style="font-weight: bold;">Permisos Pesca</a></li>
+
+                                    </ul>
+
+                                    <div class="tab-content" style="border-top: 2px solid #3c8dbc;">
+                                        <!-- tab_datosgenerales -->
+                                        <div class="tab-pane active" id="tab_datosgenerales">
+                                            <div class="row">
+                                                <div class="col-xs-4 callout" style="border-color: #1b90ad;">
+                                                    <table>
+
+                                                        <tr height="5px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: left;">*Matrícula (B -01-00001)</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <input type="text" class="form-control " text="Matrícula" name="fld_matricula" id="fld_matricula" />
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr height="5px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: left;">*Nombre Embarcación</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <input type="text" class="form-control " text="Nombre Embarcación" name="fld_nombre_embarcacion" id="fld_nombre_embarcacion" />
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr height="5px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: left;">*Tipo Embarcación</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <select id="fld_tipoembarcacion" class="select2 " text="Tipo Embarcación">
+                                                                    <option value=""> Seleccione una Opcion</option>
+                                                                    <option value="BOTE">BOTE</option>
+                                                                    <option value="FIBRA">FIBRA</option>
+                                                                    <option value="PANGA">PANGA</option>
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr height="5px;"> </tr>
+                                                        <tr>
+                                                            <td id="lbl_categoria" style="text-align: left;">*Categoría</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td id="dv_categoria">
+                                                                <select id="fld_categoria" class="select2 " text="categoria">
+                                                                    <option value=""> Seleccione una Opcion</option>
+                                                                    <option value="MAYOR">MAYOR</option>
+                                                                    <option value="MENOR">MENOR</option>
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+
+                                                        
+                                                    </table>
+                                                </div>
+
+                                                <div id="dv_islapuerto" class="col-xs-4 callout" style="border-color: #1b90ad;">
+                                                    <table>
+                                                        
+                                                        <tr height="5px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: left;">Isla</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <select id="fld_isla" class="select2" text="Isla">
+                                                                    <option value="">SELECCIONE UNA OPCION</option>
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr height="5px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: left;">Puerto Registro</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <select id="fld_puerto_registro" class="select2" text="Puerto Registro" style="width: 300px;">
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr height="5px;"> </tr>
+                                                        <tr>
+                                                            <td id="lbl_estado" style="text-align: left;">Estado</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td id="dv_estado">
+                                                                <select id="fld_estado" class="select2" text="Estado">
+                                                                  <option value="">Seleccione una Opción</option>
+                                                                    <option value="ACTIVO">ACTIVO</option>
+                                                                    <option value="INACTIVO">INACTIVO</option>
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+
+                                                    </table>
+                                                </div>
+
+                                                <div id="dv_fechainspeccion" class="col-xs-4 callout" style="border-color: #1b90ad;">
+                                                  <table>
+                                                        <tr height="5px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: left;">*Fecha de Inspección</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <input type="date" class="form-control " text="Fecha Inspeccion" name="ins_fechainspeccion" id="ins_fechainspeccion" />
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr height="10px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: left;">Se necesita cambiar de fotografía en la base Registro Pesquero?</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <input type="radio" name="ins_cambiarfotografia" id="ins_cambiarfotografiaSi" onclick="mostrar('dv_fotoembarcacion')" value="SI" />
+                                                                <label>Si &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                                                <input type="radio" name="ins_cambiarfotografia" id="ins_cambiarfotografiaNo" onclick="ocultar('dv_fotoembarcacion')" value="NO" />
+                                                                <label>No</label>
+                                                            </td>
+                                                        </tr>
+                                                  </table>
+                                                </div>
+
+                                                <div id="dv_fotoembarcacion" class="col-xs-4 callout" style="border-color: #1b90ad;">
+                                                    <table style="position:relative; left:25%;">
+                                                        <tr height="5px;"> </tr>
+                                                        <tr>
+                                                            <label for="lbl_foto_Embarcaciones" class="btn-label" style="position:relative; left:40%;">
+                                                                Subir Foto
+                                                            </label>
+                                                            <input type="file" name="lbl_foto_Embarcaciones" id="lbl_foto_Embarcaciones" value="" accept="image/*" onchange="cargarFoto(this);" style="visibility:hidden;height: 0px;" />
+                                                            <label for="file_name"><b></b></label>
+
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td>
+                                                                <div id="dv_foto" class="carnet-marco" style="visibility:hidden;">
+                                                                    <a id="link_foto_personal" href="" target="_blank"> 
+                                                                        <img id="foto_personal"  alt="Error Imagen" style="width: 100%"> 
+                                                                    </a>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+
+                                                        
+
+                                                    </table>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="divisor">Medidas</div>
+                                            <div class="row">
+                                                <div>
+                                                    <div class="col-xs-4 callout" style="border-color: #1b90ad;">
+                                                        <table>
+                                                          <tr>
+                                                                <td id="lbl_actualinspeccion" style="text-align: left;"><h5><b>ACTUAL INSPECCIÓN</b></h5></td>
+                                                            </tr>
+                                                            <tr height="5px;"> </tr>
+                                                            <tr>
+                                                                <td style="text-align: left;">Eslora (m) *</td>
+                                                            </tr>
+                                                            <tr height="5px;"> </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <input type="text" class="form-control" text="Eslora" name="fld_eslora" id="fld_eslora" style="width: 300px; font-size: 11px;" />
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr height="5px;"> </tr>
+                                                            <tr>
+                                                                <td style="text-align: left;">Manga (m) *</td>
+                                                            </tr>
+                                                            <tr height="5px;"> </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <input type="text" class="form-control" text="Manga" name="fld_manga" id="fld_manga" style="width: 300px; font-size: 11px;" />
+                                                                </td>
+                                                            </tr>
+
+
+                                                          
+                                                        </table>
+                                                    </div>
+                                                    
+                                                    <div class="col-xs-4 callout" style="border-color: #1b90ad;">     
+                                                        <table>
+                                                           <tr height="5px;"> </tr>
+                                                            <tr>
+                                                                <td style="text-align: left;">Puntal (m) *</td>
+                                                            </tr>
+                                                            
+                                                            <tr>
+                                                                
+                                                                <td>
+                                                                    <input type="text" class="form-control" text="Puntal" name="fld_puntal" id="fld_puntal" style="width: 300px; font-size: 11px;" />
+
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr height="5px;"> </tr>
+                                                            <tr>
+                                                                <td id="lbl_calado" style="text-align: left;">Calado (m) *</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <input type="text" class="form-control" text="Calado" name="fld_calado" id="fld_calado" style="width: 300px; font-size: 11px;" />
+                                                                </td>
+                                                            </tr>
+
+                                                        </table>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                            <div id="med_matriculavigente" class="row">
+                                                <div>
+                                                    <div class="col-xs-4 callout" style="border-color: #1b90ad;">
+                                                        <table>
+                                                          <tr>
+                                                                <td style="text-align: left;"><h5><b>MATRICULA VIGENTE</b></h5></td>
+                                                            </tr>
+                                                            <tr height="5px;"> </tr>
+                                                            <tr>
+                                                                <td style="text-align: left;">Eslora vigente (m)</td>
+                                                            </tr>
+                                                            <tr height="5px;"> </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <input type="text" class="form-control" text="Eslora Vigente" name="ins_esloravigente" id="ins_esloravigente" style="width: 300px; font-size: 11px;" />
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr height="5px;"> </tr>
+                                                            <tr>
+                                                                <td style="text-align: left;">Manga vigente (m)</td>
+                                                            </tr>
+                                                            <tr height="5px;"> </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <input type="text" class="form-control" text="Manga Vigente" name="ins_mangavigente" id="ins_mangavigente" style="width: 300px; font-size: 11px;" />
+                                                                </td>
+                                                            </tr> 
+                                                        </table>
+                                                    </div>
+                                                    
+                                                    <div class="col-xs-4 callout" style="border-color: #1b90ad;">     
+                                                        <table>
+                                                           <tr height="45px;"> </tr>
+                                                            <tr>
+                                                                <td style="text-align: left;">Puntal vigente (m)</td>
+                                                            </tr>
+                                                            
+                                                            <tr>
+                                                                
+                                                                <td>
+                                                                    <input type="text" class="form-control" text="Puntal Vigente" name="ins_puntalvigente" id="ins_puntalvigente" style="width: 300px; font-size: 11px;" />
+                                                                </td>
+                                                            </tr>
+
+                                                        </table>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+                                            
+                                        </div>
+
+                                        <!-- tab_datostecnicos -->
+                                        <div class="tab-pane" id="tab_datostecnicos">
+                                            <div id="lbl_datostecnicos" class="divisor">Datos técnicos</div>
+                                            <div id="dv_datostecnicos" class="row">
+                                                <div>
+                                                    <div class="col-xs-4 callout" style="border-color: #1b90ad;">
+                                                        <table>
+                                                            <tr>
+                                                                <td style="text-align: left;">Lugar de Construcción (Ciudad)*</td>
+                                                            </tr>
+                                                            <tr height="5px;"> </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <!--<input type="text" class="form-control" text="Matrícula DIGMER" name="fld_matricula_digmer" id="fld_matricula_digmer" style="width: 300px; font-size: 11px;" />-->
+                                                                    <select id="fld_ciudad" class="select2" text="Ciudad" style="width: 300px;" />
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr height="5px;"> </tr>
+                                                            <tr>
+                                                                <td style="text-align: left;">Año de construcción (YYYY)</td>
+                                                            </tr>
+                                                            <tr height="5px;"> </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <input type="text" class="form-control" text="Año Construccion" name="fld_anioconstruccion" id="fld_anioconstruccion" style="width: 300px; font-size: 11px;" />
+                                                                </td>
+                                                            </tr>
+
+
+                                                            <tr height="5px;"> </tr>
+                                                            <tr>
+                                                                <td style="text-align: left;">Material de casco *</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <select id="fld_material" class="select2" text="Material Casco" style="width: 300px;" />
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                    
+                                                    <div class="col-xs-4 callout" style="border-color: #1b90ad;">     
+                                                        <table>
+                                                           <tr height="5px;"> </tr>
+                                                            <tr>
+                                                                <td style="text-align: left;">No. de tripulantes *</td>
+                                                            </tr>
+                                                            
+                                                            <tr>
+                                                                
+                                                                <td>
+                                                                    <input type="text" class="form-control" text="Numero Tripulantes" name="fld_ntripulantes" id="fld_ntripulantes" style="width: 300px; font-size: 11px;" />
+                                                                </td>
+                                                            </tr>
+
+                                                            
+
+                                                            <tr height="5px;"> </tr>
+                                                            <tr>
+                                                                <td style="text-align: left;">Tonelaje Neto *</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <input type="text" class="form-control" text="Tonelaje Neto" name="fld_tonelajeneto" id="fld_tonelajeneto" style="width: 300px; font-size: 11px;" />
+                                                                </td>
+                                                            </tr>
+                                                            
+                                                            <tr height="5px;"> </tr>
+                                                            <tr>
+                                                                <td id="lbl_tonelajebruto" style="text-align: left;">Tonelaje Bruto</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <input type="text" class="form-control" text="Tonelaje Bruto" name="fld_tonelajebruto" id="fld_tonelajebruto" style="width: 300px; font-size: 11px;" />
+                                                                </td>
+                                                            </tr>
+
+                                                        </table>
+                                                    </div>
+
+                                                    <div class="col-xs-4 callout" style="border-color: #1b90ad;">     
+                                                        <table>
+                                                            <tr height="5px;"> </tr>
+                                                            <tr>
+                                                                <td style="text-align: left;">Autonomía (días) *</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <input type="text" class="form-control" text="Autonomía" name="fld_autonomia" id="fld_autonomia" style="width: 300px; font-size: 11px;" />
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr height="5px;"> </tr>
+                                                            <tr>
+                                                                <td style="text-align: left;">Conservación *</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <input type="text" class="form-control" text="Conservación" name="fld_conservacion" id="fld_conservacion" style="width: 300px; font-size: 11px;" />
+                                                                </td>
+                                                            </tr>
+                                                           
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="divisor">Motores</div>
+                                            <div class="row">
+                                                <div>
+                                                    <div class="col-xs-4 callout" style="border-color: #1b90ad;">
+                                                        <table>
+                                                            <tr>
+                                                                <td style="text-align: left;">Motor 1 HP*</td>
+                                                            </tr>
+                                                            <tr height="5px;"> </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <input type="text" class="form-control" text="Motor 1" name="fld_motorunohp" id="fld_motorunohp" style="width: 300px; font-size: 11px;" />
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr height="5px;"> </tr>
+                                                            <tr>
+                                                                <td style="text-align: left;">Marca 1*</td>
+                                                            </tr>
+                                                            <tr height="5px;"> </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <select id="fld_marcaMotor1" class="select2" text="Marca 1" style="width: 300px;"/>
+                                                                </td>
+                                                            </tr>
+
+
+                                                            <tr height="5px;"> </tr>
+                                                            <tr>
+                                                                <td style="text-align: left;">Tiempo de motor 1 *</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <select id="fld_tiempomotor1" class="select2 " text="Tiempo de motor 1">
+                                                                        <option value=""> Seleccione una Opcion</option>
+                                                                        <option value="DOS">2 TIEMPOS</option>
+                                                                        <option value="CUATRO">4 TIEMPOS</option>
+                                                                    </select>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                    
+                                                    <div class="col-xs-4 callout" style="border-color: #1b90ad;">     
+                                                        <table>
+                                                           <tr height="5px;"> </tr>
+                                                            <tr>
+                                                                <td style="text-align: left;">Motor 2 HP</td>
+                                                            </tr>
+                                                            
+                                                            <tr>
+                                                                <td>
+                                                                    <input type="text" class="form-control" text="Motor 2 HP" name="fld_motordoshp" id="fld_motordoshp" style="width: 300px; font-size: 11px;" />
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr height="5px;"> </tr>
+                                                            <tr>
+                                                                <td style="text-align: left;">Marca 2</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <select id="fld_marcaMotor2" class="select2" text="Marca 2"/>
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr height="5px;"> </tr>
+                                                            <tr>
+                                                                <td style="text-align: left;">Tiempo de motor 2</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <select id="fld_tiempomotor2" class="select2 " text="Tiempo de motor 2">
+                                                                        <option value=""> Seleccione una Opcion</option>
+                                                                        <option value="DOS">2 TIEMPOS</option>
+                                                                        <option value="CUATRO">4 TIEMPOS</option>
+                                                                    </select>
+                                                                </td>
+                                                            </tr>
+
+                                                        </table>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <!-- tab_datosarmadores -->
+                                        <div class="tab-pane" id="tab_datosarmadores">
+                                            <div class="row">
+                                                <div class="col-xs-6 callout" style="border-color: #1b90ad;">
+                                                    <table>
+                                                        <tr>
+                                                            <td id="fld_consultararmador1">
+                                                              Consultar Armador <a style="cursor: pointer; font-size: 12px;margin-left: 10px;" title="Consultar Armador" href='#popupArmadores' onclick="document.getElementById('pagina_enviaPopPescador').value='armador1';cleanBodyTableArmador();" data-stackbox='true' data-stackbox-position="absolute"><i class="fa fa-search text-blue fa-lg"></i></a>
+                                                            </td>
+                                                        </tr>
+                                                        <tr height="15px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: left;">Armador 1: Cédula *</td>
+                                                        </tr>
+                                                        <tr height="5px;"> </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <input type="text" class="form-control" text="Armador Uno Cedula" name="fld_c_armadorunocedula" id="fld_c_armadorunocedula" style="width: 300px; font-size: 11px;" disabled />
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr height="5px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: left;">Armador 1: Nombres *</td>
+                                                        </tr>
+                                                        <tr height="5px;"> </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <input type="text" class="form-control" text="Matrícula DIGMER" name="fld_c_armadorunonombres" id="fld_c_armadorunonombres" style="width: 300px; font-size: 11px;" disabled/>
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr height="5px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: left;">Armador 1: Apelllidos *</td>
+                                                        </tr>
+                                                        <tr height="5px;"> </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <input type="text" class="form-control" text="Matrícula DIGMER" name="fld_c_armadorunoapellidos" id="fld_c_armadorunoapellidos" style="width: 300px; font-size: 11px;" disabled/>
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr height="5px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: left;">Armador 1: Licencia PARMA *</td>
+                                                        </tr>
+                                                        <tr height="5px;"> </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <input type="text" class="form-control" text="Matrícula DIGMER" name="fld_c_armadorunoparma" id="fld_c_armadorunoparma" style="width: 300px; font-size: 11px;" disabled/>
+                                                            </td>
+                                                        </tr>
+
+
+                                                    </table>
+                                                </div>
+
+                                                <div class="col-xs-6 callout" style="border-color: #1b90ad;">
+                                                    <table>
+                                                        <tr>
+                                                            <td id="fld_consultararmador2">
+                                                              Consultar Armador <a style="cursor: pointer; font-size: 12px;margin-left: 10px;" title="Consultar Armador" href='#popupArmadores' onclick="document.getElementById('pagina_enviaPopPescador').value='armador2';cleanBodyTableArmador();" data-stackbox='true' data-stackbox-position="absolute"><i class="fa fa-search text-blue fa-lg"></i></a>
+                                                            </td>
+                                                        </tr>
+                                                        <tr height="15px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: left;">Armador 2: Cédula</td>
+                                                        </tr>
+                                                        <tr height="5px;"> </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <input type="text" class="form-control" text="Matrícula DIGMER" name="fld_c_armadordoscedula" id="fld_c_armadordoscedula" style="width: 300px; font-size: 11px;" disabled/>
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr height="5px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: left;">Armador 2: Nombres</td>
+                                                        </tr>
+                                                        <tr height="5px;"> </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <input type="text" class="form-control" text="Matrícula DIGMER" name="fld_c_armadordosnombres" id="fld_c_armadordosnombres" style="width: 300px; font-size: 11px;" disabled/>
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr height="5px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: left;">Armador 2: Apelllidos</td>
+                                                        </tr>
+                                                        <tr height="5px;"> </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <input type="text" class="form-control" text="Matrícula DIGMER" name="fld_c_armadordosapellidos" id="fld_c_armadordosapellidos" style="width: 300px; font-size: 11px;" disabled/>
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr height="5px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: left;">Armador 2: Licencia PARMA</td>
+                                                        </tr>
+                                                        <tr height="5px;"> </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <input type="text" class="form-control" text="Matrícula DIGMER" name="fld_c_armadordosparma" id="fld_c_armadordosparma" style="width: 300px; font-size: 11px;" disabled/>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- tab_observaciones -->
+                                        <div class="tab-pane" id="tab_observaciones">
+                                            
+                                            <div id="dv_tabobservaciones" class="row">
+                                                <div>
+                                                    <div class="col-xs-6 callout" style="border-color: #1b90ad;">
+                                                        <div class="divisor">Observaciones</div>
+                                                        <table>
+                                                          <tr height="10px;"> </tr>
+                                                            <tr>
+                                                                <td style="text-align: left;">Presenta modificación la embarcación pesquera?</td>
+                                                                <td>
+                                                                  <select id="ins_modificacionembarcacion" class="select2" text="Modificacion Embarcacion">
+                                                                        <option value=""> Seleccione una Opcion</option>
+                                                                        <option value="SI">SI</option>
+                                                                        <option value="NO">NO</option>
+                                                                    </select>
+                                                                </td>
+                                                            </tr>
+                                                            <tr height="10px;"> </tr>
+                                                            <tr>
+                                                                <td style="text-align: left;">Tiene pintado el color correspondiente al puerto de registro del cupo pesquero? *</td>
+                                                                <td>
+                                                                  <select id="ins_estapintado" class="select2" text="Esta Pintado">
+                                                                        <option value=""> Seleccione una Opcion</option>
+                                                                        <option value="SI">SI</option>
+                                                                        <option value="NO">NO</option>
+                                                                    </select>
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr height="10px;"> </tr>
+                                                            <tr>
+                                                                <td style="text-align: left;">Tiene pintado correctamente su nombre, número de Matrícula y Registro Pesquero? *</td>
+                                                                <td>
+                                                                  <select id="ins_tienepintadomatricula" class="select2" text="Tiene Pintado Matricula">
+                                                                        <option value=""> Seleccione una Opcion</option>
+                                                                        <option value="SI">SI</option>
+                                                                        <option value="NO">NO</option>
+                                                                    </select>
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr height="10px;"> </tr>
+                                                            <tr>
+                                                                <td style="text-align: left;">Coincide la Matrícula y las medidas de la embarcación? *</td>
+                                                                <td>
+                                                                  <select id="ins_coincidenmatricula" class="select2" text="Coincide Matricula">
+                                                                        <option value=""> Seleccione una Opcion</option>
+                                                                        <option value="SI">SI</option>
+                                                                        <option value="NO">NO</option>
+                                                                    </select>
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr height="10px;"> </tr>
+                                                            <tr>
+                                                                <td style="text-align: left;">Coinciden con la fotografía de Registro Pesquero? *</td>
+                                                                <td>
+                                                                  <select id="ins_coincidefotografia" class="select2" text="Coincide Fotografia">
+                                                                        <option value=""> Seleccione una Opcion</option>
+                                                                        <option value="SI">SI</option>
+                                                                        <option value="NO">NO</option>
+                                                                    </select>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                    <div class="col-xs-6 callout" style="border-color: #1b90ad;">
+                                                        <div class="divisor">Resultado de la Inspección del Guardaparque</div>
+                                                        <table>
+                                                          <tr height="10px;"> </tr>
+                                                            <tr>
+                                                                <td style="text-align: left;">Resultado de Inspección Guardaparque *</td>
+                                                            </tr>
+                                                            <tr height="5px;"> </tr>
+                                                            <tr>
+                                                              <td>
+                                                                  <select id="ins_inspeccion" class="select2" text="Inspeccion">
+                                                                        <option value=""> Seleccione una Opcion</option>
+                                                                        <option value="APROBADA">APROBADA</option>
+                                                                        <option value="NEGADA">NEGADA</option>
+                                                                    </select>
+                                                                </td>
+                                                            </tr>
+                                                            <tr height="10px;"> </tr>
+                                                            <tr>
+                                                                <td style="text-align: left;">Observaciones: Explicar la razón de negar la renovación del Permiso de Pesca. (Detalles)</td>
+                                                            </tr>
+                                                            <tr height="5px;"> </tr>
+                                                            <tr>
+                                                              <td>
+                                                                <textarea class="form-control" text="Observaciones" name="ins_observaciones" id="ins_observaciones" style="width: 300px;height: 100px; font-size: 11px;"></textarea>
+                                                              </td>
+                                                            </tr>
+                                                            
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div id="dv_responsables" class="row">
+                                              <div class="divisor">Responsables de la Inspección</div>
+                                                <div>
+                                                    <div class="col-xs-6 callout" style="border-color: #1b90ad;">
+                                                        <table>
+                                                            <tr>
+                                                                <td style="text-align: left;">Guardaparque responsable</td>
+                                                            </tr>
+                                                            <tr height="5px;"> </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <input type="text" class="form-control" text="Guardaparque responsable" name="ins_guardaparqueresponsable" id="ins_guardaparqueresponsable" style="width: 300px; font-size: 11px;" />
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                    
+                                                    <div class="col-xs-6 callout" style="border-color: #1b90ad;">     
+                                                        <table>
+                                                           <tr height="5px;"> </tr>
+                                                            <tr>
+                                                                <td style="text-align: left;">Armador Presente</td>
+                                                            </tr>
+                                                            
+                                                            <tr>
+                                                                <td>
+                                                                  <select id="ins_armadorpresente" class="select2" text="Inspeccion">
+                                                                        <option value=""> Seleccione una Opcion</option>
+                                                                        <option value="ARMADOR 1">ARMADOR 1</option>
+                                                                        <option value="ARMADOR 2">ARMADOR 2</option>
+                                                                    </select>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <!-- tab_datospesca -->
+                                        <div class="tab-pane" id="tab_datospesca">
+                                            
+                                            <div id="dv_tabdatospesca" class="row">
+                                                <div>
+                                                    <div class="col-xs-4 callout" style="border-color: #1b90ad;">
+                                                        <table>
+                                                            <tr>
+                                                                <td style="text-align: left;">Operación *</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <input type="checkbox" id="psc_operacionaltura" name="psc_operacionaltura" value="ALTURA">
+                                                                    <label for="psc_operacionaltura"> ALTURA &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label><br>
+                                                                </td>
+                                                                <td>
+                                                                      <input type="checkbox" id="psc_operacioncostera" name="psc_operacioncostera" value="COSTERA">
+                                                                      <label for="psc_operacioncostera"> COSTERA</label><br>
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr height="15px;"> </tr>
+                                                            <tr>
+                                                                <td style="text-align: left;">Especies Autorizadas *</td>
+                                                                <td>
+                                                                    <tr>
+                                                                        <td>
+                                                                          <input type="checkbox" id="psc_especies_crustaceo" name="psc_especies_crustaceo" value="Crustáseo">
+                                                                          <label for="psc_especies_crustaceo"> CRUSTACEO &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label><br>
+                                                                        </td>
+                                                                        <td>
+                                                                          <input type="checkbox" id="psc_especies_molusco" name="psc_especies_molusco" value="Molusco">
+                                                                          <label for="psc_especies_molusco"> MOLUSCO</label><br>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                          <input type="checkbox" id="psc_especies_pepinomar" name="psc_especies_pepinomar" value="Pepino de Mar">
+                                                                          <label for="psc_especies_pepinomar"> PEPINO DE MAR</label><br>
+                                                                        </td>
+                                                                        <td>
+                                                                          <input type="checkbox" id="psc_especies_pescablanca" name="psc_especies_pescablanca" value="Pesca Blanca">
+                                                                          <label for="psc_especies_pescablanca"> PESCA BLANCA</label><br>
+                                                                        </td>
+                                                                    </tr>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                    <div class="col-xs-8 callout" style="border-color: #1b90ad;">
+                                                        <table>
+                                                            <tr>
+                                                                <td style="text-align: left;">Artes de Pesca *</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <table>
+                                                                    <tr>
+                                                                        <td>
+                                                                          <input type="checkbox" id="psc_artes_caña" name="psc_artes_caña" value="CAÑA">
+                                                                          <label for="psc_artes_caña"> CAÑA</label><br>
+                                                                        </td>
+                                                                        <td>
+                                                                          <input type="checkbox" id="psc_artes_chinchorro" name="psc_artes_chinchorro" value="CHINCHORRO">
+                                                                          <label for="psc_artes_chinchorro"> CHINCHORRO</label><br>
+                                                                        </td>
+                                                                        <td>
+                                                                          <input type="checkbox" id="psc_artes_redes" name="psc_artes_redes" value="REDES">
+                                                                          <label for="psc_artes_redes"> REDES</label><br>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                          <input type="checkbox" id="psc_artes_empatefondo" name="psc_artes_empatefondo" value="EMPATE DE FONDO">
+                                                                          <label for="psc_artes_empatefondo"> EMPATE DE FONDO</label><br>
+                                                                        </td>
+                                                                        <td>
+                                                                          <input type="checkbox" id="psc_artes_empateoceanico" name="psc_artes_empateoceanico" value="EMPATE OCEANICO">
+                                                                          <label for="psc_artes_empateoceanico"> EMPATE OCEANICO</label><br>
+                                                                        </td>
+                                                                        <td>
+                                                                          <input type="checkbox" id="psc_artes_trasmallo" name="psc_artes_trasmallo" value="TRASMALLO">
+                                                                          <label for="psc_artes_trasmallo"> TRASMALLO</label><br>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                          <input type="checkbox" id="psc_artes_lineaarrastre" name="psc_artes_lineaarrastre" value="LINEA DE ARRASTRE">
+                                                                          <label for="psc_artes_lineaarrastre"> LINEA DE ARRASTRE &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label><br>
+                                                                        </td>
+                                                                        <td>
+                                                                          <input type="checkbox" id="psc_artes_lineaarrastresenielo" name="psc_artes_lineaarrastresenielo" value="LINEA DE ARRASTRE CON SEÑUELO/PLUMA">
+                                                                          <label for="psc_artes_lineaarrastresenielo"> LINEA DE ARRASTRE CON SEÑUELO/PLUMA &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label><br>
+                                                                        </td>
+                                                                        <td>
+                                                                          <input type="checkbox" id="psc_artes_varahawaiana" name="psc_artes_varahawaiana" value="VARA HAWAIANA">
+                                                                          <label for="psc_artes_varahawaiana"> VARA HAWAIANA</label><br>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                          <input type="checkbox" id="psc_artes_manos" name="psc_artes_manos" value="MANOS">
+                                                                          <label for="psc_artes_manos"> MANOS</label><br>
+                                                                        </td>
+                                                                        <td>
+                                                                          <input type="checkbox" id="psc_artes_otros" name="psc_artes_otros" value="OTROS">
+                                                                          <label for="psc_artes_otros"> OTROS</label><br>
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div id="dv_permisopesca" class="row">
+                                              <div class="divisor">Permiso de Pesca</div>
+                                                <div>
+                                                    <div class="col-xs-4 callout" style="border-color: #1b90ad;">
+                                                        <table>
+                                                            <tr>
+                                                                <td style="text-align: left;">*Fecha de emisión</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <input type="date" class="form-control " text="Fecha Emision" name="psc_fechaemision" id="psc_fechaemision" />
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr height="5px;"> </tr>
+                                                            <tr>
+                                                                <td style="text-align: left;">*Fecha de caducidad</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <input type="date" class="form-control " text="Fecha Caducidad" name="psc_fechacaducidad" id="psc_fechacaducidad" />
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr height="5px;"> </tr>
+                                                            <tr>
+                                                                <td style="text-align: left;">Tipo de emisión</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <select id="psc_tipoemision" class="select2" text="Tipo Emision">
+                                                                        <option value=""> Seleccione una Opcion</option>
+                                                                        <option value="RENOVACION">RENOVACION</option>
+                                                                        <option value="PRIMERA">PRIMERA</option>
+                                                                    </select>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                    
+                                                    <div class="col-xs-4 callout" style="border-color: #1b90ad;">     
+                                                        <table>
+                                                            <tr>
+                                                                <td style="text-align: left;">*Fecha de Inspección Técnica</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <input type="date" class="form-control " text="Fecha Inspeccion Tecnica" name="psc_fechainspecciontecnica" id="psc_fechainspecciontecnica" />
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr height="5px;"> </tr>
+                                                            <tr>
+                                                                <td style="text-align: left;">*Permiso de Pesca (Ej: 02-016-15)</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <input type="text" class="form-control " text="Permiso Pesca" name="psc_permisopesca" id="psc_permisopesca" />
+                                                                </td>
+                                                            </tr>
+                                                            <tr height="5px;"> </tr>
+                                                            <tr>
+                                                                <td style="text-align: left;">*Aprobada para imprimir por el Director de Ecosistemas</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <!-- <input type="radio" name="psc_aprobadaecosistemas" id="psc_aprobadaecosistemasSi" value="SI" />
+                                                                    <label for="psc_aprobadaecosistemasSi">Si &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                                                    <input type="radio" name="psc_aprobadaecosistemas" id="psc_aprobadaecosistemasNo" value="NO" />
+                                                                    <label for="psc_aprobadaecosistemasNo">No</label> -->
+                                                                    <select id="psc_aprobadaecosistemas" class="select2" text="Aprobado Ecosistemas">
+                                                                        <option value=""> Seleccione una Opcion</option>
+                                                                        <option value="SI">SI</option>
+                                                                        <option value="NO">NO</option>
+                                                                    </select>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <!-- tab_permisospesca -->
+                                        <div class="tab-pane" id="tab_permisospesca">
+                                            <div class="row" align="center">
+                                                <div class="col-xs-10" style="border-color: #1b90ad;margin-left: 85px;margin-right: 85px;">
+                                                    <table id="tabla_controlc_corral" class="table table-bordered dataTable no-footer" style="box-shadow: 5px 5px 5px 5px; font-size: 10px; font-weight: bold; text-transform: uppercase; width: 100%;" role="grid" aria-describedby="tabla_controlc_corral_info">
+                                                        <thead>
+                                                            <tr class="bg-blue" style="color:#fff; text-align: center; text-transform: uppercase;" role="row"><td colspan="5" rowspan="1">Historial de Permisos de Pesca emitidos</td>
+                                                            </tr>
+                                                            <tr class="bg-blue" style="color:#fff; text-align: center; text-transform: uppercase;" role="row">
+                                                                
+                                                                <td class="sorting_asc" tabindex="0" aria-controls="tabla_controlc_corral" rowspan="1" colspan="1" aria-sort="ascending" aria-label=": activate to sort column descending" style="width: 40px;"></td>
+                                                                
+                                                                <td class="sorting" tabindex="0" aria-controls="tabla_controlc_corral" rowspan="1" colspan="1" aria-label="FECHA: activate to sort column ascending" style="width: 109px;"># Permiso</td>
+
+                                                                <td class="sorting" tabindex="0" aria-controls="tabla_controlc_corral" rowspan="1" colspan="1" aria-label="FECHA EMISION: activate to sort column ascending" style="width: 129px;">Fecha Emision</td>
+
+                                                                <td class="sorting" tabindex="0" aria-controls="tabla_controlc_corral" rowspan="1" colspan="1" aria-label="FECHA CADUCIDAD: activate to sort column ascending" style="width: 160px;">Fecha Caducidad</td> 
+
+                                                                <!-- <td class="sorting" tabindex="0" aria-controls="tabla_controlc_corral" rowspan="1" colspan="1" aria-label="ESTADO: activate to sort column ascending" style="width: 160px;">Estado</td> -->
+
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="bodytabla_historialpermisopesca" align="center" class="table-section">
+                                                            <tr class="odd"><td valign="top" colspan="5" class="dataTables_empty">No existe Información</td></tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /.tab-content -->
+                                </div>
+                                <!-- /.general -->
+
+
+                            </div>
+                            <!-- /.tab-content -->
+
+                        </div>
+                        <!-- /.col -->
+                        <!-- /.row -->
+                    </form>
+                </div>
+            </section>
+        </div>
+        <!-- body -->
+        <div class="stackbox-footer">
+            <button id="btnGrabar" class="btn btn-primary" onclick="setInsertUpdateEmbarcacionpesca();">Grabar</button>
+            <button class="btn btn-default" data-close-stackbox="true">Cerrar</button>
+        </div>
+    </div>
+
+
+  <!-- addPescador -->
+    <div id="addPescador" style="display: none;">
+        <div class="stackbox-header cab_popup" align="center">
+            <img src="{% static 'image/favicon.ico' %}" width="40px" style="float:left;margin-top: -5px;" />
+            <h id="tituloP">Pescador</h> 
+            <h id="tituloLicencia">Licencia PARMA</h>
+        </div>
+        <div class="row" style="box-shadow: 5px 5px 5px 5px #888888; width: 60%; margin-top: 20px;margin-left: 250px" id="dv_aprobacionparma">
+          <div class="col-xs-6">
+            <table>
+              <tr height="5px;"> </tr>
+              <tr>
+                <td><h4><b>*Se aprueba para impresión?</b></h4></td>
+              </tr>
+              <tr>
+                <td style="margin-bottom: 20px">
+                  <input type="radio" name="parm_aprobacionparma" id="parm_aprobacionparmaSI" onclick="ocultar('dv_motivonoaprobacion')" value="SI" />
+                  <label>Si &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                  <input type="radio" name="parm_aprobacionparma" id="parm_aprobacionNO" onclick="mostrar('dv_motivonoaprobacion')" value="NO" />
+                  <label>No</label>
+                </td>
+              </tr>
+            </table>
+          </div>
+          <div class="col-xs-6" id="dv_motivonoaprobacion">
+            <table>
+              <tr height="5px;"> </tr>
+              <tr>
+                <td><h4><b>*Motivo de No Aprobación</b></h4></td>
+              </tr>
+              <tr>
+                <td>
+                  <textarea class="form-control" text="Motivo No Aprobacion" name="parm_noaprobacion" id="parm_noaprobacion" style="width: 300px; font-size: 15px; margin-bottom: 15px" rows="5"> </textarea>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div class="stackbox-body" id="bodyaddPescador">
+            <section class="content">
+                <div class="row" style="box-shadow: 5px 5px 5px 5px #888888; width: 104%; margin-top: 20px;">
+                    <form id="frm_pescadores" action="#" method="post">
+
+                        <input type="hidden" id="idPescadorP" name="idPescadorP" />
+                        <!--id Pescador-->
+                        <input type="hidden" id="idpersonaP" name="idpersonaP" />
+                        <!--id persona-->
+                        <input type="hidden" id="nombrepersonaP" name="nombrepersonaP" />
+                        <input type="hidden" id="tipotPescador" value="0" />
+
+                        <div class="col-xs-12">
+
+                            <div class="tab-content" style="border-top: 2px solid #3c8dbc;">
+
+                                <div class="notification">
+                                    <span class="icon">
+                                        <i class=""></i>
+                                    </span>
+                                    <span class="text"></span>
+                                    <span class="close"><i class="fa fa-close"></i></span>
+                                </div>
+
+                                <!-- Font Awesome Icons -->
+                                <div class="nav-tabs-custom">
+                                    <ul class="nav nav-tabs">
+                                        <li class="active"><a href="#tab_persona" data-toggle="tab" aria-expanded="true" style="font-weight: bold;">Datos Generales</a></li>
+                                        
+                                        <li class=""><a href="#tab_datospescador" data-toggle="tab" aria-expanded="false" style="font-weight: bold;">Datos Pescador</a></li>
+
+                                        <li id="tablicencias" class=""><a href="#tab_licenciasparmas" data-toggle="tab" aria-expanded="false" style="font-weight: bold;">Licencias</a></li>
+
+                                        <li id="tabdatoslicenciaparma" class=""><a href="#tab_datoslicenciaparma" data-toggle="tab" aria-expanded="false" style="font-weight: bold;">Datos Licencia Parma</a></li>
+
+                                    </ul>
+
+                                    <div class="tab-content" style="border-top: 2px solid #3c8dbc;">
+                                        <!-- tab_persona -->
+                                        <div class="tab-pane active" id="tab_persona">
+                                            <div class="row">
+                                                <div class="col-xs-4 callout" style="border-color: #1b90ad;">
+                                                    <table>
+
+                                                        <tr height="5px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: left;">*No. Identificación<a id="btn_cedulaP" style="cursor: pointer; font-size: 12px;margin-left: 10px;" title="Buscar Persona" onclick="getDatosPescadorRegistroCivil()"><i class="fa fa-search text-blue"></i></a></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <input type="text" class="form-control " text="No. Accion Personal" name="num_cedpers" id="fld_identificacion" style="width: 300px; font-size: 11px;" />
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr height="5px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: left;">*Nombres</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <input type="text" class="form-control " text="Nombres" name="nombres_pers" id="fld_nombres" style="width: 300px; font-size: 11px;" />
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr height="5px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: left;">*Apellidos</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <input type="text" class="form-control " text="Apellidos" name="apellidos_pers" id="fld_apellidos" style="width: 300px; font-size: 11px;" />
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr height="5px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: left;">*Sexo</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <select id="fld_sexo" class="select2 " text="fld_sexo" style="width: 300px;">
+                                                                    <option value=""> Seleccione una Opcion</option>
+                                                                    <option value="MASCULINO">MASCULINO</option>
+                                                                    <option value="FEMENINO">FEMENINO</option>
+
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr height="5px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: left;">Número de hijos</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <input type="text" class="form-control" text="Número de hijos" name="num_hijos" id="fld_c_nhijos" style="width: 300px; font-size: 11px;" />
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr height="5px;"> </tr>
+                                                        <tr>
+                                                            <td id="lbl_tiposangre" style="text-align: left;">Tipo Sangre</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td id="td_tiposangre">
+                                                                <select id="fld_tiposangre" class="select2" text="Tipo Sangre" style="width: 300px;">
+                                                                    <option value="">SELECCIONE UNA OPCION</option>
+                                                                    <option value="O-">O-</option>
+                                                                    <option value="O+">O+</option>
+                                                                    <option value="A-">A-</option>
+                                                                    <option value="A+">A+</option>
+                                                                    <option value="B-">B-</option>
+                                                                    <option value="B+">B+</option>
+                                                                    <option value="AB-">AB-</option>
+                                                                    <option value="AB+">AB+</option>
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+
+                                                <div class="col-xs-4 callout" style="border-color: #1b90ad;">
+                                                    <table>
+                                                        <tr height="5px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: left;">Fecha Nacimiento</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <input type="date" class="form-control" text="Fecha Nacimiento" name="fechaNac_pers" id="fld_fecha_nac" />
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr height="5px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: left;">Isla Residencia</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <select id="fld_islaresidencia" class="select2" text="Isla">
+                                                                    <option value="">SELECCIONE UNA OPCION</option>
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr height="5px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: left;">#Residencia</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <input type="text" class="form-control " text="#Residencia" name="numRes_pers" id="fld_c_nresidencia" style="width: 300px; font-size: 11px;" />
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr height="5px;" />
+                                                        <tr>
+                                                            <td style="text-align: left;">Estado del Pescador</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <select id="fld_estado_pescador" class="select2" style="width: 300px;">
+                                                                    <option value="">Seleccione una Opción</option>
+                                                                    <option value="ACTIVO">ACTIVO</option>
+                                                                    <option value="INACTIVO">INACTIVO</option>
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+
+                                                <div class="col-xs-4 callout" style="border-color: #1b90ad;">
+                                                    <table style="position:relative; left:25%;">
+                                                        <tr height="5px;"> </tr>
+
+                                                        <tr>
+                                                            <label for="lbl_foto_pescador" class="btn-label" style="position:relative; left:40%;">
+                                                                Subir Foto
+                                                            </label>
+                                                            <input type="file" name="lbl_foto_pescador" id="lbl_foto_pescador" value="" accept="image/*" onchange="cargarFoto(this);" style="visibility:hidden;height: 0px;" />
+                                                            <label for="file_name"><b></b></label>
+
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td>
+                                                                <div id="dv_foto" class="carnet-marco" style="visibility:hidden;">
+                                                                    <a id="link_foto_personal" href="" target="_blank"> 
+                                                                        <img id="foto_personal"  alt="Error Imagen" style="width: 100%"> 
+                                                                    </a>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+
+                                                        
+
+                                                    </table>
+                                                </div>
+
+                                            </div>
+                                            <div class="divisor">Datos Adicionales</div>
+                                            <div class="row">
+                                                <div>
+                                                    <div class="col-xs-4 callout" style="border-color: #1b90ad;">
+                                                        <table>
+                                                            <tr>
+                                                                <td style="text-align: left;">Pais de Nacimiento</td>
+                                                            </tr>
+                                                            <tr height="5px;"> </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <select id="fld_pais" class="select2" text="Pais" />
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr height="5px;"> </tr>
+                                                            <tr>
+                                                                <td style="text-align: left;">Provincia de Nacimiento</td>
+                                                            </tr>
+                                                            <tr height="5px;"> </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <select id="fld_provincia" class="select2" text=">Provincia Residencia" style="width: 300px;"/>
+                                                                </td>
+                                                            </tr>
+
+
+                                                            <tr height="5px;"> </tr>
+                                                            <tr>
+                                                                <td style="text-align: left;">Ciudad de Nacimiento</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <select id="fld_ciudadnacimiento" class="select2" text="Ciudad" style="width: 300px;" />
+                                                                </td>
+                                                            </tr>
+
+                                                        </table>
+                                                    </div>
+                                                    
+                                                    <div class="col-xs-4 callout" style="border-color: #1b90ad;">     
+                                                        <table>
+                                                            <tr height="5px;" />
+                                                            <tr>
+                                                                <td style="text-align: left;">Tipo Licencia Guía</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <select id="fld_tipolicenciaguia" class="select2" style="width: 300px;" onchange="change(this)">
+                                                                        <option value="">Seleccione una Opción</option>
+                                                                        <option value="NO APLICA">NO APLICA</option>
+                                                                        <option value="GUIA NATURALISTA">GUÍA NATURALISTA</option>
+                                                                    </select>
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr height="5px;"> </tr>
+                                                            <tr>
+                                                                <td id="lbl_nlicenciaguia" style="text-align: left;">*Número Licencia de Guía</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td id="td_nlicenciaguia">
+                                                                    <input type="text" class="form-control" text="Numero LicenciaGuia" name="fld_c_nlicenciaguia" id="fld_c_nlicenciaguia" style="width: 300px; font-size: 11px;" />
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr height="5px;"> </tr>
+                                                            <tr>
+                                                                <td style="text-align: left;">Apodo</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <input type="text" class="form-control" text="Apodo" name="Apodo" id="fld_c_apodo" style="width: 300px; font-size: 11px;" />
+                                                                </td>
+                                                            </tr>                                                   
+
+                                                            <tr height="5px;"> </tr>
+                                                            <tr>
+                                                                <td style="text-align: left;">Direccion Domicilio</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <textarea class="form-control" text="Direccion Domicilio" name="fld_direccion" id="fld_direccion" style="width: 300px; font-size: 11px;" rows="5"> </textarea>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+
+                                                    <div class="col-xs-4 callout" style="border-color: #1b90ad;">     
+                                                        <table>
+                                                            <tr height="5px;"> </tr>
+                                                            <tr>
+                                                                <td style="text-align: left;">Instrucción académica</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <select id="fld_instruc_academ" class="select2" text="Nivel Academico" style="width: 300px;" />
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr height="5px;"> </tr>
+                                                            <tr>
+                                                                <td style="text-align: left;">Teléfono Convencional</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <input type="text" class="form-control" text="Telefono Convencional" name="telefono_pers" id="fld_telefono" style="width: 300px; font-size: 11px;" />
+                                                                </td>
+                                                            </tr>
+                                                            <tr height="5px;"> </tr>
+                                                            <tr>
+                                                                <td style="text-align: left;">Teléfono Celular</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <input type="text" class="form-control" text="Telefono Celular" name="celular_pers" id="fld_celular" style="width: 300px; font-size: 11px;" />
+                                                                </td>
+                                                            </tr>
+                                                            <tr height="5px;"> </tr>
+                                                            <tr>
+                                                                <td style="text-align: left;">Email Personal</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <input type="text" class="form-control" name="email_pers" id="fld_email" style="width: 300px; font-size: 11px;" />
+                                                                </td>
+                                                            </tr>
+                                                           
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+
+                                        <!-- tab_datospescador -->
+                                        <div class="tab-pane" id="tab_datospescador">
+                                            <div class="row">
+                                                <div class="col-xs-4 callout" style="border-color: #1b90ad;">
+                                                    <table>
+                                                        <tr>
+                                                            <td style="text-align: left;">Matrícula DIGMER</td>
+                                                        </tr>
+                                                        <tr height="5px;"> </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <input type="text" class="form-control" text="Matrícula DIGMER" name="fld_matricula_digmer" id="fld_matricula_digmer" style="width: 300px; font-size: 11px;" />
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr height="5px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: left;">Cargo de la matrícula</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <select id="fld_cargo_matricula" class="select2" text="Cargo de la matrícula" style="width: 300px;">
+                                                                    <option value="">SELECCIONE UNA OPCION</option>
+                                                                    <option value="MAQUINISTA">MAQUINISTA</option>
+                                                                    <option value="MOTORISTA">MOTORISTA</option>
+                                                                    <option value="PATRON DE ALTURA">PATRON DE ALTURA</option>
+                                                                    <option value="MAQUINISTA">MAQUINISTA</option>
+                                                                    <option value="PESCADOR">PESCADOR</option>
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr height="5px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: left;">Ingreso de Motivo</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <select id="fld_ingreso_motivo" class="select2" text="Ingreso de Motivo" style="width: 300px;" onchange="change(this)">
+                                                                    <option value="">SELECCIONE UNA OPCION</option>
+                                                                    <option value="RENUNCIA VOLUNTARIA">RENUNCIA VOLUNTARIA</option>
+                                                                    <option value="MUERTE PESCADOR">MUERTE PESCADOR</option>
+                                                                    <option value="HIJO DE PESCADOR">HIJO DE PESCADOR</option>
+                                                                    <option value="CAMBIO A ACTIVIDAD TURISTICA">CAMBIO A ACTIVIDAD TURISTICA</option>
+                                                                    <option value="RENOVACION">RENOVACION</option>
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+
+                                                <div class="col-xs-4 callout" style="border-color: #1b90ad;">
+                                                    <table>
+                                                        <tr height="5px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: left;">Cooperativa</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <select id="fld_cooperativa" class="select2" text="Cooperativa" style="width: 300px;"/>
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr height="5px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: left;">Categoria</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <select id="fld_categoriaP" class="select2" text="Categoria" style="width: 300px;" />
+
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr height="5px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: left;">Especificación laboral</td>
+                                                        </tr>
+                                                        <tr height="5px;"> </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <input type="text" class="form-control" text="Barrio" name="fld_esp_laboral" id="fld_esp_laboral" style="width: 300px; font-size: 11px;" />
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+
+                                                <div class="col-xs-4 callout" style="border-color: #1b90ad;">
+                                                    <table>
+                                                        <tr height="5px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: left;">Licencia Parma (Ej: 02-016-15)</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <input type="text" class="form-control" name="licParma" id="fld_licParma" text="Licencia PARMA" style="width: 300px; font-size: 11px;" />
+
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+
+                                                    </table>
+                                                </div>
+                                            </div>
+
+    
+                                            <div id="dv_fallecimiento" class="row">
+                                                <div class="divisor">Datos de Fallecimiento</div>
+                                                <div>
+                                                    <div class="col-xs-4 callout" style="border-color: #1b90ad;">
+                                                        <table>
+                                                            <tr>
+                                                                <td style="text-align: left;">Fecha de Fallecimiento</td>
+                                                            </tr>
+                                                            <tr height="5px;"> </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <input type="date" class="form-control" text="Fecha Fallecimiento" name="fld_fechafallecimiento" id="fld_fechafallecimiento" style="width: 300px; font-size: 11px;" />
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr height="5px;"> </tr>
+                                                            <tr>
+                                                                <td style="text-align: left;">Código de Referencia</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <input type="text" class="form-control" text="Codigo Referencia" name="fld_codigoreferencia" id="fld_codigoreferencia" style="width: 300px; font-size: 11px;" />
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                    <div class="col-xs-4 callout" style="border-color: #1b90ad;">
+                                                        <table>
+                                                            <tr>
+                                                                <td style="text-align: left;">Documento de Defunción</td>
+                                                            </tr>
+                                                            <tr height="5px;"> </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <input type="file" class="form-control" text="Documento Defuncion" name="fld_documentodefuncion" id="fld_documentodefuncion" style="width: 300px; font-size: 11px;" />
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="divisor">Datos del Pescador por la cual ingresa </div>
+                                            <div class="row">
+                                                <div>
+                                                    <div class="col-xs-4 callout" style="border-color: #1b90ad;">
+                                                        <table>
+                                                            <tr>
+                                                                <td id="fld_consultararmador1">
+                                                                  Consultar Pescador <a style="cursor: pointer; font-size: 12px;margin-left: 10px;" title="Consultar Armador" href='#popupArmadores' onclick="document.getElementById('pagina_enviaPopPescador').value='pescadoranterior';cleanBodyTableArmador();" data-stackbox='true' data-stackbox-position="absolute"><i class="fa fa-search text-blue fa-lg"></i></a>
+                                                                </td>
+                                                            </tr>
+                                                            <tr height="15px;"> </tr>
+                                                            <tr>
+                                                                <td style="text-align: left;">CI Pescador Anterior</td>
+                                                            </tr>
+                                                            <tr height="5px;"> </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <input type="text" class="form-control" text="CI Pescador Anterior" name="pesc_ante_ident" id="fld_pesc_ante_ident" style="font-size: 11px;" />
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr height="5px;"> </tr>
+                                                            <tr>
+                                                                <td style="text-align: left;">Nombres Pescador Anterior</td>
+                                                            </tr>
+                                                            <tr height="5px;"> </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <input type="text" class="form-control" text="Nombres Pescador Anterior" name="pesc_ante_nombres" id="fld_pesc_ante_nombres" style="font-size: 11px;" />
+                                                                </td>
+                                                            </tr>
+
+
+                                                            <tr height="5px;"> </tr>
+                                                            <tr>
+                                                                <td style="text-align: left;">Apellidos Pescador Anterior</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <input type="text" class="form-control" name="fld_pesc_ante_apellidos" id="fld_pesc_ante_apellidos" text="Apellidos Pescador Anterior"  style="font-size: 11px;" />
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                    
+                                                    <div class="col-xs-4 callout" style="border-color: #1b90ad;">     
+                                                        <table>
+                                                           <tr height="5px;"> </tr>
+                                                            <tr>
+                                                                <td style="text-align: left;">Cooperativa Pescador Anterior
+                                                                </td>
+                                                            </tr>
+                                                            
+                                                            <tr>
+                                                                <td>
+                                                                    <select id="fld_cooperativa_anterior" class="select2" text="Cooperativa Anterior" style="width: 300px;"/>
+                                                                </td>
+                                                            </tr>
+
+                                                            
+
+                                                            <tr height="5px;"> </tr>
+                                                            <tr>
+                                                                <td style="text-align: left;">Licencia PARMA Anterior (Ej: 02-016-15)</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <input type="text" class="form-control" name="licParma_anter" id="fld_licParma_anter" text="Licencia PARMA Anterior" style="width: 300px; font-size: 11px;" />
+                                                                </td>
+                                                            </tr>
+                                                            <tr height="5px;"> </tr>
+                                                            <tr>
+                                                                <td style="text-align: left;">No. de Proceso</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <input type="text" class="form-control" name="no_proceso" id="fld_no_proceso" text="No. de Proceso" style="width: 300px; font-size: 11px;" />
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <!-- tab_datoslicenciaparma -->
+                                        <div class="tab-pane" id="tab_datoslicenciaparma">
+                                            <div class="row">
+                                                <div class="col-xs-4 callout" style="border-color: #1b90ad;">
+                                                    <table>
+                                                        <tr>
+                                                            <td style="text-align: left;">*Fecha de Emisión</td>
+                                                        </tr>
+                                                        <tr height="5px;"> </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <input type="date" class="form-control" text="Fecha Emision" name="fld_fechaemision" id="fld_fechaemision" style="width: 300px; font-size: 11px;" />
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr height="5px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: left;">*Fecha de Caducidad</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <input type="date" class="form-control" text="Fecha Caducidad" name="fld_fechacaducidad" id="fld_fechacaducidad" style="width: 300px; font-size: 11px;" />
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr height="5px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: left;">Tipo de Emisión</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <select id="fld_tipoemision" class="select2" text="Tipo Emision">
+                                                                    <option value=""> Seleccione una Opcion</option>
+                                                                    <option value="RENOVACION">RENOVACION</option>
+                                                                    <option value="PRIMERA">PRIMERA</option>
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                                <div class="col-xs-4 callout" style="border-color: #1b90ad;">
+                                                    <table>
+                                                        <tr>
+                                                                <td style="text-align: left;">Observación</td>
+                                                        </tr>
+                                                        <tr height="5px;"> </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <textarea class="form-control" text="Observacion" name="fld_observacion" id="fld_observacion" style="width: 350px; font-size: 11px;" rows="6"> </textarea>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- tab_licenciasparmas -->
+                                        <div class="tab-pane" id="tab_licenciasparmas">
+                                            <div class="row" align="center">
+                                                <div class="col-xs-10" style="border-color: #1b90ad;margin-left: 85px;margin-right: 85px;">
+                                                    <table id="tabla_controlc_corral" class="table table-bordered dataTable no-footer" style="box-shadow: 5px 5px 5px 5px; font-size: 10px; font-weight: bold; text-transform: uppercase; width: 100%;" role="grid" aria-describedby="tabla_controlc_corral_info">
+                                                        <thead>
+                                                            <tr class="bg-blue" style="color:#fff; text-align: center; text-transform: uppercase;" role="row"><td colspan="5" rowspan="1">Historial de Licencias Emitidas al Pescador</td>
+                                                            </tr>
+                                                            <tr class="bg-blue" style="color:#fff; text-align: center; text-transform: uppercase;" role="row">
+                                                                
+                                                                <td class="sorting_asc" tabindex="0" aria-controls="tabla_controlc_corral" rowspan="1" colspan="1" aria-sort="ascending" aria-label=": activate to sort column descending" style="width: 40px;"></td>
+                                                                
+                                                                <td class="sorting" tabindex="0" aria-controls="tabla_controlc_corral" rowspan="1" colspan="1" aria-label="FECHA: activate to sort column ascending" style="width: 109px;"># Licencia</td>
+
+                                                                <td class="sorting" tabindex="0" aria-controls="tabla_controlc_corral" rowspan="1" colspan="1" aria-label="FECHA EMISION: activate to sort column ascending" style="width: 129px;">Fecha Emisión</td>
+
+                                                                <td class="sorting" tabindex="0" aria-controls="tabla_controlc_corral" rowspan="1" colspan="1" aria-label="FECHA CADUCIDAD: activate to sort column ascending" style="width: 160px;">Fecha Caducidad</td>
+
+                                                                <td class="sorting" tabindex="0" aria-controls="tabla_controlc_corral" rowspan="1" colspan="1" aria-label="ESTADO: activate to sort column ascending" style="width: 160px;">Estado</td>
+
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="bodytabla_historialparama" align="center" class="table-section">
+                                                            <tr class="odd"><td valign="top" colspan="5" class="dataTables_empty">No existe Información</td></tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /.tab-content -->
+                                </div>
+                                <!-- /.general -->
+                                <div class="tab-pane" id="tab_laboral">
+                                    <div class="row">
+                                        <div class="col-xs-6 callout" style="border-color: #1b90ad;">
+                                            <table>
+                                                <tr>
+                                                    <td style="text-align: left; font-size: 11px;font-weight: bold;border-bottom: 3px solid #1b90ad; padding: 5px;" colspan="3">Laboral</td>
+                                                </tr>
+
+                                                <tr height="20px;"> </tr>
+                                                <tr>
+                                                    <td style="text-align: right; font-size: 11px;font-weight: bold;">Dirección</td>
+                                                    <td width="10px;"></td>
+                                                    <td>
+                                                        <select id="SsitdireSA_ff" class="select2" style="width: 350px;" onchange="cambiarComboinfo('SsitprocSA_ff',this.value,'direcciones','parent_id','name');">
+                                                            <option value=""> Seleccione una Opción</option>
+
+                                                        </select>
+                                                    </td>
+                                                </tr>
+
+                                                <tr height="5px;"> </tr>
+                                                <tr>
+                                                    <td style="text-align: right; font-size: 11px;font-weight: bold;">Proceso</td>
+                                                    <td width="10px;"></td>
+                                                    <td>
+                                                        <select id="SsitprocSA_ff" class="select2" style="width: 350px;" onchange="cambiarComboinfo('SsitsubprocSA_ff',this.value,'direcciones','parent_id','name');">
+                                                            <option value=""> Seleccione una Opción</option>
+
+                                                        </select>
+                                                    </td>
+                                                </tr>
+
+                                                <tr height="5px;"> </tr>
+                                                <tr>
+                                                    <td style="text-align: right; font-size: 11px;font-weight: bold;">Subproceso</td>
+                                                    <td width="10px;"></td>
+                                                    <td>
+                                                        <select id="SsitsubprocSA_ff" class="select2" style="width: 350px;">
+                                                            <option value="0">Seleccione una Opci'0n</option>
+
+                                                        </select>
+                                                    </td>
+                                                </tr>
+
+                                                <tr height="5px;"> </tr>
+                                                <tr>
+                                                    <td style="text-align: right; font-size: 11px;font-weight: bold;">Grupo Ocupacional</td>
+                                                    <td width="10px;"></td>
+                                                    <td>
+                                                        <select id="SsitgrupoSA_ff" class="select2" style="width: 350px;">
+                                                            <option value=""> Seleccione una Opción</option>
+                                                            {% for gocupacional in gocupacionals %}
+                                                            <option value="{{ gocupacional.id }}">{{ gocupacional.nombre }}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </td>
+                                                </tr>
+
+                                                <tr height="5px;"> </tr>
+                                                <tr>
+                                                    <td style="text-align: right; font-size: 11px;font-weight: bold;">Puesto Distributivo</td>
+                                                    <td width="10px;"></td>
+                                                    <td>
+                                                        <select id="SsitpuestDistSA_ff" class="select2" style="width: 350px;">
+                                                            <option value=""> Seleccione una Opción</option>
+                                                            {% for gdistributivo in gdistributivos %}
+                                                            <option value="{{ gdistributivo.id }}">{{ gdistributivo.nombre }}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </td>
+                                                </tr>
+
+                                                <tr height="5px;"> </tr>
+                                                <tr>
+                                                    <td style="text-align: right; font-size: 11px;font-weight: bold;">Puesto Institucional</td>
+                                                    <td width="10px;"></td>
+                                                    <td>
+                                                        <select id="SsitpuestInst_ff" class="select2" style="width: 350px;">
+                                                            <option value=""> Seleccione una Opción</option>
+                                                            {% for ginstitucional in ginstitucionals %}
+                                                            <option value="{{ ginstitucional.id }}">{{ ginstitucional.nombre }}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </td>
+                                                </tr>
+
+                                                <tr height="5px;"> </tr>
+                                                <tr>
+                                                    <td style="text-align: right; font-size: 11px;font-weight: bold;">Isla Trabajo</td>
+                                                    <td width="10px;"></td>
+                                                    <td>
+                                                        <select id="SsitislaSA_ff" class="select2" style="width: 350px;">
+                                                            <option value=""> Seleccione una Opción</option>
+
+                                                        </select>
+                                                    </td>
+                                                </tr>
+
+                                                <tr height="5px;"> </tr>
+                                                <tr>
+                                                    <td style="text-align: right; font-size: 11px;font-weight: bold;">RMU</td>
+                                                    <td width="10px;"></td>
+                                                    <td>
+                                                        <input type="text" name="SsRmu_ff" id="SsRmu_ff" class="form-control " style="width:350px;" />
+                                                    </td>
+                                                </tr>
+
+                                                <tr height="5px;"> </tr>
+                                                <tr>
+                                                    <td style="text-align: right; font-size: 11px;font-weight: bold;">Fecha Ingreso DPNG</td>
+                                                    <td width="10px;"></td>
+                                                    <td>
+                                                        <input type="date" name="SsfechaIng_ff" id="SsfechaIng_ff" class="form-control " style="width:350px;" />
+                                                    </td>
+                                                </tr>
+
+                                                <tr height="5px;"> </tr>
+                                                <tr>
+                                                    <td style="text-align: right; font-size: 11px;font-weight: bold;">Estado</td>
+                                                    <td width="10px;"></td>
+                                                    <td>
+                                                        <select id="Sestado_ff" class="select2" style="width: 250px;">
+                                                            <option value="">Seleccione una Opción</option>
+                                                            <option value="A">ACTIVO</option>
+                                                            <option value="I">INACTIVO</option>
+                                                        </select>
+                                                    </td>
+                                                </tr>
+
+                                            </table>
+                                        </div>
+                                        <div class="col-xs-6 callout" style="border-color: #1b90ad;">
+                                            <table>
+                                                <tr>
+                                                    <td style="text-align: left; font-size: 11px;font-weight: bold;border-bottom: 3px solid #1b90ad; padding: 5px;" colspan="2">Información Adicional</td>
+                                                </tr>
+                                                <tr height='20px;'></tr>
+                                                <tr>
+                                                    <td style="text-align: left;">Modalidad Laboral</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <select id="SmodalidadPer" class="select2" style="width: 330px;">
+                                                            <option value="0">Seleccione una Opción</option>
+
+                                                        </select>
+                                                    </td>
+                                                </tr>
+
+                                                <tr height='10px;'></tr>
+                                                <tr>
+                                                    <td style="text-align: left;">#Partida General</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <input type="text" name="numPartGPer" id="numPartGPer" class="form-control" style="width: 330px;font-size: 10px;">
+                                                    </td>
+                                                </tr>
+
+                                                <tr height='10px;'></tr>
+                                                <tr>
+                                                    <td style="text-align: left;">#Partida Individual</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <input type="text" name="numPartIPer" id="numPartIPer" class="form-control" style="width: 330px;font-size: 10px;">
+                                                    </td>
+                                                </tr>
+
+                                                <tr height="5px;"> </tr>
+                                                <tr>
+                                                    <td style="text-align: left;">Base Legal nombramiento</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <!--input type="text" name="baseLegalI" id="baseLegalI" class="form-control" style="width: 300px;"-->
+                                                        <select id="SbaseLegalPer" class="select2" style="width: 330px;">
+                                                            <option value=""> Seleccione una Opción</option>
+                                                            {% for base in bases %}
+                                                            <option value="{{ base.id }}"> {{ base.nombre }} </option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </td>
+                                                </tr>
+
+                                                <tr height="5px;"> </tr>
+                                                <tr>
+                                                    <td style="text-align: left; font-size: 11px;font-weight: bold;">Año Nombramiento</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <input type="text" class="form-control" name="anioNomPer" id="anioNomPer" style="width: 330px;" />
+                                                    </td>
+                                                </tr>
+
+                                                <tr height="5px;"> </tr>
+                                                <tr>
+                                                    <td style="text-align: left; font-size: 11px;font-weight: bold;">Teléfono Institucional</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <input type="text" class="form-control" name="telinstPer" id="telinstPer" style="width: 330px;" />
+                                                    </td>
+                                                </tr>
+                                                <tr height="5px;"> </tr>
+                                                <tr>
+                                                    <td style="text-align: left; font-size: 11px;font-weight: bold;">Extensión Telefónica</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <input type="text" class="form-control" name="extTelPer" id="extTelPer" style="width: 330px;" />
+                                                    </td>
+                                                </tr>
+                                                <tr height="5px;"> </tr>
+                                                <tr>
+                                                    <td style="text-align: left; font-size: 11px;font-weight: bold;">Email</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <input type="text" class="form-control" name="emailPer" id="emailPer" style="width: 330px; text-transform: initial;" />
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /.laboral -->
+
+                            </div>
+                            <!-- /.tab-content -->
+
+                        </div>
+                        <!-- /.col -->
+                        <!-- /.row -->
+                    </form>
+                </div>
+            </section>
+        </div>
+        <!-- body -->
+        <div class="stackbox-footer" id="btns_guardarcerrrar">
+            <button class="btn btn-primary" id="btn_borrador" onclick="//setInsertUpdateDafCertificaciones('B','');">Borrador</button>
+            <button class="btn btn-primary" onclick="setInsertUpdatePescador();">Grabar</button>
+            <button class="btn btn-default" data-close-stackbox="true">Cerrar</button>
+        </div>
+    </div>
+
+
+  <!-- addPescador -->
+    <div id="popupArmadores" style="display: none;">
+
+      <div class="stackbox-header cab_popup" align="center">
+        <img src="{% static 'image/favicon.ico' %}" width="40px" style="float:left;margin-top: -5px;"/>
+        <h id="">Buscar</h>
+      </div>
+
+      <div class="stackbox-body" align="center">
+        <div class="row" style="box-shadow: 5px 5px 5px 10px #888888;width: 100%;">
+        <div class="divisor" style="text-align: left;">Filtros de Busqueda</div><br>
+            <div class="col-xs-12" style="border-color: #1b90ad;">
+              <table>
+                <tr>
+                  <td align="left">Apellidos/Nombres/Cedula:</td>
+                  <td width="10px;"></td>
+                  <td>
+                    <input id="nombresPopupPescador" type="text" class="form-control" style="width: 200px;" autofocus>
+                  </td>
+                  <td width="10px;"></td>
+                  <td><a style="cursor: pointer; font-size: 20px;" title="Buscar" onclick="getDataPescadorPop();"><i class="fa fa-search text-blue"></i></a></td>
+                </tr>
+              </table>
+             <br>
+            </div>
+        </div>
+        <br><br>
+        <div class="row">
+          <input type="hidden" id="pagina_enviaPopPescador">
+          <div class="col-xs-1"></div>
+          <div class="col-xs-10">
+            <div id="content_bodyPersonaF" align="center" style="box-shadow: 5px 10px #888888;width: 600px;">
+              <table id="tabla_PopupPescador" style="font-size: 12px; text-transform: uppercase;" class="display table table-striped table-bordered" width="100%" cellspacing="0">
+                  <thead>
+                  <tr style="background-color: #3c8dbc;    color: white;"> 
+                    <th>IDENTIFICACION</th>
+                    <th>APELLIDOS</th>
+                    <th>NOMBRES</th>    
+                    <th>LICENCIA PARMA</th>           
+                    <th></th>
+                  </tr>
+                  </thead>
+                  <tbody class="botonera1" id="body_PopupPescador">
+                  
+                  </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="col-xs-1"></div> 
+        </div>
+      </div>
+      <div class="stackbox-footer">
+        <!--button class="btn btn-primary" id="stackbox_save">Grabar</button-->
+        <button class="btn btn-default" data-close-stackbox="true">Close</button>
+      </div>
+    </div>
+
+
+
+  {% load i18n %}
+
+  <div id="session_security_warning" class="session_security" style="display:none" aria-hidden="true" role="dialog">
+      <div class="session_security_overlay"></div>
+      <div class="session_security_modal" role="document" tabindex="-1">
+          <h3>{% trans 'Your session is about to expire' %}</h3>
+          <p>{% trans 'Click or type to extend your session.' %}</p>
+      </div>
+  </div>
+
+  <script src="{% static 'js/lib_externas/jquery-1.12.4.js' %}"></script>
+  <script src="{% static 'js/lib_externas/jquery-ui.js' %}"></script>
+  <script>document.write('<script src="{% static "js/lib_internas/script_cuem_mp.js" %}?dev=' + Math.floor(Math.random() * 100) + '"\><\/script>');</script>
+
+  <script>
+
+  $(document).ready(function(){
+    $("#psc_tipoemision").select2();
+    $("#psc_aprobadaecosistemas").select2();
+    $("#ins_cambiarfotografia").select2();
+  });
+
+  function mostrar(id){
+    document.getElementById(id).style.display = 'block';
+  }
+
+  function ocultar(id){
+    document.getElementById(id).style.display = 'none';
+  }
+
+  function change(obj){
+    var selectBox = obj;
+    var selected = selectBox.options[selectBox.selectedIndex].value;
+
+    if(selected == 'GUIA NATURALISTA'){
+        document.getElementById('lbl_nlicenciaguia').style.display = 'block';
+        document.getElementById('td_nlicenciaguia').style.display = 'block';
+    }else{
+        document.getElementById('lbl_nlicenciaguia').style.display = 'none';
+        document.getElementById('td_nlicenciaguia').style.display = 'none';
+    }
+
+    if(selected == 'MUERTE PESCADOR')
+        document.getElementById('dv_fallecimiento').style.display = 'block';
+    else
+        document.getElementById('dv_fallecimiento').style.display = 'none';
+  }
+
+</script>
+
+
+{%endblock%}

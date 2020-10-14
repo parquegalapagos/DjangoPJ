@@ -1,0 +1,146 @@
+{% extends 'cuem_manejopesquero/menu_lateral.html' %}
+{% block principalhome %}
+
+{% load static %}
+<style>
+    .dataTables_filter {
+        display: none;
+    }
+</style>
+
+<input type="hidden" id="option_pais" value="" /> 
+<input type="hidden" id="option_provincia" value="" /> 
+<input type="hidden" id="option_ciudad" value="" />
+<input type="hidden" id="option_isla" value="" />
+<input type="hidden" id="option_instruc_academ" value="" />
+<input type="hidden" id="option_cooperativas" value="" />
+<input type="hidden" id="option_categoria" value="" />
+
+<div id="content_Embarcacionpesca" style="top: 0px;">
+        
+    
+    <div class="box">
+
+        <div class="box-header">
+            <i class="fa fa-list"></i>
+            <h3 class="box-title">Inspección Técnica de Embarcaciones</h3>
+            <div class="botonera" style="float: right; right: 1px;">
+                <!--a title="pfd" onclick="generarPdf('tabla_embarcaciones',3)"><i class="fa fa-file-pdf-o text-green"></i></a-->
+                <!--a title="excel" onclick="generarExcel('tabla_embarcaciones',3)"><i class="fa fa-file-excel-o text-green"></i></a-->
+                <a title="excel" onclick="getDataPersonaEmbarcacionesExcel()"><i class="fa fa-file-excel-o text-green"></i></a> {% if perms.ap_talentohumano.add_perEmbarcaciones %}
+                <!-- <a style="cursor: pointer;" title="Agregar Nuevo" onclick="limpiarFormInspeccionTecnicaEmbarcacion();" href='#addInspeccionTecnicaEmbarcacion' data-stackbox-width='85%' data-stackbox='true' data-stackbox-position="absolute"><i class="fa fa-plus-circle text-green btn_nuevo"></i></a> --> {% endif %}
+
+            </div>
+        </div>
+        <!-- /.box-header -->
+
+        <div class="box box-solid bg-light-blue-gradient">
+            <div class="box-header ui-sortable-handle" style="cursor: move;">
+                <div class="pull-right box-tools">
+                    <button type="button" id="btn_divfiltro" class="btn btn-primary btn-sm pull-right" data-toggle="collapse" href="#collapseIng" role="button" aria-expanded="false" aria-controls="collapseIng" style="margin-right: 5px;" data-original-title="Collapse">
+                        <i class="fa fa-plus" id="ic_filtro"></i></button>
+                </div>
+                <i class="fa fa-map-marker"></i>
+                <h3 class="box-title">
+		          Filtros de Busqueda
+		        </h3>
+            </div>
+            <!-- <div class="box-body collapse" style="background-color: white;"  id="collapseIng"> -->
+            <div class="box-body collapse" style="background-color: white;" id="collapseIng">
+                <div class="col-xs-12">
+
+                    <div class="col-xs-3">
+                        <h style="font-size: 14px;color: black;font-weight: bold;height: 20px;">Embarcación</h>
+                        <input type="text" class="form-control" name="" id="nombresfilter" style="width: 75%; height: 50%" />
+                    </div>
+
+                    <div class="col-xs-3">
+                        <h style="font-size: 14px;color: black;font-weight: bold;height: 20px;">Matrícula</h>
+                        <input type="text" class="form-control" name="" id="matriculafilter" style="width: 75%;height: 50%" />
+                    </div>
+
+                    <div class="col-xs-3">
+                        <h style="font-size: 14px;color: black;font-weight: bold;height: 20px;">Inspección</h>
+                        <select id="SinspeccionFilter" class="form-control" style="width: 250px;">
+                            <option value="">Seleccione una Opción</option>
+                            <option value="APROBADA">APROBADA</option>
+                            <option value="NEGADA">NEGADA</option>
+                        </select>
+                    </div>
+
+                    <div class="col-xs-3">
+                        <h1></h1>
+                        <button type="button" class="btn btn-block btn-success" style="width:80px;height: 30px;float:left;" onclick="buscarInspeccionTecnicaEmbarcacion();">Buscar</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="box-body" style="position: relative;">
+
+            <table id="tabla_inspecciotecnicanembarcacion" style="font-size: 10px; text-transform: uppercase;" class="table table-striped table-bordered" width="100%" cellspacing="0">
+                <thead>
+                    <tr class="bg-light-blue-gradient" style="color: white;">
+                        <th>MATRICULA</th>
+                        <th>EMBARCACION</th>
+                        <th>TIPO EMBARCACION</th>
+                        <th>FECHA INSPECCION</th>
+                        <th>INSPECCION</th>
+                        <th></th>
+                    </tr>
+                    <tr class="filters" id="ftper">
+                        <th>MATRICULA</th>
+                        <th>EMBARCACION</th>
+                        <th>TIPO EMBARCACION</th>
+                        <th>FECHA INSPECCION</th>
+                        <th>INSPECCION</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="bodytabla_inspecciotecnicanembarcacion">
+
+                </tbody>
+            </table>
+
+        </div>
+        <!-- /.box-body -->
+    </div>
+    <!-- /.box -->
+</div>
+<!-- content_persona -->
+<!-- /.box -->
+
+<!-- jQuery 3 -->
+{% load static %}
+
+<!-- <script src="{% static 'js/lib_internas/script_cuem_mp.js' %}"></script> -->
+<script src="{% static 'js/lib_externas/camera/func_camera.js' %}"></script>
+<script>
+
+  $(document).ready(function(){
+
+    $("#fld_tipoembarcacion").select2();
+    $("#fld_tiempomotor1").select2();
+    $("#fld_tiempomotor2").select2();
+    $("#ins_modificacionembarcacion").select2();
+    $("#ins_estapintado").select2();
+    $("#ins_tienepintadomatricula").select2();
+    $("#ins_coincidenmatricula").select2();
+    $("#ins_coincidefotografia").select2();
+    $("#ins_inspeccion").select2();
+    $("#ins_armadorpresente").select2();
+
+    buscarInspeccionTecnicaEmbarcacion();
+
+  });
+
+  document.getElementById('btn_divfiltro').addEventListener('click', function(){
+    var icon = document.getElementById('ic_filtro');
+    icon.classList.toggle('fa-minus');
+    icon.classList.toggle('fa-plus');
+  })
+    
+
+</script>
+{% endblock %}

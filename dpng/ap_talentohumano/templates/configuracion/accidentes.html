@@ -1,0 +1,178 @@
+{% load static %} 
+{% block content %}
+<!-- DataTables -->
+
+<!-- Formulario y List -->
+<div id="content_accidentes">
+    <!-- FORMULARIO -->
+
+    <textarea id="cont_form_acc" style="display: none;">
+        <div class="col-xs-12 callout" style="border-color: #1b90ad;">
+            <script>
+                $("#Stipo_acc").select2();
+                $("#SestadoAcc").select2();
+            </script>
+            {% csrf_token %}
+            <form id="frm_accidente" action="#" method="post">
+                <table>
+                    <input type="hidden" id="idaccidente" name="idaccidente" value="" />
+                    <tr>
+                        <td align="left">*Tipo</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <select id="Stipo_acc" class="select2 requerido" text="Tipo">
+                                <option value="">Seleccione una Opcion</option>
+                                {% for catalogo in catalogos %}
+                                <option value="{{ catalogo.id }}">{{ catalogo.label }}</option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                    </tr>
+                    <tr height='10px;'></tr>
+                    <tr>
+                        <td align="left">*Descripción</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="text" id="desc_acc" name="desc_acc" text="Descripción" class="form-control requerido" />
+                        </td>
+                    </tr>
+                    <tr height='10px;'></tr>
+                    <tr>
+                        <td align="left">*Estado</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <select id="SestadoAcc" class="select2 requerido" text="Estado">
+                                <option value="">Seleccione una Opcion</option>
+                                <option value="A">ACTIVO</option>
+                                <option value="I">INACTIVO</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr height='10px;'></tr>
+                    <tr>
+                        <td align="left">Observacion</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <textarea id="Observacion" class="form-control" rows="3"></textarea>
+                        </td>
+                    </tr>
+                </table>
+                <input type="hidden" id="tipot_acc" value="0" />
+            </form>
+        </div>
+
+    </textarea>
+
+    <!-- LISTA -->
+    <div class="box">
+        <!-- LISTA BUTTONS -->
+        <div class="box-header">
+            <i class="fa fa-list"></i>
+            <h3 class="box-title">Lista de Accidentes</h3>
+            <div class="botonera" style="float: right; right: 1px;">
+                <a title="pfd" onclick="generarPdf('tabla_accidentes',3)"><i class="fa fa-file-pdf-o text-green"></i></a>
+                <a title="excel" onclick="generarExcel('tabla_accidentes',3)"><i class="fa fa-file-excel-o text-green"></i></a>
+
+                <a title="Agregar Nuevo" onclick="limpiarFormAccidentes();" href='#popupGeneral' data-stackbox='true' data-stackbox-position="absolute"><i class="fa fa-plus-circle text-green"></i></a>
+
+            </div>
+        </div>
+
+        <!-- LISTA ITEMS -->
+        <div class="box-body">
+            <table id="tabla_accidentes" style="font-size: 10px; text-transform: uppercase;" class="table table-striped table-bordered" width="100%" cellspacing="0">
+                <!-- LISTA HEAD -->
+                <thead>
+                    <tr class="bg-light-blue-gradient" style="color: white;">
+                        <th>DESCRIPCION</th>
+                        <th>TIPO</th>
+                        <th>ESTADO</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    <tr class="filters" id="ftacc">
+                        <th>DESCRIPCION</th>
+                        <th>TIPO</th>
+                        <th>ESTADO</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+
+                <!-- LISTA BODY -->
+                <tbody class="botonera1">
+                    {% for accidente in accidentes %}
+                    <tr>
+                        <input type="hidden" id="td_observacion_{{ accidente.id }}" value="{{ accidente.observaciones }}">
+                        <td align="left" id="td_desc_{{ accidente.id }}">{{ accidente.descripcion }}</td>
+
+                        <td align="left" id="td_tipo_{{ accidente.id }}" id_cat="{{ accidente.categoria_id.id }}">{{ accidente.categoria_id.label }}</td>
+
+                        <td align="center" id="td_estado_{{ accidente.id }}">{{ accidente.estado }}</td>
+
+                        <td align="center">
+                            <a href='#popupGeneral' data-stackbox='true' data-stackbox-position="absolute" onclick="editAccidentes('{{ accidente.id }}')"><i class="fa fa-edit text-green"></i></a>
+                        </td>
+
+                        <td align="center">
+                            <a onclick="deleteModal('{{ accidente.id }}','accidentes');"><i class="fa fa-trash text-green"></i></a>
+                        </td>
+
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+        <!-- /.box-body -->
+
+    </div>
+    <input type="hidden" name="idx_tabla" id="idx_tabla">
+</div>
+
+<!-- /.box -->
+<!-- AdminLTE datatable -->
+<!-- jQuery 3 -->
+{% load static %}
+<script src="{% static 'js/lib_internas/script.js' %}"></script>
+<script>
+    $(document).ready(function() {
+        $("#Stipo_acc").select2();
+        $("#SestadoAcc").select2();
+
+        //initAccidentes();
+        var table = $('#tabla_accidentes').DataTable({
+            orderCellsTop: true
+        });
+
+        // Setup - add a text input to each footer cell
+        // $('#tabla_personas thead tr').clone(true).appendTo( '#tabla_personas thead' );
+        $('#tabla_accidentes thead .filters th').each(function() {
+            //var title = $(this).text();
+            var title = $('#tabla_accidentes thead tr:eq(0) th').eq($(this).index()).text();
+
+            if ((title == "")) {
+                $(this).html('');
+            } else {
+                $(this).html('<input type="text" placeholder="Buscar ' + title + '" style="color:black;"/>');
+            }
+
+        });
+
+        // Apply the search
+        table.columns().eq(0).each(function(colIdx) {
+            $('input', $('#ftacc th')[colIdx]).on('keyup change', function() {
+                table
+                    .column(colIdx)
+                    .search(this.value)
+                    .draw();
+            });
+        });
+
+    });
+</script>
+{% endblock %}

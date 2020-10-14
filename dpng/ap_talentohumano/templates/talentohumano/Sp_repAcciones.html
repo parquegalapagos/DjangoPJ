@@ -1,0 +1,118 @@
+{% load static %} 
+{% block content %}
+
+<div id="content_accionesSP">
+    <div class="box">
+        <div class="box-header">
+            <i class="fa fa-list"></i>
+            <h3 class="box-title">Reportes de Acciones en ejecución</h3>
+            <div class="botonera" style="float: right; right: 1px;">
+                <a style="cursor: pointer; font-size: 20px;" title="pfd" onclick="generarPdf('tabla_repAcc_SP',9)"><i class="fa fa-file-pdf-o text-green"></i></a>
+                <a style="cursor: pointer; font-size: 20px;" title="excel" onclick="generarExcel('tabla_repAcc_SP',9)"><i class="fa fa-file-excel-o text-green"></i></a>
+            </div>
+        </div>
+        <!-- /.box-header -->
+
+        <div class="box box-solid " style="background-color: #337ab7;">
+            <div class="box-header ui-sortable-handle" style="cursor: move;color: white;">
+                <!-- tools box -->
+                <div class="pull-right box-tools">
+                    <button type="button" class="btn btn-primary btn-sm pull-right" data-toggle="collapse" href="#collapseAccRep" role="button" aria-expanded="false" aria-controls="collapseAccRep" style="margin-right: 5px;" data-original-title="Collapse">
+                        <i class="fa fa-minus"></i></button>
+                </div>
+                <!-- /. tools -->
+                <i class="fa fa-map-marker"></i>
+                <h3 class="box-title">
+                Filtros de Busqueda
+              </h3>
+            </div>
+            <div class="box-body collapse in" style="background-color: white;" id="collapseAccRep">
+                <div class="col-xs-12">
+                    <div class="col-xs-2"></div>
+                    <div class="col-xs-4">
+                        <h style="font-size: 14px;color: black;font-weight: bold;height: 20px;">Acción</h>
+                        <br>
+                        <select id="SaccionParamRep" class="select2" style="width: 300px;">
+                            <option value=""> Seleccione una Opcion</option>
+                            <option value="1">Encargos</option>
+                            <option value="2">Licencias</option>
+                            <option value="3">Traslados</option>
+                        </select>
+                    </div>
+
+                    <div class="col-xs-4">
+                        <h style="font-size: 14px;color: black;font-weight: bold;">Fecha Vigencia</h>
+                        <div class="input-daterange input-group" id="datepicker" style="">
+                            <input type="text" class="input-sm form-control" name="start" id="FdesdeParamAcc" autocomplete="off" />
+                            <span class="input-group-addon" style="border:none;font-weight: bold;">a</span>
+                            <input type="text" class="input-sm form-control" name="end" id="FhastaParamAcc" autocomplete="off" />
+                        </div>
+
+                        <button type="button" class="btn btn-block btn-success" style="width: 20%; float: right;" onclick="buscarAccionesParametrosRep();">Buscar</button>
+                    </div>
+                    <div class="col-xs-2"></div>
+
+                </div>
+            </div>
+            <!-- /.box-body-->
+        </div>
+
+        <div class="box box-solid" style="background-color: #337ab7;">
+            <div class="box-header with-border" style="cursor: move;color: white;">
+                <!-- tools box -->
+                <div class="pull-right box-tools">
+                    <button type="button" class="btn btn-primary btn-sm pull-right" data-toggle="collapse" href="#collapseAccRepG" role="button" aria-expanded="false" aria-controls="collapseAccRepG" style="margin-right: 5px;" data-original-title="Collapse">
+                        <i class="fa fa-minus"></i></button>
+                </div>
+                <!-- /. tools -->
+                <i class="fa fa-search"></i>
+                <h3 class="box-title">
+                Gráfico
+              </h3>
+            </div>
+            <div class="box-body collapse" style="background-color: white;" id="collapseAccRepG">
+                <!--div class="col-md-12"><div id="containerAccRep" class="chart-container" style="width: 100%;"></div></div-->
+                <div class="col-md-12">
+                    <div id="outputAccRep" style="margin: 30px;width: 95%;overflow-x: auto;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="box-body">
+            <table id="tabla_repAcc_SP" class="table table-stripe table-bordered" width="100%" cellspacing="0" style="font-size: 10px; text-transform: uppercase;">
+                <thead>
+                    <tr style="background-color: #337ab7;color: white;">
+                        <th align="center">FECHA CREACIÓN</th>
+                        <th align="center">#ACC PERSONAL</th>
+                        <th align="center">IDENTIFICACION</th>
+                        <th align="center">NOMBRE</th>
+                        <th align="center">TIPO</th>
+                        <th align="center">ESTADO
+                            <br>EJECUCION</th>
+                        <th align="center">ISLA</th>
+                        <th align="center">DESDE</th>
+                        <th align="center">HASTA</th>
+                    </tr>
+                </thead>
+                <tbody class="botonera1" id="bodytabla_repAcc_SP">
+
+                </tbody>
+            </table>
+        </div>
+        <!-- /.box-body -->
+
+    </div>
+</div>
+
+<!-- /.box -->
+<!-- AdminLTE datatable -->
+<!-- jQuery 3 -->
+{% load static %}
+<script src="{% static 'js/lib_internas/script.js' %}"></script>
+<script>
+    $(document).ready(function() {
+        $("#SaccionParamRep").select2();
+        $('.input-daterange').datepicker();
+    });
+</script>
+{% endblock %}

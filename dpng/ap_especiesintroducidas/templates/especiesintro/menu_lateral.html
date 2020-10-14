@@ -1,0 +1,118 @@
+{% extends "home.html" %} 
+{% load static %} 
+{% block principalhome %}
+
+<input type="hidden" id="menu_centrocrianza" value="{{menu_centrocrianza}}">
+
+
+<div id="principal_home" style="position: relative; top:-40px;">
+
+    {% if menu_centrocrianza %}
+
+        <div class="input-group" style="width: 500px;position: relative;float: right;top: -30px;display: none;">
+            <div class="input-group-addon">
+                <i class="fa fa-calendar"></i>
+            </div>
+            <select class="select2 pull-right" id="SccrianzaMenu" style="width: 200px;">
+                <option value="">Seleccion una Opcion</option>
+                {% for centrocrianza in centroscrianzas %} {% if centrocrianza.isla_id == isla_id %}
+                <option value="{{ centrocrianza.id }}" selected>{{ centrocrianza.descripcion }}</option>
+                {% else %}
+                <option value="{{ centrocrianza.id }}">{{ centrocrianza.descripcion }}</option>
+                {% endif %} {% endfor %}
+            </select>
+            <div class="input-group-addon">
+                <i class="fa fa-calendar"></i>
+            </div>
+            <select class="select2" id="SgnacimientoMenu" style="width: 200px;">
+            </select>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <div id="container" style="width: 98%;margin-left:15px;"></div>
+            </div>
+            <div class="col-xs-12" style="height: 20px;"></div>
+            <div class="col-xs-12">
+                <div class="col-xs-6">
+                    <div id="container2"></div>
+                </div>
+                <div class="col-xs-6">
+                    <div id="container4"></div>
+                </div>
+            </div>
+        </div>
+
+
+    {% else %}
+        <div style="margin-top: 15%;">
+            <p style="text-align: center;">
+              <span style="font-size: x-large;">Bienvenido al módulo de CREI - ESPECIES INTRODUCIDAS</span>
+            </p>
+            <p style="text-align: center;">
+              <span style="font-size: large;"></span>
+            </p>
+            <p style="text-align: center;">
+              <span style="font-size: xx-large;">
+                <img src="{% static '/image/login/logo-PNG.png' %}"  width="15%">
+              </span>
+            </p>
+        </div>
+    {% endif %}
+
+    
+
+</div>
+{%endblock%}
+
+ 
+{% block menu %}
+<li class="header">ESPECIES INTRODUCIDAS</li>
+
+
+
+<li class="treeview menu-open">
+    <a href="#">
+        <i style="font-size: 18px;" class="fa fa-dashboard"></i> <span style="font-size: 18px;">Especies Introducidas</span>
+        <span class="pull-right-container">
+      <i class="fa fa-angle-left pull-right"></i>
+    </span>
+    </a>
+    <ul class="treeview-menu" style="display: block;">
+        <li onclick="addTab('Especies Introducidas','espintroducidas','idmenu98');" style="cursor: pointer;">
+            <a><i id="idmenu98" class="fa fa-circle-o text-aqua"></i>Especies Introducidas</a>
+        </li>
+    </ul>
+</li>
+ 
+{% if menu_config %}
+<!-- CONFIGURACIONES -->
+<li class="treeview menu-open">
+    <a href="#">
+        <i style="font-size: 18px;" class="fa fa-gears"></i> <span style="font-size: 18px;">Configuración</span>
+        <span class="pull-right-container">
+      <i class="fa fa-angle-left pull-right"></i>
+    </span>
+    </a>
+    <ul class="treeview-menu" style="display: block;">
+        
+    </ul>
+
+</li>
+
+{% endif %} 
+{% load static %}
+
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+<script src="{% static 'js/lib_externas/jquery-1.12.4.js' %}"></script>
+<script src="{% static 'js/lib_externas/jquery-ui.js' %}"></script>
+<script>document.write('<script src="{% static "js/lib_internas/script.js" %}?dev=' + Math.floor(Math.random() * 100) + '"\><\/script>');</script>
+<script>document.write('<script src="{% static "js/lib_internas/script_espintroducidas.js" %}?dev=' + Math.floor(Math.random() * 100) + '"\><\/script>');</script>
+<script>
+
+</script>
+
+{%endblock%}

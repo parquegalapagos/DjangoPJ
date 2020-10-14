@@ -1,0 +1,63 @@
+.menuBoton {
+
+    padding: 0px 0px 0px 0px;
+    font-size:18px;
+	display: block;
+	text-transform: uppercase;
+	text-shadow: 0 0 1em #FFF;
+	color: #fff;
+	background: rgba(0,0,0,0.4);
+	
+    font-family:'Comic Sans MS';
+	cursor: pointer;
+	
+    width: 100%;
+}
+
+
+ input:hover{
+    font-size: 20px;
+    background-color: #fff;
+	background: rgba(255,255,255,0.7);
+	text-shadow: 0 0 1em #FFF;
+	color: #000;
+}
+
+
+
+#table{
+     font-size:14px;
+     background-color: blue;
+}
+.tableTitle{
+     color: #ffd800;
+}
+.tableTitle:hover {
+     color: #ffd800;
+     background-color: black;
+}
+td{  
+     text-align:center;
+     background-color:black ;
+     color: white;
+     padding: 5px 10px 5px 10px;
+}
+td:hover {
+     background-color: white;
+     color: black;
+}
+		
+#leyendaPerfil{
+     word-wrap: break-word;
+     padding-top: 10px;
+     /*padding-bottom: 20px;*/
+     text-align: center;
+ 
+     font-family:'Comic Sans MS';
+     font-size:40px;
+     color:#FFFFFF;
+     line-height:20px;
+     text-shadow: 0 0 1em #FFF;
+}
+
+

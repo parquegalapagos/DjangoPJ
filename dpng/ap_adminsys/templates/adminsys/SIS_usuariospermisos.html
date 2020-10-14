@@ -1,0 +1,196 @@
+{% extends 'adminsys/menu_lateral.html' %}
+{% block principalhome %}
+
+{% load static %}
+
+<style>
+#customers {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#customers td, #customers th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#customers tr:nth-child(even){background-color: #f2f2f2;}
+
+#customers tr:hover {background-color: #ddd;}
+
+#customers th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #4CAF50;
+  color: white;
+}
+</style>
+
+<div id="content_graficoSP">
+  <div class="box">
+      <div class="box-header">
+        <i class="fa fa-list"></i><h3 class="box-title">Intercambiar Permisos</h3>
+      </div>    
+
+      <div class="box-body">
+        <div class="box box-solid bg-light-blue-gradient">
+
+          <form id="frm_distributivo" >
+            <div class="col-xs-12">
+              <div class="row">
+                <div class="col-xs-6 callout" style="border-color: #1b90ad;top: 10px;">
+                  
+
+                  <div class="row">
+                    <div class="col-xs-6">
+
+                      <tr>
+                        <td align="left">*Usuario1</td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <select id="user1_id" name="user1_id" class="form-control" text="Usuario1" onchange="get_permisos_user(this.value,'tabla_permisos1');">
+                            <option value="">Seleccione una Opcion</option>
+                            {% for usuario in usuarios %} 
+                              <option value="{{usuario.id}}"  >{{usuario.username}}</option>
+                            {% endfor %}
+                          </select>
+                        </td>
+                      </tr>
+
+                    </div>
+
+                    <div class="col-xs-6">
+
+                      <tr>
+                        <td align="left">*Usuario2</td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <select id="user2_id" name="user2_id" class="form-control" text="Usuario2" onchange="get_permisos_user(this.value,'tabla_permisos2');">
+                            <option value="">Seleccione una Opcion</option>
+                            {% for usuario in usuarios %} 
+                              <option value="{{usuario.id}}" >{{usuario.username}}</option>
+                            {% endfor %}
+                          </select>
+                        </td>
+                      </tr>
+
+                    </div>
+
+                  </div>
+
+                  <div style="height: 15px;"></div>
+
+                  <div class="row">
+                    <div class="col-xs-12">
+                      <input type="button" class="btn btn-primary" value="Procesar" onclick="cambiar_permisos();">
+                    </div>
+                  </div>
+                  
+
+                  <div style="height: 15px;"></div>
+
+                  <div class="row">
+                    <div class="col-xs-6">
+
+                      <table id="tabla_permisos1" style="font-size: 10px; text-transform: uppercase;" class="table table-striped table-bordered nowrap" width="100%" cellspacing="0">
+
+                        <thead>
+                          <tr class="" style="color: white;background-color: #00a65a;"> 
+                            <th>PERMISOS ORIGINALES</th>
+                          </tr>
+                        </thead>
+
+                        <tbody class="botonera1" id="bodytabla_permisos1">
+
+                        </tbody>
+                      </table>
+
+                      <table id="tabla_permisos1_aux" style="font-size: 10px; text-transform: uppercase;" class="table table-striped table-bordered nowrap" width="100%" cellspacing="0">
+
+                        <thead>
+                          <tr class="bg-light-blue-gradient" style="color: white;"> 
+                            <th>PERMISOS ASIGNADOS</th>
+                          </tr>
+                        </thead>
+
+                        <tbody class="botonera1" id="bodytabla_permisos1_aux">
+
+                        </tbody>
+                      </table>
+                    </div>
+
+
+
+                    <div class="col-xs-6">
+
+                      <table id="tabla_permisos2" style="font-size: 10px; text-transform: uppercase;" class="table table-striped table-bordered nowrap" width="100%" cellspacing="0">
+                        
+                        <thead>
+                          <tr class="" style="color: white;background-color: #00a65a;"> 
+                            <th>PERMISOS ORIGINALES</th>
+                          </tr>
+                        </thead>
+
+                        <tbody class="botonera1" id="bodytabla_permisos2">
+                        </tbody>
+
+                      </table>
+
+                      <table id="tabla_permisos2_aux" style="font-size: 10px; text-transform: uppercase;" class="table table-striped table-bordered nowrap" width="100%" cellspacing="0">
+
+                        <thead>
+                          <tr class="bg-light-blue-gradient" style="color: white;"> 
+                            <th>PERMISOS ASIGNADOS</th>
+                          </tr>
+                        </thead>
+
+                        <tbody class="botonera1" id="bodytabla_permisos2_aux">
+
+                        </tbody>
+                      </table>
+
+                      
+                    </div>
+                    
+                  </div>
+
+                     
+                </div>
+
+                
+              </div>
+
+            </div>
+
+          </form>  
+            
+
+        </div>  
+    </div>
+
+      
+      <!-- /.box-body -->
+  </div>
+</div>
+
+<!-- /.box -->
+<!-- AdminLTE datatable -->
+<!-- jQuery 3 -->
+{% load static %}
+<script src="{% static 'js/lib_externas/jquery-1.12.4.js' %}"></script>
+<script src="{% static 'js/lib_internas/script_adminsys.js' %}"></script>
+<script>
+  $(document).ready(function(){
+    $("#idmenu13").addClass("fa-dot-circle-o");
+    $("#idmenu13").parent().css("color","#00c0ef");
+
+    $('#user1_id').select2();
+    $('#user2_id').select2();
+});
+</script>
+{% endblock %}
+

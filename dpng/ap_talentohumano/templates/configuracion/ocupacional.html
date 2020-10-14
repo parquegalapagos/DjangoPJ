@@ -1,0 +1,154 @@
+{% load static %} 
+{% block content %}
+<!-- DataTables -->
+
+<div id="content_ocupacional">
+    <textarea id="cont_form_ocup" style="display: none;">
+        <div class="col-xs-12 callout" style="border-color: #1b90ad;">
+            <script type="text/javascript">
+                $("#SestadoOcup").select2();
+            </script>
+            <form id="frm_ocupacional" action="#" method="post">
+                <table>
+                    <input type="hidden" id="tipot_ocup" value="0" />
+                    <input type="hidden" id="idocupacional" name="idocupacional" value="" />
+                    <tr>
+                        <td align="left" style="font-weight: bold;">*Descripción</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="text" id="desc_ocup" name="desc_ocup" text="Descripción" class="form-control requerido" />
+                        </td>
+                    </tr>
+                    <tr height='10px;'></tr>
+                    <tr>
+                        <td align="left" style="font-weight: bold;">*Nombre corto</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="text" id="ncorto_ocup" name="ncorto_ocup" text="Nombre corto" class="form-control requerido" />
+                        </td>
+                    </tr>
+                    <tr height='10px;'></tr>
+                    <tr>
+                        <td align="left" style="font-weight: bold;">*Estado</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <select id="SestadoOcup" class="select2 requerido" text="Estado">
+                                <option value=""> Seleccione una Opcion</option>
+                                <option value="A">ACTIVO</option>
+                                <option value="I">INACTIVO</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr height='10px;'></tr>
+                    <tr>
+                        <td align="left" style="font-weight: bold;">Observacion</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <textarea id="observacion_ocup" class="form-control" rows="3"></textarea>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </textarea>
+
+    <div class="box">
+        <div class="box-header">
+            <i class="fa fa-list"></i>
+            <h3 class="box-title">Lista de Cargos Ocupacionales</h3>
+            <div class="botonera" style="float: right; right: 1px;">
+                <a title="pfd" onclick="generarPdf('tabla_ocupacional',2)"><i class="fa fa-file-pdf-o text-green"></i></a>
+                <a title="excel" onclick="generarExcel('tabla_ocupacional',2)"><i class="fa fa-file-excel-o text-green"></i></a>
+
+                <a title="Agregar Nuevo" onclick="limpiarFormOcupacional();" href='#popupGeneral' data-stackbox='true' data-stackbox-position="absolute"><i class="fa fa-plus-circle text-green"></i></a>
+
+            </div>
+        </div>
+        <!-- /.box-header -->
+
+        <div class="box-body">
+            <table id="tabla_ocupacional" style="font-size: 10px; text-transform: uppercase;" class="table table-striped table-bordered dt-responsive nowrap" width="100%" cellspacing="0">
+                <thead>
+                    <tr class="bg-light-blue-gradient" style="color: white;">
+                        <th>DESCRIPCION</th>
+                        <th>NOMBRE CORTO</th>
+                        <th>ESTADO</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    <tr class="filters" id="fto">
+                        <th>DESCRIPCION</th>
+                        <th>NOMBRE CORTO</th>
+                        <th>ESTADO</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody class="botonera1">
+                    {% for ocupacional in ocupacionals %}
+                    <tr>
+                        <input type="hidden" id="td_observacion_{{ ocupacional.id }}" value="{{ ocupacional.observaciones }}">
+                        <td align="left" id="td_desc_{{ ocupacional.id }}">{{ ocupacional.nombre }}</td>
+                        <td align="center" id="td_ncorto_{{ ocupacional.id }}">{{ ocupacional.nombre_corto }}</td>
+                        <td align="center" id="td_estado_{{ ocupacional.id }}">{{ ocupacional.estado }}</td>
+
+                        <td align="center">
+                            <a href='#popupGeneral' data-stackbox='true' data-stackbox-position='absolute' onclick="editOcupacional('{{ ocupacional.id }}')"><i class="fa fa-edit text-green"></i></a>
+                        </td>
+
+                        <td align="center">
+                            <a onclick="deleteModal('{{ ocupacional.id }}','ocupacional');"><i class="fa fa-trash text-green"></i></a>
+                        </td>
+
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <!-- /.box-body -->
+    </div>
+    <!-- /.box -->
+</div>
+<!-- /.content_ocupacional -->
+
+<!-- AdminLTE datatable -->
+<!-- jQuery 3 -->
+{% load static %}
+<script src="{% static 'js/lib_internas/script.js' %}"></script>
+<script>
+    $(document).ready(function() {
+
+        var table = $('#tabla_ocupacional').DataTable({
+            orderCellsTop: true
+        });
+        // Setup - add a text input to each footer cell
+        // $('#tabla_personas thead tr').clone(true).appendTo( '#tabla_personas thead' );
+        $('#tabla_ocupacional thead .filters th').each(function() {
+            //var title = $(this).text();
+            var title = $('#tabla_ocupacional thead tr:eq(0) th').eq($(this).index()).text();
+            cont = 0;
+            if ((title == "")) {
+                $(this).html('');
+            } else {
+                $(this).html('<input id="filtro_tocup' + cont + '" type="text" placeholder="Buscar ' + title + '" style="color:black;"/>');
+            }
+            cont++;
+        });
+
+        // Apply the search
+        table.columns().eq(0).each(function(colIdx) {
+            $('input', $('#fto th')[colIdx]).on('keyup change', function() {
+                table
+                    .column(colIdx)
+                    .search(this.value)
+                    .draw();
+            });
+        });
+
+    });
+</script>
+{% endblock %}

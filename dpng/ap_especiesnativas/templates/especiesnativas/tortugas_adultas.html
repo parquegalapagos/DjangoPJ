@@ -1,0 +1,191 @@
+ {% load static %} 
+ {% block content %}
+<!-- DataTables -->
+<link rel="stylesheet" type="text/css" href="{% static 'css/select2.min.css' %}">
+<style type="text/css">
+    .filters input {
+        width: 100%;
+        padding: 3px;
+        box-sizing: border-box;
+    }
+</style>
+<!-- FORMULARIO  -->
+<div id="content_TorAdul">
+    <div id="addTorAdul" style="display: none;">
+        <div class="stackbox-header cab_popup" align="center">
+            <h id="tituloTorAdul"> </h> Poblacion </div>
+
+        <div class="stackbox-body" id="bodyaddTorAdul">
+            <div class="notification">
+                <span class="icon">
+            <i class=""></i>
+        </span>
+                <span class="text"></span>
+                <span class="close"><i class="fa fa-close"></i></span>
+            </div>
+            <div class="row">
+                <br>
+                <br>
+                <div class="col-xs-12 callout" style="border-color: #1b90ad;">
+
+                    <!-- CAMPOS FORM -->
+                    {% csrf_token %}
+                    <form id="frm_TorAdul" action="#" method="post">
+                        <table>
+                            <!-- FIELDS -->
+                            <input type="hidden" id="idTorAdul" name="idTorAdul" value="" />
+                            <tr>
+                                <td align="right">Centro Crianza</td>
+                                <td width="20px;"></td>
+                                <td>
+                                    <select class="select2 requerido" id="SccTorAdul" text="Centro Crianza" style="width: 200px;">
+                                        <option value="">Seleccion una Opcion</option>
+                                        {% for centrocrianza in centrocrianzas %}
+                                        <option value="{{ centrocrianza.id }}">{{ centrocrianza.descripcion }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr height='10px;'></tr>
+                            <tr>
+                                <td align="right">Poblacion</td>
+                                <td width="20px;"></td>
+                                <td>
+                                    <select class="select2 requerido" id="SpoblacionTorAdul" text="Poblacion" style="width: 200px;">
+                                        <option value="">Seleccion una Opcion</option>
+                                        {% for poblacion in poblacions %}
+                                        <option value="{{ poblacion.id }}">{{ poblacion.descripcion }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr height='10px;'></tr>
+                            <tr>
+                                <td align="right">Año</td>
+                                <td width="20px;"></td>
+                                <td>
+                                    <select class="select2 requerido" id="SanioTorAdul" style="width: 200px;" text="Año">
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="right">Mes</td>
+                                <td width="20px;"></td>
+                                <td>
+                                    <select class="select2" id="SmesTorAdul" style="width: 200px;">
+                                        <option value="1">ENERO</option>
+                                        <option value="2">FEBRERO</option>
+                                        <option value="3">MARZO</option>
+                                        <option value="4">ABRIL</option>
+                                        <option value="5">MAYO</option>
+                                        <option value="6">JUNIO</option>
+                                        <option value="7">JULIO</option>
+                                        <option value="8">AGOSTO</option>
+                                        <option value="9">SEPTIEMBRE</option>
+                                        <option value="10">OCTUBRE</option>
+                                        <option value="11">NOVIEMBRE</option>
+                                        <option value="12">DICIEMBRE</option>
+                                    </select>
+                            </tr>
+                            <tr height='10px;'></tr>
+                            <tr>
+                                <td align="right">Cantidad</td>
+                                <td width="20px;"></td>
+                                <td>
+                                    <input type="text" id="cantTorAdul" name="cantTorAdul" text="Cantidad" value="" class="form-control requerido" onkeypress='return isNumberKey(event);' />
+                                </td>
+                            </tr>
+                            <tr height='10px;'></tr>
+                            <tr>
+                                <td align="right">Observacion</td>
+                                <td width="20px;"></td>
+                                <td>
+                                    <textarea id="observacionTorAdul" class="form-control" rows="3"></textarea>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <input type="hidden" id="tipoTorAdul_acc" value="0" />
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="stackbox-footer">
+            <button class="btn btn-primary" onclick="setInsertUpdateTorAdul();">Grabar</button>
+            <button class="btn btn-default" data-close-stackbox="true">Close</button>
+        </div>
+    </div>
+
+    <div class="box">
+
+        <div class="box-header">
+            <i class="fa fa-list"></i>
+            <h3 class="box-title">Lista de Ingresos Tortugas Adultas</h3>
+            <div class="botonera" style="float: right; right: 1px;">
+                {% if perms.ap_especiesnativas.add_spncontrolhuevos %}
+                <a onclick="limpiarFormTorAdul();" href='#addTorAdul' data-stackbox='true' data-stackbox-position="absolute"><i class="fa fa-plus-circle text-green btn_nuevo"></i></a>
+                <a title="pfd" onclick="generarPdf('tabla_TorAdul',4)"><i class="fa fa-file-pdf-o text-green"></i></a>
+                <a title="excel" onclick="generarExcel('tabla_TorAdul',4)"><i class="fa fa-file-excel-o text-green"></i></a> {% endif %}
+                <!--a title="Agregar Nuevo" onclick="limpiarFormLicencia_SP();"   href='#addLicenciaL' data-stackbox='true' data-stackbox-position="absolute"><i class="fa fa-plus-circle text-green"></i></a-->
+            </div>
+        </div>
+        <!-- /.box-header -->
+
+        <div class="box-body">
+            <table id="tabla_TorAdul" style="font-size: 12px; text-transform: uppercase;" class="table table-striped table-bordered dt-responsive nowrap" width="100%" cellspacing="0">
+                <thead>
+                    <tr style="background-color: #0073b7;    color: white;">
+                        <th>Centro Crianza</th>
+                        <th>Poblacion</th>
+                        <th>Anio</th>
+                        <th>Mes</th>
+                        <th>Cantidad</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for cantidad in cantidads %}
+                    <tr>
+                        <td id="td_cc_{{ cantidad.id }}">{{ cantidad.centro_crianza_id.descripcion }}</td>
+                        <td id="td_pob_{{ cantidad.id }}">{{ cantidad.poblacion_id.descripcion }}</td>
+                        <td id="td_anio_{{ cantidad.id }}">{{ cantidad.anio }}</td>
+                        <td id="td_mes_{{ cantidad.id }}">{{ cantidad.mes }}</td>
+                        <td id="td_cant_{{ cantidad.id }}">{{ cantidad.cantidad }}</td>
+                        <td align="center">
+                            <a href='#addTorAdul' data-stackbox='true' data-stackbox-position='absolute' onclick="editTorAdul('{{ cantidad.id }}')">
+                                <i class="fa fa-edit text-green"></i>
+                            </a>
+                        </td>
+                        <td align="center">
+                            <a style="cursor: pointer;" onclick="deleteModal('{{ cantidad.id }}','TorAdul');">
+                                <i class="fa fa-trash text-green" title="Eliminar Cantidad Tortugas Adultas"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <!-- /.box-body -->
+    </div>
+
+</div>
+<!-- /.box -->
+<!-- AdminLTE datatable -->
+<!-- jQuery 3 -->
+{% load static %}
+
+<!-- <script src="{% static 'js/lib_internas/script_espnativas.js' %}"></script> -->
+<script>
+    $(document).ready(function() {
+
+        $('#SccTorAdul').select2();
+        $('#SmesTorAdul').select2();
+        $('#SpoblacionTorAdul').select2();
+        iniciaYears("SanioTorAdul");
+        var table = $('#tabla_TorAdul').DataTable();
+    });
+</script>
+
+{% endblock %}

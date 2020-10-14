@@ -1,0 +1,160 @@
+{% extends 'serv_ambientales/menu_lateral.html' %}
+{% block principalhome %}
+{% load static %}
+<!-- DataTables -->
+<link rel="stylesheet" type="text/css" href="{% static 'css/select2.min.css' %}">
+
+<style type="text/css">
+    .filters input {
+        width: 100%;
+        padding: 3px;
+        box-sizing: border-box;
+        fieldset {
+            border: 1px solid #ddd !important;
+            margin: 0;
+            xmin-width: 0;
+            padding: 10px;
+            position: relative;
+            border-radius: 4px;
+            background-color: #f5f5f5;
+            padding-left: 10px!important;
+        }
+        legend {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 0px;
+            width: 35%;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 5px 5px 5px 10px;
+            background-color: #ffffff;
+        }
+        #map {
+            height: 500px;
+        }
+    }
+</style>
+
+<!-- FORMULARIO  -->
+<div style="width: 98%; margin-left: 1%;box-shadow: 5px 5px 15px 5px #888888;">
+<div id="content_tipousuario">
+    <div id="addTipoUsuario" style="display: none;">
+        <div class="stackbox-header cab_popup" align="center">Tipo Usuario <i class="fa fa-users" aria-hidden="true" style="font-size: 20px; float: left;"></i></div>
+
+        <div class="stackbox-body" id="bodyaddTipoUsuario">
+            <div class="notification">
+                <span class="icon">
+                    <i class=""></i>
+                </span>
+                <span class="text"></span>
+                <span class="close"><i class="fa fa-close"></i></span>
+            </div>
+            <div class="row" align="center">
+                <div class="col-xs-12 callout" style="border-color: #1b90ad;">
+
+                    <!-- CAMPOS FORM -->
+                    {% csrf_token %}
+                    <form id="frm_tipousuario" action="#" method="post">
+
+                        <table style="width: 100%">
+                            <input type="hidden" id="idTipoUsuarioST" name="idTipoUsuarioST" value="" />
+                            <tr height='10px;'></tr>
+                            <tr>
+                                <td align="left">*Descripcion</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="text" id="descTipoUsuarioST" class="form-control requerido" /> </td>
+                            </tr>
+
+                            
+                            <tr height='10px;'></tr>
+                            <tr>
+                                <td align="left">*Estado</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <select id="SestadoTipoUsuarioST" class="select2 requerido" text="Estado">
+                                        <option value="">Seleccione una Opcion</option>
+                                        <option value="A">ACTIVO</option>
+                                        <option value="I">INACTIVO</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td align="left">Observacion</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <textarea id="observacionTipoUsuarioST" class="form-control" rows="3" style="width: 100%; font-size: 12px;"></textarea>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <input type="hidden" id="tipoTUST" value="0" />
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="stackbox-footer">
+           
+            <button class="btn btn-primary" onclick="setInsertUpdateTipoUsuario();">Grabar</button>
+            
+            <button class="btn btn-default" data-close-stackbox="true">Close</button>
+        </div>
+    </div>
+
+    <div class="box">
+
+        <div class="box-header"  style="background-color: #005196; color: white;">
+            <i class="fa fa-list"></i>
+            <h3 class="box-title">Lista Tipo Usuario</h3><i class="fa fa-users" aria-hidden="true" style="font-size: 20px; margin-left: 10px;"></i>
+            <div class="botonera" style="float: right; right: 1px;">                
+                <a onclick="limpiarFormTipoUsuarioST();" href='#addTipoUsuario' data-stackbox='true' data-stackbox-position="absolute"><i style="color: white;" class="fa fa-plus-circle btn_nuevo"></i></a> 
+                <a title="excel" onclick="generarExcel('tabla_tipousuario',14)"><i style="color: white;" class="fa fa-file-excel-o"></i></a>
+            </div>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+            <table id="tabla_tipousuario" style="font-size: 10px; text-transform: uppercase;font-weight: bold;" class="table table-striped table-bordered" width="100%" cellspacing="0">
+                <thead style="background-color: #005196;    color: white;">
+	                <th>Descripcion</th>
+                    <th>Estado</th>
+                   
+	                <th></th>
+	                <th></th>
+                </thead>
+                <tbody id="bodytabla_tipousuario">
+
+                </tbody>
+            </table>
+        </div>
+        <!-- /.box-body -->
+
+    </div>
+    <!-- /.box -->
+
+</div>
+</div>
+<!-- /.content -->
+
+<!-- AdminLTE datatable -->
+<!-- jQuery 3 -->
+{% load static %}
+
+
+<script>
+    $(document).ready(function() {
+        $('#SestadoTipoUsuarioST').select2();
+        buscarTipoUsuarioParametros("");
+        //var table = $('#tabla_ubicacions').DataTable();
+        //var f1 = (new Date).getFullYear() + "-01-01";
+        //var f2 = (new Date).getFullYear() + "-12-31";
+        //var dataini = f1 + "," + f2;
+        
+    });
+ 
+</script>
+
+{% endblock %}

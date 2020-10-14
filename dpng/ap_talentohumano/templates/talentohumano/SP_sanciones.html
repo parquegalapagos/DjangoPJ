@@ -1,0 +1,366 @@
+{% load static %} 
+{% block content %}
+
+<!-- PERMISOS PARA LOS ICONOS DE LA LISTA -->
+{% if perms.ap_talentohumano.view_perfuncionariosanciones or perms.ap_talentohumano.change_perfuncionariosanciones %}
+<input type="hidden" id="perm_change_perfuncionariosanciones" value="1" /> 
+{% else %}
+<input type="hidden" id="perm_change_perfuncionariosanciones" value="0" /> 
+{% endif %} {% if perms.ap_talentohumano.delete_perfuncionariosanciones %}
+<input type="hidden" id="perm_delete_perfuncionariosanciones" value="1" /> 
+{% else %}
+<input type="hidden" id="perm_delete_perfuncionariosanciones" value="0" /> 
+{% endif %}
+
+<div id="content_sancionS">
+    <div id="addSancionSP" style="display: none;" class="efecto">
+        <div class="stackbox-header cab_popup" align="center">
+            <img src="{% static 'image/favicon.ico' %}" width="40px" style="float:left;margin-top: -5px;" />
+            <h id="tituloSanS"> </h> Funcionario Sanciones</div>
+        <div class="stackbox-body" id="bodyaddSancionSP">
+            <input type="hidden" id="idsancionS" name="idsancionS" value="" />
+            <input type="hidden" id="tipot_sancS" value="0" /> {% csrf_token %}
+
+            <div class="row" style="box-shadow: 5px 5px 5px 5px #888888; width: 103%; margin-top: 20px;">
+                <!--div usado para que se muestren las notificaciones cuando un campo es obligatorio es necesario agregar id stackbox-body y agregar atributo "text" (con el nombre de la etiqueta) a cada input obligatorio-->
+                <div class="notification">
+                    <span class="icon">
+            <i class=""></i>
+        </span>
+                    <span class="text"></span>
+                    <span class="close"><i class="fa fa-close"></i></span>
+                </div>
+                <!--fin notificacion-->
+                <br>
+                <form id="frm_sancionS" action="#" method="post" enctype="multipart/form-data">
+                    <div class="col-xs-12">
+                        <div class="col-xs-6 callout" style="border-color: #1b90ad;">
+                            <table>
+                                <tr>
+                                    <td align="left">*Funcionario<a style="cursor: pointer; font-size: 14px; margin-left: 10px" title="Buscar Funionario" href='#popupFuncionarios' onclick="limpiaPopupFuncionario('SP_sanciones')" data-stackbox='true' data-stackbox-position="absolute"><i class="fa fa-search text-blue"></i></a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3">
+                                        <input type="text" class="form-control requerido" name="funcionaioSanc" text="Funcionario" id="funcionaioSanc" style="width: 300px; font-size: 11px;" readonly />
+                                        <input type="hidden" name="funcionaioSanid" id="funcionaioSanid" />
+                                        <input type="hidden" name="funcionaioSanced" id="funcionaioSanced" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="col-xs-12">
+                        <div style="border-bottom:2px solid #3c8dbc;font-size: 14px;box-shadow: 1px 5px 5px;"><i class="fa fa-fw fa-calendar"></i> Fecha Sanción</div>
+                        <br>
+                        <div class="col-xs-6 callout" style="border-color: #1b90ad;">
+                            <table>
+                                <tr>
+                                    <td align="left">*Año</td>
+                                    <td width="20px"></td>
+                                    <td align="left">*Mes</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input id="anioSP" type="number" text="Año" min="2000" max="2050" class="form-control requerido" style="width: 100px;" onkeypress='return isNumberKey(event);'>
+                                    </td>
+                                    <td width="20px"></td>
+                                    <td>
+                                        <select id="SmesS" class="select2 requerido" text="Mes" style="width: 200px;">
+                                            <option value=""> Seleccione una Opción</option>
+                                            <option value="1">Enero</option>
+                                            <option value="2">Febrero</option>
+                                            <option value="3">Marzo</option>
+                                            <option value="4">Abril</option>
+                                            <option value="5">Mayo</option>
+                                            <option value="6">Junio</option>
+                                            <option value="7">Julio</option>
+                                            <option value="8">Agosto</option>
+                                            <option value="9">Septiembre</option>
+                                            <option value="10">Octubre</option>
+                                            <option value="11">Noviembre</option>
+                                            <option value="12">Diciembre</option>
+                                        </select>
+                                    </td>
+                                </tr>
+
+                            </table>
+                        </div>
+                        <div class="col-xs-6 callout" style="border-color: #1b90ad;">
+                            <table>
+                                <tr>
+                                    <td align="left">*Régimen Laboral</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <select id="SregimenS" class="select2 requerido" text="Régimen Laboral">
+                                            {% for regimen in regimens %}
+                                            <option value="{{ regimen.id }}">{{ regimen.descripcion }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="col-xs-12">
+                        <div style="border-bottom:2px solid #3c8dbc;font-size: 14px;box-shadow: 1px 5px 5px;"><i class="fa fa-fw fa-paste"></i> Tipo Falta</div>
+                        <br>
+                        <div class="col-xs-6 callout" style="border-color: #1b90ad;">
+                            <table>
+                                <tr>
+                                    <td align="left">*Tipo Falta</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <select id="Stipo_faltaS" class="select2 requerido" text="Tipo Falta" onchange="cambiarComboinfo('SsancionS',this.value,'sanciones','tipo_id','descripcion');ocultarSumario(this.value);" style="width: 300px; z-index: 999999;">
+                                            <option value=""> Seleccione una Opción</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr height='10px;'></tr>
+                                <tr>
+                                    <td align="left">*Sanción</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <select id="SsancionS" class="select2 requerido" text="Sanción">
+                                            <option value=""> Seleccione una Opción</option>
+
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr height='10px;'></tr>
+                                <tr id="tdSsumarioS" hidden>
+                                    <td align="left">Aplica Sumario Admnistrativo</td>
+                                </tr>
+                                <tr id="tdSsumarioSLabel" hidden>
+                                    <td>
+                                        <select id="SsumarioS" class="select2" text="Aplica Sumario Admnistrativo" onchange="ocultarEstadoSancion(this.value)">
+                                            <option value="">Seleccione una Opción</option>
+                                            <option value="t">SI</option>
+                                            <option value="f">NO</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr height='10px;'></tr>
+                                <tr id="trestadoSumario" hidden>
+                                    <td align="left">Estado Sumario</td>
+                                </tr>
+                                <tr id="trlabelestadoSumario" hidden>
+                                    <td>
+                                        <select id="SestadosumarioS" class="select2" text="Aplica Sumario Admnistrativo">
+                                            <option value="">Seleccione una Opción</option>
+                                            <option value="0" data-show="f">NO APLICA</option>
+                                            <option value="1" data-show="t">EN TRAMITE</option>
+                                            <option value="2" data-show="t">CULMINADO</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-xs-6 callout" style="border-color: #1b90ad;">
+                            <table>
+                                <tr>
+                                    <td align="left">Numero Memo</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input type="text" class="form-control" id="num_memoS" name="num_memoS">
+                                    </td>
+                                </tr>
+                                <tr height='10px;'></tr>
+                                <tr>
+                                    <td align="left">Memo</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input type="file" class="form-control requerido_file" id="memoSP" name="myfile">
+                                        <div id="contentFile" style="margin-left: 20px;"><img id="imgContentFileSP" src="" width="50px" />
+                                            <a id="link_sanciones" style="color: black; cursor: pointer;"></a>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                            </table>
+                        </div>
+                        <div class="col-xs-12" style="position: relative;top: -30px;">
+                            <h style="font-size: 14px;">Observación</h>
+                            <textarea id="observacion_SP" class="form-control" rows="3"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+        <div class="stackbox-footer">
+            {% if perms.ap_talentohumano.add_perfuncionariosanciones or perms.ap_talentohumano.change_perfuncionariosanciones %}
+            <button class="btn btn-primary" onclick="setInsertUpdateSancion_SP();">Grabar</button>
+            {% endif %}
+            <button class="btn btn-default" data-close-stackbox="true">Close</button>
+        </div>
+    </div>
+
+    <div class="box">
+        <div class="box-header">
+            <i class="fa fa-list"></i>
+            <h3 class="box-title">Lista de Funcionario Sanciones</h3>
+            <div class="botonera" style="float: right; right: 1px;">
+                <a title="pfd" onclick="generarPdf('tabla_sancionesS',12,1)"><i class="fa fa-file-pdf-o text-green"></i></a>
+                <a title="excel" onclick="generarExcel('tabla_sancionesS',12,'Regimen Disciplinario')"><i class="fa fa-file-excel-o text-green"></i></a> {% if perms.ap_talentohumano.add_perfuncionariosanciones %}
+                <a title="Agregar Nuevo" onclick="limpiarFormSancionS();" href='#addSancionSP' data-stackbox='true' data-stackbox-position="absolute" data-stackbox-width="800"><i class="fa fa-plus-circle text-green"></i></a> {% endif %}
+
+            </div>
+        </div>
+        <!-- /.box-header -->
+
+        <div class="box box-solid bg-light-blue-gradient">
+            <div class="box-header ui-sortable-handle" style="cursor: move;">
+                <!-- tools box -->
+                <div class="pull-right box-tools">
+                    <button type="button" class="btn btn-primary btn-sm pull-right" data-toggle="collapse" href="#collapseSan" role="button" aria-expanded="false" aria-controls="collapseSan" style="margin-right: 5px;" data-original-title="Collapse">
+                        <i class="fa fa-minus"></i></button>
+                </div>
+                <!-- /. tools -->
+                <i class="fa fa-map-marker"></i>
+                <h3 class="box-title">
+            Filtros de Busqueda
+          </h3>
+            </div>
+            <div class="box-body collapse" style="background-color: white;" id="collapseSan">
+                <div class="col-xs-12">
+
+                    <div class="col-xs-4">
+                        <h style="font-size: 14px;color: black;font-weight: bold;height: 20px;">Nombre</h>
+                        <input type="text" class="form-control" name="" id="nombreParamSan" style="width: 100%;" />
+                    </div>
+                    <div class="col-xs-4">
+                        <h style="font-size: 14px;color: black;font-weight: bold;">Identificación</h>
+                        <input type="text" class="form-control" name="" id="cedParamSan" style="width: 100%;" />
+                    </div>
+                    <div class="col-xs-4">
+                        <h style="font-size: 14px;color: black;font-weight: bold;">Fecha Sanción</h>
+                        <div class="input-daterange input-group" id="datepicker" style="">
+                            <input type="text" class="input-sm form-control" name="start" id="FdesdeParamSan" autocomplete="off" />
+                            <span class="input-group-addon" style="border:none;font-weight: bold;">a</span>
+                            <input type="text" class="input-sm form-control" name="end" id="FhastaParamSan" autocomplete="off" />
+                        </div>
+                        <br>
+                        <button type="button" class="btn btn-block btn-success" style="width: 20%; float: right;" onclick="buscarSancionesParametros();">Buscar</button>
+                    </div>
+
+                </div>
+            </div>
+            <!-- /.box-body-->
+        </div>
+
+        <div class="box-body">
+
+            <table id="tabla_sancionesS" style="font-size: 10px; text-transform: uppercase;" class="table table-striped table-bordered nowrap" width="100%" cellspacing="0">
+                <thead>
+                    <tr class="bg-light-blue-gradient" style="color: white;">
+                        <th style="text-align: center;">NUMERO
+                            <BR>RUC
+                            <BR>INSTITUCION</th>
+                        <th style="text-align: center;">FUNCION</th>
+                        <th style="text-align: center;">NOMBRE
+                            <BR>INSTITUCION</th>
+                        <th style="text-align: center;">IDENTIFICACIÓN</th>
+                        <th style="text-align: center;">NOMBRE</th>
+                        <th style="text-align: center;">TIPO</th>
+                        <th style="text-align: center;">SANCIÓN</th>
+                        <!--th style="text-align: center;">REGIMEN<BR>LABORAL</th-->
+                        <th style="text-align: center;">MODALIDAD
+                            <BR>CONTRACTUAL</th>
+                        <th style="text-align: center;">AÑO</th>
+                        <th style="text-align: center;">MES</th>
+                        <th style="text-align: center;">APLICA
+                            <br>SUMARIO</th>
+                        <th style="text-align: center;">ESTADO
+                            <br>SUMARIO</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody class="botonera1" id="bodytabla_sancionesS">
+
+                </tbody>
+
+            </table>
+
+        </div>
+        <!-- /.box-body -->
+
+    </div>
+
+</div>
+
+<!-- /.box -->
+<!-- AdminLTE datatable -->
+<!-- jQuery 3 -->
+{% load static %}
+<input type="hidden" id="verifica_init_sancion" value=0>
+<script src="{% static 'js/lib_internas/script.js' %}"></script>
+<script>
+    $(document).ready(function() {
+
+        var d = new Date();
+        var f1 = d.getFullYear() + "-01-01";
+        var f2 = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+        var dataini = f1 + "," + f2;
+        buscarSancionesParametros(dataini);
+
+        f1_aux = '01-' + (new Date).getFullYear();
+        f2_aux = (d.getMonth() + 1) + '-' + (new Date).getFullYear();
+        $("#FdesdeParamSan").val(f1_aux);
+        $("#FhastaParamSan").val(f2_aux);
+
+        $('.input-daterange').datepicker({
+            format: "mm-yyyy",
+            viewMode: "months",
+            minViewMode: "months"
+        });
+
+        $("#SmesS").select2();
+        $("#SregimenS").select2();
+
+        iniciarCombo('Stipo_faltaS', 'TIPO_FALTA', 'catalogos');
+        $("#Stipo_faltaS").select2({
+            sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
+        });
+
+        $("#SsumarioS").select2();
+        $("#SestadosumarioS").select2();
+
+        var table = $('#tabla_sancionesS').DataTable({
+            orderCellsTop: true,
+        });
+
+        //table.columns( [4] ).visible( false );
+
+        // Setup - add a text input to each footer cell
+        // $('#tabla_personas thead tr').clone(true).appendTo( '#tabla_personas thead' );
+        /*$('#tabla_sancionesS thead .filters th').each(function() {
+            //var title = $(this).text();
+          var title = $('#tabla_sancionesS thead tr:eq(0) th').eq($(this).index()).text();
+          if ((title == "")) {
+            $(this).html('');
+          }else{
+              $(this).html('<input type="text" placeholder="Buscar" style="color:black;"/>');
+          }
+        } );
+
+        // Apply the search
+        table.columns().eq(0).each(function(colIdx) {
+            $('input', $('#ftsanS th')[colIdx]).on('keyup change', function() {
+                table
+                    .column(colIdx)
+                    .search(this.value)
+                    .draw();
+            });
+        });*/
+
+    });
+</script>
+{% endblock %}

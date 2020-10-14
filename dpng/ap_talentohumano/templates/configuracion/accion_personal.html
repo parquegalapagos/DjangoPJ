@@ -1,0 +1,261 @@
+{% load static %} 
+{% block content %}
+<style type="text/css">
+    .ms-container .ms-selectable li.ms-elem-selectable,
+    .ms-container .ms-selection li.ms-elem-selection {
+        font-size: 10px;
+    }
+</style>
+<div id="content_accion">
+
+    <div id="addFuncAccion" style="display: none;">
+        <div class="stackbox-header cab_popup" align="center">
+            <img src="{% static 'image/favicon.ico' %}" width="40px" style="float:left;margin-top: -5px;" />Asignar Funcionarios Accion Personal</div>
+        <div class="stackbox-body" id="bodyaddFuncAccion">
+
+            <!--fin notificacion-->
+            {% csrf_token %}
+            <div class="row">
+
+                <div class="col-sm-2"></div>
+                <div class="col-sm-8">
+                    <input type="hidden" id="idaccionPer_aux">
+                    <strong style="font-weight:bold;font-size:16px;margin-left: 20px;color: #045884;">Funcionarios</strong>
+
+                    <select name='listFunc' id='listFunc' multiple='multiple' style="font-size: 12px;">
+                        {% for funcionario in funcionarios %}
+                        <option value="{{ funcionario.id }}">{{ funcionario.persona_id.apellidos }} {{ funcionario.persona_id.nombres }}</option>
+                        {% endfor %}
+                    </select>
+
+                </div>
+                <div class="col-sm-2"></div>
+
+            </div>
+        </div>
+        <div class="stackbox-footer">
+            <button class="btn btn-primary" id="btn_FuncAccion" onclick="asignarfuncAccionTable();">Grabar</button>
+            <button class="btn btn-default" data-close-stackbox="true">Close</button>
+        </div>
+    </div>
+
+    <textarea id="cont_form_accion" style="display: none;">
+        <div class="col-xs-12 callout" style="border-color: #1b90ad;">
+            <script type="text/javascript">
+                $("#Stipo_acc").select2();
+                $("#SestadoAcc").select2();
+            </script>
+            {% csrf_token %}
+            <form id="frm_accion" action="#" method="post">
+                <table>
+                    <input type="hidden" id="idaccion" name="idaccion" value="" />
+
+                    <tr>
+                        <td align="left">*Tipo</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <select id="Stipo_acc" class="select2" text="Tipo">
+                                <option value="1">NA</option>
+                                <option value="2">Padre</option>
+                                {% for accionTipo in accionTipos %}
+                                <option value="{{ accionTipo.id }}">{{ accionTipo.descripcion }}</option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                    </tr>
+
+                    <tr height='10px;'></tr>
+                    <tr>
+                        <td align="left">*Descripción</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="text" id="nombre_acc" name="nombre_acc" text="Descripción" class="form-control requerido" />
+                        </td>
+                    </tr>
+
+                    <tr height='10px;'></tr>
+                    <tr>
+                        <td width="50%">
+                            Habilitar "Rige Fecha Hasta" en PDF
+                            <br>
+                            <label class="radio-inline">
+                                <input type="radio" id="accp_rige_hasta_si" name="accp_rige_hasta" value="true"> SI
+                                <br>
+                                <input type="radio" id="accp_rige_hasta_no" name="accp_rige_hasta" value="false">NO
+                                <br>
+
+                            </label>
+                        </td>
+
+                        <td width="50%">
+                            Llenar datos en "Posesion de Cargo" en PDF
+                            <br>
+                            <label class="radio-inline">
+                                <input type="radio" id="accp_posesion_cargo_si" name="accp_posesion_cargo" value="true"> SI
+                                <br>
+                                <input type="radio" id="accp_posesion_cargo_no" name="accp_posesion_cargo" value="false"> NO
+                                <br>
+                            </label>
+                        </td>
+                    </tr>
+
+                    <tr height='10px;'></tr>
+                    <tr>
+                        <td width="50%">
+                            Habilitar solo el campo "Fecha Vigencia"
+                            <br>
+                            <label class="radio-inline">
+                                <input type="radio" id="accp_fecha_vigencia_si" name="accp_fecha_vigencia" value="true"> SI
+                                <br>
+                                <input type="radio" id="accp_fecha_vigencia_no" name="accp_fecha_vigencia" value="false">NO
+                                <br>
+
+                            </label>
+                        </td>
+
+                    </tr>
+
+                    <tr height='10px;'></tr>
+                    <tr>
+                        <td align="left">*Estado</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <select id="SestadoAcc" class="select2 requerido" text="Estado">
+                                <option value="">Seleccione una Opcion</option>
+                                <option value="A">ACTIVO</option>
+                                <option value="I">INACTIVO</option>
+                            </select>
+                        </td>
+                    </tr>
+
+                    <tr height='10px;'></tr>
+                    <tr>
+                        <td align="left">Observación</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <textarea id="Observacion_acc" class="form-control" rows="3"></textarea>
+                        </td>
+                    </tr>
+
+                </table>
+                <input type="hidden" id="tipot_acc" value="0" />
+            </form>
+        </div>
+    </textarea>
+
+    <div class="box">
+        <div class="box-header">
+            <i class="fa fa-list"></i>
+            <h3 class="box-title">Lista de Acción Personal</h3>
+            <div class="botonera" style="float: right; right: 1px;">
+                <a title="pfd" onclick="generarPdf('tabla_acciones',3)"><i class="fa fa-file-pdf-o text-green"></i></a>
+                <a title="excel" onclick="generarExcel('tabla_acciones',3)"><i class="fa fa-file-excel-o text-green"></i></a> {% if perms.talentohumano.add_persona %}
+                <a title="Agregar Nuevo" onclick="limpiarFormAccion();" href='#popupGeneral' data-stackbox='true' data-stackbox-position="absolute"><i class="fa fa-plus-circle text-green"></i></a> {% endif %}
+            </div>
+        </div>
+        <!-- /.box-header -->
+
+        <div class="box-body">
+            <table id="tabla_acciones" style="font-size: 10px; text-transform: uppercase;" class="table table-striped table-bordered" width="100%" cellspacing="0">
+                <thead>
+                    <tr class="bg-light-blue-gradient" style="color: white;">
+                        <th>NOMBRE</th>
+                        <th>TIPO</th>
+                        <th>ESTADO</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    <tr class="filters" id="ftacc">
+                        <th>NOMBRE</th>
+                        <th>TIPO</th>
+                        <th>ESTADO</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody class="botonera1">
+                    {% for accion in acciones %}
+                    <tr>
+                        <input type="hidden" id="td_observacion_{{ accion.id }}" value="{{ accion.observaciones }}">
+                        <input type="hidden" id="td_tipoAcc_{{ accion.id }}" value="{{ accion.accion_id.id }}">
+                        <input type="hidden" id="tipoAcc_{{ accion.id }}" value="{{ accion.tipo }}">
+                        <input type="hidden" id="td_rigehasta_{{ accion.id }}" value="{{ accion.flag_rige_hasta_pdf }}">
+                        <input type="hidden" id="td_posesion_cargo_{{ accion.id }}" value="{{ accion.flag_posesion_cargo_pdf }}">
+                        <input type="hidden" id="td_solo_fechavigencia_{{ accion.id }}" value="{{ accion.flag_solo_fechavigencia }}">
+
+                        <td align="left" id="td_desc_{{ accion.id }}">{{ accion.descripcion }}</td>
+                        {% if accion.accion_id != null %}
+                        <td align="left" id="td_tipo_{{ accion.id }}">{{ accion.accion_id.descripcion }}</td>
+                        {% else %}
+                        <td align="left" id="td_tipo_{{ accion.id }}"></td>
+                        {% endif %}
+                        <td align="center" id="td_estado_{{ accion.id }}">{{ accion.estado }}</td>
+
+                        <td align="center">
+                            <a id="btnAccionFun_{{ accion.id }}" onclick="asignarfuncAccion('{{ accion.id }}','{{ accion.funcionarios }}');" href='#addFuncAccion' data-stackbox='true' data-stackbox-position="absolute" data-stackbox-width="700px" data-stackbox-height="400px"><i class="fa fa-users text-green"></i></a>
+                        </td>
+
+                        <td align="center">
+                            <a href='#popupGeneral' data-stackbox='true' data-stackbox-position="absolute" onclick="editAccion('{{ accion.id }}')"><i class="fa fa-edit text-green"></i></a>
+                        </td>
+
+                        <td align="center">
+                            <a onclick="deleteModal('{{ accion.id }}','accion_personal');"><i class="fa fa-trash text-green"></i></a>
+                        </td>
+
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+        <!-- /.box-body -->
+
+    </div>
+</div>
+<!-- /.box -->
+<!-- AdminLTE datatable -->
+<!-- jQuery 3 -->
+{% load static %}
+
+<script src="{% static 'js/lib_internas/script.js' %}"></script>
+
+<script>
+    $(document).ready(function() {
+        $('#listFunc').multiSelect();
+
+        var table = $('#tabla_acciones').DataTable({
+            orderCellsTop: true
+        });
+        // Setup - add a text input to each footer cell
+        // $('#tabla_personas thead tr').clone(true).appendTo( '#tabla_personas thead' );
+        $('#tabla_acciones thead .filters th').each(function() {
+            //var title = $(this).text();
+            var title = $('#tabla_acciones thead tr:eq(0) th').eq($(this).index()).text();
+
+            if ((title == "")) {
+                $(this).html('');
+            } else {
+                $(this).html('<input type="text" placeholder="Buscar ' + title + '" style="color:black;"/>');
+            }
+        });
+
+        // Apply the search
+        table.columns().eq(0).each(function(colIdx) {
+            $('input', $('#ftacc th')[colIdx]).on('keyup change', function() {
+                table
+                    .column(colIdx)
+                    .search(this.value)
+                    .draw();
+            });
+        });
+
+    });
+</script>
+{% endblock %}

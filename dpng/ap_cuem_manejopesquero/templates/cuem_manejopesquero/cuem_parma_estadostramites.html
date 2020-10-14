@@ -1,0 +1,730 @@
+{% load static %}
+{% block content %}
+<style type="text/css">
+    .select2-results .select2-disabled,
+    .select2-results__option[aria-disabled=true] {
+        display: none;
+    }
+    .timeline>li>.timeline-item>.time {
+        color: #000;
+    }
+    .timeline:before {
+      background: #000;
+    }
+</style>
+
+<!-- hidden fields -->
+<input type="hidden" id="idDafCertificacionesET" name="idDafCertificaciones" value="" />
+<input type="hidden" id="cargaFuncET" value="0">
+<input type="hidden" id="tipot_certifET" value="0" />
+
+<textarea id="optionFuncSET" style="display: none;"></textarea>
+
+<input type="hidden" id="func_solicitante_id_ET" value="{{funcionario_id}}">
+<!-- Funcionario/Usuario con la session activa -->
+<input type="hidden" id="funcionario_session_idET" value="{{funcionario_id}}"> 
+<input type="hidden" id="persona_nombresET" value="{{persona_nombres}}">
+<input type="hidden" id="puesto_institucional_nm_ET" value="{{puesto_institucional_nm}}">
+<input type="hidden" id="email_institucional_ET" value="{{email_institucional}}">
+<input type="hidden" id="telefono_celular_ET" value="{{telefono_celular}}">
+<input type="hidden" id="permiso_sessionET" value="{{permiso_session}}">
+
+<!--div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="addDafCertificacionesET">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" id="modal-btn-si" onclick="confirmdelete();">Si</button>
+        <button type="button" class="btn btn-primary" id="modal-btn-no">No</button>
+      </div>
+    </div>
+  </div>
+</div-->
+
+<div id="content_DafCertificacionesET">
+    <div id="addDafCertificacionesET" style="display: none;">
+        <div class="stackbox-header cab_popup" align="center">
+            <img src="{% static 'image/favicon.ico' %}" width="40px" style="float:left;margin-top: -5px;" />
+            <h id="tituloDafCertificacionesET"> </h> Certificaciones Presupuestarias
+        </div>
+
+        <div class="stackbox-body" id="bodyaddDafCertificacionesET">
+            <section class="content">
+                <div class="row" style="box-shadow: 5px 5px 15px 5px #888888;margin-top: 20px;">
+                    <form id="frm_certifET" action="#" method="post">
+                        <div class="row">
+                            <div class="col-xs-12 callout">
+                                <div class="nav-tabs-custom">
+
+                                    <ul class="nav nav-tabs">
+                                        <li class="active"><a href="#tab_infoET" data-toggle="tab" aria-expanded="true" style="font-weight: bold;" data-stackbox-width="1000px">Info</a></li>
+
+                                        <li class=""><a href="#tab_documentacionET" data-toggle="tab" aria-expanded="false" style="font-weight: bold;">Documentacion</a></li>
+
+                                        <li class=""><a href="#tab_informesET" data-toggle="tab" aria-expanded="false" style="font-weight: bold;">Informes</a></li>
+                                        
+                                        <li class=""><a href="#tab_certificacionET" data-toggle="tab" aria-expanded="false" style="font-weight: bold;">Certificacion</a></li>
+
+
+                                        <li class=""><a href="#tab_observacionesET" data-toggle="tab" aria-expanded="false" style="font-weight: bold;">Observaciones</a></li>
+                                    </ul>
+
+                                    <div class="tab-content" style="border-top: 2px solid #3c8dbc;">
+                                      <div class="notification" style="height: 100px;z-index: 99999;">
+                                          <span class="icon">
+                                              <i class=""></i>
+                                          </span>
+                                          <span class="text"></span>
+                                          <span class="close"><i class="fa fa-close"></i></span>
+                                      </div>
+
+                                      <!-- TAB INFO -->
+                                      <div class="tab-pane active" id="tab_infoET" style="top:10px;">
+                                        <div class="row">
+                                          <div class="col-xs-12 callout" style="margin-bottom: 0px; padding-bottom: 0px;">
+                                            <div class="divisor">Solicitud Enviada Por</div>
+
+                                            <div class="col-xs-6 callout">
+                                              <table>
+                                                <tr style="height: 0px;"></tr>
+                                                <tr>
+                                                  <td align="left">*Servidor Publico</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                      <input type="hidden" id="fld_func_solicitante_idET" name="fld_func_solicitante_idET" text="Solicitante" class="form-control" value="{{funcionario_id}}" />
+                                                           
+                                                      <input type="text" id="fld_func_solicitante_nmET" name="fld_func_solicitante_nmET" text="Solicitante" class="form-control " value="" disabled="disabled" />
+                                                    </td>
+                                                </tr>
+
+                                                
+
+                                                <tr style="height: 2px;"></tr>
+                                                <tr>
+                                                    <td align="left">*Cargo</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                      <textarea id="fld_cargoET" name="fld_cargoET" rows="3" cols="100" class="form-control " disabled="disabled" />
+                                                    </td>
+                                                </tr>
+
+                                                <tr style="height: 2px;"></tr>
+
+                                                <tr>
+                                                  <td align="left">*email</td>
+                                                </tr>
+
+                                                <tr>
+                                                  <td>
+                                                    <input type="text" id="fld_emailET" name="fld_email" text="Cargo" class="form-control " value="{{item.Cargo}}" disabled="disabled" />
+                                                  </td>
+                                                </tr>
+
+                                                <tr style="height: 2px;"></tr>
+                                                <tr>
+                                                  <td align="left">Celular</td>
+                                                </tr>
+                                                <tr>
+                                                  <td>
+                                                    <input type="text" id="fld_telefonoET" name="fld_telefonoET" text="Celular" class="form-control " value="{{item.telefono_celular}}" disabled="disabled" />
+                                                  </td>
+                                                </tr>
+
+                                              </table>
+
+                                            </div>
+
+                                            <div class="col-xs-6 callout">
+                                                
+                                                <table>
+                                                    <tr style="height: 5px;"></tr>
+                                                    <tr>
+                                                      <td align="left">Numero Solicitud</td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td>
+                                                        <input type="text" id="fld_secuenciaET" name="fld_secuencia" text="Numero Solicitud" class="form-control " value="{{item.secuencia}}" disabled="disabled" />
+                                                      </td>
+                                                    </tr>
+
+                                                    <tr style="height: 0px;"></tr>
+                                                    <tr>
+                                                      <td align="left">Isla Tramite</td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td>
+                                                        <select id="fld_islatramiteET" name="fld_islatramite" class="select2" text="Isla Tramite" disabled="disabled">
+                                                          <option value=""> Ninguna</option>
+                                                          <option value="c718d004-a637-11e4-b1ae-6c3be5ba6ec8">SANTA CRUZ</option>
+                                                          <option value="c718b0a6-a637-11e4-8ba2-6c3be5ba6ec8">SAN CRISTOBAL</option>
+                                                          <option value="c716b8be-a637-11e4-935a-6c3be5ba6ec8">ISABELA</option>
+                                                        </select>
+                                                      </td>
+                                                    </tr>
+
+                                                    <tr style="height: 0px;"></tr>
+                                                    <tr>
+                                                        <td align="left">*Fecha Solicitud</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                          <input type="date" class="form-control " text="Fecha Solicitud" name="fld_fecha_solicitud" id="fld_fecha_solicitudET" style="width: 150px; font-size: 11px;" disabled="disabled" />
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr style="height: 0px;"></tr>
+                                                    <tr>
+                                                        <td align="left">Estado Tramite</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                          <select id="fld_estado_tramiteET" name="fld_estado_tramite" class="select2" text="Estad Tramite" disabled="disabled">
+                                                              <option value=""> Seleccione una Opcion</option>
+                                                              <option value="B">BORRADOR</option>
+                                                              <option value="T">EN TRAMITE</option>
+                                                              <option value="A">APROBADO</option>
+                                                              <option value="D">DEVUELTO A SOLICITANTE</option>
+                                                              <option value="C">CANCELADO</option>
+                                                              <option value="F">FINALIZADO</option>
+                                                          </select>
+                                                          
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr style="height: 5px;"></tr>
+                                                    <tr>
+                                                      <td align="left">*Dirigido a (Director Area):</td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td>
+                                                        <input type="hidden" id="fld_func_dirarea_idET" name="fld_func_dirarea_idET" class="form-control " disabled="disabled"/>
+
+                                                        <textarea id="fld_func_dirarea_nmET" name="fld_func_dirarea_nmET" rows="3" cols="100" class="form-control " disabled="disabled" />
+                                                        
+                                                      </td>
+                                                    </tr> 
+
+                                                </table>
+                                                
+                                            </div>
+
+                                          </div>
+                                          
+                                        </div>
+
+                                        <div class="row">
+                                          <div class="col-xs-12 callout" style="margin-bottom: 0px; padding-bottom: 0px;">
+                                            <div class="divisor">Informacion del Contrato/Proyecto</div>
+
+                                            <div class="col-xs-6 callout">
+                                              <table>
+                                                <tr style="height: 0px;"></tr>
+                                                <tr>
+                                                  <td>*Requerimiento POA-PAC</td>
+                                                </tr>
+                                                <tr>
+                                                  <td>
+                                                    <textarea id="fld_tituloET" name="fld_titulo" rows="3" cols="100" class="form-control " disabled="disabled">{{item.titulo}}</textarea>
+                                                  </td>
+                                                </tr>
+
+                                                <tr style="height: 5px;"></tr>
+                                                <tr>
+                                                  <td align="left">*Num. Certificacion de Actividad, recurso y presupuesto</td>
+                                                </tr>
+
+                                                <tr>
+                                                  <td>
+                                                    <textarea id="fld_descripcionET" name="fld_descripcion" rows="6" cols="100" class="form-control " disabled="disabled"></textarea>
+                                                  </td>
+                                                </tr>
+
+                                              </table>
+
+                                            </div>
+
+                                            <div class="col-xs-6 callout">
+                                                
+                                                <table>
+                                                    <tr style="height: 0px;"></tr>
+                                                    <tr>
+                                                        <td align="left">*Tipo</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                          <select id="fld_tipoET" name="fld_tipo" class="select2" text="Tipo" disabled="disabled" onchange="ocultarOtrosTemas(this.value,'frm_certifET');">
+                                                              <option value=""> Seleccione una Opcion</option>
+                                                              <option value="B">BIEN</option>
+                                                              <option value="C">CONSULTORIA</option>
+                                                              <option value="O">OBRA CIVIL</option>
+                                                              <option value="S">SERVICIO</option>
+                                                          </select>
+                                                          
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr style="height: 10px;"></tr>
+
+                                                    <tr>
+                                                      <td align="left">*Monto</td>
+                                                    </tr>
+
+                                                    <tr>
+                                                      <td>
+                                                        <input type="text" id="fld_monto_lblET" name="fld_monto_lblET" text="MONTO" class="form-control requerido" value="{{item.monto}}" pattern="[0-9]*" onchange="mask_money(this.value,'fld_montoET','fld_monto_lblET');" disabled="disabled"/>
+
+                                                        <input type="number" id="fld_montoET" hidden="hidden" >
+                                                      </td>
+                                                    </tr>
+
+                                                    <tr style="height: 10px;"></tr>
+
+                                                    <tr id="tr_label_temasET">
+                                                      <td align="left" style="color: #0073b7;">Temas <br></td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td>
+                                                          <select id="fld_tipo_revisionET" name="fld_tipo_revision" class="select2" text="Tipo" disabled="disabled">
+                                                              <option value=""> Seleccione una Opcion</option>
+                                                              <option value="T">Incluye temas tecnologicos</option>
+                                                              <option value="M">Incluye temas Mantenimiento</option>
+                                                              <option value="O">Incluye temas Obra Civil</option>
+                                                          </select>
+                                                          
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr style="height: 10px;"></tr>
+
+
+                                                </table>
+                                            </div>
+
+                                          </div>
+                                        </div>
+
+                                      </div>
+
+                                      <!-- TAB DOCUMENTACION -->
+                                      <div class="tab-pane" id="tab_documentacionET">
+                                        <div class="row">
+                                          <div class="col-xs-12">
+
+                                            <div class="col-xs-12">
+                                              <table style="width: 80%;">
+                                                <tr style="height: 5px;"></tr>
+                                                <tr>
+                                                  <td align="left" style="color: #0073b7;">*Existe BIEN o SERVICIO en Catalogo Electronico?  
+                                                    <input type="checkbox" id="fld_catalogo_electET" name="fld_catalogo_electET" text="Catalogo Electronico" onchange="ocultarDocumentCert(this.checked,'frm_certifET');" class="requerido form-check-input" style="margin-left: 15px;" disabled="disabled"/>
+                                                  </td>
+                                                </tr>
+                                                <tr style="height: 10px;"></tr>
+                                              </table>
+                                            </div>
+
+                                            <table style="width: 95%;">
+                                                <tr style="height: 20px;"></tr>
+                                                <tr style="border: 2px solid black;font-size: 14px;font-weight: bold;background-color: #3c8dbc; color: white;">
+                                                    <td colspan="2" align="center">Documentacion</td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td style="border: 2px solid; margin-left: 5px;">
+                                                      Verificacion de catalogo electronico:
+                                                      
+                                                    </td>
+                                                   
+                                                    <td width="60%" style="border: 2px solid">
+                                                      <a id="archivoCert1ET" style="cursor:pointer; text-decoration:none;color:#262DCE;position: relative;" target="_blank"></a>
+                                                    </td>
+                                                    <td hidden style="position: relative;left:5%;">
+                                                      <a id="borrarCert1ET" style="font-size: 20px;cursor:pointer;"></a>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="border: 2px solid; margin-left: 5px;">
+                                                      Solicitud Certificado de Actividad, recurso y presupuesto:
+                                                    </td>
+                                                    
+                                                    <td style="border: 2px solid">
+                                                      <a id="archivoCert2ET" style="cursor:pointer; text-decoration:none;color:#262DCE;position: relative;" target="_blank"></a>
+                                                    </td>
+                                                    <td hidden style="position: relative;left:5%;">
+                                                      <a id="borrarCert2ET"  style="font-size: 20px;cursor:pointer;"></a>
+                                                    </td>
+                                                </tr>
+                                                <tr id="tr_estudiMercadoET">
+                                                    <td style="border: 2px solid; margin-left: 5px;">
+                                                      Estudio de Mercado:
+                                                      
+                                                    </td>
+                                                    
+                                                    <td style="border: 2px solid">
+                                                      <a id="archivoCert3ET" style="cursor:pointer; text-decoration:none;color:#262DCE;position: relative;" target="_blank"></a>
+                                                    </td>
+                                                    <td hidden style="position: relative;left:5%;">
+                                                      <a id="borrarCert3ET" style="font-size: 20px;cursor:pointer;"></a>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="border: 2px solid; margin-left: 5px;">
+                                                      <span id="spn_title4ET">TDR o Justificacion Tecnica:</span>
+                                                    </td>
+                                                    
+                                                    <td style="border: 2px solid">
+                                                      <a id="archivoCert4ET" style="cursor:pointer; text-decoration:none;color:#262DCE;position: relative;" target="_blank"></a>
+                                                    </td>
+                                                    <td hidden style="position: relative;left:5%;">
+                                                      <a id="borrarCert4ET"  style="font-size: 20px;cursor:pointer;"></a>
+                                                    </td>
+                                                </tr>
+                                                <tr id="tr_bienET">
+                                                    <td style="border: 2px solid; margin-left: 5px;">
+                                                      Verificacion de Stock en Bodega:                                                      
+                                                    </td>
+                                                    
+                                                    <td style="border: 2px solid">
+                                                      <a id="archivoCert99ET" style="cursor:pointer; text-decoration:none;color:#262DCE;position: relative;" target="_blank"></a>
+                                                    </td>
+                                                    <td hidden style="position: relative;left:5%;">
+                                                      <a id="borrarCert99ET" style="font-size: 20px;cursor:pointer;"></a>
+                                                    </td>
+                                                </tr>
+                                            </table>
+
+                                          </div>
+
+                                          <!-- PROFORMAS -->
+                                          <div id="dv_cert_proformasET" class="col-xs-12" style="position: relative; top: 20px;">
+                                          
+                                              <table id="table_files_proformasET" style="width: 95%;position: relative;">
+                                                  <thead>
+                                                  <tr style="border: 2px solid black;font-size: 14px;font-weight: bold;background-color: #3c8dbc; color: white;">
+                                                      <td colspan="1" align="center">Proforma</td>
+                                                      <td colspan="1" align="center">Ruc Proveedor</td>
+                                                  </tr>
+                                                  </thead>
+                                                  <tbody id="files_selectET">
+                                                  </tbody>
+                                              </table>
+                                          </div>
+
+                                          <!-- DOCUMENTOS ANEXOS -->
+                                          <div class="col-xs-12" style="position: relative; top: 40px;">
+                                            <table style="width: 95%;">
+                                              <thead>
+                                                <tr style="border: 2px solid black;font-size: 14px;font-weight: bold;background-color: #3c8dbc; color: white;">
+                                                    <td colspan="2" align="center">Documentos Anexos</td>
+                                                </tr>
+                                              </thead>
+
+                                              <tbody id="files_selectAnexosET">
+                                              </tbody>
+
+                                            </table>
+                                          </div>
+                                          
+                                        </div>
+                                      </div>
+
+                                      <!-- TAB CERTIFICACIONES -->
+                                      <div class="tab-pane" id="tab_certificacionET">
+                                        <div class="row">
+                                          <!-- CERTIFICACIONES -->
+                                          <div class="col-xs-12" style="position: relative; top: 10px;">
+                                            
+                                            <table style="width: 80%;position: relative;" id="table_files_certificaciones2ET">
+                                                  <thead>
+                                                  <tr style="border: 2px solid black;font-size: 14px;font-weight: bold;background-color: #3c8dbc; color: white;">
+                                                      <td colspan="2" align="center">Archivo Certificación</td>
+                                                  </tr>
+                                                  </thead>
+                                                  <tbody id="files_select2ET">
+                                                  </tbody>
+                                            </table>
+                                            
+                                          </div>
+
+                                        </div>
+                                      </div>
+
+                                      <!-- TAB INFORMES -->
+                                      
+                                      <div class="tab-pane" id="tab_informesET">
+                                        <div class="row">
+                                          <div class="col-xs-12" style="position: relative; top: 10px;">
+                                            
+                                            <table  style="width: 100%;position: relative;">
+                                              <br>
+                                              <tr>
+                                                <td style="margin-left: 5px;">
+                                                  Informe TIC:
+                                                </td>
+                                                <td width="60%" style="position: relative;left:5%;">
+                                                  <a id="archivoCert5ET" style="cursor:pointer; text-decoration:none;color:#262DCE;" target="_blank"></a>
+                                                </td>
+
+                                              </tr>
+                                              
+                                              <tr>  
+                                                <td style="margin-left: 5px;">
+                                                  Informe Mantenimiento:
+                                                </td>
+                                                
+                                                <td width="60%" style="position: relative;left:5%;">
+                                                  <a id="archivoCert6ET" style="cursor:pointer; text-decoration:none;color:#262DCE;" target="_blank"></a>
+                                                </td>
+                                              </tr>
+                                              
+                                              <tr>
+                                                <td style="margin-left: 5px;">
+                                                  Informe Obra Civil:
+                                                </td>
+                                                <td width="60%" style="position: relative;left:5%;">
+                                                  <a id="archivoCert7ET" style="cursor:pointer; text-decoration:none;color:#262DCE;" target="_blank"></a>
+                                                </td>
+                                              </tr>
+                                            
+                                            </table>
+
+                                            <br>
+
+                                          </div>
+
+                                        </div>
+                                      </div>
+                                      
+
+                                      <!-- TAB OBSERVACIONES -->
+                                      <div class="tab-pane" id="tab_observacionesET">
+                                        <!--<div class="col-xs-1"></div> -->
+                                        <div class="col-xs-12" id="sec_obsET">                                     
+                                        </div>
+                                        <!-- <div class="col-xs-1"></div> -->
+                                      </div>
+
+                                    </div>
+
+                                </div>
+                              
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <div class="stackbox-footer" style="margin-top: -30px;">
+                <!--
+                <button class="btn btn-primary" onclick="setInsertUpdateDafCertificaciones('B');">Borrador</button>
+                <button class="btn btn-primary" id="btn_DafCertificaciones" onclick="setInsertUpdateDafCertificaciones();">Grabar</button>
+                <button class="btn btn-default" data-close-stackbox="true">Cerrar</button>
+                -->
+
+            </div>
+
+        </div>
+    </div>
+
+    <div class="box">
+        <div class="box-header">
+          <i class="fa fa-list"></i>
+          <h3 class="box-title">Lista de Certificaciones</h3>
+          <div class="botonera" style="float: right; right: 1px;">
+            
+            <a title="pfd" onclick="generarPdf('tabla_certifET',11,1)"><i class="fa fa-file-pdf-o text-green"></i></a>
+            <a title="excel" onclick="generarExcel('tabla_certifET',11)"><i class="fa fa-file-excel-o text-green"></i></a> 
+            
+          </div>
+        </div>
+
+        <div class="box box-solid bg-light-blue-gradient">
+            
+            <div class="box-header ui-sortable-handle" style="cursor: move;">
+               
+                <div class="pull-right box-tools">
+                    <button type="button" class="btn btn-primary btn-sm pull-right" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample" style="margin-right: 5px;" data-original-title="Collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
+                </div>
+                
+                <i class="fa fa-map-marker"></i>
+                <h3 class="box-title"> Filtros de Busqueda </h3>
+            </div>
+            
+            
+            <div class="box-body collapse" style="background-color: white;" id="collapseExample">
+              <div class="col-xs-12">
+
+                <div class="col-xs-5" style="margin-top: 30px; color: black;">
+                  <h style="font-size: 14px;color: black;font-weight: bold;">Estado Tramite</h>
+                  <select id="SestadoFilterTramiteET" name="SestadoFilterTramiteET" text="Estad Tramite">
+                      <option value=""> Seleccione una Opcion</option>
+                      <option value="A">APROBADO</option>
+                      <option value="B">BORRADOR</option>
+                      <option value="C">CANCELADO</option>
+                      <option value="D">DEVUELTO A SOLICITANTE</option>
+                      <option value="T">EN TRAMITE</option>
+                      <option value="R">REASIGNADO</option>
+                  </select>
+                </div>
+                
+                <div class="col-xs-7" style="margin-top: 20px;">
+
+                    <div class="input-daterange input-group" id="datepickerET" style="display: inline-flex;">
+                        <h style="font-size: 14px;color: black;font-weight: bold;width: 110%;" >Fecha Solicitud</h>
+                        <input type="text" class="input-sm form-control" name="start" id="FdesdeParamET" autocomplete="off" style="display: inline-flex;" />
+                        <span class="input-group-addon" style="border:none;font-weight: bold;">a</span>
+                        <input type="text" class="input-sm form-control" name="end" id="FhastaParamET" autocomplete="off" style="display: inline-flex;"/>
+                    </div>
+                    
+                    <div class="input-daterange input-group" id="datepickerET" style="display: inline-flex;">
+                      <button type="button" class="btn btn-block btn-success" style="width: 100%; float: right;" onclick="buscarCertificadosParametros('','frm_certifET');">Buscar</button>
+                    </div>
+                </div>
+                
+
+
+              </div>
+
+
+            </div>
+            
+            <!-- /.box-body-->
+        </div>
+
+        <div class="col-md-12">
+          <div class="col-md-6" style="color: black;">
+          </div>
+          <div class="col-md-6" style="color: black;">
+              <div class="box box-default" style="position: relative;top: 10px; float: right;right: -7%; width: 50%;">
+                  <div class="box-header" style="cursor: move;">
+                      <!-- tools box -->
+                      <div class="pull-right box-tools" >
+                          <button type="button" class="btn btn-primary btn-sm pull-right" data-toggle="collapse" href="#collapseTable" role="button" aria-expanded="false" aria-controls="collapseTable" style="margin-right: 5px;" data-original-title="Collapse">
+                              <i class="fa fa-minus"></i>
+                          </button>
+                      </div>
+                      <!-- /. tools -->
+                      <i class="fa fa-search"></i>
+                      <h4 class="box-title" style="font-size: 10px;">
+                        Ver Ocultar Columnas
+                      </h4> 
+                  </div>
+                  <div class="box-body collapse" style="background-color: white;" id="collapseTable">
+                      <div class="col-xs-12" align="left" style="box-shadow: 0px 5px 5px 0px; font-size: 10px;" id="filterTableTor">
+
+                      </div>
+
+                  </div>
+              </div>
+          </div>
+        </div>
+
+        
+        <!-- /.box-header -->
+
+        <div class="box-body" style="overflow-y: auto;">
+            <table id="tabla_certifET" class="display table table-striped table-bordered" width="100%" cellspacing="0" style="font-size: 10px; text-transform: uppercase;">
+                <thead>
+
+                    <tr class="bg-light-blue-gradient" style="color: white;">
+                      
+                      <th>Fecha Solicitud</th>
+                      <th>Num. Solicitud</th>
+                      <th>Tipo</th>
+                      <th>Titulo</th>
+                      <th>Monto</th>
+                      
+                      <th title="{{directorarea_aprob}}">DIR. AREA</th>
+                      <th title="{{tic_aprob}}">TIC</th>
+                      <th title="{{mantenimiento_aprob}}" style="width: 50px;">MANTENIMIENTO</th>
+                      <th title="{{obracivil_aprob}}">OBRA CIVIL</th>
+                      
+                      <!--th title="{{bodega_aprob}}">BODEGA</th-->
+                      <!-- <th>COMPRAS PUBLICAS</th> -->
+                      <th title="{{pac_aprob}}">Resp. Seguimiento PAC</th>
+                      <th title="{{planificacion_aprob}}">PLANIFICACION</th>
+                      <th title="{{presupuesto_aprob}}">PRESUPUESTO</th>
+
+                      <th>Estado Tramite</th>
+                      <th hidden></th>
+                      <th></th>
+                        
+                    </tr>
+                </thead>
+                <tbody class="botonera1" id="bodytabla_certifET">
+                  
+                </tbody>
+            </table>
+        </div>
+        <!-- /.box-body -->
+    </div>
+
+    <!-- /.box -->
+    <!-- AdminLTE datatable -->
+    <!-- jQuery 3 -->
+    <script src="{% static 'js/lib_internas/script_daf.js' %}"></script>
+   
+    <script>
+        $(document).ready(function() {
+            // Columnas
+            dataCabFla = ['Fecha Solicitud', 'Num. Solicitud', 'Tipo', 'Titulo', 'Monto', 'DIR. AREA', 'TIC', 'MANTENIMIENTO', 'OBRA CIVIL', 'Resp. Seguimiento PAC', 'PLANIFICACION', 'PRESUPUESTO', 'Estado Tramite'];
+            dataDisableFla = [0, 1, 2, 4 ];
+            intFilterTabla('filterTableTor', dataCabFla, dataDisableFla);
+            $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
+              checkboxClass: 'icheckbox_flat-green',
+              radioClass: 'iradio_flat-green'
+            })
+
+            // End Columnas
+
+
+            var d = new Date();
+            var f1 = d.getFullYear() + "-01-01";
+            var f2 = d.getFullYear() + "-12-31";
+            var dataini = f1 + "," + f2;
+
+            f1_aux = '01/01/' + d.getFullYear();
+            f2_aux = '12/31/' + d.getFullYear();
+
+            $("#FdesdeParamET").val(f1_aux);
+            $("#FhastaParamET").val(f2_aux);
+            
+            buscarCertificadosParametros(dataini,'frm_certifET');
+
+            //Date picker
+            $('#datepickerET').datepicker({
+                autoclose: true
+            })
+
+            $('#fld_tipoET').select2();
+            //$('#SestadoFilterTramiteET').select2();
+            $('#fld_estado_tramiteET').select2();
+            $('#fld_tipo_revisionET').select2();
+            $('#fld_islatramiteET').select2();
+            
+            
+
+            // FOCUS ON SELECT FIELDS
+            //$("#content_DafCertificaciones").
+            $("document").on('focus', '.select2-selection.select2-selection--single', function(e) {
+                $(this).closest(".select2-container").siblings('select:enabled').select2('open');
+            })
+            $('select.select2').on('select2:closing', function(e) {
+                $(e.target).data("select2").$selection.one('focus focusin', function(e) {
+                    e.stopPropagation();
+                });
+            });
+
+        });
+
+    </script>
+    {% endblock %}

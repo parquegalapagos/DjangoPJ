@@ -1,0 +1,653 @@
+{% extends 'serv_ambientales/menu_lateral.html' %}
+{% block principalhome %}
+
+{% load static %}
+<!-- DataTables -->
+<link rel="stylesheet" type="text/css" href="{% static 'css/select2.min.css' %}">
+
+<style type="text/css">
+.break-page {break-after: page;}
+
+.tox .tox-menubar {
+    background-color: #005196; 
+}
+.tox .tox-toolbar, .tox .tox-toolbar__overflow, .tox .tox-toolbar__primary {
+    background-color: #005196;
+}
+
+.select2{
+    z-index: 0;
+}
+    .tabs-left > .nav-tabs {
+  border-bottom: 0;
+}
+
+.tab-content > .tab-pane,
+.pill-content > .pill-pane {
+  display: none;
+}
+
+.tab-content > .active,
+.pill-content > .active {
+  display: block;
+  background-color: #0073b;
+  color: white;
+}
+
+.tabs-left > .nav-tabs > li {
+  float: none;
+}
+
+.tabs-left > .nav-tabs > li > a {
+  min-width: 74px;
+  margin-right: 0;
+  margin-bottom: 3px;
+  color: #005196;
+}
+
+.tabs-left > .nav-tabs {
+  float: left;
+  margin-right: 19px;
+  border-right: 2px solid #000;
+}
+
+.tabs-left > .nav-tabs > li > a {
+  margin-right: -1px;
+  -webkit-border-radius: 4px 0 0 4px;
+     -moz-border-radius: 4px 0 0 4px;
+          border-radius: 4px 0 0 4px;
+}
+
+.tabs-left > .nav-tabs > li > a:hover,
+.tabs-left > .nav-tabs > li > a:focus {
+  border-color: #eeeeee #dddddd #eeeeee #eeeeee;
+  background-color: #8a8a8a;
+  color: white;
+}
+
+.tabs-left > .nav-tabs .active > a,
+.tabs-left > .nav-tabs .active > a:hover,
+.tabs-left > .nav-tabs .active > a:focus {
+  border-color: #fff transparent #fff #fff;
+  border-right-color: #36c308;
+}
+
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:hover, .nav-tabs>li.active>a:focus {
+    color: #fff;
+    background-color: #005196;
+    border: 2px solid #ddd;
+    border-bottom-color: transparent;
+    cursor: default;
+}
+fieldset {
+    border: 2px solid #000 !important;
+    margin: 0;
+    xmin-width: 0;
+    padding: 10px;
+    position: relative;
+    border-radius: 4px;
+    padding-left: 10px!important;
+}
+legend {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 0px;
+    width: 35%;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 5px 5px 5px 10px;
+    background-color: #ffffff;
+}
+
+.ui-dialog .ui-dialog-titlebar {
+    background-color: #005196;
+    color: white;
+}
+
+.ui-window-bar .ui-button {
+  position: absolute;
+  top: 50%;
+  width: 20px;
+  margin: -10px 0 0 0;
+  padding: 1px;
+  height: 20px;
+}
+
+.ui-window-bar .ui-window-minimize {
+  right: calc(.3em + 40px);
+}
+
+.ui-window-bar .ui-window-maximize {
+  right: calc(.3em + 20px);
+}
+
+.ui-dialog {
+    z-index: 9999999;
+}
+.tab-content > .active, .pill-content > .active {
+    color: black;
+}
+</style>
+<link rel="stylesheet" href="{% static 'css/style.min.css' %}" />
+<!-- FORMULARIO  -->
+
+<div id="window" title="Visor Pdf" style="display: none;">
+
+    <div class="row" align="center" style="">
+        <div class="col-xs-6" style="height: 500px;">
+            <iframe src="" id="pdfIN" style="width: 100%;height: 450px;"></iframe> <!--class="form-control"  style="width: 300px; height: 200px;" /-->
+        </div>
+        <div class="col-xs-6" style="height: 500px;">
+            <iframe src="" id="pdfAnexoIN" style="width: 100%;height: 450px;"></iframe> <!--class="form-control"  style="width: 300px; height: 200px;" /-->
+        </div>
+    </div>
+
+</div>
+
+<div style="width: 98%; margin-left: 1%;box-shadow: 5px 5px 15px 5px #888888;" id="content_infoNovedadesP">
+<div id="content_infoNovedades" style="position: relative;">
+    <div id="infoNovedadesPdf" style="display: none;">
+        <div class="stackbox-header cab_popup" align="center">Informe de Novedades<i class="fa fa-book" aria-hidden="true" style="font-size: 30px;float: left;"></i></div>
+        <div class="stackbox-body" id="bodyinfoNovedadesPdf2" style="font-weight: 100; height: 600px;">
+            <div class="row" style="box-shadow: 5px 5px 10px 10px #888888; margin-top: 20px;background-color: #fff;color:#000;font-size: 12px;border-radius: 10px 10px 10px 10px;margin-left: 10px;">
+                
+                <div id="bodyinfoNovedadesPdf" > 
+                    <div id="bodyinfoNovedadesPdfAux" > 
+                        <div class="row" style="margin-right: 0px;margin-left: 0px;color: black;">
+
+                                <div class="col-xs-12">
+                                    <div class="col-xs-12">
+                                        <table style="width: 100%; font-family: arial;" cellspacing="10" cellpadding="100">
+                                            <tr>
+                                                <td align="left" style="font-size: 12px;font-weight: bold; border: 1px solid;width: 40%;height: 30px;padding: 5px;">Proceso:</td>
+                                                
+                                                <td style=" border: 1px solid; text-align:left;width: 70%;"><span style="text-transform: capitalize;padding: 5px;font-size: 12px;" id="for_procesoIN" class="pdf"></span></td>
+                                            </tr>
+                                            
+                                           
+                                            
+                                            <tr>
+                                                <td align="left" style="font-size: 12px;font-weight: bold; border: 1px solid;height: 30px;padding: 5px;">Actividad:</td>
+                                                
+                                                <td style="border: 1px solid; text-align:left; text-transform: capitalize;"><span style="font-size: 12px;padding: 5px;" id="for_actIN" class="pdf"></span></td>
+                                            </tr>
+                                            
+                                            <tr>
+                                                <td align="left" style="font-size: 12px;font-weight: bold; border: 1px solid;height: 30px;padding: 5px;">Isla:</td>
+                                                
+                                                <td style="border: 1px solid; text-align:left;text-transform: capitalize;"><span style="font-size: 12px;padding: 5px;" id="for_sitioIN" class="pdf"></span></td>
+                                            </tr>
+                                            
+                                            <tr>
+                                                <td align="left" style="font-size: 12px;font-weight: bold; border: 1px solid;height: 30px;padding: 5px;">Personal:</td>
+                                                
+                                                <td style="border: 1px solid; text-align:left;text-transform: capitalize;"><span style="font-size: 12px;padding: 5px;" id="for_personalIN" class="pdf"></span></td>
+                                            </tr>
+                                            
+                                            <tr>
+                                                <td align="left" style="font-size: 12px;font-weight: bold; border: 1px solid;height: 30px;padding: 5px;">Periodo:</td>
+                                                
+                                                <td style="border: 1px solid; text-align:left;text-transform: capitalize;"><span style="font-size: 12px;padding: 5px;" id="for_periodoIN" class="pdf"></span></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td align="left" style="font-size: 12px;font-weight: bold; border: 1px solid;height: 30px;padding: 5px;">Transporte:</td>
+                                                
+                                                <td style="border: 1px solid; text-align:left;text-transform: capitalize;"><span style="font-size: 12px;padding: 5px;" id="for_transIN" class="pdf"></span></td>
+                                            </tr>
+                                            
+                                            <tr>
+                                                <td align="left" style="font-size: 12px;font-weight: bold; border: 1px solid;height: 30px;padding: 5px;">Fecha Entrega informe:</td>
+                                                
+                                                <td style="border: 1px solid; text-align:left;text-transform: capitalize;"><span style="font-size: 12px;padding: 5px;" id="for_fechaPreIN" class="pdf"></span></td>
+                                            </tr>
+                                            
+                                            
+                                        </table>
+                                    </div>                       
+                                </div>
+                                <div class="col-xs-12" style="height: 25px;"></div>
+                                <div class="col-xs-12">
+                                    <span style="font-weight: bold;">INTRODUCCIÓN.</span>
+                                    <div style="height: 10px;"></div>
+                                    <div id="for_introIN" style="font-family: arial; font-size: 11px;"></div>
+                                </div>
+                                <div class="col-xs-12" style="height: 25px;"></div>
+                                <div class="col-xs-12">
+                                    <span style="font-weight: bold;">OBJETIVOS</span>
+                                    <div style="height: 10px;"></div>
+                                    <div id="for_objetIN" style="font-family: arial; font-size: 11px;"></div>
+                                </div>
+                                <div class="col-xs-12" style="height: 25px;"></div>
+                                <div class="col-xs-12">
+                                    <span style="font-weight: bold;">MATERIALES.</span>
+                                    <div style="height: 10px;"></div>
+                                    <div id="for_materIN" style="font-family: arial; font-size: 11px;"></div>
+                                </div>
+                                <div class="col-xs-12" style="height: 25px;"></div>
+                                <div class="col-xs-12">
+                                    <span style="font-weight: bold;">DESARROLLO.</span>
+                                    <div style="height: 10px;"></div>
+                                    <div id="for_metodIN" style="font-family: arial; font-size: 11px;"></div>
+                                </div>                              
+                                <div class="col-xs-12" style="height: 25px;"></div>
+                                <div class="col-xs-12">
+                                    <span style="font-weight: bold;">RESULTADOS.</span>
+                                    <div style="height: 10px;"></div>
+                                    <div id="for_concluIN" style="font-family: arial; font-size: 11px;"></div>
+                                </div>
+                                <div class="col-xs-12" style="height: 25px;"></div>
+                                    
+                                <div class="col-xs-12">
+                                    <div style="height: 100px;"></div>
+                                    
+                                    <div class="col-xs-6" style="text-align:center;">
+                                        <table align="center" width="80%" style="font-family: arial;">
+                                            <tr>
+                                                <td style="top: 5px; position:relative;font-weight: 800;">
+                                                   Elaborado por:
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="top: 5px; position:relative;font-weight: 800;height: 50px;">
+                                                    <h id="for_f1" class="pdf"></h>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="80%" style="border-bottom:1px dotted black;"></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="position:relative;top: 5px;font-size: 12px;">Moreta Vera Virginia Lissette<br><b>Tecnico Bienes y servicios Ambientales</b></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    
+                                </div>
+                        </div>
+                    </div>
+                    <div id="anexosIN" style="">
+                        <div class="row">
+                            <div class="col-xs-12" style="height: 35px;"></div>
+                            <div class="col-xs-12" align="center"  >
+                                <span style="font-weight: bold; text-align: center;">ANEXOS</span>
+                                <div class="col-xs-12" style="height: 20px;"></div>
+                                <div id="for_anexosIN"></div>
+                            </div>                         
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        <div class="stackbox-footer">    
+            <button class="btn btn-primary" onclick="descargarPdfInfoNovedades();">PDF</button>         
+            <button class="btn btn-default" data-close-stackbox="true">Close</button>
+        </div>
+    </div>
+    
+    <div class="box">
+
+        <div class="box-header" id="infoNovedades" style="background-color: #005196; color: white;">
+            <i class="fa fa-list"></i>
+            <h3 class="box-title">Informes de Novedades<i class="fa fa-book" aria-hidden="true" style="font-size: 20px; margin-left: 10px;"></i></h3>
+            <div class="input-group" style="width: 500px;position: relative;float: right;">
+                <table>
+                    <td align="right" style="color:white;">Fechas</td>
+                    <td width="10px"></td>
+                    <td>
+                        <div class="input-daterange input-group" id="datepicker" style="">
+                            <input type="text" autocomplete="off" class="input-sm form-control" name="start" id="FdesdeInfNov" />
+                            <span class="input-group-addon" style="border:none;font-weight: bold;">a</span>
+                            <input type="text" autocomplete="off" class="input-sm form-control" name="end" id="FhastaInfNov" />
+                        </div>
+                    </td>
+                </table>
+                <div class="input-group-addon">
+                    <a onclick="getInformesNovedadesCab()" style="cursor: pointer;">
+                        <i class="fa fa-search"></i>
+                    </a>
+                </div>
+            </div>           
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body" id="bodyinfoNovedades">
+            <div class="row">
+                <div class="btn-group-vertical" style="position: absolute; z-index: 99999; right: 0%;top: 25%;">
+                    <button style="border-radius: 50%;width: 40px;height: 40px;box-shadow: 5px 5px 5px black;" type="button" class="btn btn-success" onclick="limpiarFormInfoNovedades();" title="Nuevo Reporte"><i class="fa fa-plus"></i></button>
+                    <button style="border-radius: 50%;width: 40px;height: 40px;box-shadow: 5px 5px 5px black;margin-top: 10px;" type="button" onclick="setInsertUpdateInfoNovedades();" class="btn btn-success" title="Grabar"><i class="fa fa-floppy-o"></i></button>
+                    <!--button style="border-radius: 50%;width: 40px;height: 40px;box-shadow: 5px 5px 5px black;margin-top: 10px;" type="button" class="btn btn-success" title="PDF" href='#infoNovedadesPdf' onclINk="getDataINPdf();" data-stackbox='true' data-stackbox-position="absolute" data-stackbox-width="1000"><i class="fa fa-download"></i></button-->
+                    <button style="border-radius: 50%;width: 40px;height: 40px;box-shadow: 5px 5px 5px black;margin-top: 10px;" type="button" class="btn btn-success" title="Ver PDF" id="winOpener"><i class="fa fa-eye"></i></button>
+                    <button style="border-radius: 50%;width: 40px;height: 40px;box-shadow: 5px 5px 5px black;margin-top: 10px;" type="button" class="btn btn-success" title="PDF" onclick="descargarPdfInfoNovedades();"><i class="fa fa-download"></i></button>
+                </div>
+                <div class="notification">
+                    <span class="icon">
+                        <i class=""></i>
+                    </span>
+                    <span class="text"></span>
+                    <span class="close"><i class="fa fa-close"></i></span>
+                </div>
+                <div class="col-xs-2" style="background-color: #f3f3f3;height: 550px;border: 2px solid black;left: 0.5%;">
+                    <input id="search-input2" class="search-input2" style="margin-top: 10px;" />
+                    <div id="html" class="demo" style="font-weight: bold;">
+
+                    </div>
+                </div>
+                <!--div class="col-xs-1"></div-->
+                <div class="col-xs-10" style="border: 2px solid black; height: 550px;background-color: #f3f3f3; width: 81%; left: 20px;" id="content_divTab">
+                    <div style="height: 10px;"></div>
+                    <div class="tabbable tabs-left nav-stacked" style="">
+                                <ul class="nav nav-tabs" id="tabsIng">
+                                    <br>
+                                    <li class="active">
+                                        <a href="#tab_GenIN" data-toggle="tab" aria-expanded="true" style="font-weight: bold; font-size: 12px;">Datos<br>Generales</a>
+                                    </li>
+                                    <li class=""><a href="#tab_introIN" data-toggle="tab" aria-expanded="false" style="font-weight: bold; font-size: 12px;" >Introduccion</a></li>
+                                    <li class=""><a href="#tab_objetIN" data-toggle="tab" aria-expanded="false" style="font-weight: bold; font-size: 12px;" >Objetivos</a></li>
+                                    <li class=""><a href="#tab_materIN" data-toggle="tab" aria-expanded="false" style="font-weight: bold; font-size: 12px;" >Materiales</a></li>
+                                    <li class=""><a href="#tab_desaIN"  data-toggle="tab" aria-expanded="false" style="font-weight: bold; font-size: 12px;" >Desarrollo</a></li>
+                                    <li class=""><a href="#tab_resulIN" data-toggle="tab" aria-expanded="false" style="font-weight: bold; font-size: 12px;" >Resultados</a></li>  
+                                    <li class=""><a href="#tab_anexoIN" data-toggle="tab" aria-expanded="false" style="font-weight: bold; font-size: 12px;" >Anexos</a></li>
+                                    <br><br>
+                                </ul>
+                                <div class="tab-content" style="">
+                                    <div class="tab-pane active" id="tab_GenIN">
+                                        <div class="col-xs-10" style="top:20px;">
+                                            <fieldset>
+                                                <legend style="font-size: 14px; text-align: left;border-bottom: 1px solid;background-color: #005196;color: white;padding: 5px; width: 50%;">Datos Informe de Novedades</legend>
+                                            <table style="width: 100%;color: black;font-weight: bold;">
+                                                <input type="hidden" id="idInfNovedadesSA" name="idInfNovedadesSA" value="" />
+                                                <input type="hidden" id="secInfNovedadesSA" name="secInfNovedadesSA" value="0" />
+                                                <input type="hidden" id="tipoINSA" name="tipoINSA" value="0" />
+                                                <input type="hidden" id="descargaINSA" name="descargaINSA" value="0" />
+                                                <input type="hidden" id="islaINSA" name="islaINSA" value="{{ isla_trabaja_id }}" />
+                                                <tr height='10px;'></tr>
+                                                <tr>
+                                                    <td align="right" colspan="7">Nro.<input type="text" id="nroINSA" class="form-control" style="width: 100px; background-color:#868686; color: white; text-align: center; " readonly/></td>
+                                                </tr>
+                                                <tr height='10px;'></tr>
+                                                <tr>
+                                                    <td align="right">*Proceso</td>
+                                                    <td width="20px;"></td>
+                                                    <td colspan="4">
+                                                        <!--input type="text" id="procesoINSA" class="form-control requerido" value="Conservación y Restauración de Ecosistemas Insulares" text="Proceso" style="width: 100%;" /-->
+                                                        <select id="SprocesoINSA" class="select2" style="width: 100%;" onchange="cambiarComboSubproceso(this.value);">
+                                                            <option value=""> Seleccione una Opción</option>
+                                                            {% for proceso in procesos %} 
+                                                                <option value="{{ proceso.id }}">{{ proceso.name }}</option> 
+                                                            {% endfor %} 
+                                                        </select>
+                                                    </td>
+                                                    <td width="120px;"></td>
+                                                </tr>
+                                                <tr height='10px;'></tr>
+                                                <tr>
+                                                    <td align="right">*Actividad</td>
+                                                    <td width="20px;"></td>
+                                                    <td><input type="text" id="actividadINSA" class="form-control requerido" text="Actividad"/></td>
+                                                </tr>
+                                                <tr height='10px;'></tr>
+                                                <tr>
+                                                    <td align="right">*Isla/Sitio</td>
+                                                    <td width="20px;"></td>
+                                                    <td>
+                                                        <select id="SislaINSA" class="select2 requerido" text="Isla/Sitio" style="z-index: auto !important;">
+                                                            <option value="">Seleccione una Opcion</option>
+                                                            {% for sitio in sitios %} 
+                                                                <option value="{{ sitio.id }}">{{ sitio.isla_id.descripcion }} - {{ sitio.descripcion }}</option> 
+                                                            {% endfor %}                                                      
+                                                        </select>
+                                                    </td>
+                                                </tr>                                            
+                                                <tr height='10px;'></tr>
+                                                <tr>
+                                                    <td align="right">*Personal</td>
+                                                    <td width="20px;"></td>
+                                                    <td colspan="4"><input type="text" id="personalINSA" class="form-control requerido" value="" text="Proceso" style="width: 100%;" /></td>
+                                                </tr>
+                                                <tr height='10px;'></tr>
+                                                <tr>
+                                                    <td align="right">*Periodo</td>
+                                                    <td width="20px;"></td>
+                                                    <td><input type="text" id="periodoINSA" class="form-control requerido" text="Periodo"/></td>
+                                                </tr>
+                                                <tr height='10px;'></tr>
+                                                <tr>
+                                                    <td align="right">*Fecha Entrega Informe</td> 
+                                                    <td width="20px;"></td>
+                                                    <td><input type="date" id="fechapreINSA" class="form-control requerido" text="Fecha Presentacion"/></td>
+                                                </tr>
+                                                <tr height='10px;'></tr>
+                                                <tr>
+                                                    <td align="right">*Transporte</td> 
+                                                    <td width="20px;"></td>
+                                                    <td><input type="text" id="transporteINSA" class="form-control requerido" text="Transporte"/></td>
+                                                </tr>
+                                                <tr height='100px;'></tr>
+                                            </table>
+                                            </fieldset>
+                                        </div>
+                                        
+                                    </div><!--div tab_Gen-->
+                                    <div class="tab-pane" id="tab_introIN">
+                                        <div class="col-xs-10" style="top:20px;height: 550px;width: 80%;">
+                                            {% for parametro in parametros %}
+                                                {% if parametro.nombre == 'INTRODUCCION' %} 
+                                                   <textarea id='ci_introSAIN' class="editor">{{ parametro.valor }}</textarea> 
+                                                {% endif %}
+                                            {% endfor %}
+                                                                             
+                                        </div>
+                                    </div><!--tab_intro-->
+                                    <div class="tab-pane" id="tab_objetIN">
+                                        <div class="col-xs-10" style="top:20px;width: 80%;">
+                                            {% for parametro in parametros %}
+                                                {% if parametro.nombre == 'OBJETIVOS' %} 
+                                                   <textarea id='ci_objSAIN' class="editor">{{ parametro.valor }}</textarea>
+                                                {% endif %}
+                                            {% endfor %}
+                                            
+                                        </div>
+                                    </div><!--tab_objet-->
+                                    <div class="tab-pane" id="tab_materIN">
+                                        <div class="col-xs-10" style="top:20px;width: 80%;">
+                                            {% for parametro in parametros %}
+                                                {% if parametro.nombre == 'MATERIALES' %} 
+                                                   <textarea id='ci_matSAIN' class="editor">{{ parametro.valor }}</textarea>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    </div><!--tab_mater-->
+                                   
+                                    <div class="tab-pane" id="tab_desaIN">
+                                        <div class="col-xs-10" style="top:20px;width: 80%;">
+                                            <textarea id='ci_desaSAIN' class="editor"></textarea>
+                                        </div>
+                                    </div><!--tab_desa-->
+                                    <div class="tab-pane" id="tab_resulIN">
+                                        <div class="col-xs-10" style="top:20px;width: 80%;">
+                                            <textarea id='ci_resultSAIN' class="editor"></textarea>
+                                        </div>
+                                    </div><!--tab_resul-->
+                                    
+                                    <div class="tab-pane" id="tab_anexoIN">
+                                        <div class="col-xs-10" style="">
+                                            <form id="frm_infonovedadesSA" action="#" method="post" enctype="multipart/form-data">
+                                                <fieldset>
+                                                    <fieldset>
+                                                        <legend style="font-size: 14px; text-align: left;border-bottom: 1px solid;background-color: #005196;color: white;padding: 5px; width: 50%;width: 50%;">Agregar Fotos en Informe de Novedades</legend>
+                                                        <table style="width: 100%;color: black;">
+                                                            <tr style="height: 20px;"></tr>
+                                                            <tr>
+                                                                <td style="margin-left: 5px;padding-left: 5px;">
+                                                                    <b>Orden:</b>
+                                                                    <input type="text" id='ci_ordenSAIN' class="form-control" style="width: 50px;" onkeypress='return isNumberKey(event);'/>
+                                                                </td>
+                                                                <td style="width: 20px;"></td>
+                                                                <td style="margin-left: 5px;padding-left: 5px;">
+                                                                    <b>Subir anexo:</b>
+                                                                    <input type="file" name="myfile" id="doc_anexosSAIN" class="form-control"/>
+                                                                </td>
+                                                            </tr>
+                                                            <tr style="height: 10px;"></tr>
+                                                            <tr>
+                                                                <td style="margin-left: 5px;padding-left: 5px;" colspan="4">
+                                                                    <b>Comentario Foto:</b>
+                                                                    <textarea id='ci_observacionSAIN' class="form-control" rows="3" style="width: 100%"></textarea>
+                                                                </td>
+                                                                <td style="float: right;"> <a style="cursor: pointer;position: relative;top: 50px;" onclick="insertarDetInformeNovedades();" title="Agregar Foto al Reporte"><i class="fa fa-plus-circle text-green btn_nuevo" style="font-size: 30px;"></i></a> 
+                                                                </td>
+                                                            </tr>
+                                                            
+                                                        </table>
+                                                    </fieldset>
+                                                    <div style="height: 20px;"></div>
+                                                    <p style="color: black; font-size: 14px; font-weight: bold;">Susutento Fotografico</p>
+                                                    <div align="center" style="height: 240px; overflow-y: auto;">
+                                                        <table id="tablafotos_repIN" style="font-size: 10px; text-transform: uppercase;font-weight: bold; color: black;" class="table table-striped table-bordered" width="95%">
+                                                            <thead style="background-color: #005196; color: white; text-align: center;">
+                                                                <th>Nro</th>
+                                                                <th>Imagen</th>
+                                                                <th>Nombre Imagen</th>
+                                                                <th>Comentario</th>
+                                                                <th></th>
+                                                            </thead>
+                                                            <tbody id="bodytablafotos_repIN">
+
+                                                            </tbody>
+                                                           
+                                                       </table>
+                                                   </div>
+                                                </fieldset>
+                                            </form>
+                                            
+                                        </div>
+                                    </div><!--tab_anexo-->
+                                </div><!--tab-content-->
+                        </div><!--nav-tabs-custom-->
+                </div>
+            </div>
+        </div>
+        <!-- /.box-body -->
+
+    </div>
+    <!-- /.box -->
+
+</div>
+</div>
+<!-- /.content -->
+
+<!-- AdminLTE datatable -->
+<!-- jQuery 3 -->
+{% load static %}
+
+
+<script>
+    $(document).ready(function() {
+        $('.input-daterange').datepicker();
+        $('#tablafotos_rep').DataTable({  
+            "destroy": true
+        });
+
+        $('#SislaINSA').select2({
+            sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
+        });
+
+        $('#SprocesoINSA').select2({
+            sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
+        });
+
+        //initTinymce();
+
+        if (tinyMCE.execCommand ('mceRemoveEditor', false, 'ci_introSAIN')){
+            tinymce.init(
+                {
+                selector:'#ci_introSAIN',
+                height : "500",
+                skin: "oxide-dark",
+                plugins: 'lists',
+                toolbar: "undo redo |alignleft aligncenter alignright alignjustify| forecolor | outdent indent numlist bullist | bold italIN underline | fontselect fontsizeselect | styleselect",
+                statusbar: false,
+            });
+        }
+
+       // }
+        if (tinyMCE.execCommand ('mceRemoveEditor', false, 'ci_objSAIN')){
+            tinymce.init(
+                {
+                selector:'#ci_objSAIN',
+                height : "500",
+                statusbar: false,
+                skin: "oxide-dark",
+                plugins: 'lists',
+                toolbar: "undo redo |alignleft aligncenter alignright alignjustify| forecolor | outdent indent numlist bullist | bold italIN underline | fontselect fontsizeselect | styleselect"            
+            });
+        }
+        if (tinyMCE.execCommand ('mceRemoveEditor', false, 'ci_matSAIN')){
+            tinymce.init(
+                {
+                selector:'#ci_matSAIN',
+                height : "500",
+                statusbar: false,
+                skin: "oxide-dark",
+                plugins: 'lists',
+                toolbar: "undo redo |alignleft aligncenter alignright alignjustify| forecolor | outdent indent numlist bullist | bold italIN underline | fontselect fontsizeselect | styleselect"
+            });
+        }
+       
+        if (tinyMCE.execCommand ('mceRemoveEditor', false, 'ci_desaSAIN')){
+            tinymce.init(
+                {
+                selector:'#ci_desaSAIN',
+                height : "500",
+                statusbar: false,
+                skin: "oxide-dark",
+                plugins: 'lists',
+                toolbar: "undo redo |alignleft aligncenter alignright alignjustify| forecolor | outdent indent numlist bullist | bold italIN underline | fontselect fontsizeselect | styleselect"
+            });
+        }
+        if (tinyMCE.execCommand ('mceRemoveEditor', false, 'ci_resultSAIN')){
+            tinymce.init(
+                {
+                selector:'#ci_resultSAIN',
+                height : "500",
+                statusbar: false,
+                skin: "oxide-dark",
+                plugins: 'lists',
+                toolbar: "undo redo |alignleft aligncenter alignright alignjustify| forecolor | outdent indent numlist bullist | bold italIN underline | fontselect fontsizeselect | styleselect"
+            });
+        }
+
+        var f1 = (new Date).getFullYear() + "-01-01";
+        var f2 = (new Date).getFullYear() + "-12-31";
+        var dataini = f1 + "," + f2;
+        
+        getInformesNovedadesCab(dataini);
+
+        $(function() {
+              
+              var opt = {
+                    autoOpen: false,
+                    draggable: true,
+                    responsive: true,
+                    width: '700px',
+                    classes: {
+                      "ui-dialog": "ui-window-options",
+                      "ui-dialog-titlebar": "ui-window-bar"
+                    },
+            };
+
+            $("#winOpener").click(function() {
+                if ($("#idInfNovedadSA").val() != ""){
+                    
+                    getDataINPdf();
+                    //addButtons($(".ui-window-options"));
+                    $("#window").dialog(opt).dialog("open");
+                    addButtons($(".ui-window-options"));
+                }
+              })
+            });
+    });
+ 
+</script>
+
+{% endblock %}

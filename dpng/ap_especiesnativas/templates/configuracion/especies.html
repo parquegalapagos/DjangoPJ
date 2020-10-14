@@ -1,0 +1,172 @@
+{% load static %} {% block content %}
+<!-- DataTables -->
+<link rel="stylesheet" type="text/css" href="{% static 'css/select2.min.css' %}">
+<style type="text/css">
+    .filters input {
+        width: 100%;
+        padding: 3px;
+        box-sizing: border-box;
+    }
+</style>
+<!-- FORMULARIO  -->
+<div id="content_esp">
+    <div id="addEspecies" style="display: none;">
+        <div class="stackbox-header cab_popup" align="center"> Especies </div>
+
+        <div class="stackbox-body" id="bodyaddEspecies">
+            <div class="notification">
+                <span class="icon">
+            <i class=""></i>
+          </span>
+                <span class="text"></span>
+                <span class="close"><i class="fa fa-close"></i></span>
+            </div>
+            <div class="row">
+                <br>
+                <br>
+                <div class="col-xs-12 callout" style="border-color: #1b90ad;">
+
+                    <!-- CAMPOS FORM -->
+                    {% csrf_token %}
+                    <form id="frm_Especies" action="#" method="post">
+                        <table>
+                            <!-- FIELDS -->
+                            <input type="hidden" id="idEspecie" name="idEspecie" value="" />
+                            <tr>
+                                <td align="right">Modulo</td>
+                                <td width="10px"></td>
+                                <td>
+                                    <select class="select2 requerido" id="SmoduloEsp" text="Modulo" name="SmoduloEsp[]" multiple="multiple" style="width: 100%;">
+                                        <option value="">Seleccion una Opcion</option>
+                                        {% for especie in catalogos %} {% if especie.categoria == 'SPN_CATEGORIA_ESPECIES' %}
+                                        <option value="{{ especie.valor }}">{{ especie.valor }}.{{ especie.label }}</option>
+                                        {% endif %}valor {% endfor %}
+                                    </select>
+                                </td>
+                                <td width="100px"></td>
+                            </tr>
+                            <tr height='10px;'></tr>
+                            <tr>
+                                <td align="right">Tipo Especie</td>
+                                <td width="10px"></td>
+                                <td>
+                                    <select class="select2 requerido" id="StipoEsp" text="Tipo Especie" style="width: 100%;">
+                                        <option value="">Seleccion una Opcion</option>
+                                        {% for especie in catalogos %} {% if especie.categoria == 'TIPO_ESPECIE' %}
+                                        <option value="{{ especie.valor }}">{{ especie.label }}</option>
+                                        {% endif %} {% endfor %}
+                                    </select>
+                                </td>
+                                <td width="100px"></td>
+                            </tr>
+                            <tr height='10px;'></tr>
+                            <tr>
+                                <td align="right">Clasificacion</td>
+                                <td width="10px"></td>
+                                <td>
+                                    <select class="select2 requerido" id="SclasEsp" text="Clasificacion" style="width: 100%;">
+                                        <option value="">Seleccion una Opcion</option>
+                                        {% for especie in catalogos %} {% if especie.categoria == 'SPN_CLASIFICACION_ESPECIE' %}
+                                        <option value="{{ especie.valor }}">{{ especie.label }}</option>
+                                        {% endif %} {% endfor %}
+                                    </select>
+                                </td>
+                                <td width="100px"></td>
+                            </tr>
+                            <tr height='10px;'></tr>
+                            <tr>
+                                <td align="right">Nombre Cientifico</td>
+                                <td width="20px;"></td>
+                                <td>
+                                    <input type="text" id="ncientifico" name="ncientifico" text="Nombre Cientifico" value="" class="form-control" style="width: 200px;" />
+                                </td>
+                            </tr>
+                            <tr height='10px;'></tr>
+                            <tr>
+                                <td align="right">Nombre Comun</td>
+                                <td width="20px;"></td>
+                                <td>
+                                    <input type="text" id="ncomun" name="ncomun" text="Nombre Comun" class="form-control requerido" style="width: 200px;" />
+                                </td>
+                            </tr>
+                            <tr height='10px;'></tr>
+
+                        </table>
+
+                        <input type="hidden" id="tipoEsp_acc" value="0" />
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="stackbox-footer">
+            <button class="btn btn-primary" onclick="setInsertUpdateEsp();">Grabar</button>
+            <button class="btn btn-default" data-close-stackbox="true">Close</button>
+        </div>
+    </div>
+    <div class="box">
+        <div class="box-header">
+            <i class="fa fa-list"></i>
+            <h3 class="box-title">Lista de Especies</h3>
+            <div class="botonera" style="float: right; right: 1px;">
+                <a onclick="limpiarFormEspecies();" href='#addEspecies' data-stackbox='true' data-stackbox-position="absolute"><i class="fa fa-plus-circle text-green btn_nuevo"></i></a>
+                <a title="pfd" onclick="generarPdf('tabla_especies',5)"><i class="fa fa-file-pdf-o text-green"></i></a>
+                <a title="excel" onclick="generarExcel('tabla_especies',5)"><i class="fa fa-file-excel-o text-green"></i></a>
+
+                <!--a title="Agregar Nuevo" onclick="limpiarFormLicencia_SP();"   href='#addLicenciaL' data-stackbox='true' data-stackbox-position="absolute"><i class="fa fa-plus-circle text-green"></i></a-->
+            </div>
+        </div>
+        <!-- /.box-header -->
+
+        <div class="box-body">
+            <table id="tabla_especies" style="font-size: 12px; text-transform: uppercase;" class="table table-striped table-bordered dt-responsive nowrap" width="100%" cellspacing="0">
+                <thead>
+                    <tr style="background-color: #0073b7;    color: white;">
+                        <th>Nombre Comun</th>
+                        <th>Nombre Cientifico</th>
+                        <th>Tipo</th>
+                        <th>Clasificacion</th>
+                        <th>Modulo</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for especie in especies %}
+                    <tr>
+                        <td id="td_nc_{{ especie.id }}">{{ especie.nombre_comun }}</td>
+                        <td id="td_nci_{{ especie.id }}">{{ especie.nombre_cientifico }}</td>
+                        <td id="td_tipo_{{ especie.id }}">{{ especie.tipo_especie }}</td>
+                        <td id="td_cla_{{ especie.id }}">{{ especie.clasificacion }}</td>
+                        <td id="td_cat_{{ especie.id }}">{{ especie.categoria }}</td>
+                        <td align="center">
+                            <a href='#addEspecies' data-stackbox='true' data-stackbox-position='absolute' onclick="editEspecie('{{ especie.id }}')">
+                                <i class="fa fa-edit text-green"></i>
+                            </a>
+                        </td>
+                        <td align="center">
+                            <a style="cursor: pointer;" onclick="deleteModal('{{ especie.id }}','Especies');">
+                                <i class="fa fa-trash text-green" title="Eliminar Especies"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <!-- /.box-body -->
+    </div>
+</div>
+<!-- /.box -->
+<!-- AdminLTE datatable -->
+<!-- jQuery 3 -->
+{% load static %}
+<script src="{% static 'js/lib_internas/script_espnativas.js' %}"></script>
+<script>
+    $(document).ready(function() {
+        $('#SmoduloEsp').select2();
+        $('#StipoEsp').select2();
+        $('#SclasEsp').select2();
+        var table = $('#tabla_especies').DataTable();
+    });
+</script>
+{% endblock %}

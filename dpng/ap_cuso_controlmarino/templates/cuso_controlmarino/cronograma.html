@@ -1,0 +1,350 @@
+{% extends 'cuso_controlmarino/menu_lateral.html' %}
+{% block principalhome %}
+{% load static %} 
+<!-- DataTables -->
+<link rel="stylesheet" type="text/css" href="{% static 'css/select2.min.css' %}">
+
+<style type="text/css">
+.break-page {break-after: page;}
+
+.tox .tox-menubar {
+    background-color: #005196; 
+}
+.tox .tox-toolbar, .tox .tox-toolbar__overflow, .tox .tox-toolbar__primary {
+    background-color: #005196;
+}
+
+.select2{
+    z-index: 0;
+}
+    .tabs-left > .nav-tabs {
+  border-bottom: 0;
+}
+
+.tab-content > .tab-pane,
+.pill-content > .pill-pane {
+  display: none;
+}
+
+.tab-content > .active,
+.pill-content > .active {
+  display: block;
+  background-color: #0073b;
+  color: white;
+}
+
+.tabs-left > .nav-tabs > li {
+  float: none;
+}
+
+.tabs-left > .nav-tabs > li > a {
+  min-width: 74px;
+  margin-right: 0;
+  margin-bottom: 3px;
+}
+
+.tabs-left > .nav-tabs {
+  float: left;
+  margin-right: 19px;
+  border-right: 2px solid #000;
+}
+
+.tabs-left > .nav-tabs > li > a {
+  margin-right: -1px;
+  -webkit-border-radius: 4px 0 0 4px;
+     -moz-border-radius: 4px 0 0 4px;
+          border-radius: 4px 0 0 4px;
+}
+
+.tabs-left > .nav-tabs > li > a:hover,
+.tabs-left > .nav-tabs > li > a:focus {
+  border-color: #eeeeee #dddddd #eeeeee #eeeeee;
+  background-color: #8a8a8a;
+  color: white;
+}
+
+.tabs-left > .nav-tabs .active > a,
+.tabs-left > .nav-tabs .active > a:hover,
+.tabs-left > .nav-tabs .active > a:focus {
+  border-color: #fff transparent #fff #fff;
+  border-right-color: #36c308;
+}
+
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:hover, .nav-tabs>li.active>a:focus {
+    color: #fff;
+    background-color: #005196;
+    border: 2px solid #ddd;
+    border-bottom-color: transparent;
+    cursor: default;
+}
+fieldset {
+    border: 1px solid #000 !important;
+    margin: 0;
+    xmin-width: 0;
+    padding: 10px;
+    position: relative;
+    border-radius: 4px;
+    padding-left: 10px!important;
+}
+legend {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 0px;
+    width: 35%;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 5px 5px 5px 10px;
+    background-color: #ffffff;
+}
+
+.ui-dialog .ui-dialog-titlebar {
+    background-color: #005196;
+    color: white;
+}
+
+.ui-window-bar .ui-button {
+  position: absolute;
+  top: 50%;
+  width: 20px;
+  margin: -10px 0 0 0;
+  padding: 1px;
+  height: 20px;
+}
+
+.ui-window-bar .ui-window-minimize {
+  right: calc(.3em + 40px);
+}
+
+.ui-window-bar .ui-window-maximize {
+  right: calc(.3em + 20px);
+}
+
+.ui-dialog {
+    z-index: 9999999;
+}
+.tab-content > .active, .pill-content > .active {
+    color: black;
+}
+.notificacion{
+    z-index: 9999999999;
+}
+a{
+    cursor: pointer;
+}
+</style>
+<link rel="stylesheet" href="{% static 'css/style.min.css' %}" />
+<!-- FORMULARIO  -->
+
+<div id="window" style="display: none;">
+     <div class="stackbox-header cab_popup" align="center">
+        <img src="{% static 'image/favicon.ico' %}" width="40px" style="float:left;margin-top: -5px;"/>
+        <h id="">Configuración Actividad Por Funcionario</h>
+    </div>
+    <div class="stackbox-body" id="bodywindow" style="font-weight: 100; height: 600px;">
+        <div class="row" align="center" style="">
+            
+            <div class="col-xs-12" style="border: 2px solid black;height: 555px;background-color: #f3f3f3; width: 96%; left: 20px;" id="content_divTab">
+                <div style="margin-top: 20px;">
+                    <table>
+                        <tr>
+                            <td style="font-size: 14px;font-weight: bold;">AÑO</td>
+                            <td width="10px;"></td>
+                            <td>
+                                <select class="" id="SanioConf" style="width: 80px;">
+
+                                </select>
+                            </td>
+                            <td width="10px;"></td>
+                            <td style="font-size: 14px;font-weight: bold;">Mes</td>
+                            <td width="10px;"></td>
+                            <td>
+                                <select class="select2" id="SmesConf" style="width: 200px;">
+                                    <option value="1">ENERO</option>
+                                    <option value="2">FEBRERO</option>
+                                    <option value="3">MARZO</option>
+                                    <option value="4">ABRIL</option>
+                                    <option value="5">MAYO</option>
+                                    <option value="6">JUNIO</option>
+                                    <option value="7">JULIO</option>
+                                    <option value="8">AGOSTO</option>
+                                    <option value="9">SEPTIEMBRE</option>
+                                    <option value="10">OCTUBRE</option>
+                                    <option value="11">NOVIEMBRE</option>
+                                    <option value="12">DICIEMBRE</option>
+                                </select>
+                            </td>
+                            <td width="10px;"></td>
+                            <td>
+                                <a style="cursor: pointer;" onclick="getDataActividadesXperiodo();">
+                                    <i class="fa fa-search"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    </table>    
+                </div>
+                <div style="height: 10px;"></div>
+                   
+                <div class="tabbable tabs-left nav-stacked" style="">
+                    <div class="notification">
+                        <span class="icon">
+                            <i class=""></i>
+                        </span>
+                        <span class="text"></span>
+                        <span class="close"><i class="fa fa-close"></i></span>
+                    </div>
+                
+                    <ul class="nav nav-tabs" id="tabsIng">
+                        
+                        
+                    </ul>
+                    <input type="hidden" id="actividad_valor">
+                    <input type="hidden" id="actividad_id">
+                    <div class="tab-content" style="" id="div_content">
+                        
+                        
+                       
+                    </div><!--tab-content-->
+                </div><!--nav-tabs-custom-->
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div id="popupdias" style="display: none;">
+    <div class="stackbox-header cab_popup" align="center">
+        <img src="{% static 'image/favicon.ico' %}" width="40px" style="float:left;margin-top: -5px;"/>
+        <h id="tituloPopupdias">Cronograma Actividad Por Funcionario</h>
+    </div>
+    <div class="stackbox-body" id="bodypopupdias">
+        <div class="row" align="center" style="">
+             
+                <div style="height: 10px;"></div>
+                <div class="notification">
+                    <span class="icon">
+                        <i class=""></i>
+                    </span>
+                    <span class="text"></span>
+                    <span class="close"><i class="fa fa-close"></i></span>
+                </div>
+                <div class="box-body" id="bodycronogramaFun">
+                    <input type="hidden" id="tipoCronFun" value="0">
+                    <input type="hidden" id="lastday" value="0">
+                    <input type="hidden" id="actividad_funcionario_id" value="0">
+                    <input type="hidden" id="idtrx" value="0">
+                    <table>
+                        <tr>
+                            <td align="right" style="font-size: 14px; font-weight: bold;">ACTIVIDAD:</td>
+                            <td style="width: 10px;"></td>
+                            <td><span id="popupActividad" style="font-size: 14px; font-weight: bold;"></span></td>
+                        </tr>
+                        <tr>
+                            <td align="right" style="font-size: 14px; font-weight: bold;">FUNCIONARIO:</td>
+                            <td style="width: 10px;"></td>
+                            <td><span id="popupFuncionario" style="font-size: 14px; font-weight: bold;"></span></td>
+                        </tr>
+                        <tr>
+                            <td align="right" style="font-size: 14px; font-weight: bold;">PERIODO:</td>
+                            <td style="width: 10px;"></td>
+                            <td><span id="popupPeriodo" style="font-size: 14px; font-weight: bold;"></span></td>
+                        </tr>
+                    </table>
+                    <br><br>
+                    <div class="col-xs-12" id="cronogramaFun" align="center">
+                   
+                    </div>
+                </div>
+                           
+        </div>
+    </div>
+    <div class="stackbox-footer">
+        <button class="btn btn-primary" id="stackbox_save" onclick="setinsertupdateDiasActFunc();">Grabar</button>
+        <button class="btn btn-default" data-close-stackbox="true">Close</button>
+    </div>
+</div>
+
+<div style="width: 98%; margin-left: 1%;box-shadow: 5px 5px 15px 5px #888888;">
+<div id="content_cronograma" style="position: relative;">
+    
+    <div class="box">
+
+        <div class="box-header" id="planp" style="background-color: #005196; color: white;">
+            <i class="fa fa-list"></i>
+            <h3 class="box-title">Cronograma de Actividades<i class="fa fa-book" aria-hidden="true" style="font-size: 20px; margin-left: 10px;"></i></h3>
+            <div class="input-group" style="width: 300px;position: relative;float: right;">
+                <table>
+                    <td align="right" style="color:white;">Fechas</td>
+                    <td width="10px"></td>
+                    <td>
+                        <div class="input-daterange input-group" id="datepicker" style="">
+                            <input type="text" autocomplete="off" class="input-sm form-control" name="start" id="FdesdeCr" />
+                        </div>
+                    </td>
+                </table>
+                <div class="input-group-addon">
+                    <a onclick="getDataFuncionariosActividadTabla();" style="cursor: pointer;">
+                        <i class="fa fa-search"></i>
+                    </a>
+                </div>
+                <div class="input-group-addon">
+                    <a href="#window" data-stackbox='true' data-stackbox-width="1200px" data-stackbox-height="300px" data-stackbox-position="absolute" style="cursor: pointer;" onclick="getDataActividadesXperiodo();">
+                        <i class="fa fa-gears"></i>
+                    </a>
+                </div>
+            </div>            
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body" id="bodycronogramaAct">
+            <br><br>
+            <div class="col-xs-12" id="cronograma" align="center">
+           
+            </div>
+        </div>
+        <!-- /.box-body -->
+
+    </div>
+    <!-- /.box -->
+
+
+
+</div>
+</div>
+<!-- /.content -->
+
+<!-- AdminLTE datatable -->
+<!-- jQuery 3 -->
+{% load static %}
+<!--link rel="stylesheet" type="text/css" href="{% static 'css/jquery.fancybox.min.css' %}">
+<script src="{% static 'js/lib_internas/script_bsa.js' %}"></script>
+<script src="{% static 'js/lib_externas/jstree.min.js' %}"></script>
+<script src="{% static 'js/lib_externas/jquery.fancybox.min.js' %}"></script-->
+
+<script>
+    $(document).ready(function() {
+
+        iniciaYears("SanioConf");
+        $('#SmesConf').select2();
+
+        $("#idmenu7").addClass("fa-dot-circle-o");
+        $("#idmenu7").parent().css("color", "#00c0ef");
+
+        $('.input-daterange').datepicker({
+                format: "mm-yyyy",
+                viewMode: "months",
+                minViewMode: "months"
+            }
+        );
+
+        var f1 = ((new Date).getMonth()+1) + "-"+  (new Date).getFullYear();
+
+        $('#FdesdeCr').val(f1);
+
+        $('#SmesConf').val(((new Date).getMonth()+1)).trigger("change");
+
+        getDataFuncionariosActividadTabla();
+
+    });
+ 
+</script>
+
+{% endblock %}

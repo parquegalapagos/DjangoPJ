@@ -1,0 +1,320 @@
+{% extends "home.html" %}
+{% load static %}
+
+{% block principalhome %}
+  <div id="principal_home" style="margin-top: 10%;">
+    <p style="text-align: center;">
+      <span style="font-size: x-large;">Bienvenido al módulo de Talento Humano</span>
+    </p>
+    <p style="text-align: center;">
+      <span style="font-size: large;"></span>
+    </p>
+    <p style="text-align: center;">
+      <span style="font-size: xx-large;">
+        <img src="{% static '/image/login/logo-PNG.png' %}"  width="15%">
+      </span>
+    </p>
+     
+  </div>
+{%endblock%}
+
+{% block menu %}
+  <li class="header">TALENTO HUMANO</li>
+  <li class="treeview menu-open">
+
+    {% if menu_accion_personal or menu_encargos or menu_ingresos or menu_licencias or menu_personaldpng or menu_traslados or menu_sancion or menu_control_asistencia %}
+    <a href="#">
+      <i style="font-size: 18px;" class="fa fa-user"></i> <span style="font-size: 16px;">Servidores Públicos/<br>Funcionarios</span>
+      <span class="pull-right-container">
+        <i class="fa fa-angle-left pull-right"></i>
+      </span>
+    </a>
+    {% endif %}
+
+    <ul class="treeview-menu" style="display: block;">
+      {% if menu_accion_personal %}
+        <li onclick="addTab('Accion Personal','SP_accPersonal','idmenu1');" style="cursor: pointer;">
+          <a><i id="idmenu1" class="fa fa-circle-o text-aqua"></i>Acción Personal</a>
+        </li>
+      {% endif %}
+
+      {% if menu_control_asistencia %}
+        <li onclick="addTab('Control de Personal','SP_asistencia','idmenu30');" style="cursor: pointer;"><a>
+          <i id="idmenu30" class="fa fa-circle-o text-aqua"></i>Control de Personal</a>
+        </li>
+      {% endif %}
+
+      {% if menu_encargos %}
+        <li onclick="addTab('Encargos','SP_encargos','idmenu2');" style="cursor: pointer;">
+          <a><i id="idmenu2" class="fa fa-circle-o text-aqua"></i>Encargos y Subrogaciones</a>
+        </li> 
+      {% endif %}
+      <!--li onclick="addTab('PDF','pdf','idmenu3');" style="cursor: pointer;">
+        <a><i id="idmenu3" class="fa fa-circle-o text-aqua"></i>Informe Personal DPNG</a>
+      </li-->
+      {% if menu_ingresos %}
+        <li onclick="addTab('Ingresos/Salidas','SP_ingresos','idmenu4');" style="cursor: pointer;">
+          <a><i id="idmenu4" class="fa fa-circle-o text-aqua"></i>Ingresos y Salidas</a>
+        </li>
+      {% endif %}
+
+      {% if menu_licencias %}
+        <li onclick="addTab('Licencias','SP_licencias','idmenu5');" style="cursor: pointer;">
+          <a><i id="idmenu5" class="fa fa-circle-o text-aqua"></i>Licencias</a>
+        </li>
+      {% endif %}
+
+      {% if menu_personaldpng %}
+        <li onclick="addTab('Personal DPNG','SP_funcionarios','idmenu6');" style="cursor: pointer;">
+          <a><i id="idmenu6" class="fa fa-circle-o text-aqua"></i>Personal DPNG</a>
+        </li>
+      {% endif %}
+
+      {% if menu_sancion %}
+        <li onclick="addTab('Sanciones','SP_sanciones','idmenu7');" style="cursor: pointer;"><a>
+          <i id="idmenu7" class="fa fa-circle-o text-aqua"></i>Sanciones</a>
+        </li>
+      {% endif %}
+
+      {% if menu_traslados %}
+        <li onclick="addTab('Traslados','SP_traslados','idmenu8');" style="cursor: pointer;">
+          <a><i id="idmenu8" class="fa fa-circle-o text-aqua"></i>Traslados/Traspasos/<br>Cambios Administrativos</a>
+        </li>
+      {% endif %}
+
+      
+      <!--li onclick="addTab('Especies','espnativas');" style="cursor: pointer;"><a><i class="fa fa-circle-o text-aqua"></i> Especies</a></li-->
+    </ul>
+  </li>
+
+  
+  <!-- UATH - CARNETIZACION -->
+
+  {% if menu_carnetizacion %}
+
+    <li class="treeview">
+      <a href="#">
+        <i style="font-size: 18px;" class="fa fa-camera"></i> <span style="font-size: 16px;">Carnetización</span>
+        <span class="pull-right-container">
+          <i class="fa fa-angle-left pull-right"></i>
+        </span>
+      </a>
+      <ul class="treeview-menu" style="display: none;">
+
+        <li onclick="addTab('Carnetización','CZ_carnetizacion','idmenu100');" style="cursor: pointer;">
+          <a><i id="idmenu100" class="fa fa-circle-o text-aqua"></i>Emisión Credencial DPNG</a>
+        </li>
+
+      </ul>
+    </li>
+
+  {% endif %}
+
+
+  <!-- UATH - SOLICITUD PERMISOS -->
+  {% if menu_permisos %}
+    <li class="treeview">
+
+      <a href="#">
+        <i style="font-size: 18px;" class="fa fa-calendar-check-o"></i> <span style="font-size: 16px;">Solicitud Permisos</span>
+        <span class="pull-right-container">
+          <i class="fa fa-angle-left pull-right"></i>
+        </span>
+      </a>
+
+      <ul class="treeview-menu" style="display: none;">
+
+        <!-- UATH - SOLICITUD PERMISOS - REVISOR(3) Y APROBADOR(4) -->
+        {% if menu_permisos_revisor %} 
+          <li onclick="addTab('Permiso - Bandeja','SL_permisos_bandeja_revisor','idmenu90');"style="cursor: pointer;">
+            <a><i id="idmenu90" class="fa fa-circle-o text-aqua"></i>Bandeja Entrada(R) </a>
+          </li>
+        {% endif %}
+
+        {% if menu_permisos_aprobador %} 
+          <li onclick="addTab('Permiso - Bandeja','SL_permisos_bandeja_aprobador','idmenu91');"style="cursor: pointer;">
+            <a><i id="idmenu91" class="fa fa-circle-o text-aqua"></i>Bandeja Entrada(A)</a>
+          </li>
+        {% endif %}
+        
+        <li onclick="addTab('Solicitud Permiso','SP_iniciarTramite','idmenu93');" style="cursor: pointer;">
+          <a><i id="idmenu93" class="fa fa-circle-o text-aqua"></i>Iniciar Trámites</a>
+        </li>
+
+        <li onclick="addTab('Permiso - Estado','SL_Permisos_estadotramite','idmenu94');" style="cursor: pointer;" >
+          <a><i id="idmenu94" class="fa fa-circle-o text-aqua"></i>Estado Solicitud</a>
+        </li>
+
+      
+      </ul>
+    </li>
+
+  {% endif %}
+
+  <!-- REPORTES -->
+
+  {% if menu_personaldpng %}
+
+    <li class="treeview">
+      <a href="#">
+        <i style="font-size: 18px;" class="fa fa-list-alt"></i> <span style="font-size: 16px;">Reportes</span>
+        <span class="pull-right-container">
+          <i class="fa fa-angle-left pull-right"></i>
+        </span>
+      </a>
+      <ul class="treeview-menu" style="display: none;">
+        <li onclick="addTab('Tabla Funcionarios','SP_tabFuncionarios','idmenu103');" style="cursor: pointer;">
+          <a><i id="idmenu103" class="fa fa-circle-o text-aqua"></i>Funcionarios DPNG</a>
+        </li>
+        <li onclick="addTab('Graficos Funcionarios','SP_repFuncionarios','idmenu101');" style="cursor: pointer;">
+          <a><i id="idmenu101" class="fa fa-circle-o text-aqua"></i>Grafico Funcionarios DPNG</a>
+        </li>
+        <li onclick="addTab('Reporte Acciones','SP_repAcciones','idmenu102');" style="cursor: pointer;">
+          <a><i id="idmenu102" class="fa fa-circle-o text-aqua"></i>Reporte Acciónes</a>
+        </li>
+        <li onclick="addTab('Reporte Sanciones','SP_repSanciones','idmenu104');" style="cursor: pointer;">
+          <a><i id="idmenu104" class="fa fa-circle-o text-aqua"></i>Reporte Sanciones</a>
+        </li>
+        <li onclick="addTab('Reporte Tramites','SP_repTramites','idmenu105');" style="cursor: pointer;">
+          <a><i id="idmenu105" class="fa fa-circle-o text-aqua"></i>Solicitud de Permisos</a>
+        </li>
+        <li onclick="addTab('Reporte Familiares','SP_repFamiliaresFun','idmenu106');" style="cursor: pointer;">
+          <a><i id="idmenu106" class="fa fa-circle-o text-aqua"></i>Reporte Familiares</a>
+        </li>
+
+      </ul>
+    </li>
+
+  {% endif %}
+
+  <!-- DASHBOARD -->
+
+  {% if menu_personaldpng %}
+
+    <li class="treeview">
+      <a href="#">
+        <i style="font-size: 18px;" class="fa fa-list-alt"></i> <span style="font-size: 16px;">Dashboard</span>
+        <span class="pull-right-container">
+          <i class="fa fa-angle-left pull-right"></i>
+        </span>
+      </a>
+      <ul class="treeview-menu" style="display: none;">
+        <li onclick="addTab('Dashboard','SP_dashboard','idmenu110');" style="cursor: pointer;">
+          <a><i id="idmenu110" class="fa fa-circle-o text-aqua"></i>Dashboard</a>
+        </li>
+      </ul>
+    </li>
+
+  {% endif %}
+
+
+  <!-- UATH-CONFIGURACION -->
+  {% if menu_configuracion %} 
+    <li class="treeview">
+      <a href="#">
+        <i style="font-size: 18px;" class="fa fa-gears" ></i> <span style="font-size: 16px;">Configuración</span>
+        <span class="pull-right-container">
+          <i class="fa fa-angle-left pull-right"></i>
+        </span>
+      </a>
+      <ul class="treeview-menu" style="display: none;">
+
+        <li class="treeview">
+          <a href="#" style="color: white;"><i class="fa fa-circle text-aqua"></i> Cargos y Puestos
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu" style="display: none;">
+            <li onclick="addTab('Distributivo','distributivo','idmenu13');" style="cursor: pointer;color:#00c0ef;"><a><i id="idmenu13" class="fa fa-circle-o text-aqua"></i>Distributivo</a></li>
+            <li onclick="addTab('Funcional','funcional','idmenu14');" style="cursor: pointer;"><a href="#"><a><i id="idmenu14" class="fa fa-circle-o text-aqua"></i>Funcional</a></li>
+            <li onclick="addTab('Institucional','institucional','idmenu15');" style="cursor: pointer;"><a href="#"><a><i id="idmenu15" class="fa fa-circle-o text-aqua"></i>Institucional</li>
+            <li onclick="addTab('Ocupacional','ocupacional','idmenu16');" style="cursor: pointer;"><a href="#"><a><i id="idmenu16" class="fa fa-circle-o text-aqua"></i>Ocupacional</a></li>
+          </ul>
+        </li>
+        
+        <li class="treeview">
+          <a href="#" style="color: white;"><i class="fa fa-circle text-aqua"></i> Enfermedades y<br> Accidentes
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu" style="display: none;">
+            <li onclick="addTab('Accidentes','accidentes','idmenu18');" style="cursor: pointer;"><a><i id="idmenu18" class="fa fa-circle-o text-aqua"></i>Accidentes</a></li>
+            <li onclick="addTab('Discapacidades','discapacidades','idmenu19');" style="cursor: pointer;"><a href="#"><a><i id="idmenu19" class="fa fa-circle-o text-aqua"></i>Discapacidades</a></li>
+            <li onclick="addTab('Enfermedades','enfermedades','idmenu20');" style="cursor: pointer;"><a href="#"><a><i id="idmenu20" class="fa fa-circle-o text-aqua"></i>Enfermedades</a></li>
+          </ul>
+        </li>
+
+        <li class="treeview">
+          <a href="#" style="color: white;"><i class="fa fa-circle text-aqua"></i> Carnetización
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu" style="display: none;">
+            <li onclick="addTab('Cargos','CZ_carnetizacionCargos','idmenu21');" style="cursor: pointer;color:#00c0ef;"><a><i id="idmenu21" class="fa fa-circle-o text-aqua"></i>Cargo</a>
+            </li>
+          </ul>
+
+        </li>
+
+        <li class="treeview">
+          <a href="#" style="color: white;"><i class="fa fa-circle text-aqua"></i> Otros
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu" style="display: none;">
+            <li onclick="addTab('Cuenta Bancarias','cuentaBan','idmenu17');" style="cursor: pointer;"><a><i id="idmenu17" class="fa fa-circle-o text-aqua"></i>Cuentas Bancarias</a>
+            </li>
+            <li onclick="addTab('Acciones','accion_personal','idmenu29');" style="cursor: pointer;"><a href="#"><a><i id="idmenu29" class="fa fa-circle-o text-aqua"></i>Acciónes Personal</a></li>
+            <!--li onclick="addTab('Comisiones','comision','idmenu21');" style="cursor: pointer;"><a><i id="idmenu21" class="fa fa-circle-o text-aqua"></i>Comisiones</a></li-->
+            <li onclick="addTab('Etnias','etnias','idmenu22');" style="cursor: pointer;"><a href="#"><a><i id="idmenu22" class="fa fa-circle-o text-aqua"></i>Etnias</a></li>
+            <!--li onclick="addTab('Licencias','licencias','idmenu23');" style="cursor: pointer;"><a href="#"><a><i id="idmenu23" class="fa fa-circle-o text-aqua"></i>Licencias</a></li-->
+            <li onclick="addTab('Modalidad','modalidad','idmenu24');" style="cursor: pointer;"><a href="#"><a><i id="idmenu24" class="fa fa-circle-o text-aqua"></i>Modalidad Laboral</a></li> 
+            <li onclick="addTab('Regimen','regimen','idmenu25');" style="cursor: pointer;"><a href="#"><a><i id="idmenu25" class="fa fa-circle-o text-aqua"></i>Regimen Laboral</a></li>
+            <!--li onclick="addTab('Rol','rol_laboral','idmenu26');" style="cursor: pointer;"><a href="#"><a><i id="idmenu26" class="fa fa-circle-o text-aqua"></i>Rol Laboral</a></li-->
+            <li onclick="addTab('Sanciones','sanciones','idmenu27');" style="cursor: pointer;"><a href="#"><a><i id="idmenu27" class="fa fa-circle-o text-aqua"></i>Sanciones</a></li>
+            <li onclick="addTab('Personas','personas','idmenu28');" style="cursor: pointer;"><a href="#"><a><i id="idmenu28" class="fa fa-circle-o text-aqua"></i>Personas</a></li>
+          </ul>
+        </li>
+
+      </ul>
+    </li>
+  {% endif %}
+<script src="{% static 'js/lib_externas/jquery-1.12.4.js' %}"></script>
+<script src="{% static 'js/lib_externas/jquery-ui.js' %}"></script>
+<script>document.write('<script src="{% static "js/lib_internas/script.js" %}?dev=' + Math.floor(Math.random() * 100) + '"\><\/script>');</script>
+<script>document.write('<script src="{% static "js/lib_internas/uath_carnetizacion.js" %}?dev=' + Math.floor(Math.random() * 100) + '"\><\/script>');</script>
+
+<script>document.write('<script src="{% static "js/lib_externas/camera/webcam.min.js" %}?dev=' + Math.floor(Math.random() * 100) + '"\><\/script>');</script>
+<script>document.write('<script src="{% static "js/lib_externas/camera/func_camera.js" %}?dev=' + Math.floor(Math.random() * 100) + '"\><\/script>');</script>
+
+
+
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+<!--script src="https://code.highcharts.com/modules/pyramid3d.js"></script-->
+  <script>    
+    //sessionStorage.setItem("ocupacional", JSON.stringify({{ gocupacionals | safe }}));
+    //sessionStorage.setItem("institucional", JSON.stringify({{ ginstitucionals | safe }}));
+    //sessionStorage.setItem("distributivo", JSON.stringify({{ gdistributivos | safe }}));
+    sessionStorage.setItem("cargos", JSON.stringify({{ cargos | safe }}));
+    sessionStorage.setItem("modalidades", JSON.stringify({{ modalidades | safe }}));
+    sessionStorage.setItem("cprocesos", JSON.stringify({{ cprocesos | safe }}));
+    sessionStorage.setItem("parroquias", JSON.stringify({{ parroquias | safe }}));
+    sessionStorage.setItem("islas", JSON.stringify({{ islas | safe }}));
+
+    sessionStorage.setItem("cantones", JSON.stringify({{ cantones | safe }}));
+    sessionStorage.setItem("parroquiasT", JSON.stringify({{ parroquias | safe }}));
+
+    sessionStorage.setItem("bancos", JSON.stringify({{ bancos | safe }}));
+    sessionStorage.setItem("catalogos", JSON.stringify({{ catalogos | safe }}));
+    sessionStorage.setItem("sanciones", JSON.stringify({{ sanciones | safe }}));
+    sessionStorage.setItem("direcciones", JSON.stringify({{ direcciones | safe }}));
+
+  </script>
+{%endblock%}

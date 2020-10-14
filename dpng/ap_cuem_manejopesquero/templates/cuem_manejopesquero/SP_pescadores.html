@@ -1,0 +1,272 @@
+
+{% extends 'cuem_manejopesquero/menu_lateral.html' %}
+{% block principalhome %}
+
+{% load static %}
+<style>
+    .dataTables_filter {
+        display: none;
+    }
+</style>
+
+<input type="hidden" id="option_pais" value="" /> 
+<input type="hidden" id="option_provincia" value="" /> 
+<input type="hidden" id="option_ciudad" value="" />
+<input type="hidden" id="option_isla" value="" />
+<input type="hidden" id="option_instruc_academ" value="" />
+<input type="hidden" id="option_cooperativas" value="" />
+<input type="hidden" id="option_categoria" value="" />
+
+<div id="content_Pescador" style="top: 0px;">
+    <!-- Ficha Pescador -->
+    <div id="verFicha" style="display: none;">
+        <div class="stackbox-header cab_popup" align="center">
+            <img src="{% static 'image/favicon.ico' %}" width="40px" style="float:left;margin-top: -5px;" /> Ficha Pescador
+        </div>
+        <div class="stackbox-body" id="bodyverFicha">
+
+            <div class="row" style="box-shadow: 5px 5px 5px 5px #888888; width: 104%; margin-top: 20px;">
+
+                <div class="col-xs-12">
+                    <div class="col-xs-1"></div>
+                    <div class="col-xs-10" style="">
+                        <table style="width: 100%">
+                            <tr height="50px">
+                                <td colspan="2" style="border: 1px solid black; text-align: center;background-color: #c1c1c1; font-size: 16px;" id="td_fnombre"></td>
+                                <td rowspan="7" style="border: 1px solid black; text-align: center;background-color: #c1c1c1;">
+                                    <div id="contentFileFotF" style=""><img id="imgContentFileFotF" src="" width="150px" height="192px"></div>
+                                </td>
+                            </tr>
+                            <tr height="30px">
+                                <td style="border: 1px solid black; text-align: left;padding: 5px; width: 20%;">Identificación:</td>
+                                <td style="border: 1px solid black; text-align: left;padding: 5px; width: 55%;" id="td_fced"></td>
+                            </tr>
+
+                            <tr height="30px">
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;">Fecha Nacimiento:</td>
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;" id="td_ffecnac"></td>
+                            </tr>
+
+                            <tr height="30px">
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;">Estado Civil:</td>
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;" id="td_festcivil"></td>
+                            </tr>
+
+                            <tr height="30px">
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;">Dirección:</td>
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;" id="td_fdir"></td>
+                            </tr>
+
+                            <tr height="30px">
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;">Teléfono(s):</td>
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;" id="td_ftel"></td>
+                            </tr>
+
+                            <tr height="30px">
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;">E-Mail:</td>
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;" id="td_femail">correo@mail.com</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-xs-1"></div>
+                </div>
+                <!-- /.col -->
+                <div class="col-xs-12" style="height: 30px;"></div>
+                <div class="col-xs-12">
+                    <div class="col-xs-1"></div>
+                    <div class="col-xs-10">
+                        <table style="width: 100%">
+                            <tr height="50px">
+                                <td colspan="2" style="border: 1px solid black; text-align: left;background-color: #c1c1c1;padding: 5px;font-size: 16px;">Datos Pescador</td>
+
+                            </tr>
+                            <tr height="30px">
+                                <td style="border: 1px solid black; text-align: left;padding: 5px; width: 20%;">Dirección:</td>
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;" id="td_fdireccion"></td>
+                            </tr>
+
+                            <tr height="30px">
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;">Proceso:</td>
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;" id="td_fproc"></td>
+                            </tr>
+
+                            <tr height="30px">
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;">Subproceso:</td>
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;" id="td_fsubp"></td>
+                            </tr>
+
+                            <tr height="30px">
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;">Grupo Ocupacinal:</td>
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;" id="td_fgocu"></td>
+                            </tr>
+
+                            <tr height="30px">
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;">Puesto Distributivo:</td>
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;" id="td_fdist"></td>
+                            </tr>
+
+                            <tr height="30px">
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;">Isla Trabajo</td>
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;" id="td_fisla">correo@mail.com</td>
+                            </tr>
+                            <tr height="30px">
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;">RMU</td>
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;" id="td_frmu"></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-xs-1"></div>
+                </div>
+                <div class="col-xs-12" style="height: 30px;"></div>
+
+            </div>
+
+        </div>
+        <!-- body -->
+        <div class="stackbox-footer">
+            <button class="btn btn-primary" onclick="generarPdfFicha();">PDF</button>
+            <button class="btn btn-default" data-close-stackbox="true">Close</button>
+        </div>
+    </div>
+    
+
+
+
+
+    <div class="box">
+
+        <div class="box-header">
+            <i class="fa fa-list"></i>
+            <h3 class="box-title">Lista de Pescadores</h3>
+            <div class="botonera" style="float: right; right: 1px;">
+                <!--a title="pfd" onclick="generarPdf('tabla_pescadores',3)"><i class="fa fa-file-pdf-o text-green"></i></a-->
+                <!--a title="excel" onclick="generarExcel('tabla_pescadores',3)"><i class="fa fa-file-excel-o text-green"></i></a-->
+                <a title="excel" onclick="getDataPersonaPescadorExcel()"><i class="fa fa-file-excel-o text-green"></i></a> {% if perms.ap_talentohumano.add_perPescador %}
+                <a style="cursor: pointer;" title="Agregar Nuevo" onclick="limpiarFormPescador();" href='#addPescador' data-stackbox-width='75%' data-stackbox='true' data-stackbox-position="absolute"><i class="fa fa-plus-circle text-green btn_nuevo"></i></a> {% endif %}
+
+            </div>
+        </div>
+        <!-- /.box-header -->
+
+        <div class="box box-solid bg-light-blue-gradient">
+            <div class="box-header ui-sortable-handle" style="cursor: move;">
+                <div class="pull-right box-tools">
+                    <button type="button" id="btn_divfiltro" class="btn btn-primary btn-sm pull-right" data-toggle="collapse" href="#collapseIng" role="button" aria-expanded="false" aria-controls="collapseIng" style="margin-right: 5px;" data-original-title="Collapse">
+                        <i class="fa fa-plus" id="ic_filtro"></i></button>
+                </div>
+                <i class="fa fa-map-marker"></i>
+                <h3 class="box-title">Filtros de Busqueda</h3>
+            </div>
+            <!-- <div class="box-body collapse" style="background-color: white;"  id="collapseIng"> -->
+            <div class="box-body collapse" style="background-color: white;" id="collapseIng">
+                <div class="col-xs-12">
+
+                    <div class="col-xs-3">
+                        <h style="font-size: 14px;color: black;font-weight: bold;height: 20px;">Cédula</h>
+                        <input type="text" class="form-control" name="" id="cedulafilter" style="width: 75%;height: 50%" />
+                    </div>
+
+                    <div class="col-xs-3">
+                        <h style="font-size: 14px;color: black;font-weight: bold;height: 20px;">Nombres</h>
+                        <input type="text" class="form-control" name="" id="nombresfilter" style="width: 75%; height: 50%" />
+                    </div>
+
+                    <div class="col-xs-3">
+                        <h style="font-size: 14px;color: black;font-weight: bold;height: 20px;">Isla</h>
+                        <select id="SislaFilter" class="form-control" style="width: 200px;">
+                            <option value="">Seleccione una Opción</option>
+                            <option value="Isla Floreana">ISLA FLOREANA</option>
+                            <option value="Isla Isabela">ISLA ISABELA</option>
+                            <option value="Isla San Cristobal">ISLA SAN CRISTOBAL</option>
+                            <option value="Isla Santa Cruz">ISLA SANTA CRUZ</option>
+                        </select>
+                    </div>
+
+                    <div class="col-xs-3">
+                        <h style="font-size: 14px;color: black;font-weight: bold;height: 20px;">Estado</h>
+                        <select id="SestadoFilter" class="form-control" style="width: 250px;">
+                            <option value="">Seleccione una Opción</option>
+                            <option value="ACTIVO">ACTIVO</option>
+                            <option value="ELIMINADO">ELIMINADO</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-xs-12">
+                    <h1></h1>
+                    <button type="button" class="btn btn-block btn-success" style="width:80px;height: 30px;float:right;" onclick="buscarPescadoresParam();">Buscar</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="box-body" style="position: relative;">
+
+            <table id="tabla_pescadores" style="font-size: 10px; text-transform: uppercase;" class="table table-striped table-bordered" width="100%" cellspacing="0">
+                <thead>
+                    <tr class="bg-light-blue-gradient" style="color: white;">
+                        <th>IDENTIFICACIÓN</th>
+                        <th>NOMBRES</th>
+                        <th>APELLIDOS</th>
+                        <th>ISLA</th>
+                        <th>ESTADO</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    <tr class="filters" id="ftper">
+                        <th>IDENTIFICACIÓN</th>
+                        <th>NOMBRES</th>
+                        <th>APELLIDOS</th>
+                        <th>ISLA</th>
+                        <th>ESTADO</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="bodytabla_pescadores">
+
+                </tbody>
+            </table>
+
+        </div>
+        <!-- /.box-body -->
+    </div>
+    <!-- /.box -->
+</div>
+<!-- content_persona -->
+<!-- /.box -->
+
+<!-- jQuery 3 -->
+{% load static %}
+
+<!-- <script src="{% static 'js/lib_internas/script_cuem_mp.js' %}"></script> -->
+<script src="{% static 'js/lib_externas/camera/func_camera.js' %}"></script>
+<script>
+
+  $(document).ready(function(){
+
+    $("#fld_sexo").select2();
+    $("#fld_estado_pescador").select2();
+    $("#fld_tiposangre").select2();
+    $("#fld_cargo_matricula").select2();
+    $("#fld_ingreso_motivo").select2();
+    $("#fld_tipolicenciaguia").select2();
+    $("#fld_tipoemision").select2();
+
+
+    buscarPescadoresParam();
+
+
+  });
+
+  document.getElementById('btn_divfiltro').addEventListener('click', function(){
+    var icon = document.getElementById('ic_filtro');
+    icon.classList.toggle('fa-minus');
+    icon.classList.toggle('fa-plus');
+  })
+            
+
+</script>
+{% endblock %}

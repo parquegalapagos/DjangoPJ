@@ -1,0 +1,1745 @@
+{% load static %} 
+{% block content %}
+<!-- DataTables -->
+<style>
+    .dataTables_filter {
+        display: none;
+    }
+</style>
+
+<!-- PERMISOS PARA LOS ICONOS DE LA LISTA -->
+{% if perms.ap_talentohumano.view_perfuncionario or perms.ap_talentohumano.change_perfuncionario %}
+<input type="hidden" id="perm_change_perfuncionario" value="1" /> 
+{% else %}
+<input type="hidden" id="perm_change_perfuncionario" value="0" /> 
+{% endif %} {% if perms.ap_talentohumano.delete_perfuncionario %}
+<input type="hidden" id="perm_delete_perfuncionario" value="1" /> 
+{% else %}
+<input type="hidden" id="perm_delete_perfuncionario" value="0" /> 
+{% endif %}
+
+<div id="content_funcionario">
+
+    <div id="verFicha" style="display: none;">
+        <div class="stackbox-header cab_popup" align="center">
+            <img src="{% static 'image/favicon.ico' %}" width="40px" style="float:left;margin-top: -5px;" /> Ficha Funcionario
+        </div>
+        <div class="stackbox-body" id="bodyverFicha">
+
+            <div class="row" style="box-shadow: 5px 5px 5px 5px #888888; width: 104%; margin-top: 20px;">
+
+                <div class="col-xs-12">
+                    <div class="col-xs-1"></div>
+                    <div class="col-xs-10" style="">
+                        <table style="width: 100%">
+                            <tr height="50px">
+                                <td colspan="2" style="border: 1px solid black; text-align: center;background-color: #c1c1c1;" id="td_fnombre"></td>
+                                <td rowspan="7" style="border: 1px solid black; text-align: center;background-color: #c1c1c1;">
+                                    <div id="contentFileFotF" style=""><img id="imgContentFileFotF" src="" width="150px" height="192px"></div>
+                                </td>
+                            </tr>
+                            <tr height="30px">
+                                <td style="border: 1px solid black; text-align: left;padding: 5px; width: 20%;">Identificación:</td>
+                                <td style="border: 1px solid black; text-align: left;padding: 5px; width: 55%;" id="td_fced"></td>
+                            </tr>
+
+                            <tr height="30px">
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;">Fecha Nacimiento:</td>
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;" id="td_ffecnac"></td>
+                            </tr>
+
+                            <tr height="30px">
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;">Estado Civil:</td>
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;" id="td_festcivil"></td>
+                            </tr>
+
+                            <tr height="30px">
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;">Dirección:</td>
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;" id="td_fdir"></td>
+                            </tr>
+
+                            <tr height="30px">
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;">Teléfono(s):</td>
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;" id="td_ftel"></td>
+                            </tr>
+
+                            <tr height="30px">
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;">E-Mail:</td>
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;" id="td_femail">correo@mail.com</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-xs-1"></div>
+                </div>
+                <!-- /.col -->
+                <div class="col-xs-12" style="height: 30px;"></div>
+                <div class="col-xs-12">
+                    <div class="col-xs-1"></div>
+                    <div class="col-xs-10">
+                        <table style="width: 100%">
+                            <tr height="50px">
+                                <td colspan="2" style="border: 1px solid black; text-align: left;background-color: #c1c1c1;padding: 5px;font-size: 16px;">Laboral</td>
+
+                            </tr>
+                            <tr height="30px">
+                                <td style="border: 1px solid black; text-align: left;padding: 5px; width: 20%;">Dirección:</td>
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;" id="td_fdireccion"></td>
+                            </tr>
+
+                            <tr height="30px">
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;">Proceso:</td>
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;" id="td_fproc"></td>
+                            </tr>
+
+                            <tr height="30px">
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;">Subproceso:</td>
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;" id="td_fsubp"></td>
+                            </tr>
+
+                            <tr height="30px">
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;">Grupo Ocupacinal:</td>
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;" id="td_fgocu"></td>
+                            </tr>
+
+                            <tr height="30px">
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;">Puesto Distributivo:</td>
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;" id="td_fdist"></td>
+                            </tr>
+
+                            <tr height="30px">
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;">Isla Trabajo</td>
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;" id="td_fisla">correo@mail.com</td>
+                            </tr>
+                            <tr height="30px">
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;">RMU</td>
+                                <td style="border: 1px solid black; text-align: left;padding: 5px;" id="td_frmu"></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-xs-1"></div>
+                </div>
+                <div class="col-xs-12" style="height: 30px;"></div>
+
+            </div>
+
+        </div>
+        <!-- body -->
+        <div class="stackbox-footer">
+            <button class="btn btn-primary" onclick="generarPdfFicha();">PDF</button>
+            <button class="btn btn-default" data-close-stackbox="true">Close</button>
+        </div>
+    </div>
+    <!-- addPersona -->
+
+    <div id="addPersona" style="display: none;">
+        <div class="stackbox-header cab_popup" align="center">
+            <img src="{% static 'image/favicon.ico' %}" width="40px" style="float:left;margin-top: -5px;" />
+            <h id="tituloP"> </h> Personal DPNG
+        </div>
+        <div class="stackbox-body" id="bodyaddPersona">
+            <section class="content">
+                <div class="row" style="box-shadow: 5px 5px 5px 5px #888888; width: 104%; margin-top: 20px;">
+                    <form id="frm_personas" action="#" method="post">
+
+                        <input type="hidden" id="idfuncionarioP" name="idfuncionarioP" />
+                        <!--id funcionario-->
+                        <input type="hidden" id="idpersonaP" name="idpersonaP" />
+                        <!--id persona-->
+                        <input type="hidden" id="nombrepersonaP" name="nombrepersonaP" />
+                        <input type="hidden" id="tipotFun" value="0" />
+                        <div class="col-xs-12">
+
+                            <div class="nav-tabs-custom">
+                                <ul class="nav nav-tabs">
+                                    <li class="active"><a href="#tab_general" data-toggle="tab" aria-expanded="true" style="font-weight: bold;">Funcionario</a></li>
+                                    <li class=""><a href="#tab_laboral" data-toggle="tab" aria-expanded="false" style="font-weight: bold;">Laboral</a></li>
+                                    <li class=""><a href="#tab_cuenta" data-toggle="tab" aria-expanded="false" style="font-weight: bold;" onclick="getCuentaXfun();">Cuentas</a></li>
+                                    <!--li class=""><a href="#tab_otro_item" data-toggle="tab" aria-expanded="false" style="font-weight: bold;">Otro Item</a></li-->
+                                    <li class=""><a href="#tab_ingreso" data-toggle="tab" aria-expanded="false" style="font-weight: bold;" onclick="verHistorialFunc2();">Ingresos/Salidas</a></li>
+                                    <li class=""><a href="#tab_traslado" data-toggle="tab" aria-expanded="false" style="font-weight: bold;" onclick="verHistorialTras2();">Traslado/Encargos</a></li>
+                                    <li class=""><a href="#tab_sancion" data-toggle="tab" aria-expanded="false" style="font-weight: bold;" onclick="verHistorialLicSan();">Sanciones/Licencias</a></li>
+                                    <li class=""><a href="#tab_enfermedad" data-toggle="tab" aria-expanded="false" style="font-weight: bold;" onclick="historial_EnfermedadAccidente();">Enfermedades</a></li>
+                                    <li class=""><a href="#tab_familiar" data-toggle="tab" aria-expanded="false" style="font-weight: bold;" onclick="getFamiliaresXfun();">Familiar</a></li>
+                                </ul>
+                                <div class="tab-content" style="border-top: 2px solid #3c8dbc;">
+
+                                    <div class="notification">
+                                        <span class="icon">
+                        <i class=""></i>
+                    </span>
+                                        <span class="text"></span>
+                                        <span class="close"><i class="fa fa-close"></i></span>
+                                    </div>
+
+                                    <!-- Font Awesome Icons -->
+                                    <div class="tab-pane active" id="tab_general">
+                                        <div class="row">
+                                            <div class="col-xs-12" id="bodyTabFunc">
+
+                                                <div>
+                                                    Buscar Persona<a style="cursor: pointer; font-size: 12px;margin-left: 10px;" title="Buscar Funionario" href='#popupPersonas' onclick="document.getElementById('pagina_enviaPopPer').value='personas';cleanBodyTablePersona();" data-stackbox='true' data-stackbox-position="absolute"><i class="fa fa-search text-blue"></i></a>
+                                                </div>
+                                                <br>
+                                                <div class="nav-tabs-custom">
+                                                    <ul class="nav nav-tabs">
+                                                        <li class="active"><a href="#tab_persona" data-toggle="tab" aria-expanded="true" style="font-weight: bold;">Persona</a></li>
+                                                        <li class=""><a href="#tab_nacimiento" data-toggle="tab" aria-expanded="false" style="font-weight: bold;">Nacimiento</a></li>
+                                                        <li class=""><a href="#tab_escolar" data-toggle="tab" aria-expanded="false" style="font-weight: bold;">Escoralidad</a></li>
+                                                        <li class=""><a href="#tab_direccion" data-toggle="tab" aria-expanded="false" style="font-weight: bold;">Dirección Domiciliaria</a></li>
+                                                    </ul>
+
+                                                    <div class="tab-content" style="border-top: 2px solid #3c8dbc;">
+                                                        <div class="tab-pane active" id="tab_persona">
+                                                            <div class="row">
+                                                                <div class="col-xs-6 callout" style="border-color: #1b90ad;">
+                                                                    <table>
+                                                                        <tr>
+                                                                            <td style="text-align: left;">*Tipo Persona</td>
+                                                                        </tr>
+                                                                        <tr height="10px;"> </tr>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <select id="STipoPers" class="select2 requerido" text="Tipo Persona" style="width: 300px;">
+                                                                                    <option value=""> Seleccione una Opción</option>
+
+                                                                                </select>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr height="10px;"> </tr>
+                                                                        <tr>
+                                                                            <td style="text-align: left;">*Tipo Identificación</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <select id="StipoIdPers" class="select2 requerido" text="Tipo Identificación" style="width: 300px;">
+                                                                                    <option value=""> Seleccione una Opción</option>
+
+                                                                                </select>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr height="10px;"> </tr>
+                                                                        <tr>
+                                                                            <td style="text-align: left;">*No. Identificación<a id="btn_cedulaP" style="cursor: pointer; font-size: 12px;margin-left: 10px;" title="Buscar Persona" onclick="getDatosRegistroCivil()"><i class="fa fa-search text-blue"></i></a></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <input type="text" class="form-control requerido" text="No. Accion Personal" name="num_cedpers" id="num_cedpers" style="width: 300px; font-size: 11px;" />
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr height="10px;"> </tr>
+                                                                        <tr>
+                                                                            <td style="text-align: left;">*Nombres</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <input type="text" class="form-control requerido" text="Nombres" name="nombres_pers" id="nombres_pers" style="width: 300px; font-size: 11px;" />
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr height="10px;"> </tr>
+                                                                        <tr>
+                                                                            <td style="text-align: left;">*Apellidos</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <input type="text" class="form-control requerido" text="Apellidos" name="apellidos_pers" id="apellidos_pers" style="width: 300px; font-size: 11px;" />
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr height="10px;"> </tr>
+                                                                        <tr>
+                                                                            <td style="text-align: left;">*Sexo</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <select id="SsexoPers" class="select2 requerido" text="Sexo" style="width: 300px;">
+                                                                                    <option value=""> Seleccione una Opcion</option>
+
+                                                                                </select>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr height="10px;"> </tr>
+                                                                        <tr>
+                                                                            <td style="text-align: left;">Teléfono Convencional</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <input type="text" class="form-control" text="Telefono Convencional" name="telefono_pers" id="telefono_pers" style="width: 300px; font-size: 11px;" />
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr height="10px;"> </tr>
+                                                                        <tr>
+                                                                            <td style="text-align: left;">Teléfono Celular</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <input type="text" class="form-control" text="Telefono Celular" name="celular_pers" id="celular_pers" style="width: 300px; font-size: 11px;" />
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr height="10px;"> </tr>
+                                                                        <tr>
+                                                                            <td style="text-align: left;">Email Personal</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <input type="text" class="form-control" name="email_pers" id="email_pers" style="width: 300px; font-size: 11px;" />
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </div>
+                                                                <div class="col-xs-6 callout" style="border-color: #1b90ad;">
+                                                                    <table>
+                                                                        <tr>
+                                                                            <td style="text-align: left;">Tipo Residencia</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <select id="StipoResPers" class="select2" text="Tipo Residencia" style="width: 300px;">
+                                                                                    <option value=""> Seleccione una Opción</option>
+
+                                                                                </select>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr height="10px;"> </tr>
+                                                                        <tr>
+                                                                            <td style="text-align: left;">#Residencia</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <input type="text" class="form-control requerido" text="#Residencia" name="numRes_pers" id="numRes_pers" style="width: 300px; font-size: 11px;" />
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr height="10px;"> </tr>
+                                                                        <tr>
+                                                                            <td style="text-align: left;">#Afiliación Iess</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <input type="text" class="form-control requerido" text="#Afiliacion Iess" name="numIess_pers" id="numIess_pers" style="width: 300px; font-size: 11px;" />
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr height="10px;"> </tr>
+                                                                        <tr>
+                                                                            <td style="text-align: left;">Estado Civil</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <select id="SEstCivilPers" class="select2" text="Estado Civil" style="width: 300px;">
+                                                                                    <option value=""> Seleccione una Opción</option>
+
+                                                                                </select>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr height="10px;"> </tr>
+                                                                        <tr>
+                                                                            <td style="text-align: left;">Etnias</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <select id="SEtniasPers" class="select2" text="Etnias" style="width: 300px;">
+                                                                                    <option value=""> Seleccione una Opción</option>
+                                                                                    {% for etnia in etnias %}
+                                                                                    <option value="{{ etnia.id }}">{{ etnia.descripcion }}</option>
+                                                                                    {% endfor %}
+                                                                                </select>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr height="10px;"> </tr>
+                                                                        <tr>
+                                                                            <td style="text-align: left;">Estado Embarazo
+                                                                                <input type="checkbox" id="embarazoPers" name="embarazoPers" value="1">
+                                                                            </td>
+                                                                        </tr>
+
+                                                                        <tr height="10px;"> </tr>
+                                                                        <tr>
+                                                                            <td style="text-align: left;">Foto</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <!--input type="file" name="myfile" id="f_fotoPer" /-->
+                                                                                <div id="contentFileFot" style="margin-left: 20px;"><img id="imgContentFileFot" src="" width="200px" height="242px" />
+                                                                                    <label style="margin-left: 10px" id="nombreFileFot"></label>
+                                                                                </div>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <!--tr height="10px;"></tr>
+                                  <tr>
+                                    <td style="text-align: left;">Firma</td>
+                                  </tr>
+                                  <tr>
+                                    <td><input type="file" name="myfile" id="f_firmaPer" />
+                                         <div id="contentFileFir" style="margin-left: 20px;"><img id="imgContentFileFir" src="" width="50px"/><label style="margin-left: 10px" id="nombreFileFir"></label></div>
+                                    </td>
+                                  </tr-->
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- /.tab_persona -->
+                                                        <div class="tab-pane" id="tab_nacimiento">
+                                                            <div class="row">
+                                                                <div class="col-xs-6 callout" style="border-color: #1b90ad;">
+                                                                    <table>
+                                                                        <tr>
+                                                                            <td style="text-align: left;">Pais</td>
+                                                                        </tr>
+                                                                        <tr height="10px;"> </tr>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <select id="SpaisPers" class="select2" text="Pais" style="width: 300px;" onchange="cambiarComboPaisBase('SciudadPers',this.value);">
+                                                                                    <option value=""> Seleccione una Opción</option>
+                                                                                    {% for pais in paises %}
+                                                                                    <option value="{{ pais.id }}">{{ pais.descripcion }}</option>
+                                                                                    {% endfor %}
+                                                                                </select>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr height="10px;"> </tr>
+                                                                        <tr>
+                                                                            <td style="text-align: left;">Ciudad</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <select id="SciudadPers" class="select2" text="Ciudad" style="width: 300px;">
+
+                                                                                    <option value=""> Seleccione una Opción</option>
+
+                                                                                </select>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </div>
+
+                                                                <div class="col-xs-6 callout" style="border-color: #1b90ad;">
+                                                                    <table>
+                                                                        <tr>
+                                                                            <td style="text-align: left;">Fecha Nacimiento</td>
+                                                                        </tr>
+                                                                        <tr height="10px;"> </tr>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <input type="date" class="form-control" text="Fecha Nacimiento" name="fechaNac_pers" id="fechaNac_pers" style="width: 300px; font-size: 11px;" />
+                                                                                <input type="text" name="edad_pers" id="edad_pers" style="width: 50px; font-size: 11px;position: relative; float: right;top: -30px; right: -60px; border: none;" readonly />
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr height="10px;"> </tr>
+                                                                        <tr>
+                                                                            <td style="text-align: left;">Tipo Sangre</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <select id="StipoSangrePers" class="select2" text="Tipo Sangre" style="width: 300px;">
+                                                                                    <option value=""> Seleccione una Opción</option>
+
+                                                                                </select>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- /.tab_escolar -->
+                                                        <div class="tab-pane" id="tab_escolar">
+                                                            <div class="row">
+                                                                <div class="col-xs-6 callout" style="border-color: #1b90ad;">
+                                                                    <table>
+                                                                        <tr>
+                                                                            <td style="text-align: left;">Nivel Académico</td>
+                                                                        </tr>
+                                                                        <tr height="10px;"> </tr>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <select id="SnivelPers" class="select2" text="Nivel Academico" style="width: 300px;">
+                                                                                    <option value=""> Seleccione una Opción</option>
+
+                                                                                </select>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr height="10px;"> </tr>
+                                                                        <tr>
+                                                                            <td style="text-align: left;">Grado Académico</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <select id="SgradoPers" class="select2" text="Grado" style="width: 300px;">
+                                                                                    <option value=""> Seleccione una Opción</option>
+
+                                                                                </select>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr height="10px;"> </tr>
+                                                                        <tr>
+                                                                            <td style="text-align: left;">Rol Profesional</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <select id="SrolProPers" class="select2" text="Grado" style="width: 300px;">
+                                                                                    <option value=""> Seleccione una Opción</option>
+                                                                                    <option value="t">ROL NO PROFESIONAL CON TÍTULO</option>
+                                                                                    <option value="f">ROL PROFESIONAL SIN TÍTULO</option>
+                                                                                </select>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </div>
+
+                                                                <div class="col-xs-6 callout" style="border-color: #1b90ad;">
+                                                                    <table>
+                                                                        <tr>
+                                                                            <td style="text-align: left;">Título1</td>
+                                                                        </tr>
+                                                                        <tr height="10px;"> </tr>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <input type="text" class="form-control" text="Titulo1" name="titulo1Pers" id="titulo1Pers" style="width: 300px; font-size: 11px;" />
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr height="10px;"> </tr>
+                                                                        <tr>
+                                                                            <td style="text-align: left;">Título2</td>
+                                                                        </tr>
+                                                                        <tr height="10px;"> </tr>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <input type="text" class="form-control" text="Titulo2" name="titulo2Pers" id="titulo2Pers" style="width: 300px; font-size: 11px;" />
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr height="10px;"> </tr>
+                                                                        <tr>
+                                                                            <td style="text-align: left;">Libreta Militar</td>
+                                                                        </tr>
+                                                                        <tr height="10px;"> </tr>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <input type="text" class="form-control" text="libreta" name="libretaPers" id="libretaPers" style="width: 300px; font-size: 11px;" />
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- /.tab_escolar -->
+                                                        <div class="tab-pane" id="tab_direccion">
+                                                            <div class="row">
+                                                                <div class="col-xs-6 callout" style="border-color: #1b90ad;">
+                                                                    <table>
+                                                                        <tr>
+                                                                            <td style="text-align: left;">Provincia Residencia</td>
+                                                                        </tr>
+                                                                        <tr height="10px;"> </tr>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <select id="SprovPers" class="select2" text=">Provincia Residencia" style="width: 300px;" onchange="cambiarComboCantones('ScantonPers',this.value);">
+                                                                                    <option value=""> Seleccione una Opción</option>
+                                                                                    {% for provincia in provincias %}
+                                                                                    <option value="{{ provincia.id }}">{{ provincia.descripcion }}</option>
+                                                                                    {% endfor %}
+                                                                                </select>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr height="10px;"> </tr>
+                                                                        <tr>
+                                                                            <td style="text-align: left;">Canton Residencia</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <select id="ScantonPers" class="select2" text="Canton Residencia" style="width: 300px;" onchange="cambiarComboParroquias('SparroqPers',this.value);">
+
+                                                                                </select>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr height="10px;"> </tr>
+                                                                        <tr>
+                                                                            <td style="text-align: left;">Parroquia Residencia</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <select id="SparroqPers" class="select2" text="Parroquia Residencia" style="width: 300px;">
+
+                                                                                </select>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </div>
+
+                                                                <div class="col-xs-6 callout" style="border-color: #1b90ad;">
+                                                                    <table>
+                                                                        <tr>
+                                                                            <td style="text-align: left;">Barrio</td>
+                                                                        </tr>
+                                                                        <tr height="10px;"> </tr>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <input type="text" class="form-control" text="Barrio" name="barrioPers" id="barrioPers" style="width: 300px; font-size: 11px;" />
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr height="10px;"> </tr>
+                                                                        <tr>
+                                                                            <td style="text-align: left;">Calle Principal</td>
+                                                                        </tr>
+                                                                        <tr height="10px;"> </tr>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <input type="text" class="form-control" text="Calle Principal" name="callepPers" id="callepPers" style="width: 300px; font-size: 11px;" />
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr height="10px;"> </tr>
+                                                                        <tr>
+                                                                            <td style="text-align: left;">Calle secundaria</td>
+                                                                        </tr>
+                                                                        <tr height="10px;"> </tr>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <input type="text" class="form-control" text="Calle secundaria" name="callesPers" id="callesPers" style="width: 300px; font-size: 11px;" />
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr height="10px;"> </tr>
+                                                                        <tr>
+                                                                            <td style="text-align: left;">Referencia</td>
+                                                                        </tr>
+                                                                        <tr height="10px;"> </tr>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <textarea class="form-control" text="Calle Referencia" name="calleRefPers" id="calleRefPers" style="width: 300px; font-size: 11px;" rows="5"> </textarea>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- /.tab_direccion -->
+                                                    </div>
+                                                    <!-- /.tab-content -->
+                                                </div>
+                                                <!-- /.nav-tabs-custom -->
+                                            </div>
+                                            <!-- /.col -->
+                                        </div>
+                                    </div>
+                                    <!-- /.general -->
+                                    <div class="tab-pane" id="tab_laboral">
+                                        <div class="row">
+                                            <div class="col-xs-6 callout" style="border-color: #1b90ad;">
+                                                <table>
+                                                    <tr>
+                                                        <td style="text-align: left; font-size: 11px;font-weight: bold;border-bottom: 3px solid #1b90ad; padding: 5px;" colspan="3">Laboral</td>
+                                                    </tr>
+
+                                                    <tr height="20px;"> </tr>
+                                                    <tr>
+                                                        <td style="text-align: right; font-size: 11px;font-weight: bold;">Dirección</td>
+                                                        <td width="10px;"></td>
+                                                        <td>
+                                                            <select id="SsitdireSA_ff" class="select2" style="width: 350px;" onchange="cambiarComboinfo('SsitprocSA_ff',this.value,'direcciones','parent_id','name');">
+                                                                <option value=""> Seleccione una Opción</option>
+
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr height="10px;"> </tr>
+                                                    <tr>
+                                                        <td style="text-align: right; font-size: 11px;font-weight: bold;">Proceso</td>
+                                                        <td width="10px;"></td>
+                                                        <td>
+                                                            <select id="SsitprocSA_ff" class="select2" style="width: 350px;" onchange="cambiarComboinfo('SsitsubprocSA_ff',this.value,'direcciones','parent_id','name');">
+                                                                <option value=""> Seleccione una Opción</option>
+
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr height="10px;"> </tr>
+                                                    <tr>
+                                                        <td style="text-align: right; font-size: 11px;font-weight: bold;">Subproceso</td>
+                                                        <td width="10px;"></td>
+                                                        <td>
+                                                            <select id="SsitsubprocSA_ff" class="select2" style="width: 350px;">
+                                                                <option value="0">Seleccione una Opci'0n</option>
+
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr height="10px;"> </tr>
+                                                    <tr>
+                                                        <td style="text-align: right; font-size: 11px;font-weight: bold;">Grupo Ocupacional</td>
+                                                        <td width="10px;"></td>
+                                                        <td>
+                                                            <select id="SsitgrupoSA_ff" class="select2" style="width: 350px;">
+                                                                <option value=""> Seleccione una Opción</option>
+                                                                {% for gocupacional in gocupacionals %}
+                                                                <option value="{{ gocupacional.id }}">{{ gocupacional.nombre }}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr height="10px;"> </tr>
+                                                    <tr>
+                                                        <td style="text-align: right; font-size: 11px;font-weight: bold;">Puesto Distributivo</td>
+                                                        <td width="10px;"></td>
+                                                        <td>
+                                                            <select id="SsitpuestDistSA_ff" class="select2" style="width: 350px;">
+                                                                <option value=""> Seleccione una Opción</option>
+                                                                {% for gdistributivo in gdistributivos %}
+                                                                <option value="{{ gdistributivo.id }}">{{ gdistributivo.nombre }}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr height="10px;"> </tr>
+                                                    <tr>
+                                                        <td style="text-align: right; font-size: 11px;font-weight: bold;">Puesto Institucional</td>
+                                                        <td width="10px;"></td>
+                                                        <td>
+                                                            <select id="SsitpuestInst_ff" class="select2" style="width: 350px;">
+                                                                <option value=""> Seleccione una Opción</option>
+                                                                {% for ginstitucional in ginstitucionals %}
+                                                                <option value="{{ ginstitucional.id }}">{{ ginstitucional.nombre }}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr height="10px;"> </tr>
+                                                    <tr>
+                                                        <td style="text-align: right; font-size: 11px;font-weight: bold;">Isla Trabajo</td>
+                                                        <td width="10px;"></td>
+                                                        <td>
+                                                            <select id="SsitislaSA_ff" class="select2" style="width: 350px;">
+                                                                <option value=""> Seleccione una Opción</option>
+
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr height="10px;"> </tr>
+                                                    <tr>
+                                                        <td style="text-align: right; font-size: 11px;font-weight: bold;">RMU</td>
+                                                        <td width="10px;"></td>
+                                                        <td>
+                                                            <input type="text" name="SsRmu_ff" id="SsRmu_ff" class="form-control requerido" style="width:350px;" />
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr height="10px;"> </tr>
+                                                    <tr>
+                                                        <td style="text-align: right; font-size: 11px;font-weight: bold;">Fecha Ingreso DPNG</td>
+                                                        <td width="10px;"></td>
+                                                        <td>
+                                                            <input type="date" name="SsfechaIng_ff" id="SsfechaIng_ff" class="form-control requerido" style="width:350px;" />
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr height="10px;"> </tr>
+                                                    <tr>
+                                                        <td style="text-align: right; font-size: 11px;font-weight: bold;">Estado</td>
+                                                        <td width="10px;"></td>
+                                                        <td>
+                                                            <select id="Sestado_ff" class="select2" style="width: 250px;">
+                                                                <option value="">Seleccione una Opción</option>
+                                                                <option value="A">ACTIVO</option>
+                                                                <option value="I">INACTIVO</option>
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+
+                                                </table>
+                                            </div>
+                                            <div class="col-xs-6 callout" style="border-color: #1b90ad;">
+                                                <table>
+                                                    <tr>
+                                                        <td style="text-align: left; font-size: 11px;font-weight: bold;border-bottom: 3px solid #1b90ad; padding: 5px;" colspan="2">Información Adicional</td>
+                                                    </tr>
+                                                    <tr height='20px;'></tr>
+                                                    <tr>
+                                                        <td style="text-align: left;">Modalidad Laboral</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <select id="SmodalidadPer" class="select2" style="width: 330px;">
+                                                                <option value="0">Seleccione una Opción</option>
+
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr height='10px;'></tr>
+                                                    <tr>
+                                                        <td style="text-align: left;">#Partida General</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <input type="text" name="numPartGPer" id="numPartGPer" class="form-control" style="width: 330px;font-size: 10px;">
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr height='10px;'></tr>
+                                                    <tr>
+                                                        <td style="text-align: left;">#Partida Individual</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <input type="text" name="numPartIPer" id="numPartIPer" class="form-control" style="width: 330px;font-size: 10px;">
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr height="10px;"> </tr>
+                                                    <tr>
+                                                        <td style="text-align: left;">Base Legal nombramiento</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <!--input type="text" name="baseLegalI" id="baseLegalI" class="form-control" style="width: 300px;"-->
+                                                            <select id="SbaseLegalPer" class="select2" style="width: 330px;">
+                                                                <option value=""> Seleccione una Opción</option>
+                                                                {% for base in bases %}
+                                                                <option value="{{ base.id }}"> {{ base.nombre }} </option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr height="10px;"> </tr>
+                                                    <tr>
+                                                        <td style="text-align: left; font-size: 11px;font-weight: bold;">Año Nombramiento</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <input type="text" class="form-control" name="anioNomPer" id="anioNomPer" style="width: 330px;" />
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr height="10px;"> </tr>
+                                                    <tr>
+                                                        <td style="text-align: left; font-size: 11px;font-weight: bold;">Teléfono Institucional</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <input type="text" class="form-control" name="telinstPer" id="telinstPer" style="width: 330px;" />
+                                                        </td>
+                                                    </tr>
+                                                    <tr height="10px;"> </tr>
+                                                    <tr>
+                                                        <td style="text-align: left; font-size: 11px;font-weight: bold;">Extensión Telefónica</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <input type="text" class="form-control" name="extTelPer" id="extTelPer" style="width: 330px;" />
+                                                        </td>
+                                                    </tr>
+                                                    <tr height="10px;"> </tr>
+                                                    <tr>
+                                                        <td style="text-align: left; font-size: 11px;font-weight: bold;">Email</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <input type="text" class="form-control" name="emailPer" id="emailPer" style="width: 330px; text-transform: initial;" />
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /.laboral -->
+                                    <div class="tab-pane" id="tab_cuenta">
+                                        <div class="row">
+                                            <div class="col-xs-12 callout" style="border-color: #1b90ad;">
+
+                                                {% if perms.ap_talentohumano.add_perfuncionario %}
+                                                <div id="boton_cuentaPersona"><a style="cursor: pointer; font-size: 20px;" title="Agregar Nuevo" href='#popupPersonaBanco' data-stackbox='true' data-stackbox-position="absolute" onclick="limpiarFormPersonaCuenta();"><i class="fa fa-plus-square text-blue"></i></a></div>
+                                                {% endif %}
+
+                                                <table style="width: 100%;box-shadow: 5px 5px 5px 5px;" class="table" id="table_tabcuentaFun">
+                                                    <tr style="background-color: #3c8dbc; color:#fff; text-align: center; text-transform: uppercase;">
+                                                        <td style="border: 1px solid black;">#</td>
+                                                        <td style="border: 1px solid black;">Banco</td>
+                                                        <td style="border: 1px solid black;">Tipo</td>
+                                                        <td style="border: 1px solid black;">#Cuenta</td>
+                                                        <td style="border: 1px solid black;"></td>
+                                                        <td style="border: 1px solid black;"></td>
+                                                    </tr>
+                                                    <tbody id="tbody_cuenta_pers"></tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /.tab_cuenta -->
+                                    <div class="tab-pane" id="tab_ingreso">
+                                        <div class="row">
+                                            <div class="col-xs-12 callout" style="border-color: #1b90ad;">
+                                                <table style="width: 100%;box-shadow: 5px 5px 5px 5px;" class="table">
+                                                    <tr style="background-color: #3c8dbc; color:#fff; text-align: center; text-transform: uppercase;">
+                                                        <td style="border: 1px solid black;">#</td>
+                                                        <td style="border: 1px solid black;">Tipo</td>
+                                                        <td style="border: 1px solid black;">Modalidad Laboral</td>
+                                                        <td style="border: 1px solid black;">RMU</td>
+                                                        <td style="border: 1px solid black;">Fecha Ingreso</td>
+                                                        <td style="border: 1px solid black;">Fecha Salida</td>
+                                                        <td style="border: 1px solid black;">Isla Trabajo</td>
+                                                        <td style="border: 1px solid black;">Observaciones</td>
+                                                    </tr>
+                                                    <tbody id="tbody_ingreso_pers"></tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /.tab_ingreso -->
+                                    <div class="tab-pane" id="tab_traslado">
+                                        <div class="row">
+                                            <div class="col-xs-12 callout" style="border-color: #1b90ad;">
+                                                <div class="divisor">Historial Traslados</div>
+                                                <br>
+                                                <table style="width: 100%;box-shadow: 5px 5px 5px 5px;" class="table">
+                                                    <tr style="background-color: #3c8dbc; color:#fff; text-align: center; text-transform: uppercase;">
+                                                        <td style="border: 1px solid black;">#</td>
+                                                        <td style="border: 1px solid black;">Tipo</td>
+                                                        <td style="border: 1px solid black;">Dirección</td>
+                                                        <td style="border: 1px solid black;">Proceso</td>
+                                                        <td style="border: 1px solid black;">Subproceso</td>
+                                                        <td style="border: 1px solid black;">Puesto Institucional</td>
+                                                        <td style="border: 1px solid black;">Puesto ocupacional</td>
+                                                        <td style="border: 1px solid black;">Desde</td>
+                                                        <td style="border: 1px solid black;">Hasta</td>
+                                                    </tr>
+                                                    <tbody id="tbody_tralado_pers"></tbody>
+                                                </table>
+                                            </div>
+                                            <div class="col-xs-12 callout" style="border-color: #1b90ad;">
+                                                <div class="divisor">Historial Encargos/Subrogaciones</div>
+                                                <br>
+                                                <table style="width: 100%;box-shadow: 5px 5px 5px 5px;" class="table">
+                                                    <tr style="background-color: #3c8dbc; color:#fff; text-align: center; text-transform: uppercase;">
+                                                        <td style="border: 1px solid black;">#</td>
+                                                        <td style="border: 1px solid black;">Tipo</td>
+                                                        <td style="border: 1px solid black;">Desde</td>
+                                                        <td style="border: 1px solid black;">Hasta</td>
+                                                        <td style="border: 1px solid black;">Cargo Institucional</td>
+                                                    </tr>
+                                                    <tbody id="tbody_encargo_pers"></tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /.tab_traslado -->
+                                    <div class="tab-pane" id="tab_sancion">
+                                        <div class="row">
+                                            <div class="col-xs-12 callout" style="border-color: #1b90ad;">
+                                                <div class="divisor">Historial Sanciones</div>
+                                                <br>
+                                                <table style="width: 100%;box-shadow: 5px 5px 5px 5px;" class="table">
+                                                    <tr style="background-color: #3c8dbc; color:#fff; text-align: center; text-transform: uppercase;">
+                                                        <td style="border: 1px solid black;">#</td>
+                                                        <td style="border: 1px solid black;">Sanción</td>
+                                                        <td style="border: 1px solid black;">Fecha</td>
+                                                    </tr>
+                                                    <tbody id="tbody_sancion_pers"></tbody>
+                                                </table>
+                                            </div>
+                                            <div class="col-xs-12 callout" style="border-color: #1b90ad;">
+                                                <div class="divisor">Historial Licencias/Comisiones</div>
+                                                <br>
+                                                <table style="width: 100%;box-shadow: 5px 5px 5px 5px;" class="table">
+                                                    <tr style="background-color: #3c8dbc; color:#fff; text-align: center; text-transform: uppercase;">
+                                                        <td style="border: 1px solid black;">#</td>
+                                                        <td style="border: 1px solid black;">#informe Técnico</td>
+                                                        <td style="border: 1px solid black;">Desde</td>
+                                                        <td style="border: 1px solid black;">Hasta</td>
+                                                    </tr>
+                                                    <tbody id="tbody_licencia_pers"></tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /.tab_sancion -->
+                                    <div class="tab-pane" id="tab_enfermedad">
+                                        <div class="row">
+                                            <div class="col-xs-6 callout" style="border-color: #1b90ad;">
+                                                <div class="divisor">Discapacidad</div>
+                                                <br>
+                                                <table>
+                                                    <tr>
+                                                        <td style="text-align: left;">Tipo</td>
+                                                    </tr>
+                                                    <tr height="10px;"> </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <select id="SdiscapacidadPers" class="select2" text="" style="width: 300px;">
+                                                                <option value=""> Seleccione una Opción</option>
+                                                                {% for discapacidad in discapacidades %}
+                                                                <option value="{{ discapacidad.id }}">{{ discapacidad.descripcion }}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+                                                    <tr height="10px;"> </tr>
+                                                    <tr>
+                                                        <td style="text-align: left;">#Carnet</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <input type="text" class="form-control" name="carnetDisPer" id="carnetDisPer" style="width: 300px;" />
+                                                        </td>
+                                                    </tr>
+                                                    <tr height="10px;"> </tr>
+                                                    <tr>
+                                                        <td style="text-align: left;">Grado</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <input type="text" class="form-control" name="gradoDisPer" id="gradoDisPer" style="width: 300px;" />
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                            <div class="col-xs-6 callout" style="border-color: #1b90ad;">
+                                                <div class="divisor">Enfermedad Catastrófica</div>
+                                                <br>
+                                                <table>
+                                                    <tr>
+                                                        <td style="text-align: left;">Tipo</td>
+                                                    </tr>
+                                                    <tr height="10px;"> </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <select id="StipoEnfPers" class="select2" text="" style="width: 300px;">
+                                                                <option value=""> Seleccione una Opción</option>
+
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+                                                    <tr height="10px;"> </tr>
+                                                    <tr>
+                                                        <td style="text-align: left;">Descripción</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <select id="SdescEnfPers" class="select2" text="" style="width: 300px;">
+                                                                <option value=""> Seleccione una Opción</option>
+                                                                {% for enfermedad in enfermedades %}
+                                                                <option value="{{ enfermedad.id }}">{{ enfermedad.descripcion }}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-6 callout" style="border-color: #1b90ad;">
+                                                <div class="divisor">Enfermedades</div>
+                                                <br>
+                                                <table style="width: 100%;box-shadow: 5px 5px 5px 5px;" class="table">
+                                                    <tr style="background-color: #3c8dbc; color:#fff; text-align: center; text-transform: uppercase;">
+                                                        <td style="border: 1px solid black;">#</td>
+                                                        <td style="border: 1px solid black;">Descripción</td>
+                                                        <td style="border: 1px solid black;">Fecha</td>
+                                                    </tr>
+                                                    <tbody id="tbody_licenciaEnf_pers"></tbody>
+                                                </table>
+                                            </div>
+                                            <div class="col-xs-6 callout" style="border-color: #1b90ad;">
+                                                <div class="divisor">Accidentes</div>
+                                                <br>
+                                                <table style="width: 100%;box-shadow: 5px 5px 5px 5px;" class="table">
+                                                    <tr style="background-color: #3c8dbc; color:#fff; text-align: center; text-transform: uppercase;">
+                                                        <td style="border: 1px solid black;">#</td>
+                                                        <td style="border: 1px solid black;">Descripción</td>
+                                                        <td style="border: 1px solid black;">Fecha</td>
+                                                    </tr>
+                                                    <tbody id="tbody_licenciaAcc_pers"></tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /.tab_enfermedad -->
+                                    <div class="tab-pane" id="tab_familiar">
+                                        <div class="row">
+                                            <div class="col-xs-12 callout" style="border-color: #1b90ad;">
+                                                <div id="botonFamiliares">
+                                                    {% if perms.ap_talentohumano.add_perfuncionario %}
+                                                    <a style="cursor: pointer; font-size: 20px;" onclick="limpiarFormFamiliarFun();" title="Agregar Nuevo" href='#addPersona2' data-stackbox='true' data-stackbox-width="1000" data-stackbox-position="absolute">
+                                                        <i class="fa fa-plus-square text-blue btn_nuevo"></i>
+                                                    </a>
+                                                    {% endif %}
+                                                </div>
+                                                <table style="width: 100%; box-shadow: 5px 5px 5px 5px;" class="table" id="tabla_familiar_pers">
+                                                    <tr style="background-color: #3c8dbc; color:#fff; text-align: center; text-transform: uppercase;">
+                                                        <td style="border: 1px solid black;">#Identificación</td>
+                                                        <td style="border: 1px solid black;">Nombre Completo</td>
+                                                        <td style="border: 1px solid black;">Parentesco</td>
+                                                        <td style="border: 1px solid black;"></td>
+                                                        <td style="border: 1px solid black;"></td>
+                                                    </tr>
+                                                    <tbody id="tbody_familiar_pers"></tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /.tab_familiar -->
+
+                                </div>
+                                <!-- /.tab-content -->
+
+                            </div>
+                            <!-- /.nav-tabs-custom -->
+
+                        </div>
+                        <!-- /.col -->
+                        <!-- /.row -->
+                    </form>
+                </div>
+            </section>
+        </div>
+        <!-- body -->
+        <div class="stackbox-footer">
+            {% if perms.ap_talentohumano.add_perfuncionario or perms.ap_talentohumano.change_perfuncionario %}
+            <button class="btn btn-primary" onclick="setInsertUpdateFuncionario();">Grabar</button>
+            {% endif %}
+            <button class="btn btn-default" data-close-stackbox="true">Close</button>
+        </div>
+    </div>
+    <!-- addPersona -->
+
+    <div id="addPersona2" style="display: none;">
+        <div class="stackbox-header cab_popup" align="center">
+            <img src="{% static 'image/favicon.ico' %}" width="40px" style="float:left;margin-top: -5px;" /> Persona
+        </div>
+        <div class="stackbox-body" id="bodyaddPersona2">
+            <section class="content">
+                <div class="row" style="box-shadow: 5px 5px 5px 5px #888888; width: 104%; margin-top: 20px;">
+                    <form id="frm_personas2" action="#" method="post">
+                        <div class="notification">
+                            <span class="icon">
+                  <i class=""></i>
+              </span>
+                            <span class="text"></span>
+                            <span class="close"><i class="fa fa-close"></i></span>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-6" style="border-color: #1b90ad;font-size: 16px;">
+
+                                <div style="font-size: 14px;">
+                                    <input type="hidden" name="personaFamiliarid" id="personaFamiliarid" /> Buscar Persona
+                                    <a style="position: absolute;cursor: pointer; margin-left: 10px;" href='#popupPersonas' onclick="document.getElementById('pagina_enviaPopPer').value='personas2';cleanBodyTablePersona();" data-stackbox='true' data-stackbox-position="absolute">
+                                        <i class="fa fa-search-plus text-white"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="nav-tabs-custom">
+                                    <ul class="nav nav-tabs">
+                                        <li class="active"><a href="#tab_personaPers" data-toggle="tab" aria-expanded="true" style="font-weight: bold;">Persona</a></li>
+                                        <li class=""><a href="#tab_residenciaPers" data-toggle="tab" aria-expanded="false" style="font-weight: bold;">Residencia</a></li>
+                                        <li class=""><a href="#tab_parentPers" data-toggle="tab" aria-expanded="false" style="font-weight: bold;">Parentesco</a></li>
+                                    </ul>
+                                    <div class="tab-content" style="border-top: 2px solid #3c8dbc;">
+
+                                        <div class="tab-pane active" id="tab_personaPers">
+                                            <div class="row">
+                                                <div class="col-xs-6 callout" style="border-color: #1b90ad;">
+                                                    <table>
+                                                        <tr>
+                                                            <td style="text-align: left;">*Tipo Persona</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <select id="STipoPers2" class="select2 requerido" text="Tipo Persona" style="width: 300px;">
+                                                                    <option value=""> Seleccione una Opción</option>
+
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                        <tr height="10px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: left;">*Tipo Identificación</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <select id="StipoIdPers2" class="select2 requerido" text="Tipo Identificación" style="width: 300px;">
+                                                                    <option value=""> Seleccione una Opción</option>
+
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                        <tr height="10px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: left;">*No. Identificación
+                                                                <!--a id="btn_cedulaP" style="cursor: pointer; font-size: 12px;margin-left: 10px;" title="Buscar Persona" onclick="getDatosRegistroCivil2()"><i class="fa fa-search text-blue"></i></a-->
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <input type="hidden" id="idpersonaP2" />
+                                                                <input type="text" class="form-control requerido" text="No. Identificación" name="num_cedpers2" id="num_cedpers2" style="width: 300px; font-size: 11px;" readonly="" />
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                                <div class="col-xs-6 callout" style="border-color: #1b90ad;">
+                                                    <table>
+                                                        <tr>
+                                                            <td style="text-align: left;">*Nombres</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <input type="text" class="form-control requerido" text="Nombres" name="nombres_pers2" id="nombres_pers2" style="width: 300px; font-size: 11px;" readonly="" />
+                                                            </td>
+                                                        </tr>
+                                                        <tr height="10px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: left;">*Apellidos</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <input type="text" class="form-control requerido" text="Apellidos" name="apellidos_pers2" id="apellidos_pers2" style="width: 300px; font-size: 11px;" readonly="" />
+                                                            </td>
+                                                        </tr>
+                                                        <tr height="10px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: left;">*Sexo</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <select id="SsexoPers2" class="select2 requerido" text="Sexo" style="width: 300px;">
+                                                                    <option value=""> Seleccione una Opción</option>
+
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                        <tr height="10px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: left;">Fecha Nacimiento</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <input type="date" class="form-control" text="Fecha Nacimiento" name="fechaNac_pers2" id="fechaNac_pers2" style="width: 300px; font-size: 11px;" readonly="" />
+
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- /.tab_residenciaPers -->
+                                        <div class="tab-pane" id="tab_residenciaPers">
+                                            <div class="row">
+                                                <div class="col-xs-6 callout" style="border-color: #1b90ad;">
+                                                    <table>
+                                                        <tr>
+                                                            <td style="text-align: left;">*Tipo Residencia</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <select id="StipoResPers2" class="select2" text="Tipo Residencia" style="width: 300px;">
+                                                                    <option value=""> Seleccione una Opción</option>
+
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                                <div class="col-xs-6 callout" style="border-color: #1b90ad;">
+                                                    <table>
+                                                        <tr>
+                                                            <td style="text-align: left;">#Residencia</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <input type="text" class="form-control requerido" name="num_cedpers2" id="num_residenpers2" style="width: 300px; font-size: 11px;" readonly="" />
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- /.tab_parentPers -->
+                                        <div class="tab-pane" id="tab_parentPers">
+                                            <div class="row">
+                                                <div class="col-xs-6 callout" style="border-color: #1b90ad;">
+                                                    <table>
+                                                        <tr>
+                                                            <td style="text-align: left;">Parentesco</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <select id="SparentescoPers2" class="select2" style="width: 300px;">
+                                                                    <option value=""> Seleccione una Opción</option>
+
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                        <tr height="10px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: left;">Es discapacitado?</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <select id="SdiscaPers2" class="select2" style="width: 300px;">
+                                                                    <option value=""> Seleccione una Opción</option>
+                                                                    <option value="t">SI</option>
+                                                                    <option value="f">NO</option>
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                                <div class="col-xs-6 callout" style="border-color: #1b90ad;">
+                                                    <table>
+                                                        <tr>
+                                                            <td style="text-align: left;">Es sustituto?</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <select id="SsustiPers2" class="select2" style="width: 300px;">
+                                                                    <option value=""> Seleccione una Opción</option>
+                                                                    <option value="t">SI</option>
+                                                                    <option value="f">NO</option>
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                        <tr height="10px;"> </tr>
+                                                        <tr>
+                                                            <td style="text-align: left;">Es carga familiar ?</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <select id="ScargaPers2" class="select2" style="width: 300px;">
+                                                                    <option value=""> Seleccione una Opción</option>
+                                                                    <option value="t">SI</option>
+                                                                    <option value="f">NO</option>
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                    <input type="hidden" id="tipot_FamFun">
+                                                    <input type="hidden" id="idFamiliarFun">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- /.tab_parentPers -->
+                                    </div>
+                                    <!-- /.tab-content -->
+                                </div>
+                                <!-- /.row -->
+                            </div>
+                            <!-- /.row -->
+                        </div>
+                        <!-- /.row -->
+                    </form>
+                </div>
+            </section>
+        </div>
+        <!-- body -->
+        <div class="stackbox-footer">
+            {% if perms.ap_talentohumano.add_perfuncionario or perms.ap_talentohumano.change_perfuncionario %}
+            <button class="btn btn-primary" data-close-stackbox="true" onclick="setInsertUpdateFamiliaresFun();">Grabar</button>
+            {% endif %}
+            <button class="btn btn-default" data-close-stackbox="true">Close</button>
+        </div>
+    </div>
+    <!-- addPersona2 -->
+
+    <div id="popupPersonaBanco" style="display: none;">
+
+        <div class="stackbox-header cab_popup" align="center">
+            <img src="{% static 'image/favicon.ico' %}" width="40px" style="float:left;margin-top: -5px;" />
+            <h>Agregar Cuenta Bancaria </h>
+        </div>
+
+        <div class="stackbox-body bodypopupGeneral" id="">
+            <div class="row">
+
+                <div class="notification">
+                    <span class="icon"><i class=""></i></span>
+                    <span class="text"></span>
+                    <span class="close"><i class="fa fa-close"></i></span>
+                </div>
+
+                <br>
+                <div class="col-xs-12 callout" style="border-color: #1b90ad;">
+                    <script type="text/javascript">
+                        $("#SbancoP").select2();
+                        $("#SestadoBancP").select2();
+                        $("#Stipo_cuentaP").select2();
+                    </script>
+                    {% csrf_token %}
+                    <form id="frm_cuentaBancP" action="#" method="post">
+                        <table>
+
+                            <input type="hidden" id="idcuentabancP" name="idcuentabancP" value="" />
+
+                            <tr>
+                                <td align="left">*Nombre</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="text" class="form-control requerido" name="funcionarioBancP" text="Funcionario" id="funcionarioBancP" style="width: 300px; font-size: 11px;" readonly />
+                                    <input type="hidden" name="funcionarioBancidP" id="funcionarioBancidP" />
+
+                                </td>
+                            </tr>
+                            <tr height='10px;'></tr>
+                            <tr>
+                                <td align="left">*Banco</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <select id="SbancoP" class="select2 requerido" text="Banco">
+                                        <option value="">Seleccione una Opción</option>
+
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr height='10px;'></tr>
+                            <tr>
+                                <td align="left">*Tipo Cuenta</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <select id="Stipo_cuentaP" class="select2 requerido" text="Tipo Cuenta">
+                                        <option value="">Seleccione una Opción</option>
+                                        <option value="AHORRO">AHORRO</option>
+                                        <option value="CORRIENTE">CORRIENTE</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr height='10px;'></tr>
+                            <tr>
+                                <td align="left">*Numero Cuenta</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="text" id="numero_cuentaP" name="numero_cuentaP" text="Numero Cuenta" class="form-control floatNumber requerido" />
+                                </td>
+                            </tr>
+                            <tr height='10px;'></tr>
+                            <tr>
+                                <td align="left">*Estado</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <select id="SestadoBancP" class="select2 requerido" text="Estado">
+                                        <option value="">Seleccione una Opción</option>
+                                        <option value="A">ACTIVO</option>
+                                        <option value="I">INACTIVO</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr height='10px;'></tr>
+                            <tr hidden>
+                                <td align="left">Observacion</td>
+                            </tr>
+                            <tr hidden>
+                                <td>
+                                    <textarea id="ObservacionP" class="form-control" rows="3"></textarea>
+                                </td>
+                            </tr>
+                        </table>
+                        <input type="hidden" id="tipot_bancFun">
+                        <input type="hidden" id="idcuentabancFun">
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="stackbox-footer">
+            {% if perms.ap_talentohumano.add_perfuncionario or perms.ap_talentohumano.change_perfuncionario %}
+            <button class="btn btn-primary" data-close-stackbox="true" onclick="setInserUpdateCtaBanFunc();">Grabar</button>
+            {% endif %}
+            <button class="btn btn-default" data-close-stackbox="true">Close</button>
+        </div>
+    </div>
+
+    <div class="box">
+
+        <div class="box-header">
+            <i class="fa fa-list"></i>
+            <h3 class="box-title">Lista de Personal DPNG</h3>
+            <div class="botonera" style="float: right; right: 1px;">
+                <!--a title="pfd" onclick="generarPdf('tabla_personas',3)"><i class="fa fa-file-pdf-o text-green"></i></a-->
+                <!--a title="excel" onclick="generarExcel('tabla_personas',3)"><i class="fa fa-file-excel-o text-green"></i></a-->
+                <a title="excel" onclick="getDataPersonaFuncionarioExcel()"><i class="fa fa-file-excel-o text-green"></i></a> {% if perms.ap_talentohumano.add_perfuncionario %}
+                <a style="cursor: pointer;" title="Agregar Nuevo" onclick="limpiarFormPersona();" href='#addPersona' data-stackbox-width='1000' data-stackbox='true' data-stackbox-position="absolute"><i class="fa fa-plus-circle text-green btn_nuevo"></i></a> {% endif %}
+
+            </div>
+        </div>
+        <!-- /.box-header -->
+
+        <div class="box box-solid bg-light-blue-gradient">
+            <div class="box-header ui-sortable-handle" style="cursor: move;">
+                <div class="pull-right box-tools">
+                    <button type="button" class="btn btn-primary btn-sm pull-right" data-toggle="collapse" href="#collapseIng" role="button" aria-expanded="false" aria-controls="collapseIng" style="margin-right: 5px;" data-original-title="Collapse">
+                        <i class="fa fa-minus"></i></button>
+                </div>
+                <i class="fa fa-map-marker"></i>
+                <h3 class="box-title">
+          Filtros de Busqueda
+        </h3>
+            </div>
+            <!-- <div class="box-body collapse" style="background-color: white;"  id="collapseIng"> -->
+            <div class="box-body" style="background-color: white;" id="collapseIng">
+                <div class="col-xs-12">
+
+                    <div class="col-xs-3">
+                        <h style="font-size: 14px;color: black;font-weight: bold;height: 20px;">Nombres</h>
+                        <input type="text" class="form-control" name="" id="nombresfilter" style="width: 75%; height: 50%" />
+                    </div>
+
+                    <div class="col-xs-3">
+                        <h style="font-size: 14px;color: black;font-weight: bold;height: 20px;">Cédula</h>
+                        <input type="text" class="form-control" name="" id="cedulafilter" style="width: 75%;height: 50%" />
+                    </div>
+
+                    <div class="col-xs-3">
+                        <h style="font-size: 14px;color: black;font-weight: bold;height: 20px;">Estado</h>
+                        <select id="SestadoFilter" class="form-control" style="width: 250px;">
+                            <option value="">Seleccione una Opción</option>
+                            <option value="A">ACTIVO</option>
+                            <option value="I">INACTIVO</option>
+                        </select>
+                    </div>
+
+                    <div class="col-xs-3">
+                        <h style="font-size: 14px;color: black;font-weight: bold;">Embarazo</h>
+                        <input type="checkbox" id="estado_emb" name="estado_emb" value="1" />
+                        <br>
+                        <button type="button" class="btn btn-block btn-success" style="width: 20%; float:right;" onclick="getDataPersonaFuncionarioP();">Buscar</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!--
+  <div class="box-body" style="background-color: white; width: 70%; position: absolute; right: 1%; top: 4%; z-index: 99; height: 40px;"  id="collapseIng">
+      <div class="col-xs-12">
+
+          <div class="col-xs-4">
+              <h style="font-size: 14px;color: black;font-weight: bold;height: 20px;">Nombres</h>
+              <input type="text" class="form-control" name="" id="nombresfilter" style="width: 75%; height: 50%" />
+          </div>
+
+          <div class="col-xs-4">
+              <h style="font-size: 14px;color: black;font-weight: bold;height: 20px;">Cédula</h>
+              <input type="text" class="form-control" name="" id="cedulafilter" style="width: 75%;height: 50%" />
+          </div>
+
+          <div class="col-xs-4">
+              <h style="font-size: 14px;color: black;font-weight: bold;">Embarazo</h>
+                  <input type="checkbox" id="estado_emb" name="estado_emb" value="1"/>
+              <br>
+              <button type="button" class="btn btn-block btn-success" style="float:right; width: 100px;position: relative; right: -2%;top: -10px;" onclick="getDataPersonaFuncionarioP();">Buscar</button>
+          </div>
+
+      </div>
+  </div>
+  -->
+
+        <div class="box-body" style="position: relative;">
+
+            <table id="tabla_personas" style="font-size: 10px; text-transform: uppercase;" class="table table-striped table-bordered" width="100%" cellspacing="0">
+                <thead>
+                    <tr class="bg-light-blue-gradient" style="color: white;">
+                        <th></th>
+                        <th>IDENTIFICACIÓN</th>
+                        <th>NOMBRE</th>
+                        <th>UNIDAD ORGANICA</th>
+                        <th>DENOMINACION PUESTO</th>
+                        <th>ESCALA OCUPACIONAL</th>
+                        <th>MODALIDAD LABORAL</th>
+                        <th>ISLA</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    <tr class="filters" id="ftper">
+                        <th></th>
+                        <th>IDENTIFICACIÓN</th>
+                        <th>NOMBRE</th>
+                        <th>UNIDAD ORGANICA</th>
+                        <th>DENOMINACION PUESTO</th>
+                        <th>ESCALA OCUPACIONAL</th>
+                        <th>MODALIDAD LABORAL</th>
+                        <th>ISLA</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="bodytabla_personas">
+
+                </tbody>
+            </table>
+
+        </div>
+        <!-- /.box-body -->
+    </div>
+    <!-- /.box -->
+</div>
+<!-- content_persona -->
+<!-- /.box -->
+
+<!-- jQuery 3 -->
+{% load static %}
+
+<script src="{% static 'js/lib_internas/script.js' %}"></script>
+<script>
+
+  $(document).ready(function(){
+
+    getDataPersonaFuncionarioP(1);
+
+    sessionStorage.setItem("cantones", JSON.stringify({{ cantones | safe }}));
+    sessionStorage.setItem("parroquiasT", JSON.stringify({{ parroquias | safe }}));
+
+    $("#SbaseLegalPer").select2();
+    $("#SrolProPers").select2();
+    iniciarCombo('STipoPers','TIPO_PERSONA','catalogos');
+    $("#STipoPers").select2();
+    iniciarCombo('StipoIdPers','TIPO_IDENTIFICACION','catalogos');
+    $("#StipoIdPers").select2();
+    iniciarCombo('SsexoPers','SEXO','catalogos');
+    $("#SsexoPers").select2();
+    iniciarCombo('StipoResPers','TIPO_RESIDENCIA','catalogos');
+    $("#StipoResPers").select2();
+    iniciarCombo('SEstCivilPers','ESTADO_CIVIL','catalogos');
+    $("#SEstCivilPers").select2();
+    iniciarCombo('StipoSangrePers','TIPO_SANGRE','catalogos');
+    $("#StipoSangrePers").select2();  
+    iniciarCombo('SnivelPers','ESCOLARIDAD_NIVEL','catalogos');
+    $("#SnivelPers").select2();
+    iniciarCombo('SgradoPers','ESCOLARIDAD_GRADO','catalogos');
+    $("#SgradoPers").select2();
+    iniciarCombo('StipoEnfPers','GRADO_ENFERMEDAD','catalogos');
+    $("#StipoEnfPers").select2();
+
+    iniciarCombo('SmodalidadPer','f','modalidades');
+    $("#SmodalidadPer").select2({
+      sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
+    });
+
+    $("#SdiscapacidadPers").select2();
+    $("#SdescEnfPers").select2();
+
+    $("#SEtniasPers").select2();
+    $("#SpaisPers").select2();
+    $("#SciudadPers").select2();
+
+    $("#SprovPers").select2();
+    $("#ScantonPers").select2();
+    $("#SparroqPers").select2();
+
+
+
+    iniciarComboDirecciones('SsitdireSA_ff','DIR','direcciones');
+    $("#SsitdireSA_ff").select2({
+      sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
+    });
+    iniciarComboDirecciones('SsitprocSA_ff','PRC','direcciones');
+    $("#SsitprocSA_ff").select2({
+      sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
+    });
+    iniciarComboDirecciones('SsitsubprocSA_ff','SPC','direcciones');
+    $("#SsitsubprocSA_ff").select2({
+      sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
+    });
+
+
+    //iniciarCombo('SsitgrupoSA_ff','f','ocupacional');
+    $("#SsitgrupoSA_ff").select2({
+      sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
+    });
+
+    // Puesto Disitributivo 
+    //iniciarCombo('SsitpuestDistSA_ff','f','distributivo');
+    $("#SsitpuestDistSA_ff").select2({
+      sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
+    });
+
+    // Puesto Institucional
+    //iniciarCombo('SsitpuestInst_ff','f','institucional');
+    $("#SsitpuestInst_ff").select2({
+      sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
+    });
+
+    // Isla Trabaja
+    iniciarCombo('SsitislaSA_ff','f','islas');
+    $("#SsitislaSA_ff").select2({
+      sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
+    });
+
+    
+    iniciarCombo('STipoPers2','TIPO_PERSONA','catalogos');
+    $("#STipoPers2").select2({disabled: true});
+    iniciarCombo('StipoIdPers2','TIPO_IDENTIFICACION','catalogos');
+    $("#StipoIdPers2").select2({disabled: true});
+    iniciarCombo('SsexoPers2','SEXO','catalogos');
+    $("#SsexoPers2").select2({disabled: true});
+    iniciarCombo('StipoResPers2','TIPO_RESIDENCIA','catalogos');
+    $("#StipoResPers2").select2({disabled: true});
+    iniciarCombo('SparentescoPers2','PARENTESCO','catalogos');
+    $("#SparentescoPers2").select2();
+
+    $("#SdiscaPers2").select2();
+    $("#SsustiPers2").select2();
+    $("#ScargaPers2").select2();
+    $("#Sestado_ff").select2();
+
+    
+
+    // ENTER 
+    $('#nombresfilter').keypress(function(event){
+      var keycode = (event.keyCode ? event.keyCode : event.which);
+      if(keycode == '13'){
+        getDataPersonaFuncionarioP();  
+
+      }
+    });
+
+    $('#cedulafilter').keypress(function(event){
+      var keycode = (event.keyCode ? event.keyCode : event.which);
+      if(keycode == '13'){
+        getDataPersonaFuncionarioP();  
+      }
+    });
+
+   
+
+    //init();
+
+    var table = $('#tabla_personas').DataTable( {
+        orderCellsTop: true,
+        "order": [[ 2, "asc" ]],
+        responsive: true
+    } );
+    // Setup - add a text input to each footer cell
+    // $('#tabla_personas thead tr').clone(true).appendTo( '#tabla_personas thead' );
+    $('#tabla_personas thead .filters th').each(function() {
+        //var title = $(this).text();
+        var title = $('#tabla_personas thead tr:eq(0) th').eq($(this).index()).text();
+
+      if ((title == "")) {
+        $(this).html('');
+      }else{
+          $(this).html('<input type="text" placeholder="Buscar ' + title + '" style="color:black;"/>');
+      }
+    } );
+    
+    // Apply the search
+    table.columns().eq(0).each(function(colIdx) {
+        $('input', $('#ftper th')[colIdx]).on('keyup change', function() {
+            table
+                .column(colIdx)
+                .search(this.value)
+                .draw();
+        });
+    });
+
+  });
+
+
+</script>
+{% endblock %}

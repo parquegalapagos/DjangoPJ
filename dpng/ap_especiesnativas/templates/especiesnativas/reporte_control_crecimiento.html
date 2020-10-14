@@ -1,0 +1,210 @@
+ {% load static %} 
+ {% block content %}
+
+<style type="text/css">
+    #circle {
+        background: black;
+        width: 120%;
+        height: 120%;
+        border-radius: 50% 50% 50% 50%;
+        border: 2px solid orange;
+    }
+    
+    #circle div {
+        position: relative;
+        left: 25%;
+        color: white;
+        text-align: center;
+        font-size: 10px;
+    }
+    
+    .equis {
+        display: none;
+        position: absolute;
+        top: 10px;
+        font-size: 100px;
+        left: 15px;
+        z-index: 9999;
+        opacity: 0.8;
+    }
+    
+    .select2 {
+        z-index: 0;
+    }
+
+</style>
+<div id="content_control2" style="height: 100%;">
+    <div class="box">
+        <div class="box-header" id="bodycontent_control2">
+            <i class="fa fa-list"></i>
+            <h3 class="box-title">Control de crecimiento de Galapaguitos</h3>
+            <br>
+            <div align="center" class="col-xs-12 callout callout-info" style="background-color: white !important;margin-top: 10px;">
+                <div class="notification" style="height: 100px;z-index: 99999;">
+                    <span class="icon">
+                <i class=""></i>
+            </span>
+                    <span class="text"></span>
+                    <span class="close"><i class="fa fa-close"></i></span>
+                </div>
+                <table style="color: black;font-size: 12px; font-weight: bold;box-shadow: 5px 5px 5px 5px;">
+                    <tr style="height: 20px;"></tr>
+                    <tr>
+                        <td width="20px"></td>
+                        <td align="right">Centro Crianza</td>
+                        <td width="10px"></td>
+                        <td>
+                            <select class="select2" id="SccrianzaCCP" style="width: 200px;">
+                                <option value="">Seleccion una Opcion</option>
+                                {% for centrocrianza in centroscrianzas %}
+                                <option value="{{ centrocrianza.id }}">{{ centrocrianza.descripcion }}</option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                        <td width="20px"></td>
+                        <td align="right">Grupo Nacimiento</td>
+                        <td width="10px"></td>
+                        <td>
+                            <select class="select2" id="SgnacimientoCCP" style="width: 230px;">
+
+                            </select>
+                        </td>
+                        <td width="20px"></td>
+                        <td align="right">Periodo</td>
+                        <td width="10px"></td>
+                        <td>
+                            <div class="input-daterange input-group" id="datepicker" style="">
+                                <input type="text" autocomplete='off' class="input-sm form-control" name="start" id="FdesdeParamCCP" style="width: 100px;" />
+                                <span class="input-group-addon" style="border:none;font-weight: bold;">a</span>
+                                <input type="text" autocomplete='off' class="input-sm form-control" name="end" id="FhastaParamCCP" style="width: 100px;" />
+                            </div>
+                        </td>
+                        <td width="10px"></td>
+                        <td>
+                            <button type="button" class="btn btn-block btn-primary" style="width: 40px; position: relative;float: border-radius: 50%;box-shadow: 5px 5px 5px black;" onclick="buscarDetalleHuevosPeriodoParametros();"><i class="fa fa-search"></i></button>
+                        </td>
+                        <td width="10px"></td>
+                    </tr>
+                    <tr style="height: 20px;"></tr>
+                </table>
+            </div>
+
+        </div>
+        <!-- /.box-header -->
+
+        <div class="box-body">
+            <div class="row">
+                <div class="col-xs-6">
+                    <div id="containerCCP" style="width: 98%;margin-left:15px;"></div>
+                </div>
+                <div class="col-xs-6">
+                    <div id="tabla_detalle_tor" align="center"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6">
+                    <table id="tabla_controlc_corral" class="table table-bordered" style="box-shadow: 5px 5px 5px 5px;font-size: 10px; font-weight: bold;text-transform: uppercase;width: 100%;">
+                        <thead>
+                            <tr class='bg-blue' style="color:#fff; text-align: center; text-transform: uppercase;">
+                                <td colspan="4">Tortugas en Corral</td>
+                            </tr>
+                            <tr class='bg-blue' style="color:#fff; text-align: center; text-transform: uppercase;">
+                                <td></td>
+                                <td>FECHA</td>
+                                <td>#CON
+                                    <BR>PINTURA</td>
+                                <td>COMETARIO</td>
+                            </tr>
+                        </thead>
+                        <tbody id="bodytabla_controlc_corral" align="center" class="table-section"></tbody>
+                    </table>
+                </div>
+                <div class="col-xs-6">
+                    <table id="tabla_controlc_ing" class="table table-bordered" style="box-shadow: 5px 5px 5px 5px;font-size: 10px; font-weight: bold;text-transform: uppercase;width: 100%;">
+                        <thead>
+                            <tr class='bg-blue' style="color:#fff; text-align: center; text-transform: uppercase;">
+                                <td colspan="4">Tortugas Ingresadas</td>
+                            </tr>
+                            <tr class='bg-blue' style="color:#fff; text-align: center; text-transform: uppercase;">
+                                <td></td>
+                                <td>FECHA</td>
+                                <td>#CON
+                                    <BR>PINTURA</td>
+                                <td>COMETARIO</td>
+                            </tr>
+                        </thead>
+                        <tbody id="bodytabla_controlc_ing" align="center" class="table-section"></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6">
+                    <table id="tabla_controlc_muerta" class="table table-bordered" style="box-shadow: 5px 5px 5px 5px;font-size: 10px; font-weight: bold;text-transform: uppercase;width: 100%;">
+                        <thead>
+                            <tr class='bg-blue' style="color:#fff; text-align: center; text-transform: uppercase;">
+                                <td colspan="4">Tortugas Muertas</td>
+                            </tr>
+                            <tr class='bg-blue' style="color:#fff; text-align: center; text-transform: uppercase;">
+                                <td></td>
+                                <td>FECHA</td>
+                                <td>#CON
+                                    <BR>PINTURA</td>
+                                <td>COMETARIO</td>
+                            </tr>
+                        </thead>
+                        <tbody id="bodytabla_controlc_muerta" align="center" class="table-section"></tbody>
+                    </table>
+                </div>
+                <div class="col-xs-6">
+                    <table id="tabla_controlc_repa" class="table table-bordered" style="box-shadow: 5px 5px 5px 5px;font-size: 10px; font-weight: bold;text-transform: uppercase;width: 100%;">
+                        <thead>
+                            <tr class='bg-blue' style="color:#fff; text-align: center; text-transform: uppercase;">
+                                <td colspan="4">Tortugas Repatriadas</td>
+                            </tr>
+                            <tr class='bg-blue' style="color:#fff; text-align: center; text-transform: uppercase;">
+                                <td></td>
+                                <td>FECHA</td>
+                                <td>#CON
+                                    <BR>PINTURA</td>
+                                <td>COMETARIO</td>
+                            </tr>
+                        </thead>
+                        <tbody id="bodytabla_controlc_repa" align="center" class="table-section"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- /.box-body -->
+    </div>
+    <!-- /.box -->
+</div>
+<!--content -->
+
+<div id="tooltip_id_2nd_example" class="hidden">Woot, you can take the content of a hidden <code>div</code>.</div>
+
+<!-- <script src="{% static 'js/lib_internas/script_espnativas.js' %}"></script> -->
+
+<script type="text/javascript">
+    $(document).ready(function() {
+
+        var table1 = $('#tabla_controlc_corral').DataTable();
+        var table2 = $('#tabla_controlc_ing').DataTable();
+        var table3 = $('#tabla_controlc_muerta').DataTable();
+        var table4 = $('#tabla_controlc_repa').DataTable();
+
+        $('#SccrianzaCCP').select2();
+        $('#SpoblacionCCP').select2();
+        $('#SmedicionCCP').select2();
+        //$('#SgnacimientoCCP').select2();
+
+        iniciarGruposYears("SgnacimientoCCP");
+
+        $('.input-daterange').datepicker({
+            format: "mm-yyyy",
+            viewMode: "months",
+            minViewMode: "months"
+        });
+
+    });
+</script>
+{% endblock %}

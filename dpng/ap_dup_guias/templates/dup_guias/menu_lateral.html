@@ -1,0 +1,184 @@
+{% extends "home.html" %}
+{% load static %}
+
+{% block principalhome %}
+  <div id="principal_home" style="margin-top: 10%;">
+    <p style="text-align: center;">
+      <span style="font-size: x-large;">Bienvenido al módulo de CUSO</span>
+    </p>
+    <p style="text-align: center;">
+      <span style="font-size: large;"></span>
+    </p>
+    <p style="text-align: center;">
+      <span style="font-size: xx-large;">
+        <img src="{% static '/image/login/logo-PNG.png' %}"  width="15%">
+      </span>
+    </p>
+     
+  </div>
+{%endblock%}
+
+{% block menu %}
+  <li class="header">CUSO</li>
+  <li class="treeview menu-open">
+    
+      <a href="#">
+        <i style="font-size: 18px;" class="fa fa-user"></i> <span style="font-size: 16px;">Actas</span>
+        <span class="pull-right-container">
+          <i class="fa fa-angle-left pull-right"></i>
+        </span>
+      </a>
+      
+
+      <ul class="treeview-menu" style="display: block;">       
+        <li style="cursor: pointer;">
+          <a href="{% url 'acta_visita_cuso' %}"><i id="idmenu1" class="fa fa-circle-o text-aqua"></i>Acta Visita<br>Embarcaciones</a>
+        </li>       
+             
+      </ul>
+    
+  </li>
+
+
+  <div id="popupParmas" style="display: none;">
+
+      <div class="stackbox-header cab_popup" align="center">
+        <img src="{% static 'image/favicon.ico' %}" width="40px" style="float:left;margin-top: -5px;"/>
+        <h id="">Buscar Licencias parmas</h>
+      </div>
+
+      <div class="stackbox-body" align="center">
+        <div class="row" style="box-shadow: 5px 5px 5px 10px #888888;width: 500px;">
+        <div class="divisor" style="text-align: left;">Filtros de Busqueda</div><br>
+            <div class="col-xs-12" style="border-color: #1b90ad;">
+              <table>
+                <tr>
+                  <td align="left">Licencia Parma:</td>
+                  <td width="10px;"></td>
+                  <td>
+                    <input id="parmaPopup" type="text" class="form-control" style="width: 100%;" autofocus>
+                  </td>
+                  <td width="10px;"></td>
+                  <td><a style="cursor: pointer; font-size: 20px;" title="Buscar" onclick="getDataParma(0);"><i class="fa fa-search text-blue"></i></a></td>
+                </tr>
+              </table>
+             <br>
+            </div>
+        </div>
+        <br><br>
+        <div class="row">
+          <input type="hidden" id="pagina_enviaPopParma">
+          <div class="col-xs-1"></div>
+          <div class="col-xs-10">
+            <div id="content_bodyequipo" align="center" style="box-shadow: 5px 10px #888888;width: 100%;">
+              <table id="tabla_PopupParma" style="font-size: 12px; text-transform: uppercase;" class="display table table-striped table-bordered" width="100%" cellspacing="0">
+                  <thead>
+                  <tr style="background-color: #3c8dbc;    color: white;"> 
+                    <th>Licencia</th>
+                    <th>Nombre</th>              
+                    <th>Cedula</th>
+                    <th></th>
+                  </tr>
+                  </thead>
+                  <tbody class="botonera1" id="body_tabla_PopupParma">
+                  
+                  </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="col-xs-1"></div> 
+        </div>
+      </div>
+
+      <div class="stackbox-footer">
+        <!--button class="btn btn-primary" id="stackbox_save">Grabar</button-->
+        <button class="btn btn-default" data-close-stackbox="true">Close</button>
+      </div>
+  </div>
+
+  <div id="popupEmbarcaciones" style="display: none;">
+
+      <div class="stackbox-header cab_popup" align="center">
+        <img src="{% static 'image/favicon.ico' %}" width="40px" style="float:left;margin-top: -5px;"/>
+        <h id="">Buscar Embarcaciones</h>
+      </div>
+
+      <div class="stackbox-body" align="center">
+        <div class="row" style="box-shadow: 5px 5px 5px 10px #888888;width: 85%;">
+            <div class="col-xs-12" style="border-color: #1b90ad;top: 10px;">
+              <table>
+                <tr>
+                  <td align="left">Nombre:</td>
+                  <td width="10px;"></td>
+                  <td>
+                    <input id="nombreEmbPopup" type="text" class="form-control" style="width: 100%;" autofocus>
+                  </td>
+                  <td width="10px;"></td>
+                  <td align="left">Matricula:</td>
+                  <td width="10px;"></td>
+                  <td>
+                    <input id="matEmbPopup" type="text" class="form-control" style="width: 100%;" autofocus>
+                  </td>
+                  <td width="10px;"></td>
+                  <td align="left">Permiso Pesca:</td>
+                  <td width="10px;"></td>
+                  <td>
+                    <input id="perpescaEmbPopup" type="text" class="form-control" style="width: 100%;" autofocus>
+                  </td>
+                  <td width="10px;"></td>
+                  <td><a style="cursor: pointer; font-size: 20px;" title="Buscar" onclick="getDataEmbarcacion();"><i class="fa fa-search text-blue"></i></a></td>
+                </tr>
+              </table>
+             <br>
+            </div>
+        </div>
+        <br><br>
+        <div class="row">
+          <input type="hidden" id="pagina_enviaPopEmbarc">
+          <div class="col-xs-1"></div>
+          <div class="col-xs-10">
+            <div id="content_bodyembarc" align="center" style="box-shadow: 5px 10px #888888;width: 100%;">
+              <table id="tabla_PopupEmbarc" style="font-size: 12px; text-transform: uppercase;" class="display table table-striped table-bordered" width="100%" cellspacing="0">
+                  <thead>
+                  <tr style="background-color: #3c8dbc;    color: white;"> 
+                    <th>Nombre</th>
+                    <th>Matricula</th>              
+                    <th>Permiso</th>
+                    <th>Armador</th>
+                    <th></th>
+                  </tr>
+                  </thead>
+                  <tbody class="botonera1" id="body_tabla_PopupEmbarc">
+                  
+                  </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="col-xs-1"></div> 
+        </div>
+      </div>
+
+      <div class="stackbox-footer">
+        <!--button class="btn btn-primary" id="stackbox_save">Grabar</button-->
+        <button class="btn btn-default" data-close-stackbox="true">Close</button>
+      </div>
+  </div>
+
+  <!-- SCRIPTS -->
+  <!--
+  <script src="https://code.highcharts.com/highcharts.js"></script>
+  <script src="https://code.highcharts.com/modules/exporting.js"></script>
+  <script src="https://code.highcharts.com/modules/export-data.js"></script>
+  <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+  -->
+  
+  <!--script src="https://code.highcharts.com/modules/pyramid3d.js"></script-->
+  <script src="{% static 'js/lib_externas/jquery-1.12.4.js' %}"></script>
+  <script src="{% static 'js/lib_externas/jquery-ui.js' %}"></script>
+  <script>document.write('<script src="{% static "js/lib_internas/script_cuso_jn.js" %}?dev=' + Math.floor(Math.random() * 100) + '"\><\/script>');</script>
+
+  <script>
+    sessionStorage.setItem("islas", JSON.stringify({{ islas | safe }}));
+
+  </script>
+{%endblock%}

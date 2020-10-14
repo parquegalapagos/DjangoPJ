@@ -1,0 +1,169 @@
+ {% load static %} {% block content %}
+
+<style type="text/css">
+    #circle {
+        background-image: url("../static/image/fondos/egg.jpg");
+        width: 90px;
+        height: 110px;
+        border-radius: 50% 50% 50% 50%;
+        border: 2px solid orange;
+    }
+    
+    #circle div {
+        position: relative;
+        left: 30%;
+        color: white;
+        text-align: center;
+        font-size: 12px;
+        top: 15%;
+    }
+    
+    .equis {
+        display: none;
+        position: absolute;
+        top: 10px;
+        font-size: 100px;
+        left: 15px;
+        z-index: 9999;
+        opacity: 0.8;
+    }
+    
+    .select2 {
+        z-index: 0;
+    }
+</style>
+
+<!--------------- PDF ---------------------------->
+<div id="pdfDH" style="display: none;">
+    <div class="stackbox-header" align="center" style="color:white; background-color: #3c8dbc; font-weight: bold; font-size: 18px;">
+        <img src="{% static 'image/favicon.ico' %}" width="40px" style="float:left;margin-top: -5px;" />Datos Huevos
+    </div>
+    <br>
+    <br>
+    <div class="stackbox-body" id="bodyPopRepDH">
+        <div>
+            <table>
+                <tr>
+                    <td width="10%" align="center"><img src="static/image/favicon.ico" style="position: relative;float: left;width:50%;" /></td>
+                    <td width="80%" align="center">
+                        <p style="font-size: 20px; font-weight: bold;">Reporte de Huevo por numero de Pintura</p>
+                    </td>
+                    <td width="10%" align="center"><img src="static/image/favicon.ico" style="position: relative;float: left;width:50%;" /></td>
+
+                    <tr>
+            </table>
+        </div>
+        <br>
+        <br>
+        <div id="divimagenRepDH" style="text-align: center">
+            <img id="imagenRepDH" src="" style="width: 70%" />
+        </div>
+        <br>
+        <br>
+        <div id="bodyRepDH"></div>
+    </div>
+    <div class="stackbox-footer" style="margin-top: -30px;">
+        <button type="button" class="btn btn-block btn-primary" style="width: 40px; position: fixed; top: 100px; right: 16%; border-radius: 50%;box-shadow: 5px 5px 5px black;" onclick="generaPdfDH();"><i class="fa fa-file-pdf-o"></i></button>
+        <button type="button" class="btn btn-block btn-primary" data-close-stackbox="true" style="width: 40px; position: fixed; top: 135px; right: 16%; border-radius: 50%;box-shadow: 5px 5px 5px black;"><i class="fa fa-times-circle"></i></button>
+    </div>
+</div>
+<input type="hidden" id="urlPintura">
+<div id="content_control3" style="height: 100%;">
+    <div class="box">
+        <div class="box-header" id="bodycontent_control3">
+            <i class="fa fa-list"></i>
+            <h3 class="box-title">Datos de Huevo por Numero de Pintura</h3>
+            <div class="botonera" style="float: right; right: 1px;">
+                <a title="pfd" onclick="getDataGraficoDH();" href='#pdfDH' data-stackbox='true' data-stackbox-width="1000px" data-stackbox-height="800px" data-stackbox-position="absolute"><i class="fa fa-file-pdf-o text-green"></i></a>
+            </div>
+            <br>
+            <div align="center" class="col-xs-12 callout callout-info" style="background-color: white !important;margin-top: 10px;">
+                <div class="notification" style="height: 100px;z-index: 99999;">
+                    <span class="icon">
+                        <i class=""></i>
+                    </span>
+                    <span class="text"></span>
+                    <span class="close"><i class="fa fa-close"></i></span>
+                </div>
+                <div class="col-md-12" style="color: black;font-size: 12px; font-weight: bold;box-shadow: 5px 5px 5px 5px;height: 80px; padding: 30px;">
+                    <div class="col-md-4">
+                        <table>
+                            <tr>
+                                <td width="100px"></td>
+                                <td align="right">Centro Crianza</td>
+                                <td width="10px"></td>
+                                <td>
+                                    <select class="select2" id="SccrianzaBP" style="width: 200px;">
+                                        <option value="">Seleccion una Opcion</option>
+                                        {% for centrocrianza in centroscrianzas %}
+                                        <option value="{{ centrocrianza.id }}">{{ centrocrianza.descripcion }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-md-4">
+                        <table>
+                            <tr>
+                                <td align="right">Grupo Nacimiento</td>
+                                <td width="10px"></td>
+                                <td>
+                                    <select class="select2" id="SgnacimientoBP" style="width: 230px;">
+
+                                    </select>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-md-4">
+                        <table>
+                            <tr>
+                                <td align="right">Numero Pintura</td>
+                                <td width="10px"></td>
+                                <td>
+                                    <input type="text" id="num_pinturaBP" class="form-control" style="width: 40px;" onkeypress='return isNumberKey(event);' maxlength="4" />
+                                </td>
+                                <td width="20px"></td>
+                                <td>
+                                    <button type="button" class="btn btn-block btn-primary" style="width: 40px; position: relative; border-radius: 50%;box-shadow: 5px 5px 5px black;" onclick="buscarControlCreceXpintura();"><i class="fa fa-search"></i></button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+               
+            </div>
+
+        </div>
+        <!-- /.box-header -->
+
+        <div class="box-body">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div id="containerDH" style="width: 100%;"></div>
+                </div>
+            </div>
+
+            <div class="row" style="margin-top: 20px;">
+                <div class="col-xs-12" id="contentCC">
+
+                </div>
+            </div>
+        </div>
+        <!-- /.box-body -->
+    </div>
+    <!-- /.box -->
+</div>
+<!--content -->
+
+<!-- <script src="{% static 'js/lib_internas/script_espnativas.js' %}"></script> -->
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#SccrianzaBP').select2();
+        $('#SpoblacionBP').select2();
+        iniciarGruposYears("SgnacimientoBP");
+    });
+</script>
+{% endblock %}

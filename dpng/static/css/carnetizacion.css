@@ -1,0 +1,40 @@
+.carnet-marco{
+	width: 200px; 
+	height: 242px;
+	border: 3px solid #008000;
+	background-color: #DDDBDB;
+
+
+}
+
+.field_read{
+	 background-color: #D9DED9;
+	 width: 300px; 
+	 font-size: 11px;
+}
+
+.background-image{
+	position: absolute;
+    z-index: -1;
+    min-width: 100%;
+    min-height: 100%;
+    left: 0;
+    top: 0;
+    pointer-events: none;
+}
+
+.form-cntz-info{
+	font-size: 11px;
+	vertical-align: middle;
+	color: white;
+
+}
+
+.form_info_cntz_func{
+	padding: 0.5em 1em 0.5em 1em;
+	border-radius: 0.25em;
+	display: table-cell;
+	vertical-align: middle;
+	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+	background: #3c8dbc;
+}

@@ -1,0 +1,217 @@
+{% extends 'serv_ambientales/menu_lateral.html' %}
+{% block principalhome %}
+{% load static %} 
+<link rel="stylesheet" type="text/css" href="{% static 'css/select2.min.css' %}">
+
+<style type="text/css">
+    .filters input {
+        width: 100%;
+        padding: 3px;
+        box-sizing: border-box;
+        fieldset {
+            border: 1px solid #ddd !important;
+            margin: 0;
+            xmin-width: 0;
+            padding: 10px;
+            position: relative;
+            border-radius: 4px;
+            background-color: #f5f5f5;
+            padding-left: 10px!important;
+        }
+        legend {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 0px;
+            width: 35%;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 5px 5px 5px 10px;
+            background-color: #ffffff;
+        }
+        #map {
+            height: 500px;
+        }
+    }
+</style>
+
+<!-- FORMULARIO  -->
+<div style="width: 98%; margin-left: 1%;box-shadow: 5px 5px 15px 5px #888888;">
+<div id="content_infoTecGestPet">
+    <div id="addinfoTecGestPet" style="display: none;">
+        <div class="stackbox-header cab_popup" align="center">Informe Tecnico<i class="fa fa-file-text" aria-hidden="true" style="font-size: 20px; float: left;"></i></div>
+
+        <div class="stackbox-body" id="bodyaddinfoTecGestPet">
+            <div class="notification">
+                <span class="icon">
+                    <i class=""></i>
+                </span>
+                <span class="text"></span>
+                <span class="close"><i class="fa fa-close"></i></span>
+            </div>
+            <div class="row" align="center">
+                <div class="col-xs-12 callout" style="border-color: #1b90ad;">
+
+                    <!-- CAMPOS FORM -->
+                    {% csrf_token %}
+                    <form id="frm_infoTecGestPet" action="#" method="post">
+
+                        <table style="width: 100%">
+                            <input type="hidden" id="idinfoTecST" name="idinfoTecST" value="" />
+                            <tr height='10px;'></tr>
+                            <tr>
+                                <td align="left">*#Informe Tecnico</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="text" id="numInfoTecST" class="form-control requerido" readonly /> 
+                                </td>
+                            </tr>
+
+                            <tr height='10px;'></tr>
+                            <tr>
+                                <td align="left">*Tema</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="text" id="temaInfoTecST" class="form-control requerido" /> </td>
+                            </tr>
+
+                            <tr height='10px;'></tr>
+                            <tr>
+                                <td align="left">*Fecha</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="date" id="fechaInfoTecST" class="form-control requerido" /> </td>
+                            </tr>
+
+                            <tr height='10px;'></tr>
+                            <tr>
+                                <td align="left">*Tecnicos</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <select class="select2 requerido" id="StecnicosInfoTecST" text="Encargados" name="StecnicosInfoTecST[]" multiple="multiple" style="width: 100%;">
+                                        <option value="">Seleccion una Opcion</option>
+                                        {% for funcionario in funcionarios %}
+                                        <option value="{{ funcionario.id }}" data-nombre="{{ funcionario.persona_id.nombre_completo }}">{{ funcionario.persona_id.apellidos }} {{ funcionario.persona_id.nombres }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                            </tr>
+                                                        
+                            <tr height='10px;'></tr>
+                            <tr>
+                                <td align="left">Estado</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <select id="SestadoinfoTecST" class="select2" text="Estado">
+                                        <option value="">Seleccione una Opcion</option>
+                                        <option value="A">ACTIVO</option>
+                                        <option value="I">INACTIVO</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr height='10px;'></tr>
+                            <tr>
+                                <td align="left">Observacion</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <textarea id="observacioninfoTecST" class="form-control" rows="3" style="width: 100%; font-size: 12px;"></textarea>
+                                </td>
+                            </tr>
+                        </table>
+                        <br>
+                        <div class="row" align="left">
+                            <div class="col-xs-12">
+                                <table>
+                                    <td>
+                                        Informe Tecnico:
+                                        <input type="file" name="myfile" id="doc_anexos" class="form-control ">
+                                      </td>
+                                      <td>
+                                        <a title="Cargar Archivo" style="font-size: 20px; position: relative; left: 10px; cursor: pointer; top: 5px;" onclick="cargar_archivo('frm_infoTecGestPet','');"><i class="fa fa-upload text-green"></i></a>
+                                      </td>
+                                </table>
+                            </div>
+                            <div class="col-xs-12"></div>
+                            <div class="col-xs-6">
+                                <table id="table_infoTFile" style="margin-top: 10px;">
+                                    <tbody id="bodytable_infoTFile"></tbody> 
+                                </table>
+                            </div>
+                        </div>
+
+                        <input type="hidden" id="tipoinfoTecST" value="0" />
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="stackbox-footer">
+           
+            <button class="btn btn-primary" onclick="setInsertUpdateinfoTecGestPet();">Grabar</button>
+            
+            <button class="btn btn-default" data-close-stackbox="true">Close</button>
+        </div>
+    </div>
+
+    <div class="box">
+        <input type="hidden" id="islaITGP" name="islaITGP" value="{{ isla_trabaja_id }}" />
+        <div class="box-header" style="background-color: #005196; color: white;">
+            <i class="fa fa-list"></i>
+            <h3 class="box-title">Lista de Informes Tecnicos</h3><i class="fa fa-file-text" aria-hidden="true" style="font-size: 20px; margin-left: 10px;"></i>
+            <div class="botonera" style="float: right; right: 1px;">
+               
+                <a onclick="limpiarForminfoTecGestPetST();getSecuenciaInformeTecGestPetST();" href='#addinfoTecGestPet' data-stackbox='true' data-stackbox-position="absolute"><i style="color: white;" class="fa fa-plus-circle btn_nuevo"></i></a> 
+
+                <a title="excel" onclick="generarExcel('tabla_infoTecGestPet',14)"><i style="color: white;" class="fa fa-file-excel-o"></i></a>
+            </div>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+            <table id="tabla_infoTecGestPet" style="font-size: 10px; text-transform: uppercase;font-weight: bold;" class="table table-striped table-bordered" width="100%" cellspacing="0">
+                <thead style="background-color: #0073b7;    color: white;">
+	                <th>#Informe</th>
+                    <th>Tema</th>
+                    <th>Fecha</th>
+                    <th>Tecnicos</th>
+                    <th>Archivo</th>                   
+	                <th></th>
+	                <th></th>
+                </thead>
+                <tbody id="bodytabla_infoTecGestPet">
+
+                </tbody>
+            </table>
+        </div>
+        <!-- /.box-body -->
+
+    </div>
+    <!-- /.box -->
+
+</div>
+</div>
+<!-- /.content -->
+
+<!-- AdminLTE datatable -->
+<!-- jQuery 3 -->
+{% load static %}
+
+<!--script src="{% static 'js/lib_internas/script_bsa.js' %}"></script-->
+<script>
+    $(document).ready(function() {
+        $('#StecnicosInfoTecST').select2();
+        $('#SestadoinfoTecST').select2();
+        buscarinfoTecGestPetParametros("");
+        //var table = $('#tabla_ubicacions').DataTable();
+        //var f1 = (new Date).getFullYear() + "-01-01";
+        //var f2 = (new Date).getFullYear() + "-12-31";
+        //var dataini = f1 + "," + f2;
+        
+    });
+ 
+</script>
+
+{% endblock %}

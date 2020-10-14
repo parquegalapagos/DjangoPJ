@@ -1,0 +1,605 @@
+body{
+    background-image: url(/static/image/login/index_png_2.jpg);
+    background-size: cover;
+    background-attachment: fixed;
+    background-repeat: repeat;
+
+    background-size: cover;
+    /* font-family:'Comic Sans MS'; */
+    font-family: "Times New Roman", Times, serif;
+    background-repeat:repeat-y;
+    background-attachment: scroll;
+    -moz-background-size: cover;
+    -webkit-background-size: cover;
+    -o-background-size: cover;
+}
+  
+
+a{color: #fff; text-decoration: none;}
+
+/* Parte pagina ingreso */
+#mainIndex{
+   height: auto;  /*tamaño del contenido altura*/
+   margin: 10px 0px 10px 0px;
+   padding-bottom: 0px;
+   border-radius: 4pt;
+   
+   display: -webkit-flex;
+   display: -moz-flex;
+   -webkit-flex-flow: row; flex-flow: row;
+   -moz-flex-flow: row; 
+   
+   background: none;
+   background-size: 100% 100%;     
+}
+
+#mainLeyenda{
+    min-width: 0px;
+    min-height: 0px;
+    
+    height: auto;
+    margin: 40px 50px 0px 30px;
+    padding-bottom: 10px;
+    border-radius: 5px 5px 5px 5px; 
+
+
+    display: -webkit-flex;
+    display: -moz-flex;
+    -webkit-flex-flow: column; flex-flow: column;
+    -moz-flex-flow: column; 
+    -webkit-flex: 1 6 75%;
+
+    background-color: rgba(0,0,0,0.3);
+    box-shadow: 0 0 1em #FFF;
+
+}
+#leyendaTitulo{
+     word-wrap: break-word;
+     min-width: 100px;
+     min-height: 0px;
+     
+     /*background: url(../imagenes/logo.png) no-repeat 50%; */
+     display: -webkit-flex;
+     display: -moz-flex;
+     -webkit-flex-flow: column; flex-flow: column;
+     -moz-flex-flow: column;
+     
+     padding-top: 200px;
+     padding-bottom: 20px;
+     text-align: center;
+ 
+     font-family:'Comic Sans MS';
+     font-size:40px;
+     color:#2D5AD5;
+     line-height:20px;
+     text-shadow: 0 0 1em #FFF;
+
+}
+#leyendaComentarios {
+     word-wrap: break-word;
+     min-height: 180px;
+     padding-top: 10px;
+     margin-left:10px;
+     margin-right:10px;
+     border-radius: 5px 5px 5px 5px; 
+     
+     display: -webkit-flex;
+     display: -moz-flex;
+     -webkit-flex-flow: column; flex-flow: column;
+     -moz-flex-flow: column;
+     
+     text-align: justify;
+     background-color: rgba(255,255,255,0.7);
+     font-family:'Comic Sans MS';
+     font-size:14px;
+     color:black;
+     line-height:20px;
+}
+
+#leyendaComentarios p { padding: 0px 10px 0px 10px;}
+
+
+#mainPanel{
+    width: auto;
+    height: auto;
+    margin: 40px 50px 0px 50px;
+    min-width: 0px;
+    min-height: 0px;
+
+   
+    display: -webkit-flex;
+    display: -moz-flex;
+   -webkit-flex-flow: column; flex-flow: column;
+   -moz-flex-flow: column; 
+    -webkit-flex: 1 6 25%;  
+   
+    background:none;
+}
+#mainLogin{
+    top:100px;
+    position: absolute;
+    width: 100%;
+}
+
+#loginPanel{
+    position: relative;
+    min-width: 0px;
+    min-height: 0px;
+    width: 50%;
+
+    margin: auto;
+    padding:  0px 30px 10px 30px;
+    background-color: rgba(255,255,255,1);
+    border-radius: 10px 10px 10px 10px;  
+    
+    display: -webkit-flex;
+    display: -moz-flex;
+    -webkit-flex-flow: column; flex-flow: column;
+    -moz-flex-flow: column; 
+     box-shadow: 0 0 1em #FFF;
+}
+#loginPanel h2{ 
+   
+    min-width: 0px;
+    min-height: 0px;
+    word-wrap: break-word;
+    text-align: center;
+    padding: 0px 0px 0px 0px ; margin: 0px;
+    font-family:'Comic Sans MS';
+    font-size:18px;
+    color:#2D5AD5;
+}
+#loginPanel input{
+    min-width: 0px;
+    min-height: 0px;
+    
+    width: auto; 
+    height: 22px;
+    padding: 0px 0px 0px 0px ;
+     margin: 10px 0px 10px 0px;
+     
+    font-family:'Comic Sans MS';
+    font-size:12px;
+    color:#043185; 
+    border:0;
+    background:#f9f6d4;
+    
+} 
+#loginPanel p {word-wrap: break-word;min-width: 0px; min-height: 0px;font-family:'Comic Sans MS';font-size:10px;color:#000;line-height:20px} 
+#loginPanel p a {word-wrap: break-word;min-width: 0px; min-height: 0px;color:blue;text-decoration:none}  
+#loginPanel .login {word-wrap: break-word;min-width: 0px; min-height: 0px;font-family:'Comic Sans MS';font-size:9px;color:#fff; background-color: black; text-align:center;text-decoration:none no-repeat; box-shadow: 2px 2px 1px #000; cursor: pointer;border-radius: 4pt;}
+
+#loginPanel .login:hover { zoom: 1.2;}
+
+
+
+
+#mainRegistrar{
+   color: white;
+   height: 600px;  /*tamaño del contenido altura*/
+   margin-top: 5px;
+   padding: 10px 20px 10px 20px;
+   border-radius: 4pt;
+   
+   display: -webkit-flex;
+   display: -moz-flex;
+   -webkit-flex-flow: row; flex-flow: row;
+   -moz-flex-flow: row; 
+   
+   background:  rgba(0,0,0,0.5);
+   background-size: 100% 100%; 
+}
+
+
+#infoRegistro {
+    display: -webkit-flex;
+    display: -moz-flex;
+    -webkit-flex-flow: column; flex-flow: column;
+    -moz-flex-flow: column; 
+    
+    margin-right: 10px;
+    
+    background-color: rgba(0,0,0,0.6);
+   -webkit-flex: 1 6 30%;
+   -webkit-order: 1;
+
+}
+
+#infoParrafo{
+    max-width: 280px;
+    background-color: rgba(0,0,0,0.6);
+    color: white;
+}
+
+
+#datosPersonales{
+    display: -webkit-flex;
+    display: -moz-flex;
+    -webkit-flex-flow: column; flex-flow: column;
+    -moz-flex-flow: column; 
+    
+    margin: 10px 10px 10px 10px;
+    padding: 20px;
+    background-color: rgba(0,0,0,0.8);
+   -webkit-flex: 1 6 60%;
+   -webkit-order: 1;
+}
+
+#datosGenerales{
+    display: -webkit-flex;
+    display: -moz-flex;
+    -webkit-flex-flow: column; flex-flow: column;
+    -moz-flex-flow: column;
+    
+    margin-left: 10px;
+    background-color: rgba(255,255,255,0.6);
+   -webkit-flex: 1 6 10%;
+   -webkit-order: 2;
+}
+
+
+#registroTitulo{   
+      margin: 10px 10px 40px 0px;  
+     padding: 10px 0px 0px 10px;
+     text-align: left;
+     font-family:'Comic Sans MS';
+     font-size:40px;
+     color:#FFF;
+     line-height:20px;
+}
+
+
+input{
+    /*min-width: 220px;*/
+    /*height: 30px;*/
+    margin: 0px 30px 30px 20px;
+    padding: 0px 0px 0px 0px ;
+      
+    text-align: center;
+    font-family:'Comic Sans MS';
+    font-size:20px;
+    color:#043185; 
+    border:2;
+    background:white;
+} 
+
+.imput2{
+    height: 30px;
+    margin: 10px 20px 10px 20px;
+    padding: 0px 0px 0px 0px ;
+      
+    text-align: center;
+    font-family:'Comic Sans MS';
+    font-size:20px;
+    border:2;
+} 
+
+
+#personalFoto{
+    height: 300px;
+    display: -webkit-flex;
+    display: -moz-flex;
+    
+    margin: 5px 5px 5px 5px;
+    background-color: rgba(0,0,0,0.8);
+   -webkit-flex:none;
+}
+
+
+
+
+
+
+
+#datos{
+   height: auto; /*tamaño del contenido altura*/
+   margin:  30px 45px 10px 30px;
+   padding: 0px 0px 0px 0px;
+
+   display: -webkit-flex;
+   display: -moz-flex;
+   -webkit-flex-flow: column; flex-flow: column;
+   -moz-flex-flow: column;
+
+   border-radius:5px; 
+   background-color: rgba(0,0,0,0.6);
+   z-index: -1;
+   box-shadow: 0 0 1em #FFF;
+}
+#datosInfo {
+    width: auto;
+    display: -webkit-flex;
+    display: -moz-flex;
+    -webkit-flex-flow: column; flex-flow: column;
+    -moz-flex-flow: column;
+    background-color: none;
+    font-size: 16px;
+    text-align: center;
+    color: #fff;
+}
+
+#datosInfoLinks{
+   padding: 0px 0px 0px 0px; 
+   display: -webkit-flex;
+   display: -moz-flex;
+   -webkit-flex-flow: row; flex-flow: row;
+   -moz-flex-flow: row;
+}
+#datosInfoLinks a{ -webkit-flex: 1 6 20%; margin: 0px 0px 0px 0px; text-shadow: 0 0 1em #FFF;}
+#datosInfoLinks a:hover{text-shadow: 0 0 1em blue;}
+
+
+/*Iconos Footer(checked)*/
+body input#telf {
+    visibility: hidden;
+    position: absolute;
+    left: -1000px; }
+
+body input#telf:checked + footer {
+    left: 10px;
+    box-shadow: 0 0 1em #FFF;
+    background: none; }
+
+body input#telf:checked + footer img#phone {
+    -webkit-transform: rotate(120deg);
+    -moz-transform: rotate(120deg);
+    -ms-transform: rotate(120deg);
+    -o-transform: rotate(120deg);
+    transform: rotate(120deg); }
+
+body input#telf:checked + footer > div, body input#telf:checked + footer > a {
+    opacity: 1;
+    -webkit-transform: scale(1);
+    -moz-transform: scale(1);
+    -ms-transform: scale(1);
+    -o-transform: scale(1);
+    transform: scale(1); }
+
+body footer {
+    position: fixed;
+    bottom: 60px; /*posicion en Y*/
+    z-index: 100;
+    left: -520px;
+    padding: 0px;
+    padding-right: 60px;
+    background: #e6e6e6;
+    border-radius: 5px 25px 25px 5px;
+    -webkit-transition: all 1s;
+    -moz-transition: all 1s;
+    -ms-transition: all 1s;
+    -o-transition: all 1s;
+    transition: all 1s; }
+
+body footer:after {
+     content: ".";
+     display: block;
+     height: 0;
+     clear: both;
+     visibility: hidden; }
+  
+body footer label {cursor: pointer; }
+
+body footer label img#phone {
+     width: 48px;
+     height: 48px;
+     position: absolute;
+     top: 5px;
+     right: 5px;
+     -webkit-transform: rotate(0deg);
+     -moz-transform: rotate(0deg);
+     -ms-transform: rotate(0deg);
+     -o-transform: rotate(0deg);
+     transform: rotate(0deg);
+     -webkit-transition: all 1s;
+     -moz-transition: all 1s;
+     -ms-transition: all 1s;
+     -o-transition: all 1s;
+     transition: all 1s; }
+
+body footer > div, body footer > a {
+     -webkit-transition: all 0.5s;
+     -moz-transition: all 0.5s;
+     -ms-transition: all 0.5s;
+     -o-transition: all 0.5s;
+     transition: all 0.5s;
+     opacity: 0;
+     -webkit-transform: scale(0);
+     -moz-transform: scale(0);
+     -ms-transform: scale(0);
+     -o-transform: scale(0);
+     transform: scale(0); }
+
+body footer a.containerIcono, body footer a.containerIcono img {
+     width: 48px;
+     height: 48px; }
+    
+body footer a.containerIcono {
+     position: relative;
+     z-index: 1;
+     -webkit-perspective: 1000;
+     -moz-perspective: 1000;
+     -ms-perspective: 1000;
+     -o-perspective: 1000;
+     perspective: 1000;
+     float: left;
+     margin: 5px; }
+   
+body footer a.containerIcono div.icono {
+     -webkit-transform-style: preserve-3d;
+     -moz-transform-style: preserve-3d;
+     -ms-transform-style: preserve-3d;
+     -o-transform-style: preserve-3d;
+     transform-style: preserve-3d;
+     -webkit-transition: all 0.2s linear;
+     -moz-transition: all 0.2s linear;
+     -ms-transition: all 0.2s linear;
+     -o-transition: all 0.2s linear;
+      transition: all 0.2s linear;
+      width: 100%;
+      height: 100%;
+      cursor: pointer; }
+     
+body footer a.containerIcono div.icono div.cara {
+      position: absolute;
+      -webkit-backface-visibility: hidden;
+      -moz-backface-visibility: hidden;
+      -ms-backface-visibility: hidden;
+      -o-backface-visibility: hidden;
+      backface-visibility: hidden; }
+       
+body footer a.containerIcono div.icono div.back {
+      display: block;
+      -webkit-transform: rotateY(180deg);
+      -moz-transform: rotateY(180deg);
+      -ms-transform: rotateY(180deg);
+      -o-transform: rotateY(180deg);
+      transform: rotateY(180deg); }
+    
+body footer a.containerIcono:hover div.icono {
+      -webkit-transform: rotateY(180deg);
+      -moz-transform: rotateY(180deg);
+      -ms-transform: rotateY(180deg);
+      -o-transform: rotateY(180deg);
+       transform: rotateY(180deg); }
+
+
+
+@media all and (max-width: 1000px) {
+    #mainIndex {
+        margin: 30px 30px 30px 30px;
+    }
+
+    #mainLeyenda {
+        width: 650px;
+        height: auto;
+        margin: 0px;
+    }
+
+    #leyendaTitulo {
+        font-size: 32px;
+    }
+
+    #mainPanel {
+        margin: 10px;
+    }
+
+    #mainRegistrar {
+        display: -webkit-flex;
+        display: -moz-flex;
+        -webkit-flex-flow: column;
+        flex-flow: column;
+        -moz-flex-flow: column;
+    }
+    #infoRegistro {
+       
+        display: none;
+    }
+    #datosPersonales {
+        -webkit-flex: none;
+    }
+
+    #datosGenerales {
+        -webkit-flex: none;
+    }
+}
+
+
+@media all and (max-width: 740px) {
+    #mainLeyenda {
+        -webkit-flex: 1 6 50%;
+        padding-bottom: 10px;
+    }
+
+    
+    #loginPanel input {
+        min-width: 0px;
+        min-height: 0px;
+        width: auto;
+        height: 16px;
+        padding: 0px 0px 0px 0px;
+        margin: 5px 0px 5px 0px;
+        font-family:'Comic Sans MS';
+        font-size: 11px;
+        color: #043185;
+        border: 0;
+        background: #f9f6d4;
+    }
+}
+
+
+@media all and (max-width: 620px) {
+    #mainLeyenda {
+        -webkit-flex: 1 6 40%;
+        background-size: cover;
+
+    }
+
+}
+
+@media all and (max-width: 540px) {
+    #leyendaTitulo {
+        padding-top: 100px;
+        font-family:'Comic Sans MS';
+        font-size: 18px;
+    }
+}
+
+@media all and (max-width: 460px) {
+    #leyendaTitulo {
+        padding-top: 10px;
+    }
+}
+
+@media all and (max-width: 410px) {
+    #mainLeyenda {
+        -webkit-flex: none;
+        width: auto;
+        padding-bottom: 0px;
+        
+    }
+
+    #leyendaComentarios {
+        display: none;
+    }
+
+    #mainPanel {
+        -webkit-flex: none;
+    }
+
+    #mainIndex {
+        -webkit-flex-flow: column;
+        flex-flow: column;
+        -moz-flex-flow: column;
+    }
+
+    #datos {
+        margin: 0px 50px 0px 50px;
+    }
+
+    #datosInfoLinks {
+        -webkit-flex-flow: column;
+        flex-flow: column;
+        -moz-flex-flow: column;
+    }
+
+    #datosInfoLinks a {
+        -webkit-flex: none;
+        font-size: 12px;
+    }
+}
+
+
+@-webkit-keyframes animaFondoLigin{
+  0%{background:#000 url(../imagenes/fondoLogin/log1.jpg) no-repeat; background-size:cover;}
+ 10%{background:#000 url(../imagenes/fondoLogin/log1.jpg) no-repeat; background-size:cover;}
+ 20%{background:#000 url(../imagenes/fondoLogin/log1.jpg) no-repeat; background-size:cover;}
+ 30%{background:#000 url(../imagenes/fondoLogin/log2.jpg) no-repeat; background-size:cover;}
+ 40%{background:#000 url(../imagenes/fondoLogin/log2.jpg) no-repeat; background-size:cover;}
+ 50%{background:#000 url(../imagenes/fondoLogin/log2.jpg) no-repeat; background-size:cover;}
+ 60%{background:#000 url(../imagenes/fondoLogin/log3.jpg) no-repeat; background-size:cover;}
+ 70%{background:#000 url(../imagenes/fondoLogin/log3.jpg) no-repeat; background-size:cover;}
+ 80%{background:#000 url(../imagenes/fondoLogin/log4.jpg) no-repeat; background-size: cover;}
+ 90%{background:#000 url(../imagenes/fondoLogin/log4.jpg) no-repeat; background-size: cover;}
+ 100%{background:#000 url(../imagenes/fondoLogin/log1.jpg) no-repeat; }
+}
+

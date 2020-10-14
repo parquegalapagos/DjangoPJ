@@ -1,0 +1,84 @@
+{% load static %} 
+{% block content %}
+
+<div id="content_graficoSP">
+    <div class="box" style="background-color: black;">
+        <div class="box-header" style="color: white;">
+            <i class="fa fa-list"></i>
+            <h3 class="box-title">Dashboard</h3>
+        </div>
+        <div class="input-group" style="width: 500px;position: relative;float: right;top: -30px;">
+            <div class="input-group-addon">
+                <i class="fa fa-calendar"></i>
+            </div>
+            <select class="select2 pull-right" id="SccrianzaDash" style="width: 200px;">
+                <option value="">Seleccion una Opcion</option>
+                {% for centrocrianza in centroscrianzas %} {% if centrocrianza.isla_id == isla_id %}
+                <option value="{{ centrocrianza.id }}" selected>{{ centrocrianza.descripcion }}</option>
+                {% else %}
+                <option value="{{ centrocrianza.id }}">{{ centrocrianza.descripcion }}</option>
+                {% endif %} {% endfor %}
+            </select>
+            <div class="input-group-addon">
+                <i class="fa fa-calendar"></i>
+            </div>
+            <select class="select2" id="SgnacimientoDash" style="width: 200px;">
+            </select>
+            <div class="input-group-addon">
+                <a onclick="graficoHuevosCentroCrianzaByFilter()" style="cursor: pointer;">
+                    <i class="fa fa-search"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="box-body">
+            <div class="box box-solid bg-light-blue-gradient">
+
+                <div class="row">
+
+                    <div class="col-xs-12">
+                        <div style="box-shadow: 5px 5px 15px 5px #888888;">
+                            <div id="container" class="chart-container"></div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12" style="height: 20px;"></div>
+                    <div class="col-xs-12">
+                        <div style="box-shadow: 5px 5px 15px 5px #888888;">
+                            <div id="container2" class="chart-container"></div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12" style="height: 20px;"></div>
+                    <div class="col-xs-12">
+                        <div style="box-shadow: 5px 5px 15px 5px #888888;">
+                            <div id="container3" class="chart-container"></div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12" style="height: 20px;"></div>
+                    <div class="col-xs-12">
+                        <div style="box-shadow: 5px 5px 15px 5px #888888;">
+                            <div id="container4" class="chart-container"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- /.box-body -->
+    </div>
+</div>
+
+<!-- /.box -->
+<!-- AdminLTE datatable -->
+<!-- jQuery 3 -->
+{% load static %}
+<!-- <script src="{% static 'js/lib_internas/script_espnativas.js' %}"></script> -->
+
+<script>
+    $(document).ready(function() {
+        iniciarGruposYears("SgnacimientoDash");
+        $('.select2').select2();
+        graficoHuevosCentroCrianzaByFilter("SgnacimientoDash", "SccrianzaDash", "dash");
+    });
+</script>
+{% endblock %}

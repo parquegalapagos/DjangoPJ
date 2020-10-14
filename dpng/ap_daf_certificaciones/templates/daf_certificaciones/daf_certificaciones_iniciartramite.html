@@ -1,0 +1,696 @@
+{% extends 'daf_certificaciones/menu_lateral.html' %}
+{% block principalhome %}
+
+{% load static %}
+<style type="text/css">
+    .select2-results .select2-disabled,
+    .select2-results__option[aria-disabled=true] {
+        display: none;
+    }
+</style>
+
+<!-- hidden fields -->
+<input type="hidden" id="idDafCertificaciones" name="idDafCertificaciones" value="" /> <!-- Id. de la tabla maestra -->
+<input type="hidden" id="tipot_certif" value="0" /> <!-- Valor 0: INSERTA, Valor 1: Edita -->
+
+<!-- Director Area -->
+<input type="hidden" id="directorarea_id" value="{{directorarea_id}}">
+<input type="hidden" id="directorarea_nombres" value="{{directorarea_nombres}}">
+
+<!-- Datos usuario session -->
+<input type="hidden" id="funcionario_session_id" value="{{funcionario_id}}">
+<input type="hidden" id="funcionario_session_nm" value="{{persona_nombres}}">
+<input type="hidden" id="puesto_institucional_nm_" value="{{puesto_institucional_nm}}">
+<input type="hidden" id="email_institucional_" value="{{email_institucional}}">
+<input type="hidden" id="telefono_celular_" value="{{telefono_celular}}">
+<input type="hidden" id="tipo_menu" value="{{tipo_menu}}">
+<input type="hidden" id="isla_trabaja_user" value="{{isla_trabaja_user}}">
+<input type="hidden" id="isla_trabajo_id" value="{{isla_trabaja_id_user}}">
+
+
+<div id="content_DafCertificaciones">
+    <div id="addDafCertificaciones" style="display: none;">
+        <div class="stackbox-header cab_popup" align="center">
+            <img src="{% static 'image/favicon.ico' %}" width="40px" style="float:left;margin-top: -5px;" />
+            <h id="tituloDafCertificaciones"> </h> Certificaciones - {{isla_trabaja_user}}
+        </div>
+
+        <div class="stackbox-body" id="bodyaddDafCertificaciones">
+            <section class="content">
+                <div class="row" style="box-shadow: 5px 5px 15px 5px #888888;margin-top: 20px;">
+                    <form id="frm_certif" action="#" method="post">
+                        <div class="row">
+                            <div class="col-xs-12 callout">
+                                <div class="nav-tabs-custom">
+
+                                    <ul class="nav nav-tabs">
+                                        <li class="active"><a href="#tab_info" data-toggle="tab" aria-expanded="true" style="font-weight: bold;" data-stackbox-width="1000px">Info</a></li>
+
+                                        <li class=""><a href="#tab_documentacion" data-toggle="tab" aria-expanded="false" style="font-weight: bold;">Documentacion</a></li>
+
+                                    </ul>
+
+                                    <div class="tab-content" style="border-top: 2px solid #3c8dbc;">
+                                      <div class="notification" style="height: 100px;z-index: 99999;">
+                                          <span class="icon">
+                                              <i class=""></i>
+                                          </span>
+                                          <span class="text"></span>
+                                          <span class="close"><i class="fa fa-close"></i></span>
+                                      </div>
+
+                                      <!-- TAB INFO -->
+                                      <div class="tab-pane active" id="tab_info" style="top:10px;">
+                                        <div class="row">
+                                          <div class="col-xs-12 callout" style="margin-bottom: 0px; padding-bottom: 0px;">
+                                            <div class="divisor">Solicitud Enviada Por</div>
+
+                                            <div class="col-xs-6 callout">
+                                              <table>
+                                                <tr style="height: 0px;"></tr>
+                                                <tr>
+                                                  <td align="left">*Servidor Publico</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <!--
+                                                        <select id="fld_func_solicitante_id" class="" text="Servidor Publico" style="width: 300px;" disabled="disabled" />
+                                                        -->
+                                                         <input type="hidden" id="fld_func_solicitante_id" name="fld_func_solicitante_id" text="Solicitante" class="form-control" value="{{funcionario_id}}" />
+                                                         
+                                                         <input type="text" id="fld_func_solicitante_nm" name="fld_func_solicitante_nm" text="Solicitante" class="form-control " value="" disabled="disabled" />
+                                                    </td>
+                                                </tr>
+
+                                                
+
+                                                <tr style="height: 2px;"></tr>
+                                                <tr>
+                                                    <td align="left">*Cargo</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <textarea id="fld_cargo" name="fld_cargo" rows="3" cols="100" class="form-control " disabled="disabled" >
+                                                        </textarea>
+                                                    </td>
+                                                </tr>
+
+                                                <tr style="height: 2px;"></tr>
+
+                                                <tr>
+                                                  <td align="left">*email</td>
+                                                </tr>
+
+                                                <tr>
+                                                  <td>
+                                                    <input type="text" id="fld_email" name="fld_email" text="Cargo" class="form-control " value="{{item.Cargo}}" disabled="disabled"/>
+                                                  </td>
+                                                </tr>
+
+                                                <tr style="height: 2px;"></tr>
+                                                <tr>
+                                                  <td align="left">*Celular</td>
+                                                </tr>
+                                                <tr>
+                                                  <td>
+                                                    <input type="text" id="fld_telefono" name="fld_telefono" text="Celular" class="form-control " value="{{item.telefono_celular}}" onkeypress="return isNumberKey(event);" disabled="disabled" />
+                                                  </td>
+                                                </tr>
+
+                                              </table>
+
+                                            </div>
+
+                                            <div class="col-xs-6 callout">
+                                                
+                                                <table>
+                                                    <tr style="height: 5px;"></tr>
+                                                    <tr>
+                                                      <td align="left">Numero Solicitud</td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td>
+                                                        <input type="text" id="fld_secuencia" name="fld_secuencia" class="form-control " text="Numero Solicitud" value="{{item.secuencia}}" disabled="disabled" />
+                                                      </td>
+                                                    </tr>
+
+                                                    <tr style="height: 0px;"></tr>
+                                                    <tr>
+                                                      <td align="left">Isla Trámite</td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td>
+                                                        <select id="fld_islatramite" name="fld_islatramite" class="select2" text="Isla Trámite" disabled="disabled">
+                                                          <option value=""> Ninguna</option>
+                                                          <option value="c718d004-a637-11e4-b1ae-6c3be5ba6ec8">SANTA CRUZ</option>
+                                                          <option value="c718b0a6-a637-11e4-8ba2-6c3be5ba6ec8">SAN CRISTOBAL</option>
+                                                          <option value="c716b8be-a637-11e4-935a-6c3be5ba6ec8">ISABELA</option>
+                                                        </select>
+                                                      </td>
+                                                    </tr>
+
+                                                    <tr style="height: 0px;"></tr>
+                                                    <tr>
+                                                        <td align="left">Fecha Solicitud</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                          <input type="date" class="form-control " text="Fecha Solicitud" name="fld_fecha_solicitud" id="fld_fecha_solicitud" style="width: 150px; font-size: 11px;" disabled="disabled" />
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr style="height: 0px;"></tr>
+                                                    <tr>
+                                                        <td align="left">Estado Trámite</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                          <select id="fld_estado_tramite" name="fld_estado_tramite" class="select2" text="Estado Trámite" disabled="disabled">
+                                                              <option value=""> Seleccione una Opcion</option>
+                                                              <option value="B">BORRADOR</option>
+                                                              <option value="T">EN Trámite</option>
+                                                              <option value="A">APROBADO</option>
+                                                              <option value="D">DEVUELTO</option>
+                                                              <option value="C">CANCELADO</option>
+                                                              <option value="F">FINALIZADO</option>
+                                                          </select>
+                                                          
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr style="height: 5px;"></tr>
+                                                    <tr>
+                                                      <td align="left">*Dirigido a (Director Area):</td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td>
+
+                                                        <input type="hidden" id="fld_func_dirarea_id" name="fld_func_dirarea_id" class="form-control " disabled="disabled"/>
+
+                                                        <textarea id="fld_func_dirarea_nm" name="fld_func_dirarea_nm" rows="1" cols="70" class="form-control " disabled="disabled" >
+                                                        </textarea>
+
+                                                      </td>
+                                                    </tr> 
+
+                                                </table>
+                                                
+                                            </div>
+
+                                          </div>
+                                          
+                                        </div>
+
+                                        <div class="row">
+                                          <div class="col-xs-12 callout" style="margin-bottom: 0px; padding-bottom: 0px;">
+                                            <div class="divisor">Informacion del Contrato/Proyecto</div>
+
+                                            <div class="col-xs-6 callout">
+                                              <table>
+                                                <tr style="height: 0px;"></tr>
+                                                <tr>
+                                                  <td>*Requerimiento POA-PAC</td>
+                                                </tr>
+                                                <tr>
+                                                  <td>
+                                                    <textarea id="fld_titulo" name="fld_titulo" rows="3" cols="100" text="TITULO" class="form-control requerido" placeholder="Requerimiento igual a la hoja de Certificado de Actividad, recurso y presupuesto">{{item.titulo}}</textarea>
+                                                  </td>
+                                                </tr>
+
+                                                <tr style="height: 5px;"></tr>
+                                                <tr>
+                                                  <td align="left">*Num. Certificacion de Actividad, recurso y presupuesto</td>
+                                                </tr>
+
+                                                <tr>
+                                                  <td>
+                                                    <!--
+                                                    <textarea id="fld_descripcion" name="fld_descripcion" rows="6" cols="100" class="form-control requerido" text="DESCRIPCION"></textarea>
+                                                    -->
+
+                                                    <input type="text" id="fld_descripcion" name="fld_descripcion" text="Num. Certificacion de Actividad, recurso y presupuesto." class="form-control requerido" style="margin-top: 5px;" placeholder="Ej. DAF-TIC-2020-031" />
+                                                  </td>
+                                                </tr>
+
+
+
+                                              </table>
+
+                                            </div>
+
+                                            <div class="col-xs-6 callout">
+                                                
+                                                <table>
+                                                    <tr style="height: 0px;"></tr>
+                                                    <tr>
+                                                        <td align="left">*Tipo del Requerimiento</td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td>
+                                                        <select id="fld_tipo" name="fld_tipo" class="select2 requerido" text="TIPO DE REQUERIMIENTO" onchange="ocultarOtrosTemas(this.value,'');">
+                                                            <option value=""> Seleccione una Opcion</option>
+                                                            <option value="B">BIEN</option>
+                                                            <option value="C">CONSULTORIA</option>
+                                                            <option value="O">OBRA CIVIL</option>
+                                                            <option value="S">SERVICIO</option>
+                                                        </select>
+                                                        
+                                                      </td>
+                                                    </tr>
+
+                                                    <tr style="height: 10px;"></tr>
+
+                                                    <tr>
+                                                      <td align="left">*Monto</td>
+                                                    </tr>
+
+                                                    <tr>
+                                                      <td>
+                                                        <!--
+                                                        <input type="text" id="fld_monto" name="fld_monto" text="MONTO" class="form-control requerido" value="{{item.monto}}" onkeypress='return isNumberKey(event);'/>
+                                                        -->
+                                                        <input type="text" id="fld_monto_lbl" name="fld_monto_lbl" text="MONTO" class="form-control requerido" value="{{item.monto}}" pattern="[0-9]*" onchange="mask_money(this.value,'fld_monto','fld_monto_lbl');" />
+
+                                                        <input type="number" id="fld_monto" hidden="hidden" >
+
+                                                      </td>
+                                                    </tr>
+
+                                                    <tr style="height: 10px;"></tr>
+
+                                                    <tr id="tr_label_temas">
+                                                      <td align="left" style="color: #0073b7;">Temas <br></td>
+                                                    </tr>
+
+                                                    <tr id="tr_select_temas">
+                                                        <td>
+                                                          <select id="fld_tipo_revision" name="fld_tipo_revision"  class="select2 form-check-input" text="TEMAS">
+                                                              <option value=""> Seleccione una Opcion</option>
+                                                              <option value="T">Incluye temas tecnologicos</option>
+                                                              <option value="M">Incluye temas Mantenimiento</option>
+                                                              <option value="O">Incluye temas Obra Civil</option>
+                                                          </select>
+                                                          
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr style="height: 10px;"></tr>
+
+                                                    
+
+                                                </table>
+                                            </div>
+
+                                          </div>
+                                        </div>
+
+                                      </div>
+
+                                      <!-- TAB DOCUMENTACION -->
+                                      <div class="tab-pane" id="tab_documentacion">
+                                        <div class="row">
+                                          
+                                          <div class="col-xs-12 callout">
+                                            <div class="divisor">Documentos</div>
+                                            <div class="col-xs-12">
+                                              <table style="width: 80%;">
+                                                <tr style="height: 5px;"></tr>
+                                                <tr>
+                                                  <td align="left" style="color: #0073b7;">*¿Existe BIEN o SERVICIO en Catálogo Electrónico?  
+                                                    <input type="checkbox" id="fld_catalogo_elect" name="fld_catalogo_elect" text="Catalogo Electronico" onchange="ocultarDocumentCert(this.checked,'');" class="requerido form-check-input" style="margin-left: 15px;" />
+                                                  </td>
+                                                </tr>
+                                                <tr style="height: 10px;"></tr>
+                                              </table>
+                                            </div>
+                                            <div class="col-xs-12">
+                                              <table style="width: 80%;">
+                                                  <tr style="height: 15px;"></tr>
+                                                  <tr>
+                                                      <td>
+                                                        Verificacion de catalogo electronico:
+                                                        <input type="file" name="myfile1" id="doc_anexos1" class="form-control ">
+                                                      </td>
+                                                      <td>
+                                                        <a title="Cargar Archivo" style="font-size: 20px; position: relative; left: 10px; cursor: pointer;" onclick="cargar_archivo('frm_certif','D','1');"><i class="fa fa-upload text-green"></i></a>
+                                                      </td>
+                                                      <td width="60%" style="position: relative;left:5%;">
+                                                        <a id="archivoCert1" style="cursor:pointer; text-decoration:none;color:black;" target="_blank" ></a>
+                                                      </td>
+                                                      <td style="position: relative;left:5%;">
+                                                        <a id="borrarCert1" onclick="eliminarCert('1');" style="font-size: 20px;cursor:pointer;"></a>
+                                                      </td>
+                                                  </tr>
+
+                                                  <tr style="height: 5px;"></tr>
+
+                                                  <tr>
+                                                      <td>
+                                                        Solicitud Certificado de Actividad, recurso y presupuesto:
+                                                        <input type="file" name="myfile2" id="doc_anexos2" class="form-control ">
+                                                      </td>
+                                                      <td>
+                                                        <a title="Cargar Archivo" style="font-size: 20px; position: relative; left: 10px;cursor: pointer;" onclick="cargar_archivo('frm_certif','D','2');"><i class="fa fa-upload text-green"></i></a>                                      
+                                                      </td>
+                                                      <td style="position: relative;left:5%;">
+                                                        <a id="archivoCert2" style="cursor:pointer; text-decoration:none;color:black;" target="_blank"></a>
+                                                      </td>
+                                                      <td style="position: relative;left:5%;">
+                                                        <a id="borrarCert2" onclick="eliminarCert('2');" style="font-size: 20px;cursor:pointer;"></a>
+                                                      </td>
+                                                  </tr>
+
+                                                  <tr style="height: 5px;"></tr>
+
+                                                  <tr id="tr_estudiMercado">
+                                                      <td>
+                                                        Estudio de Mercado:
+                                                        <input type="file" name="myfile3" id="doc_anexos3" class="form-control ">
+                                                      </td>
+                                                      <td>
+                                                        <a title="Cargar Archivo" style="font-size: 20px; position: relative; left: 10px;cursor: pointer;" onclick="cargar_archivo('frm_certif','D','3');"><i class="fa fa-upload text-green"></i></a>
+                                                        
+                                                      </td>
+                                                      <td style="position: relative;left:5%;">
+                                                        <a id="archivoCert3" style="cursor:pointer; text-decoration:none;color:black;" target="_blank"></a>
+                                                      </td>
+                                                      <td style="position: relative;left:5%;">
+                                                        <a id="borrarCert3" onclick="eliminarCert('3');" style="font-size: 20px;cursor:pointer;"></a>
+                                                      </td>
+                                                  </tr>
+
+                                                  <tr style="height: 5px;"></tr>
+
+                                                  <tr>
+                                                      <td>
+                                                        <span id="spn_title4">Termino Referencia o Informe requerimiento:</span>
+                                                        <input type="file" name="myfile4" id="doc_anexos4" class="form-control ">
+                                                      </td>
+                                                      <td>
+                                                        <a title="Cargar Archivo" style="font-size: 20px; position: relative; left: 10px;cursor: pointer;" onclick="cargar_archivo('frm_certif','D','4');"><i class="fa fa-upload text-green"></i></a>                                             
+                                                      </td>
+                                                      <td style="position: relative;left:5%;">
+                                                        <a id="archivoCert4" style="cursor:pointer; text-decoration:none;color:black;" target="_blank"></a>
+                                                      </td>
+                                                      <td style="position: relative;left:5%;">
+                                                        <a id="borrarCert4" onclick="eliminarCert('4');" style="font-size: 20px;cursor:pointer;"></a>
+                                                      </td>
+                                                  </tr>
+
+                                                  <tr style="height: 5px;"></tr>
+
+                                                  <tr id="sec_stockbodega">
+                                                      <td>
+                                                        <span id="spn_title5">Verificación de stock en Bodega</span>
+
+                                                        <input type="file" name="myfile99" id="doc_anexos99" class="form-control ">
+                                                      </td>
+                                                      <td>
+                                                        <a title="Cargar Archivo" style="font-size: 20px; position: relative; left: 10px;cursor: pointer;" onclick="cargar_archivo('frm_certif','D','99');"><i class="fa fa-upload text-green"></i></a>                                             
+                                                      </td>
+                                                      <td style="position: relative;left:5%;">
+                                                        <a id="archivoCert99" style="cursor:pointer; text-decoration:none;color:black;" target="_blank"></a>
+                                                      </td>
+                                                      <td style="position: relative;left:5%;">
+                                                        <a id="borrarCert99" onclick="eliminarCert('99');" style="font-size: 20px;cursor:pointer;"></a>
+                                                      </td>
+                                                  </tr>
+
+                                                  
+
+                                              </table>
+                                            </div>
+                                          </div>
+
+                                          <div class="col-xs-12 callout" id="dv_cert_proformas">
+                                            <div class="divisor">Proformas</div>
+                                            <div class="col-xs-12" style="position: relative; top: 30px;">
+                                              <div class="col-xs-5" style="position: relative;left: -2%;">
+                                                <table>
+                                                  <tr>
+                                                    <td>
+                                                      Proforma:
+                                                      <input type="file" name="myfile5" id="doc_anexos" class="form-control ">
+                                                      Ruc:
+                                                      <input type="file" name="myfile5" id="doc_anexos_ruc" class="form-control ">
+                                                    </td>
+                                                    <td>
+                                                      <a title="Cargar Archivo" style="font-size: 20px; position: relative; left: 10px;cursor: pointer;" onclick="cargar_archivo('frm_certif','P','5');"><i class="fa fa-upload text-green"></i></a>                                             
+                                                    </td>
+                                                  </tr>
+                                                </table>
+                                              </div>
+                                              <div class="col-xs-6" style="top: 15px;">
+                                                <table id="table_files_proformas" style="width: 100%;">
+                                                  <thead>
+                                                    <tr style="border: 2px solid black;font-size: 14px;font-weight: bold;background-color: #3c8dbc; color: white;">
+                                                        <th colspan="1" style="padding-left: 5px;border: 2px solid black; text-align: center;">Proforma</th>
+                                                        <th colspan="1" style="padding-left: 5px;text-align: center;">Ruc Proveedor</th>
+                                                        <th colspan="1" align="center"></th>
+                                                    </tr>
+                                                  </thead>
+                                                  <tbody id="files_select" style="padding-left: 5px;">
+                                                  </tbody>
+                                                </table>
+                                              </div>
+                                            </div>
+                                          </div>
+
+                                          <div class="col-xs-12 callout">
+                                            <div class="divisor">Otros Documentos</div>
+                                            <div class="col-xs-12" style="position: relative; top: 30px;">
+                                              <div class="col-xs-5" style="position: relative;left: -2%;">
+                                                <table>
+                                                  <tr>
+                                                    <td>
+                                                      Anexo:
+                                                      <input type="file" name="myfile6" id="doc_anexos_otros" class="form-control ">
+                                                    </td>
+                                                    <td>
+                                                      <a title="Cargar Archivo" style="font-size: 20px; position: relative; left: 10px;cursor: pointer;" onclick="cargar_archivo('frm_certif','A','6');"><i class="fa fa-upload text-green"></i></a>                                             
+                                                    </td>
+                                                  </tr>
+                                                </table>
+                                              </div>
+                                              <div class="col-xs-6" style="top: 15px;">
+                                                <table id="table_cert_otrosArchivos" style="width: 100%;">
+                                                  <thead>
+                                                    <tr style="border: 2px solid black;font-size: 14px;font-weight: bold;background-color: #3c8dbc; color: white;">
+                                                        <th colspan="1" align="center" style="text-align: center;">Anexos</th>
+                                                        <th colspan="1" align="center"></th>
+                                                    </tr>
+                                                  </thead>
+                                                  <tbody id="files_selectAnexos">
+                                                  </tbody>
+                                                </table>
+                                              </div>
+                                            </div>
+                                          </div>
+
+                                        </div>
+
+                                      </div>
+
+                                    </div>
+
+                                </div>
+                              
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <div class="stackbox-footer" style="margin-top: -30px;">
+                <button class="btn btn-primary" onclick="setInsertUpdateDafCertificaciones('B','');">Borrador</button>
+                <button class="btn btn-primary" id="btn_DafCertificaciones" onclick="setInsertUpdateDafCertificaciones('INICIAR_TRAMITE','');">Grabar</button>
+                <button class="btn btn-default" data-close-stackbox="true">Cerrar</button>
+
+            </div>
+
+        </div>
+    </div>
+
+<div style="width: 98%;">
+  <div id="content_DafCertificacionesIT" style="position: relative;left: 10px;box-shadow: 5px 5px 15px 5px #888888;">
+    <div class="box">
+        <div class="box-header">
+            <i class="fa fa-list"></i>
+            <h3 class="box-title">Lista de Certificaciones - Iniciar Trámites</h3>
+            <div class="botonera" style="float: right; right: 1px;">
+                <a title="pfd" onclick="generarPdf('tabla_certif',5,1)"><i class="fa fa-file-pdf-o text-green"></i></a>
+                <a title="excel" onclick="generarExcel('tabla_certif',5)"><i class="fa fa-file-excel-o text-green"></i></a> 
+                
+                <a style="cursor: pointer;" title="Agregar Nuevo" onclick="limpiarFormDafCertificaciones(frm_certif);" href='#addDafCertificaciones' data-stackbox='true' data-stackbox-width="1000px" data-stackbox-height="800px" data-stackbox-position="absolute"><i class="fa fa-plus-circle text-green btn_nuevo"></i></a> 
+
+            </div>
+        </div>
+        
+        <div class="box box-solid bg-light-blue-gradient">
+            <div class="box-header ui-sortable-handle" style="cursor: move;">
+                <div class="pull-right box-tools">
+                    <button type="button" class="btn btn-primary btn-sm pull-right" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample" style="margin-right: 5px;" data-original-title="Collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
+                </div>
+                <i class="fa fa-map-marker"></i>
+                <h3 class="box-title"> Filtros de Busqueda </h3>
+            </div>
+            <div class="box-body collapse" style="background-color: white;" id="collapseExample">
+                <div class="col-xs-12">
+                    
+                    <div class="col-xs-4">
+                    </div>
+                    
+                    <div class="col-xs-4">
+                        <h style="font-size: 14px;color: black;font-weight: bold;">Fecha Solicitud</h>
+                        <div class="input-daterange input-group" id="datepicker" style="">
+                            <input type="text" class="input-sm form-control" name="start" id="FdesdeParam" autocomplete="off" />
+                            <span class="input-group-addon" style="border:none;font-weight: bold;">a</span>
+                            <input type="text" class="input-sm form-control" name="end" id="FhastaParam" autocomplete="off" />
+                        </div>
+                        <br>
+                    </div>
+
+
+                    <div class="col-xs-4" style="margin-top: 20px;">
+                        <button type="button" class="btn btn-block btn-success" style="width: 20%; float: right;" onclick="buscarCertificadosParametros('','frm_certif');">Buscar</button>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+        
+
+        <!-- /.box-header -->
+
+        <div class="box-body">
+          <table id="tabla_certif" class="display table table-striped table-bordered" width="100%" cellspacing="0" style="font-size: 10px; text-transform: uppercase;">
+              <thead>
+
+                  <tr class="bg-light-blue-gradient" style="color: white;">
+                      <th hidden></th>
+                      <th>Fecha Solicitud</th>
+                      <th># Solicitud</th>
+                      <th>Tipo</th>
+                      <th>Titulo</th>
+                      <th>Monto</th>
+                      <th>Estado Trámite</th>
+
+                      <th></th>
+                      <th></th>
+                      
+                  </tr>
+              </thead>
+              <tbody class="botonera1" id="bodytabla_certif">
+              </tbody>
+          </table>
+        </div>
+        <!-- /.box-body -->
+    </div>
+  </div>
+</div>
+    <!-- /.box -->
+    <!-- AdminLTE datatable -->
+    <!-- jQuery 3 -->
+    {% load static %}
+    <!--script src="{% static 'js/lib_internas/script_daf.js' %}"></script-->
+    
+    <script>
+        $(document).ready(function() {
+
+            $("#idmenu2").addClass("fa-dot-circle-o");
+            $("#idmenu2").parent().css("color", "#00c0ef");
+
+            var d = new Date();
+            var f1 = d.getFullYear() + "-01-01";
+            var f2 = d.getFullYear() + "-12-31";
+            var dataini = f1 + "," + f2;
+
+            f1_aux = '01/01/' + d.getFullYear();
+            f2_aux = '12/31/' + d.getFullYear();
+
+            $("#FdesdeParam").val(f1_aux);
+            $("#FhastaParam").val(f2_aux);
+            
+            buscarCertificadosParametros(dataini,'frm_certif');
+
+            //Date picker
+            $('#datepicker').datepicker({
+                autoclose: true
+            })
+
+            $('#fld_tipo').select2();
+            $('#fld_estado_tramite').select2();
+            $('#fld_tipo_revision').select2();
+            $('#fld_islatramite').select2();        
+        });
+
+        // FOCUS ON SELECT FIELDS
+        //$("#content_DafCertificaciones").
+        $("document").on('focus', '.select2-selection.select2-selection--single', function(e) {
+            $(this).closest(".select2-container").siblings('select:enabled').select2('open');
+        })
+        $('select.select2').on('select2:closing', function(e) {
+            $(e.target).data("select2").$selection.one('focus focusin', function(e) {
+                e.stopPropagation();
+            });
+        });
+
+        // BOTONES DE ELIMINAR
+
+    $('#table_files_proformas').on('click', '.delete_file', function(e) {
+        var bool = confirm("Esta seguro de eliminar este documento?");
+        if (bool) {
+            //$(this).parents('tr').remove();
+            var data = $(this).parents('tr').find("td").find("a");
+            var archivo0 = $(data).eq(0).text();
+            var archivo1 = $(data).eq(1).text();
+            id = $("#idDafCertificaciones").val();
+            salidaError = '';
+            for(i=0; i<=1; i++){
+                if(i == 0)
+                    nombre_archivo = archivo0;
+                else
+                    nombre_archivo = archivo1;
+                respuesta = delete_file(nombre_archivo,id);
+                if(respuesta != 1)
+                    salidaError+= nombre_archivo+'<br>';
+
+                console.log(i);
+            }
+            if(salidaError != "")
+                validaContenedorExt("addDafCertificaciones", "<p style='font-size:12px;'>Error al eliminar el archivo<br>"+salidaError+"</p>","error");
+            else{
+                $(this).parents('tr').remove();
+                cadena_archivos = getCadenaArchivos('proformas','');
+                datos = '{"archivos_proformas":"'+cadena_archivos+'"}';
+                if($("#tipot_certif").val()!=0)
+                  updateArchivoCertBase(datos,"",id);
+            }
+        }
+    })
+
+    $('#table_cert_otrosArchivos').on('click', '.delete_file', function(e) {
+        var bool = confirm("Esta seguro de eliminar este documento?");
+        if (bool) {
+            var data = $(this).parents('tr').find("td").find("a");
+            var nombre_archivo = $(data).eq(0).text();
+            id = $("#idDafCertificaciones").val();
+            respuesta = delete_file(nombre_archivo,id);
+            if(respuesta != 1)
+                validaContenedorExt("addDafCertificaciones", "<p style='font-size:12px;'>Error al eliminar el archivo<br>"+nombre_archivo+"</p>","error");
+            else{
+                $(this).parents('tr').remove();
+                cadena_archivos = getCadenaArchivos('anexos','');
+                datos = '{"archivos_otros":"'+cadena_archivos+'"}';
+                if($("#tipot_certif").val()!=0)
+                  updateArchivoCertBase(datos,"",id);
+            }
+        }
+    })
+
+    </script>
+
+{% endblock %}

@@ -1,0 +1,17 @@
+
+
+
+
+@media screen and (max-width:3800px) {
+
+  .square, .small-box, .bg-green{
+    width: 20%;
+    height: 20%;
+  }
+
+  .content, .spread, .inner{
+    width: 20%;
+  }
+ 
+  
+}

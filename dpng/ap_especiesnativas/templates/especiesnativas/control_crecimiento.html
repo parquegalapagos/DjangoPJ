@@ -1,0 +1,340 @@
+{% load static %} 
+{% block content %}
+
+<style type="text/css">
+    #circle {
+        background: black;
+        width: 120%;
+        height: 120%;
+        border-radius: 50% 50% 50% 50%;
+        border: 2px solid orange;
+    }
+    
+    #circle div {
+        position: relative;
+        left: 25%;
+        color: white;
+        text-align: center;
+        font-size: 10px;
+    }
+    
+    .equis {
+        display: none;
+        position: absolute;
+        top: 10px;
+        font-size: 100px;
+        left: 15px;
+        z-index: 9999;
+        opacity: 0.8;
+    }
+    
+    .select2 {
+        z-index: 0;
+    }
+
+
+
+ #tabla_controlc th:first-of-type .heading {
+    border-left: none;
+    padding-left: 6px;
+}
+
+    .table-container {
+    box-shadow: 5px 5px 5px 5px;
+    width: 100%;
+    height: 500px;
+    border: 1px solid black;
+    margin: 10px auto;
+    background-color: white;
+    position: relative; /* or absolute */
+    padding-top: 30px; /* matches height of header */
+}
+.table-container-inner {
+    overflow-x: hidden;
+    overflow-y: auto;
+    height: 100%;
+}
+.heading-bg {
+    background-color: #0073b7; color:#fff; text-align: center; text-transform: uppercase;
+    height: 50px; /* matches padding of table-container */
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    border-bottom: 1px solid black;
+    color: white;
+}
+    .heading {
+    position: absolute;
+    top: 5px;
+    margin-left: -5px;
+    color: white;
+}
+</style>
+
+<div id="verCC" style="display: none;">
+    <div class="stackbox-header cab_popup" align="center">Control de Crecimineto Galapaguitos</div>
+
+    <div class="stackbox-body">
+        <div class="row" align="center">
+            <table id="tableDetCC" class="table table-bordered" style="box-shadow: 5px 5px 5px 5px;font-size: 10px; font-weight: bold;text-transform: uppercase;width: 100%;">
+                <thead>
+                    <tr style="background-color: #0073b7; color:#fff; text-align: center; text-transform: uppercase;">
+                        <td>Poblacion</td>
+                        <td>Grupo Nacimineto</td>
+                        <td>Mes</td>
+                        <td>Anio</td>
+                    </tr>
+                </thead>
+                <tbody id="bodytableDetCC">
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="stackbox-footer">
+        <button class="btn btn-default" data-close-stackbox="true">Close</button>
+    </div>
+</div>
+
+<div id="content_control" style="height: 100%;">
+    <div class="box">
+        <div class="box-header" id="bodycontent_control">
+            <div class="notification" style="height: 100px;z-index: 99999;">
+                <span class="icon">
+              <i class=""></i>
+          </span>
+                <span class="text"></span>
+                <span class="close"><i class="fa fa-close"></i></span>
+            </div>
+
+            <i class="fa fa-list"></i>
+            <h3 class="box-title">Control de crecimiento de Galapaguitos</h3>
+            <br>
+
+            <div class="box box-default" style="position: relative;top: 10px;">
+                <div class="box-header with-border" style="cursor: move;">
+                    <!-- tools box -->
+                    <div class="pull-right box-tools">
+                        <button id="botonColapse" type="button" class="btn btn-primary btn-sm pull-right" data-toggle="collapse" href="#collapseCC" role="button" aria-expanded="false" aria-controls="collapseCC" style="margin-right: 5px;" data-original-title="Collapse">
+                            <i class="fa fa-minus"></i></button>
+                    </div>
+                    <!-- /. tools -->
+                    <i class="fa fa-th"></i>
+                    <h3 class="box-title">Lista de Datos</h3>
+                </div>
+                <div class="box-body collapse" style="background-color: white;" id="collapseCC">
+                    <table id="tabla_cab_cc" style="font-size: 10px; text-transform: uppercase;width: 100%;" class="table responsive nowrap" cellspacing="0">
+                        <thead>
+                            <tr style="background-color: #0073b7;    color: white;">
+                                <th>Grupo
+                                    <br>Nacimiento</th>
+                                <th>Centro Crianza</th>
+                                <th>Poblacion</th>
+                                <th>Mes</th>
+                                <th>Anio</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody style="color: black;">
+                            {% for cab in cabeceras %}
+                            <tr>
+                                <td>{{ cab.grupo_nacimiento }}</td>
+                                <td>{{ cab.centro_crianza_id.descripcion }}</td>
+                                <td>{{ cab.poblacion_id.descripcion }}</td>
+                                <td>{{ cab.periodo }}</td>
+                                <td>{{ cab.anio }}</td>
+                                <td align="center"><a style='cursor: pointer;' onclick="dataControlCrecimiento('{{cab.centro_crianza_id.id }}','{{cab.grupo_nacimiento}}','{{cab.poblacion_id.id}}','{{cab.periodo}}','{{cab.anio}}');"><i style="font-size: 18px;" class="fa fa-search text-green"></i></a></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- /.box-body-->
+
+            <div align="center" class="col-md-8 callout callout-info" style="background-color: white !important;margin-top: 10px;" autocomplete="off">
+                <table style="color: black;font-size: 12px; font-weight: bold;box-shadow: 5px 5px 5px 5px;">
+
+                    <!-- Flag para mostrar/ ocultar boton de agregar en el detalle del control de crecimiento -->
+                    {% if perms.ap_especiesnativas.add_spncontrolhuevos %}
+                    <input type="hidden" id="perm_controlcrec_add" value="1" /> {% else %}
+                    <input type="hidden" id="perm_controlcrec_add" value="0" /> {% endif %}
+
+                    <tr style="height: 20px;"></tr>
+                    <tr>
+                        <td width="100px"></td>
+                        <td align="right">Centro Crianza</td>
+                        <td width="10px"></td>
+                        <td>
+                            <select class="select2" id="SccrianzaCC" style="width: 200px;">
+                                <option value="">Seleccion una Opcion</option>
+                                {% for centrocrianza in centroscrianzas %} {% if centrocrianza.isla_id == isla_id %}
+                                <option value="{{ centrocrianza.id }}" selected>{{ centrocrianza.descripcion }}</option>
+                                {% else %}
+                                <option value="{{ centrocrianza.id }}">{{ centrocrianza.descripcion }}</option>
+                                {% endif %} {% endfor %}
+                            </select>
+                        </td>
+                        <td width="20px"></td>
+                        <td align="right">Grupo Nacimiento</td>
+                        <td width="10px"></td>
+                        <td>
+                            <select class="select2" id="SgnacimientoCC" style="width: 200px;">
+                                {% if perms.ap_especiesnativas.view_spncontrolhuevos %}
+                            </select><a style="position: absolute; margin-left: 10px;" href='#verCC' data-stackbox='true' data-stackbox-position="absolute" onclick="buscarMedicionesParametrosList();"><i class="fa fa-search"></i></a> {% endif %}
+                        </td>
+                        <td width="100px"></td>
+                    </tr>
+                    <tr style="height: 10px;"></tr>
+                    <tr>
+                        <td width="100px"></td>
+                        <td align="right">Poblacion</td>
+                        <td width="10px"></td>
+                        <td>
+                            <select class="select2" id="SpoblacionCC" style="width: 200px;">
+                                <option value="">Seleccion una Opcion</option>
+                                {% for poblacion in poblacions %}
+                                <option value="{{ poblacion.id }}">{{ poblacion.descripcion }}</option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                        <td width="20px"></td>
+                        <td align="right">Periodo</td>
+                        <td width="10px"></td>
+                        <td>
+                            <select class="select2" id="SmedicionCC" style="width: 100px;">
+                                <option value="1">ENERO</option>
+                                <option value="2">FEBRERO</option>
+                                <option value="3">MARZO</option>
+                                <option value="4">ABRIL</option>
+                                <option value="5">MAYO</option>
+                                <option value="6">JUNIO</option>
+                                <option value="7">JULIO</option>
+                                <option value="8">AGOSTO</option>
+                                <option value="9">SEPTIEMBRE</option>
+                                <option value="10">OCTUBRE</option>
+                                <option value="11">NOVIEMBRE</option>
+                                <option value="12">DICIEMBRE</option>
+                            </select>
+                            <select class="" id="SanioCC" style="width: 80px;">
+
+                            </select>
+                            <button type="button" class="btn btn-block btn-primary" style="width: 40px; position: relative;float: right; left: 20px; border-radius: 50%;box-shadow: 5px 5px 5px black;" onclick="buscarMedicionesParametros();"><i class="fa fa-search"></i></button>
+                        </td>
+                    </tr>
+                    <tr style="height: 20px;"></tr>
+                </table>
+            </div>
+            <div class="col-md-4 callout " style="background-color: white !important;margin-top: 10px;">
+                <table style="color: black;font-size: 12px; font-weight: bold;box-shadow: 5px 5px 5px 5px;width: 100%">
+                    <tr style="height: 20px;"></tr>
+                    <tr>
+                        <td align="right">Sitio Repatriacion</td>
+                        <td width="10px"></td>
+                        <td>
+                            <select class="select2" id="SsitioCC" style="width: 200px;">
+                                <option value="">Seleccion una Opcion</option>
+                                {% for sitio in sitios %}
+                                <option value="{{ sitio.id }}">{{ sitio.descripcion }}/{{ sitio.isla_id.descripcion }}</option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                    </tr>
+                    <tr style="height: 10px;"></tr>
+                    <tr>
+                        <td align="right">Fecha Repatriacion</td>
+                        <td width="10px"></td>
+                        <td>
+                            <input type="date" class="form-control" id="fecha_repatria" style="width: 200px;">
+                        </td>
+                    </tr>
+                    <tr style="height: 20px;"></tr>
+                </table>
+            </div>
+        </div>
+        <!-- /.box-header -->
+
+        <div class="box-body">
+            <div class="row">
+
+                {% if perms.ap_especiesnativas.add_spncontrolhuevos %}
+                <div class="btn-group-vertical" style="position: absolute; z-index: 99999; right: -2%;">
+
+                    <button style="border-radius: 50%;width: 40px;height: 40px;box-shadow: 5px 5px 5px black;" type="button" onclick="insertUpdateMedicionesParametros();" class="btn btn-success"><i class="fa fa-save"></i></button>
+
+                    <button style="border-radius: 50%;margin-top: 10px;width: 40px;height: 40px;box-shadow: 5px 5px 5px black;" type="button" class="btn btn-success" id="addNewTortuTablaCC"><i class="fa fa-plus"></i></button>
+
+                </div>
+                {% endif %}
+
+                <div class="col-xs-12" style="width: 100%;">
+                    <!--button type="button" class="btn btn-block btn-primary" style="width: 80px; position: absolute;right: 1%; top: -40px;" onclick="insertUpdateMedicionesParametros();">Grabar</button-->
+                    <input type="hidden" id="control_crecimiento_id">
+                    <div class="table-container">
+                        <div class="heading-bg"></div>
+                        <div class="table-container-inner">
+                            <table id="tabla_controlc" class="table table-bordered" style="font-size: 10px; font-weight: bold;text-transform: uppercase;width: 100%;">
+                                <thead>
+                                    <tr >
+                                        <th align="center"><div class="heading">FECHA <br><input type="date" style="color:black; height: 20px;" name="" onchange="cambiar_fechacc(this.value);"></div></th>
+                                        <th><div class="heading" style="width: 50px;">#CON PINTURA</div></th>
+                                        <th><div class="heading">#CON
+                                            <BR>HIERRO</div></th>
+                                        <th><div class="heading">#CON
+                                            <BR>PIT</div></th>
+                                        <th><div class="heading">LARGO
+                                            <BR>CURVO
+                                            <BR>(cm)</div></th>
+                                        <th><div class="heading">ANCHO
+                                            <BR>CURVO
+                                            <BR>(cm)</div></th>
+                                        <th><div class="heading">LARGO
+                                            <BR>PLASTRON
+                                            <BR>(cm)</div></th>
+                                        <th><div class="heading">PESO(g)</div></th>
+                                        <th><div class="heading">COMETARIO</div></th>
+                                        <th><div class="heading"></div></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="bodytabla_controlc" align="center" class="table-section"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!--button type="button" class="btn btn-block btn-primary" style="width: 80px; position: absolute;right: 1%;" id="addNewTortuTablaCC">Add</button-->
+                    <table id="tabla_controlc_aux" class="table table-bordered" style="box-shadow: 5px 5px 5px 5px;font-size: 10px; font-weight: bold;text-transform: uppercase;width: 100%;position: relative; top: 40px;">
+                        <tbody id="bodytabla_controlc_aux" align="center" class="table-section"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- /.box-body -->
+    </div>
+    <!-- /.box -->
+</div>
+<!--content -->
+
+
+<script src="{% static 'js/lib_internas/script_espnativas.js' %}"></script>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+
+        var table = $('#tabla_cab_cc').DataTable({
+            orderCellsTop: true,
+            responsive: true,
+            "order": [
+                [0, 1, 2, 3, 4]
+            ],
+        });
+
+        iniciaYears("SanioCC");
+        iniciarGruposYears("SgnacimientoCC");
+        $('#SccrianzaCC').select2();
+        $('#SpoblacionCC').select2();
+        $('#SmedicionCC').select2();
+        //$('#SgnacimientoCC').select2();
+        $('#SsitioCC').select2();
+    });
+</script>
+{% endblock %}

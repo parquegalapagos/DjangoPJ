@@ -1,0 +1,102 @@
+{% extends "home.html" %}
+
+{% load static %}
+{% block principalhome %}
+	<div id="principal_home" style="margin-top: 10%;">
+	    <p style="text-align: center;">
+	      <span style="font-size: x-large;">Bienvenido al módulo de Bienes y Servicios Ambientales</span>
+	    </p>
+	    <p style="text-align: center;">
+	      <span style="font-size: large;"></span>
+	    </p>
+	    <p style="text-align: center;">
+	      <span style="font-size: xx-large;">
+	        <img src="{% static 'image/DPNGOriginal.png' %}" width="233" height="49">
+	      </span>
+	    </p>
+	     
+	</div>
+{%endblock%}
+
+{% block menu %}
+
+	<li class="header">BIENES Y SERVICIOS AMBIENTALES</li>
+	<li class="treeview menu-open">
+	  <a href="#">
+	    <i style="font-size: 18px;" class="fa fa-wrench"></i> <span style="font-size: 18px;">CREI BSA</span>
+	    <span class="pull-right-container">
+	      <i class="fa fa-angle-left pull-right"></i>
+	    </span>
+	  </a>
+	  <ul class="treeview-menu" style="display: block;">
+	    <li  style="cursor: pointer;">
+	      <a href="{% url 'mpetreos' %}"><i id="idmenu0" class="fa fa-circle-o text-aqua"></i>Control Materia Petreo</a>
+	    </li>
+	  </ul>
+	</li>
+
+	<li class="treeview">
+      <a href="#">
+        <i style="font-size: 18px;" class="fa fa-gears" ></i> <span style="font-size: 16px;">Reportes</span>
+        <span class="pull-right-container">
+          <i class="fa fa-angle-left pull-right"></i>
+        </span>
+      </a>
+       <ul class="treeview-menu" style="display: block;">
+	    <li style="cursor: pointer;">
+	      <a href="{% url 'infcampo' %}"><i id="idmenu5" class="fa fa-circle-o text-aqua"></i>Informe de Campo</a>
+	    </li>
+	  </ul>
+	  <ul class="treeview-menu" style="display: block;">
+	    <li style="cursor: pointer;">
+	      <a href="{% url 'infpetreos' %}"><i id="idmenu6" class="fa fa-circle-o text-aqua"></i>Informe Técnico</a>
+	    </li>
+	  </ul>
+	  <ul class="treeview-menu" style="display: block;">
+	    <li style="cursor: pointer;">
+	      <a href="{% url 'infnovedades' %}"><i id="idmenu7" class="fa fa-circle-o text-aqua"></i>Informe Novedades</a>
+	    </li>
+	  </ul>
+    </li>
+
+    <li class="treeview">
+      <a href="#">
+        <i style="font-size: 18px;" class="fa fa-gears" ></i> <span style="font-size: 16px;">Configuración</span>
+        <span class="pull-right-container">
+          <i class="fa fa-angle-left pull-right"></i>
+        </span>
+      </a>
+       <ul class="treeview-menu" style="display: block;">
+	    <li  style="cursor: pointer;">
+	      <a href="{% url 'vehiculo' %}"><i id="idmenu1" class="fa fa-circle-o text-aqua"></i>Vehiculo</a>
+	    </li>
+	  </ul>
+	  <ul class="treeview-menu" style="display: block;">
+
+	    <li style="cursor: pointer;">
+
+	      <a href="{% url 'vehiculotipo' %}"><i id="idmenu2" class="fa fa-circle-o text-aqua"></i>Vehiculo Tipo</a>
+	    </li>
+	  </ul>
+ 	  <ul class="treeview-menu" style="display: block;">
+
+	    <li style="cursor: pointer;">
+	      <a href="{% url 'tipousuario' %}"><i id="idmenu3" class="fa fa-circle-o text-aqua"></i>Tipo Usuario</a>
+	    </li>
+	  </ul>
+	  <ul class="treeview-menu" style="display: block;">
+	    <li  style="cursor: pointer;">
+	      <a href="{% url 'bsaparametrosconfig' %}"><i id="idmenu4" class="fa fa-circle-o text-aqua"></i>Parametros</a>
+	    </li>
+	  </ul>
+    </li>
+
+	{% load static %}
+	  <script src="{% static 'js/lib_externas/jquery-1.12.4.js' %}"></script>
+	  <script src="{% static 'js/lib_externas/jquery-ui.js' %}"></script>
+	  <!--script src="{% static 'js/lib_externas/html2canvas.js' %}"></script-->
+	  <script>document.write('<script src="{% static "js/lib_internas/script.js" %}?dev=' + Math.floor(Math.random() * 100) + '"\><\/script>');</script>
+	  <script>document.write('<script src="{% static "js/lib_internas/script_bsa.js" %}?dev=' + Math.floor(Math.random() * 100) + '"\><\/script>');</script>
+	 
+
+{% endblock %}

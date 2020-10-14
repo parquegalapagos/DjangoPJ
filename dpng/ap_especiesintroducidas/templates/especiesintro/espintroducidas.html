@@ -1,0 +1,1381 @@
+{% load static %} 
+{% block content %}
+<!-- DataTables -->
+<link rel="stylesheet" type="text/css" href="{% static 'css/select2.min.css' %}">
+
+<style type="text/css">
+    .filters input {
+        width: 100%;
+        padding: 3px;
+        box-sizing: border-box;
+    }
+    fieldset {
+        border: 2px solid #000 !important;
+        margin: 0;
+        xmin-width: 0;
+        padding: 10px;
+        position: relative;
+        border-radius: 4px;
+        padding-left: 10px!important;
+    }
+    a{
+        cursor: pointer;
+    }
+    .disabledtab
+    {
+      pointer-events: none;
+
+      /* for "disabled" effect */
+      opacity: 0.5;
+      background: #CCC;
+    }
+
+</style>
+
+<!-- FORMULARIO  -->
+<div id="content_Especie">
+    <div id="addEspecie" style="display: none;">
+        <div class="stackbox-header cab_popup" align="center">Registro de Especies Introducidas <i class="fa fa-bug" aria-hidden="true" style="font-size: 30px;float: left;"></i></div>
+
+        <div class="stackbox-body" id="bodyaddEspecie">
+            <div class="notification">
+                <span class="icon">
+                    <i class=""></i>
+                </span>
+                <span class="text"></span>
+                <span class="close"><i class="fa fa-close"></i></span>
+            </div>
+            <div class="row" align="center">
+                <div class="col-xs-12" style="border-color: #1b90ad;">
+
+                    <!-- CAMPOS FORM -->
+                    <div id="frm_Especie">
+                        <div class="nav-tabs-custom">
+                                <ul class="nav nav-tabs" id="tabsIng">
+                                    <li class="active"><a href="#tab_GenE" data-toggle="tab" aria-expanded="true" style="font-weight: bold;">Generales</a></li>
+                                    <li class=""><a href="#tab_detE" data-toggle="tab" aria-expanded="false" style="font-weight: bold;">Detalle</a></li>
+                                    <li class="disabledtab disabled"><a href="#tab_detdatosE" data-toggle="tab" aria-expanded="false" style="font-weight: bold;">Datos Detalle</a></li>
+                                </ul>
+                                <input type="hidden" id="tipotrxEI" value="0"/>
+                                <input type="hidden" id="idcabespecie" value="0"/>
+                                <input type="hidden" id="especieid" value=""/>
+                                <input type="hidden" id="iddetespecie" value=""/><!--indice-->
+                                <div class="tab-content" style="border-top: 2px solid #3c8dbc;">
+                                    <div class="tab-pane active" id="tab_GenE">
+                                        <div id="cabespecie1" style="display: none;">
+                                            <input type="hidden" id="trxcabespecie1" value="0"/><!--tipo trasaccion editar o nuevo-->
+                                            <input type="hidden" id="idxTrxcabespecie1" value=""/><!--indice-->
+                                            <fieldset>
+                                            <legend id="legend1" style="font-size: 14px; text-align: left;border-bottom: 1px solid;background-color: #005196;color: white;padding: 5px;">
+                                            </legend>
+                                            <table style="width: 100%;color: black;font-weight: bold;">
+                                                <tr height='10px;'></tr>
+                                                <tr>
+                                                    <td align="right">Encargado</td> 
+                                                    <td width="20px;"></td>
+                                                    <td colspan="5">
+                                                        <!--input type="text" id="encargadoEI" class="form-control" style="width: 100%; text-align: left;" readonly/>
+                                                        <input type="hidden" id="idencargadoEI" /-->
+                                                        <select class="select2 requerido" id="encargadoEI" text="Encargados" name="encargadoEI[]" multiple="multiple" style="width: 100%;">
+                                                            {% for funcionario in funcionarios %}
+                                                            <option value="{{ funcionario.id }}" data-nombre="{{ funcionario.persona_id.nombre_completo }}">{{ funcionario.persona_id.apellidos }} {{ funcionario.persona_id.nombres }}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                                <tr height='10px;'></tr>
+                                                <tr>
+                                                    <td align="right">Invitado</td> 
+                                                    <td width="20px;"></td>
+                                                    <td >
+                                                        <input type="text" id="invitadoEI" class="form-control" text="" style="width:100%;" />
+                                                    </td>
+                                                </tr>
+                                                <tr height='10px;'></tr>
+                                                <tr>
+                                                    <td align="right">Isla</td> 
+                                                    <td width="20px;"></td>
+                                                    <td >
+                                                        <select class="select2" id="SislaEI" style="width: 100%;" onchange="getSitioXisla(this.value,'');">
+                                                            <option value="">Seleccion una Isla</option>
+                                                            {% for isla in islas %}
+                                                                <option value="{{ isla.id }}">{{ isla.descripcion }}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </td>
+                                                    <td width="20px;"></td>
+                                                    <td align="right">Sitio</td> 
+                                                    <td width="20px;"></td>
+                                                    <td >
+                                                        <select class="select2" id="SsitioEI" style="width: 100%;">
+                                                            <!--option value="">Seleccion una Especie</option>
+                                                            {% for sitio in sitios %}
+                                                                <option value="{{ sitio.id }}">{{ sitio.descripcion }}</option>
+                                                            {% endfor %}
+                                                            -->
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                                <tr height='10px;'></tr>
+                                                <tr>
+                                                    <td align="right">Metodo Control</td> 
+                                                    <td width="20px;"></td>
+                                                    <td >
+                                                        <select class="select2" id="SmetodoEI" name="SmetodoEI[]" multiple="multiple" style="width: 100%;" onchange="bloquearMetodo(this.value);">
+                                                            
+                                                        </select>
+                                                    </td>
+                                                    <td width="20px;"></td>
+                                                    <td align="right">*Producto</td> 
+                                                    <td width="20px;"></td>
+                                                    <td><input type="text" id="productoEI" class="form-control" text="Producto" style="width: 100%;" /></td>
+                                                </tr>
+                                                <tr height='10px;'></tr>
+                                                <tr>
+                                                    <td align="right">*Fecha</td> 
+                                                    <td width="20px;"></td>
+                                                    <td><input type="date" id="fechaEI" class="form-control" text="Fecha" style="width: 100%;" /></td>
+                                                    
+                                                </tr>
+                                                <tr height='10px;'></tr>
+                                                <tr>
+                                                    <td align="right">*Hora de Inicio</td> 
+                                                    <td width="20px;"></td>
+                                                    <td><input type="time" id="horaIniEI" class="form-control" text="Hora de Inicio" style="width: 100px;"/>
+                                                        &nbsp;*Hora Fin
+                                                        <input type="time" id="horaFinEI" class="form-control" text="Hora de Fin" style="width: 100px;"/>
+                                                    </td>
+                                                    <!--td width="20px;"></td>
+                                                    <td align="right">*Hora de Fin</td> 
+                                                    <td width="20px;"></td>
+                                                    <td><input type="time" id="horaFinEI" class="form-control" text="Hora de Fin" style="width: 150px;"/></td-->
+                                                </tr>
+                                                <tr height='10px;'></tr>
+                                                <tr>
+                                                    <td align="right">*Fecha Colocación Cebo</td> 
+                                                    <td width="20px;"></td>
+                                                    <td><input type="date" id="fechacolceboEI" class="form-control" text="Fecha"/></td>
+                                                    <td width="20px;"></td>
+                                                    <td align="right">*Fecha Revisión Cebo</td> 
+                                                    <td width="20px;"></td>
+                                                    <td><input type="date" id="fecharevceboEI" class="form-control" text="Firma"/></td>
+                                                </tr>
+                                                <tr height='10px;'></tr>
+                                            </table>
+                                            </fieldset>
+                                        </div>
+                                        <div id="cabespecie2" style="display: none;">
+                                            <input type="hidden" id="trxcabespecie2" value="0"/>
+                                            <input type="hidden" id="idxTrxcabespecie2" value=""/>
+                                            
+                                            <fieldset>
+                                            <legend id="legend2" style="font-size: 14px; text-align: left;border-bottom: 1px solid;background-color: #005196;color: white;padding: 5px;">
+                                            </legend>
+                                                <table style="width: 100%;color: black;font-weight: bold;">
+                                                    <tr height='10px;'></tr>
+                                                    <tr>
+                                                        <td align="right">Encargado</td> 
+                                                        <td width="20px;"></td>
+                                                        <td colspan="5">
+                                                            <select class="select2 requerido" id="encargado2EI" text="Encargados" name="encargado2EI[]" multiple="multiple" style="width:100%;">
+                                                                {% for funcionario in funcionarios %}
+                                                                <option value="{{ funcionario.id }}" data-nombre="{{ funcionario.persona_id.nombre_completo }}">{{ funcionario.persona_id.apellidos }} {{ funcionario.persona_id.nombres }}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+                                                    <tr height='10px;'></tr>
+                                                    <tr>
+                                                        <td align="right">Invitado</td> 
+                                                        <td width="20px;"></td>
+                                                        <td><input type="text" id="invitado2EI" class="form-control" text="" style="width: 100%;"/></td>
+                                                    </tr>
+                                                    <tr height='10px;'></tr>
+                                                    <tr>
+                                                        <td align="right">Isla</td> 
+                                                        <td width="20px;"></td>
+                                                        <td >
+                                                            <select class="select2" id="Sisla2EI" style="width: 100%;" onchange="getSitioXisla(this.value,2);">
+                                                                <option value="">Seleccion una Isla</option>
+                                                                {% for isla in islas %}
+                                                                    <option value="{{ isla.id }}">{{ isla.descripcion }}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </td>
+                                                        <td width="20px;"></td>
+                                                        <td align="right">Sitio</td> 
+                                                        <td width="20px;"></td>
+                                                        <td >
+                                                            <select class="select2" id="Ssitio2EI" style="width: 100%;">
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+                                                    <tr height='10px;'></tr>
+                                                    <tr>
+                                                        <td align="right">Metodo Control</td> 
+                                                        <td width="20px;"></td>
+                                                        <td >
+                                                            <select class="select2" id="Smetodo2EI" name="Smetodo2EI[]" multiple="multiple" style="width: 100%;">
+                                                                
+                                                            </select>
+                                                        </td>
+                                                        <td width="20px;"></td>
+                                                        <td align="right">Area</td> 
+                                                        <td width="20px;"></td>
+                                                        <td>
+                                                            <input type="text" id="area2EI" class="form-control" text="" onkeypress="return isNumberKey(event);"/>
+                                                        </td>
+                                                    </tr>
+                                                    <tr height='10px;'></tr>
+                                                    <tr>
+                                                        <td align="right">*Fecha</td> 
+                                                        <td width="20px;"></td>
+                                                        <td><input type="date" id="fecha2EI" class="form-control" text="Fecha"/></td>
+                                                    </tr>
+                                                    <tr height='10px;'></tr>
+                                                    <tr>
+                                                        <td align="right">*Hora Inicio</td> 
+                                                        <td width="20px;"></td>
+                                                        <td><input type="time" id="horaIni2EI" class="form-control" text="Fecha" style="width: 150px;" /></td>
+                                                        <td width="20px;"></td>
+                                                        <td align="right">*Hora Fin</td> 
+                                                        <td width="20px;"></td>
+                                                        <td><input type="time" id="horaFin2EI" class="form-control" text="Firma" style="width: 150px;" /></td>
+                                                    </tr>
+                                                    <tr height='10px;'></tr>
+                                                </table>
+                                            </fieldset>
+                                        </div>
+                                        <div id="cabespecie3" style="display: none;">
+                                            <input type="hidden" id="trxcabespecie3" value="0"/>
+                                            <input type="hidden" id="idxTrxcabespecie3" value=""/>
+                                            
+                                            <fieldset>
+                                            <legend id="legend3" style="font-size: 14px; text-align: left;border-bottom: 1px solid;background-color: #005196;color: white;padding: 5px;">
+                                            </legend>
+                                                <table style="width: 100%;color: black;font-weight: bold;">
+                                                    <tr height='10px;'></tr>
+                                                    <tr>
+                                                        <td align="right">Encargado</td> 
+                                                        <td width="20px;"></td>
+                                                        <td colspan="5">
+                                                            <select class="select2 requerido" id="encargado3EI" text="Encargados" name="encargado3EI[]" multiple="multiple" style="width:100%;">
+                                                                {% for funcionario in funcionarios %}
+                                                                <option value="{{ funcionario.id }}" data-nombre="{{ funcionario.persona_id.nombre_completo }}">{{ funcionario.persona_id.apellidos }} {{ funcionario.persona_id.nombres }}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+                                                    <tr height='10px;'></tr>
+                                                    <tr>
+                                                        <td align="right">Invitado</td> 
+                                                        <td width="20px;"></td>
+                                                        <td >
+                                                            <input type="text" id="invitado3EI" class="form-control" text="" style="width: 100%;">
+                                                        </td>
+                                                    </tr>
+                                                    <tr height='10px;'></tr>
+                                                    <tr>
+                                                        <td align="right">Isla</td> 
+                                                        <td width="20px;"></td>
+                                                        <td >
+                                                            <select class="select2" id="Sisla3EI" style="width: 100%;" onchange="getSitioXisla(this.value,3);">
+                                                                <option value="">Seleccion una Especie</option>
+                                                                {% for isla in islas %}
+                                                                    <option value="{{ isla.id }}">{{ isla.descripcion }}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </td>
+                                                        <td width="20px;"></td>
+                                                        <td align="right">*Fecha</td> 
+                                                        <td width="20px;"></td>
+                                                        <td><input type="date" id="fecha3EI" class="form-control" text="Fecha"/></td>
+                                                    </tr>
+                                                    <tr height='10px;'></tr>
+                                                    <tr>
+                                                        <td align="right">Metodo Control</td> 
+                                                        <td width="20px;"></td>
+                                                        <td >
+                                                            <select class="select2" id="Smetodo3EI" name="Smetodo3EI[]" multiple="multiple" style="width: 100%;">
+                                                                
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+                                                    <tr height='10px;'></tr>
+                                                    <tr>
+                                                        <td align="right">Tipo Rifle</td> 
+                                                        <td width="20px;"></td>
+                                                        <td><input type="text" id="tipoRifle3EI" class="form-control" text="" style="width: 100%;"/></td>
+                                                        <td width="20px;"></td>                                                        
+                                                        <td align="right">Municiones Usadas</td> 
+                                                        <td width="20px;"></td>
+                                                        <td><input type="text" id="umuniciones3EI" class="form-control" style="width: 40px;" onkeypress="return isNumberKey(event);" /></td>
+                                                    </tr>
+                                                </table>
+                                            </fieldset>
+                                        </div>
+                                        <div id="cabespecie4" style="display: none;">
+                                            <input type="hidden" id="trxcabespecie4" value="0"/>
+                                            <input type="hidden" id="idxTrxcabespecie4" value=""/>
+                                            
+                                            <fieldset>
+                                            <legend id="legend4" style="font-size: 14px; text-align: left;border-bottom: 1px solid;background-color: #005196;color: white;padding: 5px;">
+                                            </legend>
+                                                <table style="width: 100%;color: black;font-weight: bold;">
+                                                    <tr height='10px;'></tr>
+                                                    <tr>
+                                                        <td align="right">Encargado</td> 
+                                                        <td width="20px;"></td>
+                                                        <td colspan="5">
+                                                            <select class="select2 requerido" id="encargado4EI" text="Encargados" name="encargado4EI[]" multiple="multiple" style="width:100%;">
+                                                                {% for funcionario in funcionarios %}
+                                                                <option value="{{ funcionario.id }}" data-nombre="{{ funcionario.persona_id.nombre_completo }}">{{ funcionario.persona_id.apellidos }} {{ funcionario.persona_id.nombres }}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+                                                    <tr height='10px;'></tr>
+                                                    <tr>
+                                                        <td align="right">Invitado</td> 
+                                                        <td width="20px;"></td>
+                                                        <td >
+                                                            <input type="text" id="invitado4EI" class="form-control" text="" style="width: 100%;">
+                                                        </td>
+                                                    </tr>
+                                                    <tr height='10px;'></tr>
+                                                    <tr>
+                                                        <td align="right">Isla</td> 
+                                                        <td width="20px;"></td>
+                                                        <td >
+                                                            <select class="select2" id="Sisla4EI" style="width: 100%;" onchange="getSitioXisla(this.value,4);">
+                                                                <option value="">Seleccion una Especie</option>
+                                                                {% for isla in islas %}
+                                                                    <option value="{{ isla.id }}">{{ isla.descripcion }}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </td>
+                                                        <td width="20px;"></td>
+                                                        <td align="right">*Fecha</td> 
+                                                        <td width="20px;"></td>
+                                                        <td><input type="date" id="fecha4EI" class="form-control" text="Fecha"/></td>
+                                                    </tr>
+                                                    <tr height='10px;'></tr>
+                                                    <tr>
+                                                        <td align="right">Metodo Control</td> 
+                                                        <td width="20px;"></td>
+                                                        <td >
+                                                            <select class="select2" id="Smetodo4EI" name="Smetodo4EI[]" multiple="multiple" style="width: 100%;">
+                                                                
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+                                                    <tr height='10px;'></tr>
+                                                    <tr>
+                                                        <td align="right">Tipo Rifle</td> 
+                                                        <td width="20px;"></td>
+                                                        <td><input type="text" id="tipoRifle4EI" class="form-control" text="" style="width: 100%;"/></td>
+                                                        <td width="20px;"></td>                                                        
+                                                        <td align="right">Municiones Usadas</td> 
+                                                        <td width="20px;"></td>
+                                                        <td><input type="text" id="umuniciones4EI" class="form-control" style="width: 40px;" onkeypress="return isNumberKey(event);" /></td>
+                                                    </tr>
+                                                </table>
+                                            </fieldset>
+                                        </div>
+                                        <div id="cabespecie5" style="display: none;">
+                                            <input type="hidden" id="trxcabespecie5" value="0"/>
+                                            <input type="hidden" id="idxTrxcabespecie5" value=""/>
+                                            
+                                            <fieldset>
+                                            <legend id="legend5" style="font-size: 14px; text-align: left;border-bottom: 1px solid;background-color: #005196;color: white;padding: 5px;">
+                                            </legend>
+                                                <table style="width: 100%;color: black;font-weight: bold;">
+                                                    <tr height='10px;'></tr>
+                                                    <tr>
+                                                        <td align="right">Encargado</td> 
+                                                        <td width="20px;"></td>
+                                                        <td colspan="5">
+                                                            <!--input type="text" id="encargado5EI" class="form-control" style="width: 100%; text-align: left;" readonly/>
+                                                            <input type="hidden" id="idencargado5EI" /-->
+                                                            <select class="select2 requerido" id="encargado5EI" text="Encargados" name="encargado5EI[]" multiple="multiple" style="width:100%;">
+                                                                {% for funcionario in funcionarios %}
+                                                                <option value="{{ funcionario.id }}" data-nombre="{{ funcionario.persona_id.nombre_completo }}">{{ funcionario.persona_id.apellidos }} {{ funcionario.persona_id.nombres }}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </td>
+                                                        
+                                                    </tr>
+                                                    <tr height='10px;'></tr>
+                                                    <tr>
+                                                        <td align="right">Invitado</td> 
+                                                        <td width="20px;"></td>
+                                                        <td >
+                                                            <input type="text" id="invitado5EI" class="form-control" text="" style="width:100%;" />
+                                                        </td>
+                                                    </tr>
+                                                    <tr height='10px;'></tr>
+                                                    <tr>
+                                                        <td align="right">Metodo Control</td> 
+                                                        <td width="20px;"></td>
+                                                        <td >
+                                                            <select class="select2" id="Smetodo5EI" name="Smetodo5EI[]" multiple="multiple" style="width: 100%;">
+                                                                
+                                                            </select>
+                                                        </td>
+                                                        <td width="20px;"></td>
+                                                        <td align="right">*Producto</td> 
+                                                        <td width="20px;"></td>
+                                                        <td><input type="text" id="producto5EI" class="form-control" text="Producto" style="width: 100%;" /></td>
+                                                    </tr>
+                                                    <tr height='10px;'></tr>
+                                                    <tr>
+                                                        <td align="right">Isla</td> 
+                                                        <td width="20px;"></td>
+                                                        <td >
+                                                            <select class="select2" id="Sisla5EI" style="width: 100%;" onchange="getSitioXisla(this.value,'5');">
+                                                                <option value="">Seleccione una Isla</option>
+                                                                {% for isla in islas %}
+                                                                    <option value="{{ isla.id }}">{{ isla.descripcion }}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </td>
+                                                        <td width="20px;"></td>
+                                                        <td align="right">Sitio</td> 
+                                                        <td width="20px;"></td>
+                                                        <td >
+                                                            <select class="select2" id="Ssitio5EI" style="width: 100%;">
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+                                                    <tr height='10px;'></tr>
+                                                    <tr>
+                                                        <td align="right">*Area</td> 
+                                                        <td width="20px;"></td>
+                                                        <td><input type="text" id="area5EI" class="form-control" text="Area" onkeypress='return isNumberKey(event);' style="width: 50%;"/></td>
+                                                        <td width="20px;"></td>
+                                                        <td align="right">*Fecha</td> 
+                                                        <td width="20px;"></td>
+                                                        <td><input type="date" id="fecha5EI" class="form-control" text="Fecha"/></td>
+                                                    </tr>
+                                                    <tr height='10px;'></tr>
+                                                    <tr>
+                                                        <td align="right">*Hora de Inicio</td> 
+                                                        <td width="20px;"></td>
+                                                        <td><input type="time" id="horaIni5EI" class="form-control" text="Hora de Inicio" style="width: 150px;"/></td>
+                                                        <td width="20px;"></td>
+                                                        <td align="right">*Hora de Fin</td> 
+                                                        <td width="20px;"></td>
+                                                        <td><input type="time" id="horaFin5EI" class="form-control" text="Hora de Fin" style="width: 150px;"/></td>
+                                                    </tr>
+                                                </table>
+                                            </fieldset>
+                                        </div>
+                                        <div id="cabespecie6" style="display: none;">
+                                            <input type="hidden" id="trxcabespecie6" value="0"/><!--tipo trasaccion editar o nuevo-->
+                                            <input type="hidden" id="idxTrxcabespecie6" value=""/><!--indice-->
+                                            <fieldset>
+                                            <legend id="legend6" style="font-size: 14px; text-align: left;border-bottom: 1px solid;background-color: #005196;color: white;padding: 5px;">
+                                            </legend>
+                                            <table style="width: 100%;color: black;font-weight: bold;">
+                                                <tr height='10px;'></tr>
+                                                <tr>
+                                                    <td align="right">Encargado</td> 
+                                                    <td width="20px;"></td>
+                                                    <td colspan="5">
+                                                        <select class="select2 requerido" id="encargado6EI" text="Encargados" name="encargado6EI[]" multiple="multiple" style="width: 100%;">
+                                                            {% for funcionario in funcionarios %}
+                                                            <option value="{{ funcionario.id }}" data-nombre="{{ funcionario.persona_id.nombre_completo }}">{{ funcionario.persona_id.apellidos }} {{ funcionario.persona_id.nombres }}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                                <tr height='10px;'></tr>
+                                                <tr>
+                                                    <td align="right">Invitado</td> 
+                                                    <td width="20px;"></td>
+                                                    <td >
+                                                        <input type="text" id="invitado6EI" class="form-control" text="" style="width:100%;" />
+                                                    </td>
+                                                </tr>
+                                                <tr height='10px;'></tr>
+                                                <tr>
+                                                    <td align="right">Isla</td> 
+                                                    <td width="20px;"></td>
+                                                    <td >
+                                                        <select class="select2" id="Sisla6EI" style="width: 100%;" onchange="getSitioXisla(this.value,6);">
+                                                            <option value="">Seleccion una Isla</option>
+                                                            {% for isla in islas %}
+                                                                <option value="{{ isla.id }}">{{ isla.descripcion }}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </td>
+                                                    <td width="20px;"></td>
+                                                    <td align="right">Sitio</td> 
+                                                    <td width="20px;"></td>
+                                                    <td >
+                                                        <select class="select2" id="Ssitio6EI" style="width: 100%;">
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                                <tr height='10px;'></tr>
+                                                <tr>
+                                                    <td align="right">Metodo Control</td> 
+                                                    <td width="20px;"></td>
+                                                    <td >
+                                                        <select class="select2" id="Smetodo6EI" name="Smetodo6EI[]" multiple="multiple" style="width: 100%;">
+                                                            
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                                <tr height='10px;'></tr>
+                                                <tr>
+                                                    <td align="right">*Fecha</td> 
+                                                    <td width="20px;"></td>
+                                                    <td><input type="date" id="fecha6EI" class="form-control" text="Fecha"/></td>
+                                                    
+                                                </tr>
+                                                <tr height='10px;'></tr>
+                                                <tr>
+                                                    <td align="right">*Hora de Inicio</td> 
+                                                    <td width="20px;"></td>
+                                                    <td><input type="time" id="horaIni6EI" class="form-control" text="Hora de Inicio" style="width: 150px;"/></td>
+                                                    <td width="20px;"></td>
+                                                    <td align="right">*Hora de Fin</td> 
+                                                    <td width="20px;"></td>
+                                                    <td><input type="time" id="horaFin6EI" class="form-control" text="Hora de Fin" style="width: 150px;"/></td>
+                                                </tr>
+                                                <tr height='10px;'></tr>
+                                            </table>
+                                            </fieldset>
+                                        </div>
+                                    </div><!--div tab_Gen-->
+                                    <div class="tab-pane" id="tab_detE">
+                                        <div id="detespecie1" style="display: none;">
+                                            <fieldset>
+                                            <legend style="font-size: 14px; text-align: left;border-bottom: 1px solid;background-color: #005196;color: white;padding: 5px;">Detalle</legend>
+                                                <div align="center" style="height: 400px; overflow-y: auto;margin-top: -30px;">
+                                                    <div class="col-xs-12">
+                                                        <a style="font-size: 20px;float: right;" title="Grabar" onclick="addnewdetalleGato()"><i class="fa fa-plus-circle text-green"></i></a>
+                                                    </div>
+                                                    <table id="tabladet1" style="font-size: 10px; text-transform: uppercase;font-weight: bold; color: black;" class="table table-striped table-bordered" width="95%">
+                                                        <thead style="background-color: #005196; color: white; text-align: center;">
+                                                            <tr>
+                                                                <th rowspan="3" style="text-align: center;">#</th>
+                                                                <th rowspan="3" style="text-align: center;">Punto Gps</th>
+                                                                <th rowspan="3" style="text-align: center;">Fecha<br>Colocar<br>Cebo</th>
+                                                                <th rowspan="3" style="text-align: center;">Fecha<br>Revsion<br>Cebo</th>
+                                                                <th colspan="6" style="text-align: center;">Metodos de Control</th>
+                                                                <th rowspan="3" style="text-align: center;">Cantidad</th>
+                                                                <th rowspan="3" style="text-align: center;">Sexo</th>
+                                                                <th rowspan="3"></th>
+                                                                <th rowspan="3"></th>
+                                                            </tr>
+                                                            <tr>
+                                                                <th colspan="2" style="text-align: center;">Trampa</th>
+                                                                <th colspan="2" style="text-align: center;">Rifle</th>
+                                                                <th colspan="2" style="text-align: center;">Cebo con Veneno</th>
+                                                            </tr>
+                                                            <tr>
+                                                                <th colspan="1" style="text-align: center;">Capturado</th>
+                                                                <th colspan="1" style="text-align: center;">No Capturado</th>
+                                                                <th colspan="1" style="text-align: center;">Escapado</th>
+                                                                <th colspan="1" style="text-align: center;">Eliminado</th>
+                                                                <th colspan="1" style="text-align: center;">Consumido</th>
+                                                                <th colspan="1" style="text-align: center;">No Consumido</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="bodytabladet1">
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                        <div id="detespecie2" style="display: none;">
+                                            <fieldset>
+                                            <legend style="font-size: 14px; text-align: left;border-bottom: 1px solid;background-color: #005196;color: white;padding: 5px;">Detalle</legend>
+                                                
+                                                 <div align="center" style="height: 300px; overflow-y: auto;">
+                                                    <div class="col-xs-12">
+                                                        <a style="font-size: 20px;float: right;" title="Grabar" onclick="addnewdetalleCaracol()">
+                                                            <i class="fa fa-plus-circle text-green"></i>
+                                                        </a>
+                                                    </div>
+                                                    <table id="tabladet2" style="font-size: 10px; text-transform: uppercase;font-weight: bold; color: black;" class="table table-striped table-bordered" width="95%">
+                                                        <thead style="background-color: #005196; color: white; text-align: center;">
+                                                            <tr>
+                                                                <th rowspan="2" style="text-align: center;">#</th>
+                                                                <th rowspan="2" style="text-align: center;">Código GPS</th>
+                                                                <th colspan="5" style="text-align: center;">Capturas</th>
+                                                                <th colspan="3" style="text-align: center;">Actividades Ejecutadas</th>
+                                                                <th rowspan="2"></th>
+                                                                <th rowspan="2"></th>
+                                                            </tr>
+                                                            
+                                                            <tr>
+                                                                <th colspan="1" style="text-align: center;">Adu</th>
+                                                                <th colspan="1" style="text-align: center;">Juv</th>
+                                                                <th colspan="1" style="text-align: center;">Hue</th>
+                                                                <th colspan="1" style="text-align: center;">Mue</th>
+                                                                <th colspan="1" style="text-align: center;">Total</th>
+                                                                <th colspan="1" style="text-align: center;">Limpieza<br>Manual</th>
+                                                                <th colspan="1" style="text-align: center;">Limpieza<br>Mecanica</th>
+                                                                <th colspan="1" style="text-align: center;">Control<br>Quimico</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="bodytabladet2">
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                        <div id="detespecie3" style="display: none;">
+                                            <fieldset>
+                                            <legend style="font-size: 14px; text-align: left;border-bottom: 1px solid;background-color: #005196;color: white;padding: 5px;">Detalle</legend>
+                                                
+                                                <div align="center" style="height: 300px; overflow-y: auto;">
+                                                    <div class="col-xs-12">
+                                                        <a style="font-size: 20px;float: right;" title="Grabar" onclick="addnewdetalleGarza()"><i class="fa fa-plus-circle text-green"></i></a>
+                                                    </div>
+                                                    <table id="tabladet3" style="font-size: 10px; text-transform: uppercase;font-weight: bold; color: black;" class="table table-striped table-bordered" width="95%">
+                                                        <thead style="background-color: #005196; color: white; text-align: center;">
+                                                            <tr>
+                                                                <th style="text-align: center;">#</th>
+                                                                <th style="text-align: center;">Sitio</th>
+                                                                <th style="text-align: center;">Código GPS</th>
+                                                                <th style="text-align: center;">Garzas<br>Eliminadas</th>
+                                                                <th style="text-align: center;">Garzas<br>Escapadas</th>
+                                                                <th style="text-align: center;"># Nidos</th>
+                                                                <th style="text-align: center;"># Huevos</th>
+                                                                <th style="text-align: center;">Observaciones</th>
+                                                                <th></th>
+                                                                <th></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="bodytabladet3">
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                        <div id="detespecie4" style="display: none;">
+                                            <fieldset>
+                                            <legend style="font-size: 14px; text-align: left;border-bottom: 1px solid;background-color: #005196;color: white;padding: 5px;">Detalle</legend>
+                                                
+                                                <div align="center" style="height: 300px; overflow-y: auto;">
+                                                    <div class="col-xs-12">
+                                                        <a style="font-size: 20px;float: right;" title="Grabar" onclick="addnewdetalleGarrapatero()">
+                                                            <i class="fa fa-plus-circle text-green"></i>
+                                                        </a>
+                                                    </div>
+                                                    <table id="tabladet4" style="font-size: 10px; text-transform: uppercase;font-weight: bold; color: black;" class="table table-striped table-bordered" width="95%">
+                                                        <thead style="background-color: #005196; color: white; text-align: center;">
+                                                            <tr>
+                                                                <th style="text-align: center;">#</th>
+                                                                <th style="text-align: center;">Sitio</th>
+                                                                <th style="text-align: center;">Código GPS</th>
+                                                                <th style="text-align: center;">Garzas<br>Eliminadas</th>
+                                                                <th style="text-align: center;">Garzas<br>Escapadas</th>
+                                                                <th style="text-align: center;"># Nidos</th>
+                                                                <th style="text-align: center;"># Huevos</th>
+                                                                <th style="text-align: center;">Observaciones</th>
+                                                                <th></th>
+                                                                <th></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="bodytabladet4">
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                        <div id="detespecie5" style="display: none;">
+                                            <fieldset>
+                                            <legend style="font-size: 14px; text-align: left;border-bottom: 1px solid;background-color: #005196;color: white;padding: 5px;">Detalle</legend>
+                                                
+                                                <div align="center" style="height: 300px; overflow-y: auto;">
+                                                    <div class="col-xs-12">
+                                                        <a style="font-size: 20px;float: right;" title="Grabar" onclick="addnewdetalleHormiga()">
+                                                            <i class="fa fa-plus-circle text-green"></i>
+                                                        </a>
+                                                    </div>
+                                                    <table id="tabladet5" style="font-size: 10px; text-transform: uppercase;font-weight: bold; color: black;" class="table table-striped table-bordered" width="95%">
+                                                        <thead style="background-color: #005196; color: white; text-align: center;">
+                                                            <tr>
+                                                                <th rowspan="2" style="text-align: center;">#</th>
+                                                                <th rowspan="2" style="text-align: center;">Pto Gps</th>
+                                                                <th colspan="8" style="text-align: center;">Especies a Controlar</th>
+                                                                <th rowspan="2"></th>
+                                                                <th rowspan="2"></th>
+                                                            </tr>
+                                                            <tr>
+                                                                <th colspan="1" style="text-align: center;">Wasmannia<br>auropunctat<br>(W)</th>
+                                                                <th colspan="1" style="text-align: center;">Pheidole<br>megacephala<br>(P)</th>
+                                                                <th colspan="1" style="text-align: center;">Solenopsis<br>geminate<br>(S)</th>
+                                                                <th colspan="1" style="text-align: center;">Cardiocondyla<br>emery<br>(C )</th>
+                                                                <th colspan="1" style="text-align: center;">Tapinoma<br>melanocephalum<br>(T)</th>
+                                                                <th colspan="1" style="text-align: center;">Monomorium<br>(M)</th>
+                                                                <th colspan="1" style="text-align: center;">Endémica<br>( E ) </th>
+                                                                <th colspan="1" style="text-align: center;">Otras</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="bodytabladet5">
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                        <div id="detespecie6" style="display: none;">
+                                            <fieldset>
+                                            <legend style="font-size: 14px; text-align: left;border-bottom: 1px solid;background-color: #005196;color: white;padding: 5px;">Detalle</legend>
+                                                <div align="center" style="height: 400px; overflow-y: auto;margin-top: -30px;">
+                                                    <div class="col-xs-12">
+                                                        <a style="font-size: 20px;float: right;" title="Grabar" onclick="addnewdetalleCaceria()"><i class="fa fa-plus-circle text-green"></i></a>
+                                                    </div>
+                                                    <table id="tabladet6" style="font-size: 10px; text-transform: uppercase;font-weight: bold; color: black;" class="table table-striped table-bordered" width="95%">
+                                                        <thead style="background-color: #005196; color: white; text-align: center;">
+                                                            <tr>
+                                                                <th rowspan="3" style="text-align: center;">#</th>
+                                                                <th rowspan="3" style="text-align: center;">Punto Gps</th>
+                                                                <th colspan="12" style="text-align: center;">Animales Eliminados</th>
+                                                                <th rowspan="3" style="text-align: center;">Observación</th>
+                                                                <th rowspan="3"></th>
+                                                                <th rowspan="3"></th>
+                                                            </tr>
+                                                            <tr>
+                                                                <th colspan="3" style="text-align: center;">Cabras</th>
+                                                                <th colspan="3" style="text-align: center;">Asnos</th>
+                                                                <th colspan="3" style="text-align: center;">Cerdos</th>
+                                                                <th colspan="3" style="text-align: center;">Vacunos</th>
+                                                            </tr>
+                                                            <tr>
+                                                                <th colspan="1" style="text-align: center;">H</th>
+                                                                <th colspan="1" style="text-align: center;">M</th>
+                                                                <th colspan="1" style="text-align: center;">J</th>
+                                                                <th colspan="1" style="text-align: center;">H</th>
+                                                                <th colspan="1" style="text-align: center;">M</th>
+                                                                <th colspan="1" style="text-align: center;">J</th>
+                                                                <th colspan="1" style="text-align: center;">H</th>
+                                                                <th colspan="1" style="text-align: center;">M</th>
+                                                                <th colspan="1" style="text-align: center;">J</th>
+                                                                <th colspan="1" style="text-align: center;">H</th>
+                                                                <th colspan="1" style="text-align: center;">M</th>
+                                                                <th colspan="1" style="text-align: center;">J</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="bodytabladet6">
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                    </div><!--div tab-content-->
+                                    <div class="tab-pane" id="tab_detdatosE">
+                                        <div id="detdatosespecie1" style="display: none;">
+                                            <fieldset>
+                                            <legend style="font-size: 14px; text-align: left;border-bottom: 1px solid;background-color: #005196;color: white;padding: 5px;"></legend>
+                                                <div class="col-xs-6">
+                                                    <table style="width: 100%;color: black;font-weight: bold;">
+                                                        <tr height='10px;'></tr>
+                                                        <tr>
+                                                            <td align="right">PtoGps</td> 
+                                                            <td width="20px;"></td>
+                                                            <td >
+                                                                <input type="text" id="codgpsdetIE" class="form-control" text="Estación"/>
+                                                            </td>
+                                                        </tr>
+                                                        <tr height='10px;'></tr>
+                                                        <tr>
+                                                            <td align="right">Fecha Coloca Cebo</td> 
+                                                            <td width="20px;"></td>
+                                                            <td >
+                                                                <input type="datetime-local" id="fechacebo1IE" class="form-control" text="Estación"/>
+                                                            </td>
+                                                        </tr>
+                                                        <tr height='10px;'></tr>
+                                                        <tr>
+                                                            <td align="right">Fecha Revisa Cebo</td> 
+                                                            <td width="20px;"></td>
+                                                            <td >
+                                                                <input type="datetime-local" id="fechacebo2IE" class="form-control" text="Codigo GPS"/>
+                                                            </td>
+                                                        </tr>
+                                                        <tr height='10px;'></tr>
+                                                        <tr>
+                                                            <td align="right">Cantidad</td> 
+                                                            <td width="20px;"></td>
+                                                            <td >
+                                                                <input type="text" id="cantidaddetEI" class="form-control" style="width: 30px;" onkeypress="return isNumberKey(event);"/>
+                                                            </td>
+                                                        </tr>
+                                                        <tr height='10px;'></tr>
+                                                        <tr>
+                                                            <td align="right">Sexo</td> 
+                                                            <td width="20px;"></td>
+                                                            <td >
+                                                                <select class="select2" id="SsexodetEI" style="width: 100%;">
+                                                                    <option value=""></option> 
+                                                                    <option value="M">M</option>
+                                                                    <option value="F">F</option>
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                        <tr height='20px;'></tr>
+                                                    </table>
+                                                </div>
+                                                <div class="col-xs-6">
+                                                    <fieldset>
+                                                    <legend style="font-size: 14px; text-align: left;border-bottom: 1px solid;background-color: #005196;color: white;padding: 5px;">Metodos de Control</legend>
+                                                        <table style="width: 80%;color: black;font-weight: bold;">
+                                                            
+                                                            <tr>
+                                                                <td colspan="7" style="font-size: 12px; text-align: center;background-color: #005196;color: white;padding: 5px;">Trampa</td> 
+                                                            </tr>
+                                                            <tr height='10px;'></tr>
+                                                            <tr id="trtrampa">
+                                                                <td align="right">Capturado</td> 
+                                                                <td width="20px;"></td>
+                                                                <td >
+                                                                    <input type="checkbox" id="capturadetIE"  value="1" text=""/>
+                                                                </td>
+                                                                <td width="20px;"></td>
+                                                                <td align="right">No Capturado</td> 
+                                                                <td width="20px;"></td>
+                                                                <td >
+                                                                    <input type="checkbox" id="nocapturadetIE" value="1" text=""/>
+                                                                </td>
+                                                            </tr>
+                                                            <tr height='10px;'></tr>
+                                                            <tr>
+                                                                <td colspan="7" style="font-size: 12px; text-align: center;background-color: #005196;color: white;padding: 5px;">Rifle</td> 
+                                                            </tr>
+                                                            <tr height='10px;'></tr>
+                                                            <tr id="trrifle">
+                                                                <td align="right">Eliminado</td> 
+                                                                <td width="20px;"></td>
+                                                                <td >
+                                                                    <input type="checkbox" id="escapadodetIE"  value="1" text=""/>
+                                                                </td>
+                                                                <td width="20px;"></td>
+                                                                <td align="right">Escapado</td> 
+                                                                <td width="20px;"></td>
+                                                                <td >
+                                                                    <input type="checkbox" id="eliminadodetIE" value="1" text="No "/>
+                                                                </td>
+                                                            </tr>
+                                                            <tr height='10px;'></tr>
+                                                            <tr>
+                                                                <td colspan="7" style="font-size: 12px; text-align: center;background-color: #005196;color: white;padding: 5px;">Cebo con veneno</td> 
+                                                            </tr>
+                                                            <tr height='10px;'></tr>
+                                                            <tr id="trcebo">
+                                                                <td align="right">Consumido</td> 
+                                                                <td width="20px;"></td>
+                                                                <td >
+                                                                    <input type="checkbox" id="consumidodetIE"  value="1" text="Consumido"/>
+                                                                </td>
+                                                                <td width="20px;"></td>
+                                                                <td align="right">No Consumido</td> 
+                                                                <td width="20px;"></td>
+                                                                <td >
+                                                                    <input type="checkbox" id="noconsumidodetIE" value="1" text="No Consumido"/>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </fieldset>
+                                                </div>
+                                                <div class="col-xs-12" style="height: 10px;"></div>
+                                                <div class="col-xs-12" align="left">
+                                                    Observaciones
+                                                    <textarea id="observdetIE" style="width: 100%" rows="3"></textarea>
+                                                </div>
+                                                <div class="col-xs-12">
+                                                    <a style="font-size: 20px;float: right;position: relative;right: 3%;" title="Grabar" onclick="adddetalleGato()"><i class="fa fa-save text-green"></i></a>
+                                                    <a style="font-size: 22px;float: right;position: relative;right: -2%;" title="Cancelar" onclick="cambiarTab()"><i class="fa fa-times text-red"></i></a>
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                        <div id="detdatosespecie2" style="display: none;">
+                                            <fieldset>
+                                            <legend style="font-size: 14px; text-align: left;border-bottom: 1px solid;background-color: #005196;color: white;padding: 5px;"></legend>
+                                                <div class="col-xs-12">
+                                                    <table style="width: 100%;color: black;font-weight: bold;margin-top: -20px;">
+                    
+                                                        <tr>
+                                                            <td align="right">Código GPS<br>
+                                                                <input type="text" id="codgpsdet2EI" class="form-control" text="Codigo GPS"/>
+                                                            </td>
+                                                        </tr>
+                                                        <tr height='20px;'></tr>
+                                                    </table>
+                                                </div>
+                                                
+                                                <div class="col-xs-12">
+                                                    <fieldset>
+                                                        <legend style="font-size: 14px; text-align: left;border-bottom: 1px solid;background-color: #005196;color: white;padding: 5px;">Capturas</legend>
+                                                        <table style="width: 70%;color: black;font-weight: bold;margin-top: -25px;">
+                                                            <tr>
+                                                                <td align="center">Adultos</td>
+                                                                <td align="center">Juveniles</td> 
+                                                                <td align="center">Huevos</td> 
+                                                                <td align="center">Muertos</td> 
+                                                                <td align="center">Total</td> 
+                                                            </tr>
+                                                            <tr>   
+                                                                <td align="center"><input type="text" id="adultodet2EI" class="form-control montoC" onkeyup="sumar2();" style="width: 50px;" /></td>
+                                                                <td align="center"><input type="text" id="juvenildet2EI" class="form-control montoC" onkeyup="sumar2();" style="width: 50px;"/></td>
+                                                                <td align="center"><input type="text" id="huevosdet2EI" class="form-control montoC" onkeyup="sumar2();" style="width: 50px;"/></td>
+                                                                <td align="center"><input type="text" id="muertodet2EI" class="form-control montoC" onkeyup="sumar2();" style="width: 50px;"/></td>
+                                                                <td align="center"><input type="text" id="totaldet2EI" class="form-control" style="width: 50px;" readonly /></td>
+                                                            </tr>
+                                                            <tr height='5px;'></tr>
+                                                        </table>
+                                                    </fieldset>
+                                                </div>  
+                                                <div class="col-xs-12" style="height: 20px;"></div>
+                                                <div class="col-xs-12">
+                                                    <fieldset>
+                                                        <legend style="font-size: 14px; text-align: left;border-bottom: 1px solid;background-color: #005196;color: white;padding: 5px;">Actividades Ejecutadas</legend>
+                                                        <table style="width: 70%;color: black;font-weight: bold;margin-top: -25px;">
+                                                            <tr>
+                                                                <td align="center">Limpieza Manual</td>
+                                                                <td align="center">Limpieza Mecanica</td> 
+                                                                <td align="center">Control Quimico<br>Litros x ha</td> 
+                                                            </tr>
+                                                            <tr>   
+                                                                <td align="center"><input type="checkbox" id="limpiezamandet2EI" value="1"/></td>
+                                                                <td align="center"><input type="checkbox" id="limpiezamecdet2EI" value="1"/></td>
+                                                                <td align="center"><input type="checkbox" id="controlquidet2EI" value="1"/></td>
+                                                            </tr>
+                                                            <tr height='5px;'></tr>
+                                                        </table>
+                                                    </fieldset>
+                                                </div>   
+                                                <div class="col-xs-12">
+                                                    <a style="font-size: 20px;float: right;position:relative;right: 3%;" title="Grabar" onclick="adddetalleCaracol()"><i class="fa fa-save text-green"></i></a>
+                                                    <a style="font-size: 22px;float: right;position:relative;right: -2%;" title="Cancelar" onclick="cambiarTab()"><i class="fa fa-times text-red"></i></a>
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                        <div id="detdatosespecie3" style="display: none;">
+                                            <fieldset>
+                                            <legend style="font-size: 14px; text-align: left;border-bottom: 1px solid;background-color: #005196;color: white;padding: 5px;"></legend>
+                                                <div class="col-xs-6">
+                                                    <table style="width: 100%;color: black;font-weight: bold;">
+                                                        <tr height='10px;'></tr>
+                                                        <tr>
+                                                            <td align="left">Sitio<br> 
+                                                                <select class="select2" id="Ssitio3EI" style="width: 100%;">
+                                                                    
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                        <tr height='10px;'></tr>
+                                                        <tr>
+                                                            <td align="left">Código GPS<br>
+                                                                <input type="text" id="codgpsdet3IE" class="form-control" text="Codigo GPS"/>
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr height='20px;'></tr>
+                                                    </table>
+                                                </div>
+                                                <div class="col-xs-6">
+                                                    <fieldset>
+                                                        <legend style="font-size: 14px; text-align: left;border-bottom: 1px solid;background-color: #005196;color: white;padding: 5px;">Control Especie</legend>
+                                                        <table style="width: 70%;color: black;font-weight: bold;margin-top: -25px;">
+                                                            <tr height='10px;'></tr>
+                                                            <tr>
+                                                                <td align="right">Garzas Eliminadas</td>
+                                                                <td width="10px;"></td>
+                                                                <td align="center"><input type="text" id="eliminadasdet3IE" class="form-control" style="width: 50px;" /></td>
+                                                            </tr>
+                                                            <tr height='10px;'></tr>
+                                                            <tr>
+                                                                <td align="right">Garzas Escapadas</td>
+                                                                <td width="10px;"></td>
+                                                                <td align="center"><input type="text" id="escapadasdet3IE" class="form-control" style="width: 50px;" /></td> 
+                                                            </tr>
+                                                            <tr height='10px;'></tr>
+                                                            <tr>
+                                                                <td align="right">Número Nidos</td> 
+                                                                <td width="10px;"></td>
+                                                                <td align="center"><input type="text" id="numnidosdet3IE" class="form-control" style="width: 50px;"/></td>
+                                                            </tr>
+                                                            <tr height='10px;'></tr>
+                                                            <tr>
+                                                                <td align="right">Número Huevos</td> 
+                                                                <td width="10px;"></td>
+                                                                <td align="center"><input type="text" id="numhuevosdet3IE" class="form-control" style="width: 50px;"/></td>
+                                                            </tr>
+                                                            <tr height='20px;'></tr>
+                                                        </table>
+                                                    </fieldset>
+                                                </div>
+                                                <div class="col-xs-12" style="height: 20px;"></div>
+                                                <div class="col-xs-12">
+                                                    <fieldset>
+                                                        <legend style="font-size: 14px; text-align: left;border-bottom: 1px solid;background-color: #005196;color: white;padding: 5px;">Observación</legend>
+                                                        <table style="width: 100%;color: black;font-weight: bold;margin-top: -25px;">
+                                                            <tr height='10px;'></tr>
+                                                            <tr align="center">
+                                                                <td ><textarea id="observdet3IE" rows="3" style="width: 100%;"></textarea></td>
+                                                            </tr>
+                                                            <tr height='20px;'></tr>
+                                                        </table>
+                                                    </fieldset>
+                                                </div>
+                                                <div class="col-xs-12">
+                                                    <a style="font-size: 20px;float: right;position:relative;right: 3%;" title="Grabar" onclick="adddetalleGarza()"><i class="fa fa-save text-green"></i></a>
+                                                    <a style="font-size: 22px;float: right;position:relative;right: -2%;" title="Cancelar" onclick="cambiarTab()"><i class="fa fa-times text-red"></i></a>
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                        <div id="detdatosespecie4" style="display: none;">
+                                            <fieldset>
+                                            <legend style="font-size: 14px; text-align: left;border-bottom: 1px solid;background-color: #005196;color: white;padding: 5px;"></legend>
+                                                <div class="col-xs-6">
+                                                    <table style="width: 100%;color: black;font-weight: bold;">
+                                                        <tr height='10px;'></tr>
+                                                        <tr>
+                                                            <td align="left">Sitio<br> 
+                                                                <select class="select2" id="Ssitio4EI" style="width: 100%;">
+                                                                   
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                        <tr height='10px;'></tr>
+                                                        <tr>
+                                                            <td align="left">Código GPS<br>
+                                                                <input type="text" id="codgpsdet4IE" class="form-control" text="Codigo GPS"/>
+                                                            </td>
+                                                        </tr>
+                                                        <tr height='20px;'></tr>
+                                                    </table>
+                                                </div>
+                                                <div class="col-xs-6">
+                                                    <fieldset>
+                                                        <legend style="font-size: 14px; text-align: left;border-bottom: 1px solid;background-color: #005196;color: white;padding: 5px;">Control Especie</legend>
+                                                        <table style="width: 70%;color: black;font-weight: bold;margin-top: -25px;">
+                                                            <tr height='10px;'></tr>
+                                                            <tr>
+                                                                <td align="right">Garzas Eliminadas</td>
+                                                                <td width="10px;"></td>
+                                                                <td align="center"><input type="text" id="eliminadasdet4IE" class="form-control" style="width: 50px;" /></td>
+                                                            </tr>
+                                                            <tr height='10px;'></tr>
+                                                            <tr>
+                                                                <td align="right">Garzas Escapadas</td>
+                                                                <td width="10px;"></td>
+                                                                <td align="center"><input type="text" id="escapadasdet4IE" class="form-control" style="width: 50px;" /></td> 
+                                                            </tr>
+                                                            <tr height='10px;'></tr>
+                                                            <tr>
+                                                                <td align="right">Número Nidos</td> 
+                                                                <td width="10px;"></td>
+                                                                <td align="center"><input type="text" id="numnidosdet4IE" class="form-control" style="width: 50px;"/></td>
+                                                            </tr>
+                                                            <tr height='10px;'></tr>
+                                                            <tr>
+                                                                <td align="right">Número Huevos</td> 
+                                                                <td width="10px;"></td>
+                                                                <td align="center"><input type="text" id="numhuevosdet4IE" class="form-control" style="width: 50px;"/></td>
+                                                            </tr>
+                                                            <tr height='20px;'></tr>
+                                                        </table>
+                                                    </fieldset>
+                                                </div>
+                                                <div class="col-xs-12" style="height: 20px;"></div>
+                                                <div class="col-xs-12">
+                                                    <fieldset>
+                                                        <legend style="font-size: 14px; text-align: left;border-bottom: 1px solid;background-color: #005196;color: white;padding: 5px;">Observación</legend>
+                                                        <table style="width: 100%;color: black;font-weight: bold;margin-top: -25px;">
+                                                            <tr height='10px;'></tr>
+                                                            <tr align="center">
+                                                                <td ><textarea id="observdet4IE" rows="3" style="width: 100%;"></textarea></td>
+                                                            </tr>
+                                                            <tr height='20px;'></tr>
+                                                        </table>
+                                                    </fieldset>
+                                                </div>
+                                                <div class="col-xs-12">
+                                                    <a style="font-size: 20px;float: right;position:relative;right: 3%;" title="Grabar" onclick="adddetalleGarrapatero()"><i class="fa fa-save text-green"></i></a>
+                                                    <a style="font-size: 22px;float: right;position:relative;right: -2%;" title="Cancelar" onclick="cambiarTab()"><i class="fa fa-times text-red"></i></a>
+                                                </div> 
+                                            </fieldset>
+                                        </div>
+                                        <div id="detdatosespecie5" style="display: none;">
+                                            <fieldset>
+                                            <legend style="font-size: 14px; text-align: left;border-bottom: 1px solid;background-color: #005196;color: white;padding: 5px;"></legend>
+                                                <div class="col-xs-6">
+                                                    <fieldset>
+                                                        <legend style="font-size: 14px; text-align: left;border-bottom: 1px solid;background-color: #005196;color: white;padding: 5px;">Control Especie</legend>
+                                                        <table style="width: 70%;color: black;font-weight: bold;margin-top: -25px;">
+                                                            <tr>
+                                                                <td align="right">Punto Gps</td>
+                                                                <td width="10px;"></td>
+                                                                <td align="center"><input type="text" id="ptogpsdet5IE"/></td>
+                                                            </tr>
+                                                            <tr height='10px;'></tr>
+                                                            <tr>
+                                                                <td align="right">Wasmannia auropunctata (W)</td>
+                                                                <td width="10px;"></td>
+                                                                <td align="center"><input type="checkbox" id="hormiga1det5IE"/></td>
+                                                            </tr>
+                                                            <tr height='10px;'></tr>
+                                                            <tr>
+                                                                <td align="right">Pheidole megacephala (P)</td>
+                                                                <td width="10px;"></td>
+                                                                <td align="center"><input type="checkbox" id="hormiga2det5IE"/></td> 
+                                                            </tr>
+                                                            <tr height='10px;'></tr>
+                                                            <tr>
+                                                                <td align="right">Solenopsis geminate (S)</td> 
+                                                                <td width="10px;"></td>
+                                                                <td align="center"><input type="checkbox" id="hormiga3det5IE"/></td>
+                                                            </tr>
+                                                            <tr height='10px;'></tr>
+                                                            <tr>
+                                                                <td align="right">Cardiocondyla emery (C)</td> 
+                                                                <td width="10px;"></td>
+                                                                <td align="center"><input type="checkbox" id="hormiga4det5IE"/></td>
+                                                            </tr>
+                                                            <tr height='10px;'></tr>
+                                                            <tr>
+                                                                <td align="right">Tapinoma melanocephalum (T)</td> 
+                                                                <td width="10px;"></td>
+                                                                <td align="center"><input type="checkbox" id="hormiga5det5IE"/></td>
+                                                            </tr>
+                                                            <tr height='10px;'></tr>
+                                                            <tr>
+                                                                <td align="right">Monomorium (M)</td> 
+                                                                <td width="10px;"></td>
+                                                                <td align="center"><input type="checkbox" id="hormiga6det5IE"/></td>
+                                                            </tr>
+                                                            <tr height='10px;'></tr>
+                                                            <tr>
+                                                                <td align="right">Endémica (E)</td> 
+                                                                <td width="10px;"></td>
+                                                                <td align="center"><input type="checkbox" id="hormiga7det5IE"/></td>
+                                                            </tr>
+                                                            <tr height='10px;'></tr>
+                                                            <tr>
+                                                                <td align="right">Otros</td> 
+                                                                <td width="10px;"></td>
+                                                                <td align="center"><input type="checkbox" id="hormiga8det5IE"/></td>
+                                                                <td width="10px;"></td>
+                                                                <td align="center"><a style="font-size: 20px;" title="Grabar" onclick="adddetalleHormiga()"><i class="fa fa-save text-green"></i></a></td>
+                                                                <td align="center"><a style="font-size: 22px;float: right;" title="Cancelar" onclick="cambiarTab()"><i class="fa fa-times text-red"></i></a></td>
+                                                            </tr>
+                                                            <tr height='20px;'></tr>
+                                                        </table>
+                                                    </fieldset>
+                                                </div>
+                                                <!--div class="col-xs-6" align="center">
+                                                    <span style="font-size: 20px; font-weight: bold;">TOTAL</span>
+                                                    <span id="spTotal" style="font-size: 20px; font-weight: bold;"></span>
+                                                </div-->
+                                            </fieldset>
+                                        </div>
+                                        <div id="detdatosespecie6" style="display: none;">
+                                            <fieldset>
+                                            <legend style="font-size: 14px; text-align: left;border-bottom: 1px solid;background-color: #005196;color: white;padding: 5px;"></legend>
+                                                <div class="col-xs-12">
+                                                    <table style="width: 100%;color: black;font-weight: bold;margin-top: -20px;">
+                                                        <tr height='10px;'></tr>
+                                                        <tr>
+                                                            <td align="right">Código GPS<br>
+                                                                <input type="text" id="codgpsdet6EI" class="form-control" text="Codigo GPS"/>
+                                                            </td>
+                                                        </tr>
+                                                        <tr height='10px;'></tr>
+                                                    </table>
+                                                </div>
+                                                
+                                                <div class="col-xs-6">
+                                                    <fieldset>
+                                                        <legend style="font-size: 14px; text-align: left;border-bottom: 1px solid;background-color: #005196;color: white;padding: 5px;">Cabras</legend>
+                                                        <table style="width: 70%;color: black;font-weight: bold;margin-top: -25px;">
+                                                            
+                                                            <tr>
+                                                                <td align="center">H</td>
+                                                                <td align="center">M</td> 
+                                                                <td align="center">J</td> 
+                                                            </tr>
+                                                            <tr>   
+                                                                <td align="center"><input type="text" id="cabrah6EI" class="form-control" style="width: 50px;text-align: center;" onkeypress="return isNumberKey(event);"/></td>
+                                                                <td align="center"><input type="text" id="cabram6EI" class="form-control" style="width: 50px;text-align: center;" onkeypress="return isNumberKey(event);"/></td>
+                                                                <td align="center"><input type="text" id="cabraj6EI" class="form-control" style="width: 50px;text-align: center;" onkeypress="return isNumberKey(event);"/></td>
+                                                            </tr>
+                                                            
+                                                        </table>
+                                                    </fieldset>
+                                                </div>
+                                                <div class="col-xs-6">
+                                                    <fieldset>
+                                                        <legend style="font-size: 14px; text-align: left;border-bottom: 1px solid;background-color: #005196;color: white;padding: 5px;">Asnos</legend>
+                                                        <table style="width: 70%;color: black;font-weight: bold;margin-top: -25px;">
+                                                            
+                                                            <tr>
+                                                                <td >H</td>
+                                                                <td >M</td> 
+                                                                <td >J</td> 
+                                                            </tr>
+                                                            <tr>   
+                                                                <td align="center"><input type="text" id="asnoh6EI" class="form-control" style="width: 50px;text-align: center;" onkeypress="return isNumberKey(event);"/></td>
+                                                                <td align="center"><input type="text" id="asnom6EI" class="form-control" style="width: 50px;text-align: center;" onkeypress="return isNumberKey(event);"/></td>
+                                                                <td align="center"><input type="text" id="asnoj6EI" class="form-control" style="width: 50px;text-align: center;" onkeypress="return isNumberKey(event);"/></td>
+                                                            </tr>
+                                                            
+                                                        </table>
+                                                    </fieldset>
+                                                </div>  
+                                                <div class="col-xs-12" style="height: 20px;"></div>
+                                                <div class="col-xs-6">
+                                                    <fieldset>
+                                                        <legend style="font-size: 14px; text-align: left;border-bottom: 1px solid;background-color: #005196;color: white;padding: 5px;">Cerdos</legend>
+                                                        <table style="width: 70%;color: black;font-weight: bold;margin-top: -25px;">
+                                                           
+                                                            <tr>
+                                                                <td align="center">H</td>
+                                                                <td align="center">M</td> 
+                                                                <td align="center">J</td> 
+                                                            </tr>
+                                                            <tr>   
+                                                                <td align="center"><input type="text" id="cerdoh6EI" class="form-control" style="width: 50px;text-align: center;" onkeypress="return isNumberKey(event);"/></td>
+                                                                <td align="center"><input type="text" id="cerdom6EI" class="form-control" style="width: 50px;text-align: center;" onkeypress="return isNumberKey(event);"/></td>
+                                                                <td align="center"><input type="text" id="cerdoj6EI" class="form-control" style="width: 50px;text-align: center;" onkeypress="return isNumberKey(event);"/></td>
+                                                            </tr>
+                                                            
+                                                        </table>
+                                                    </fieldset>
+                                                </div>
+                                                <div class="col-xs-6">
+                                                    <fieldset>
+                                                        <legend style="font-size: 14px; text-align: left;border-bottom: 1px solid;background-color: #005196;color: white;padding: 5px;">Vacuno</legend>
+                                                        <table style="width: 70%;color: black;font-weight: bold;margin-top: -25px;">
+                                                           
+                                                            <tr>
+                                                                <td align="center">H</td>
+                                                                <td align="center">M</td> 
+                                                                <td align="center">J</td> 
+                                                            </tr>
+                                                            <tr>   
+                                                                <td align="center"><input type="text" id="vacunoh6EI" class="form-control" style="width: 50px;text-align: center;" onkeypress="return isNumberKey(event);"/></td>
+                                                                <td align="center"><input type="text" id="vacunom6EI" class="form-control" style="width: 50px;text-align: center;" onkeypress="return isNumberKey(event);"/></td>
+                                                                <td align="center"><input type="text" id="vacunoj6EI" class="form-control" style="width: 50px;text-align: center;" onkeypress="return isNumberKey(event);"/></td>
+                                                            </tr>
+                                                            
+                                                        </table>
+                                                    </fieldset>
+                                                </div>
+                                                <div class="col-xs-12" style="height: 20px;"></div>
+                                                <div class="col-xs-12">
+                                                    <fieldset>
+                                                        <legend style="font-size: 14px; text-align: left;border-bottom: 1px solid;background-color: #005196;color: white;padding: 5px;">Observación</legend>
+                                                        <table style="width: 100%;color: black;font-weight: bold;">
+                                                            <tr align="center">
+                                                                <td ><textarea id="observdet6EI" rows="3" style="width: 100%;"></textarea></td>
+                                                            </tr>
+                                                            <tr height='10px;'></tr>
+                                                        </table>
+                                                    </fieldset>
+                                                </div> 
+                                                <div class="col-xs-12">
+                                                    <a style="font-size: 20px;float: right;position:relative;right: 3%;" title="Grabar" onclick="adddetalleCaceria()"><i class="fa fa-save text-green"></i></a>
+                                                    <a style="font-size: 22px;float: right;position:relative;right: -2%;" title="Cancelar" onclick="cambiarTab()"><i class="fa fa-times text-red"></i></a>
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                    </div><!--div tab-content-->
+                                </div><!--div tab_Con-->
+                        </div><!--nav-tabs-custom-->
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="stackbox-footer">
+           
+            <button class="btn btn-primary" onclick="setInsertUpdateEspecieIntro();">Grabar</button>
+            
+            <button class="btn btn-default" data-close-stackbox="true">Close</button>
+        </div>
+    </div>
+
+    <div class="box">
+
+        <div class="box-header">
+            <i class="fa fa-list"></i>
+            <h3 class="box-title">Especies Introducidas</h3><i class="fa fa-bug" aria-hidden="true" style="font-size: 20px; margin-left: 10px;"></i>
+            <div class="botonera" style="float: right; right: 1px;">
+                <a onclick="limpiarFormEspeciIntro();" href='#addEspecie' data-stackbox='true' data-stackbox-position="absolute" data-stackbox-width="1100"><i class="fa fa-plus-circle text-green btn_nuevo"></i></a> 
+                <a title="excel" onclick="generarExcel('tabla_Especies',9)"><i class="fa fa-file-excel-o text-green"></i></a>
+                <a title="archivo" class="pull-right" onclick="" data-toggle="collapse" href="#collapseArchivo" role="button" aria-expanded="false" aria-controls="collapseEspecie" style="margin-right: 5px;" data-original-title="Collapse"><i class="fa fa-upload text-green" style="position: relative; left: 5px;"></i></a>
+            </div>
+            <div class="col-xs-12" align="center" style="box-shadow: 0px 5px 5px 0px;margin-top: 10px;">
+                <table>
+                    <tr>
+                        <td align="right">Especie</td>
+                        <td width="10px"></td>
+                        <td>
+                            <select class="form-control requerido" id="SespeciesIntro" style="width: 200px;" onchange="getDataTablaEspecieIntro(this.value,1);getDataMetodoControl(this.value);">
+                                <option value="">Seleccion una Especie</option>
+                                
+                                {% for ave in especies %}
+                                    <option value="{{ ave.id }}">{{ ave.nombre_comun }}</option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                        <td width="10px"></td>
+                    </tr>
+                    <tr height="10px"> </tr>
+                </table>
+            </div>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+            <table id="tabla_especiesintro" style="font-size: 10px; text-transform: uppercase;font-weight: bold;" class="table table-striped table-bordered" width="100%" cellspacing="0">
+                <thead style="background-color: #005196;    color: white;">
+                    <th>#</th>
+                    <th>Encargado</th>
+                    <th>Isla</th>
+                    <th>Fecha</th>
+                    <th>Especie</th>
+                    <th></th>
+                    <th></th>
+                </thead>
+                <tbody id="bodytabla_especiesintro">
+
+                </tbody>
+            </table>
+        </div>
+        <!-- /.box-body -->
+
+    </div>
+    <!-- /.box -->
+
+</div>
+<!-- /.content -->
+
+<!-- AdminLTE datatable -->
+<!-- jQuery 3 -->
+{% load static %}
+
+<script>
+    $(document).ready(function() {
+        $(".select2").select2();
+        var table  = $('#tabladet1').DataTable();
+        var table2 = $('#tabladet2').DataTable();
+        var table3 = $('#tabladet3').DataTable();
+        var table4 = $('#tabladet4').DataTable();
+        var table5 = $('#tabladet5').DataTable();
+        var table6 = $('#tabladet6').DataTable();
+        //var f1 = (new Date).getFullYear() + "-01-01";
+        //var f2 = (new Date).getFullYear() + "-12-31";
+        //var dataini = f1 + "," + f2;
+        buscarEspecieIntroParametros("");
+    });
+ 
+</script>
+
+{% endblock %}
